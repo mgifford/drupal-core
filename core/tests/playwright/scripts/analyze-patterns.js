@@ -21,12 +21,22 @@
 const fs = require('fs');
 const path = require('path');
 
-const REPORTS_DIR = path.join(__dirname, '../reports');
+// Root-level /reports directory — one level above the repo's core/ directory.
+// Resolves from: core/tests/playwright/scripts/ → ../../../../reports/
+const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
-const JSON_OUTPUT = path.join(REPORTS_DIR, 'pattern-report.json');
-const BUGS_JSON_OUTPUT = path.join(REPORTS_DIR, 'bugs.json');
-const BUGS_CSV_OUTPUT = path.join(REPORTS_DIR, 'bugs.csv');
-const MD_OUTPUT = path.join(REPORTS_DIR, 'PATTERN-REPORT.md');
+
+// Date-stamped outputs so each scan is independently reviewable.
+const DATE_STAMP = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+const JSON_OUTPUT         = path.join(REPORTS_DIR, `pattern-report-${DATE_STAMP}.json`);
+const BUGS_JSON_OUTPUT    = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.json`);
+const BUGS_CSV_OUTPUT     = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.csv`);
+const MD_OUTPUT           = path.join(REPORTS_DIR, `PATTERN-REPORT-${DATE_STAMP}.md`);
+
+// Always-current "latest" copies for quick access.
+const BUGS_JSON_LATEST    = path.join(REPORTS_DIR, 'bugs-latest.json');
+const BUGS_CSV_LATEST     = path.join(REPORTS_DIR, 'bugs-latest.csv');
+const MD_LATEST           = path.join(REPORTS_DIR, 'PATTERN-REPORT-latest.md');
 
 const args = process.argv.slice(2);
 const minPagesArg = args.indexOf('--min-pages');
@@ -463,6 +473,7 @@ function main() {
   };
 
   fs.writeFileSync(BUGS_JSON_OUTPUT, JSON.stringify(bugsJson, null, 2));
+  fs.writeFileSync(BUGS_JSON_LATEST, JSON.stringify(bugsJson, null, 2));
   console.log(`✅ Bug report written to ${BUGS_JSON_OUTPUT}`);
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
@@ -501,6 +512,7 @@ function main() {
   }
 
   fs.writeFileSync(BUGS_CSV_OUTPUT, csvRows.join('\n'));
+  fs.writeFileSync(BUGS_CSV_LATEST, csvRows.join('\n'));
   console.log(`✅ CSV report written to ${BUGS_CSV_OUTPUT}`);
 
   // ── Legacy pattern-report.json ────────────────────────────────────────────
@@ -601,6 +613,7 @@ function main() {
   }
 
   fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
+  fs.writeFileSync(MD_LATEST, lines.join('\n'));
   console.log(`✅ Markdown report written to ${MD_OUTPUT}`);
   console.log('');
   console.log('📊 Summary:');
@@ -611,8 +624,11 @@ function main() {
   console.log('');
   console.log('📁 Output files:');
   console.log(`   ${BUGS_JSON_OUTPUT}`);
+  console.log(`   ${BUGS_JSON_LATEST} (latest)`);
   console.log(`   ${BUGS_CSV_OUTPUT}`);
+  console.log(`   ${BUGS_CSV_LATEST} (latest)`);
   console.log(`   ${MD_OUTPUT}`);
+  console.log(`   ${MD_LATEST} (latest)`);
 }
 
 main();
