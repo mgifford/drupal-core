@@ -398,9 +398,139 @@ Reference: https://mgifford.github.io/ACCESSIBILITY.md/SUSTAINABILITY.html
 - Document temporary waivers with owner, axe impact level, and expiry date.
 - Keep this file current as tooling, support matrix, and standards evolve.
 
-## 14. Related References
+## 14. Drupal Accessibility Coding Standards
+
+Source: https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards
+Last updated on drupal.org: 4 March 2026
+
+All contributions to Drupal core must follow these standards.
+
+### Key goals
+
+1. **Inclusive strategy** — consider accessibility needs when architecting features
+2. **Accessible coding** — follow the implementation practices below
+3. **Normalized testing** — build accessibility review into the development process, not as an add-on
+
+### Technical standards
+
+| Interface | Standard |
+| :--- | :--- |
+| Public-facing pages (Olivero and other front-end themes) | **WCAG 2.2 AA** |
+| Author/admin interface (Claro) | **WCAG 2.2 AA** + **ATAG 2.0** |
+
+ATAG 2.0 Part A: the authoring tool itself must be accessible to authors with disabilities.
+ATAG 2.0 Part B: the tool must help authors produce accessible content by default.
+
+### General best practices
+
+- Provide **text alternatives** (`alt`) for images, charts, and graphs.
+- Provide **captions, transcripts, and audio descriptions** for video.
+- Ensure **sufficient colour contrast** (WCAG 1.4.3 for normal text, 1.4.11 for UI components).
+- All features operable by mouse must be **keyboard-navigable**.
+- Use **semantic HTML** (`<h1>`, `<ul>`, `<button>`, `<nav>`) before reaching for `<div>`.
+- Default to **HTML first; use WAI-ARIA modestly** — ARIA shims labels onto non-semantic markup and improper use actively degrades screen reader experience.
+- **Check your work.** Run automated tools and manually test new interactive components. Invite users with disabilities to test where possible.
+
+### WAI-ARIA implementation in Drupal
+
+Use ARIA only when HTML semantics are insufficient:
+
+```php
+// Correct: add ARIA via #attributes in render arrays
+$form['field_name'] = [
+  '#type' => 'textfield',
+  '#title' => t('Field Label'),
+  '#attributes' => [
+    'aria-required' => 'true',
+    'aria-describedby' => 'field-help-text',
+  ],
+];
+```
+
+Common ARIA patterns in Drupal:
+- `aria-expanded="false"` — accordion/disclosure toggle state
+- `aria-describedby="ID"` — associate form field with its help text
+- `aria-current="page"` — active navigation item
+
+### Dynamic content
+
+When page content changes after user interaction, announce it to screen reader users:
+
+```javascript
+// Polite announcement (queued, does not interrupt)
+Drupal.announce(Drupal.t('Your form has been submitted successfully.'));
+
+// Assertive announcement (interrupts current speech — use sparingly)
+Drupal.announce(Drupal.t('Error: required field is empty.'), 'assertive');
+```
+
+Use `Drupal.announce()` for: alerts and error messages, autocomplete suggestions, AJAX-filtered result counts.
+
+### Keyboard navigation
+
+- Every mouse-operable feature must be keyboard-operable.
+- Follow [ARIA Authoring Practices patterns](https://www.w3.org/WAI/ARIA/apg/patterns/) for custom widgets.
+- Dialogs and overlays must **trap focus** while open and **release focus** on close (Esc or close button).
+
+Use Drupal's built-in tabbingManager for focus trapping:
+
+```javascript
+// Constrain focus to a set of elements
+var tabbingContext = Drupal.tabbingManager.constrain($('.dialog-content'));
+
+// Release focus constraint (on close)
+tabbingContext.release();
+```
+
+### Hiding content accessibly
+
+| Goal | Method | CSS class / attribute |
+| :--- | :--- | :--- |
+| Visible to screen readers only | `visually-hidden` CSS class | `.visually-hidden` |
+| Hidden until focused (skip links) | `visually-hidden focusable` | `.visually-hidden.focusable` |
+| Completely hidden from all users | HTML `hidden` attribute or `display: none` | `hidden` / `display: none` |
+
+**Do not use** `visibility: hidden` or `opacity: 0` alone to hide content from screen readers — they may still be announced. Use `display: none` or `hidden` for complete removal.
+
+### Forms
+
+- Group related fields with `<fieldset>` and `<legend>`.
+- Enable the **Inline Form Errors** module: it places error summaries at the top of the form and inline error messages beside each field.
+- Never rely on placeholder text alone as a label — placeholders disappear on input and have poor contrast.
+
+### Animation
+
+- Respect `prefers-reduced-motion`. Wrap animations in a media query:
+
+```css
+@media (prefers-reduced-motion: no-preference) {
+  .animated-element {
+    transition: transform 0.3s ease;
+  }
+}
+```
+
+### Testing checklist (per contribution)
+
+- [ ] Run axe DevTools or `yarn test:a11y:playwright` on affected pages
+- [ ] Verify keyboard-only navigation through all new interactive elements
+- [ ] Confirm focus is visible at all times
+- [ ] Check colour contrast meets 4.5:1 (normal text) and 3:1 (large text / UI)
+- [ ] Verify ARIA attributes are correct and not redundant with native semantics
+- [ ] Test `Drupal.announce()` calls with a screen reader if dynamic content is involved
+- [ ] Check animations respect `prefers-reduced-motion`
+
+Full testing guidance: https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards#testing
+
+## 15. Related References
 
 - ACCESSIBILITY.md project home:
   https://mgifford.github.io/ACCESSIBILITY.md/
 - AI agent guidance reference:
   https://mgifford.github.io/ACCESSIBILITY.md/AGENTS.html
+- Drupal Accessibility Coding Standards:
+  https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards
+- Drupal accessibility issue queue:
+  https://www.drupal.org/project/issues/search?projects=Drupal+core&issue_tags=Accessibility
+- A11Y-PROCESS.md — local testing and contribution workflow:
+  ./A11Y-PROCESS.md
