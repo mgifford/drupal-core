@@ -23,10 +23,10 @@ export default async function globalSetup(config: FullConfig) {
   const page = await context.newPage();
 
   await page.goto(`${baseURL}/user/login`);
-  await page.fill('#edit-name', username);
-  await page.fill('#edit-pass', password);
-  await page.click('#edit-submit');
-  await page.waitForURL(`${baseURL}/user/*`);
+  await page.fill('#user-login-form #edit-name', username);
+  await page.fill('#user-login-form #edit-pass', password);
+  await page.click('#user-login-form [type="submit"]');
+  await page.waitForURL(`${baseURL}/user/**`);
 
   fs.mkdirSync(path.dirname(AUTH_STATE_FILE), { recursive: true });
   await context.storageState({ path: AUTH_STATE_FILE });
