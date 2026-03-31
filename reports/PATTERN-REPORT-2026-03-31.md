@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-03-31T20:01:19.906Z
+> **Generated:** 2026-03-31T20:07:44.219Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
