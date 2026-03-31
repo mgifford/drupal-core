@@ -1,0 +1,1556 @@
+{
+  "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
+  "summary": {
+    "generatedAt": "2026-03-31T20:01:19.906Z",
+    "tool": "axe-core (via @axe-core/playwright)",
+    "totalPagesCrawled": 29,
+    "totalViolationInstances": 40,
+    "uniquePatterns": 22,
+    "templateLevelPatterns": 4,
+    "byImpact": {
+      "critical": 0,
+      "serious": 14,
+      "moderate": 8,
+      "minor": 0
+    },
+    "environment": {
+      "browser": "Chromium (via Playwright)",
+      "os": "darwin",
+      "tool": "axe-core via @axe-core/playwright",
+      "baseUrl": "https://drupal-core.ddev.site"
+    }
+  },
+  "issues": [
+    {
+      "id": "DRUPAL-A11Y-001",
+      "pattern_id": "DRU-A88A3568",
+      "priority": 1,
+      "isTemplateLevelIssue": true,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Local action links render bare <li> items outside a <ul>",
+      "rule_id": "listitem",
+      "impact": "serious",
+      "wcag_sc": "1.3.1",
+      "wcag_level": "A",
+      "wcag_name": "Info and Relationships",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/listitem?application=playwright",
+      "frequency": {
+        "pages_affected": 5,
+        "total_pages_scanned": 29,
+        "percentage": 17
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-1CD63E0A",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0145A953",
+          "name": "Content types",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F6A6FC30",
+          "name": "Taxonomy",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1B811C67",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D1AAE084",
+          "name": "Text formats",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".action-links-item",
+      "xpath": "//*[contains(@class,\"action-links-item\")]",
+      "html_snippet": "<li class=\"action-links-item\"><a href=\"/node/add\" class=\"button button-action\" data-drupal-link-system-path=\"node/add\">Add content</a></li>",
+      "failure_summary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/olivero/templates/menu-local-action.html.twig\n    core/themes/claro/templates/block/block--local-actions-block.html.twig",
+      "expected_behaviour": "<ul class=\"action-links\"><li class=\"action-links-item\">…</li></ul>",
+      "actual_behaviour": "<li class=\"action-links-item\">…</li>  (no <ul> parent)",
+      "suggested_fix": "Wrap the action-link items in a <ul>:\n\n<!-- Before (broken) -->\n{% for link in action_links %}\n  <li class=\"action-links-item\">{{ link }}</li>\n{% endfor %}\n\n<!-- After (fixed) -->\n<ul class=\"action-links\">\n{% for link in action_links %}\n  <li class=\"action-links-item\">{{ link }}</li>\n{% endfor %}\n</ul>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"listitem\" on selector: .action-links-item",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-002",
+      "pattern_id": "DRU-7A2CD202",
+      "priority": 2,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"Select all rows\" checkbox is labeled only by its title attribute",
+      "rule_id": "label-title-only",
+      "impact": "serious",
+      "wcag_sc": "1.3.1",
+      "wcag_level": "A",
+      "wcag_name": "Info and Relationships",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/label-title-only?application=playwright",
+      "frequency": {
+        "pages_affected": 2,
+        "total_pages_scanned": 29,
+        "percentage": 7
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-D6A47BCB",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-631CA206",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "input[title=\"Select all rows in this table\"]",
+      "xpath": "//input[@title=\"Select all rows in this table\"]",
+      "html_snippet": "<input type=\"checkbox\" class=\"form-checkbox form-boolean form-boolean--type-checkbox\" title=\"Select all rows in this table\">",
+      "failure_summary": "Fix all of the following:\n  Only title used to generate label for form element",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/templates/classy/dataset/table.html.twig\n    core/themes/admin/templates/dataset/table.html.twig",
+      "expected_behaviour": "Checkbox has a visible or visually-hidden <label>, or aria-label",
+      "actual_behaviour": "input[title=\"Select all rows in this table\"] — title is the sole label source",
+      "suggested_fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "blind",
+        "low-vision",
+        "voice-control"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"label-title-only\" on selector: input[title=\"Select all rows in this table\"]",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-003",
+      "pattern_id": "DRU-0C5EEDDE",
+      "priority": 3,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-2697AEAA",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".region-hero-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-hero-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-hero-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-004",
+      "pattern_id": "DRU-C8F6B7EE",
+      "priority": 4,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-9BE93FAB",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".region-social-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-social-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-social-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-005",
+      "pattern_id": "DRU-45980683",
+      "priority": 5,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-46B51422",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".region-sidebar-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-sidebar-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-sidebar-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-006",
+      "pattern_id": "DRU-B6FD23D8",
+      "priority": 6,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-7421632C",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".region-content_below-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-content_below-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-content_below-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-007",
+      "pattern_id": "DRU-EDE98251",
+      "priority": 7,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-40F7E71F",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".region-footer_top-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-footer_top-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-footer_top-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-008",
+      "pattern_id": "DRU-4DD0A36F",
+      "priority": 8,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Breadcrumb links are only 14px tall — WCAG 2.5.8 requires 24×24px minimum",
+      "rule_id": "target-size",
+      "impact": "serious",
+      "wcag_sc": "2.5.8",
+      "wcag_level": "AA",
+      "wcag_name": "Target Size (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/258.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-09AEDF30",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "a[href$=\"admin\"]",
+      "xpath": "//a[@href$=\"admin\"]",
+      "html_snippet": "<a href=\"/admin\" class=\"breadcrumb__link\">Administration</a>",
+      "failure_summary": "Fix any of the following:\n  Target has insufficient size (102.3px by 14px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.6px instead of at least 24px.",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/css/components/breadcrumb.css\n    core/themes/claro/templates/breadcrumb.html.twig",
+      "expected_behaviour": "Clickable area ≥ 24×24px (WCAG 2.5.8 AA)",
+      "actual_behaviour": "Breadcrumb links: 14px height, insufficient spacing from neighbours",
+      "suggested_fix": "Increase the breadcrumb link target size via CSS:\n\n/* claro/css/components/breadcrumb.css */\n.breadcrumb__link {\n  /* Add padding so the clickable area meets 24px minimum */\n  padding-block: 5px;\n  display: inline-block;\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "motor",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"target-size\" on selector: a[href$=\"admin\"]",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-009",
+      "pattern_id": "DRU-B5BC19D5",
+      "priority": 9,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Breadcrumb links are only 14px tall — WCAG 2.5.8 requires 24×24px minimum",
+      "rule_id": "target-size",
+      "impact": "serious",
+      "wcag_sc": "2.5.8",
+      "wcag_level": "AA",
+      "wcag_name": "Target Size (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/258.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-FFA737C7",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".breadcrumb__link[href$=\"formats\"]",
+      "xpath": "//*[contains(@class,\"breadcrumb__link[href$=\"formats\"]\")]",
+      "html_snippet": "<a href=\"/admin/config/content/formats\" class=\"breadcrumb__link\">Text formats and editors</a>",
+      "failure_summary": "Fix any of the following:\n  Target has insufficient size (170.6px by 14px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.6px instead of at least 24px.",
+      "likely_template": "breadcrumb.html.twig",
+      "template_hint": "Breadcrumb template",
+      "drupal_file": "core/themes/claro/css/components/breadcrumb.css\n    core/themes/claro/templates/breadcrumb.html.twig",
+      "expected_behaviour": "Clickable area ≥ 24×24px (WCAG 2.5.8 AA)",
+      "actual_behaviour": "Breadcrumb links: 14px height, insufficient spacing from neighbours",
+      "suggested_fix": "Increase the breadcrumb link target size via CSS:\n\n/* claro/css/components/breadcrumb.css */\n.breadcrumb__link {\n  /* Add padding so the clickable area meets 24px minimum */\n  padding-block: 5px;\n  display: inline-block;\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "motor",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"target-size\" on selector: .breadcrumb__link[href$=\"formats\"]",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-010",
+      "pattern_id": "DRU-53235649",
+      "priority": 10,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-C8DA2EEA",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ],
+      "selector": ".region-hero-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-hero-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-hero-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-011",
+      "pattern_id": "DRU-34AFC21D",
+      "priority": 11,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-5C55015C",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ],
+      "selector": ".region-social-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-social-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-social-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-012",
+      "pattern_id": "DRU-60714829",
+      "priority": 12,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-8F3C65E8",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ],
+      "selector": ".region-sidebar-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-sidebar-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-sidebar-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-013",
+      "pattern_id": "DRU-80D85F22",
+      "priority": 13,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-F57DFBAB",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ],
+      "selector": ".region-content_below-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-content_below-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-content_below-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-014",
+      "pattern_id": "DRU-DBD71992",
+      "priority": 14,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "\"No blocks in this region\" placeholder text fails contrast (2.84:1, needs 4.5:1)",
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "wcag_sc": "1.4.3",
+      "wcag_level": "AA",
+      "wcag_name": "Contrast (Minimum)",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-66E9C03F",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ],
+      "selector": ".region-footer_top-message > td[colspan=\"5\"] > em",
+      "xpath": "//*[contains(@class,\"region-footer_top-message > td[colspan=\"5\"] > em\")]",
+      "html_snippet": "<em>No blocks in this region</em>",
+      "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.84 (foreground color: #999999, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "likely_template": "region.html.twig",
+      "template_hint": "Region template",
+      "drupal_file": "core/themes/claro/css/theme/block-admin.css (or its .pcss.css source)",
+      "expected_behaviour": "Foreground color #767676 or darker on white (#ffffff) background → 4.54:1",
+      "actual_behaviour": "color: #999999 on #ffffff → contrast ratio 2.84:1",
+      "suggested_fix": "In Claro's block-admin CSS, darken the placeholder text:\n\n/* Before (broken) */\n.block-region .region-message em {\n  color: #999999;\n}\n\n/* After (fixed) */\n.block-region .region-message em {\n  color: #767676; /* 4.54:1 on white */\n}",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318394",
+      "impact_groups": [
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"color-contrast\" on selector: .region-footer_top-message > td[colspan=\"5\"] > em",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-015",
+      "pattern_id": "DRU-12C757FE",
+      "priority": 15,
+      "isTemplateLevelIssue": true,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Local task tab headings (#primary-tabs-title) are outside any landmark region",
+      "rule_id": "region",
+      "impact": "moderate",
+      "wcag_sc": "1.3.6",
+      "wcag_level": "A",
+      "wcag_name": "Identify Purpose",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "frequency": {
+        "pages_affected": 7,
+        "total_pages_scanned": 29,
+        "percentage": 24
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-BC3B17C9",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-94EA0EA1",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-ED5789D1",
+          "name": "Admin dashboard",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6261BD8B",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-66F0411F",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5D29050A",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-53475AE4",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "#primary-tabs-title",
+      "xpath": "//*[@id=\"primary-tabs-title\"]",
+      "html_snippet": "<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">Primary tabs</h2>",
+      "failure_summary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/templates/menu-local-tasks.html.twig\n    core/themes/olivero/templates/navigation/menu-local-tasks.html.twig",
+      "expected_behaviour": "The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark",
+      "actual_behaviour": "<h2 id=\"primary-tabs-title\"> is a sibling of <nav>, and the nav may be outside main/aside/etc.",
+      "suggested_fix": "Move the heading inside the <nav> it labels:\n\n{# Before #}\n<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">…</nav>\n\n{# After — h2 moves inside nav #}\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">\n  <h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n  …\n</nav>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318396",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/user/login",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"region\" on selector: #primary-tabs-title",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-016",
+      "pattern_id": "DRU-C31EA5D4",
+      "priority": 16,
+      "isTemplateLevelIssue": true,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Primary admin actions block is rendered outside any ARIA landmark",
+      "rule_id": "region",
+      "impact": "moderate",
+      "wcag_sc": "1.3.6",
+      "wcag_level": "A",
+      "wcag_name": "Identify Purpose",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "frequency": {
+        "pages_affected": 5,
+        "total_pages_scanned": 29,
+        "percentage": 17
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-23FF1F89",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-95F014D7",
+          "name": "Content types",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0E93B528",
+          "name": "Taxonomy",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B061B58E",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B73C4425",
+          "name": "Text formats",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "#block-olivero-primary-admin-actions > .block__content",
+      "xpath": "//*[@id=\"block-olivero-primary-admin-actions > .block__content\"]",
+      "html_snippet": "<div class=\"block__content\">\n      \n\n<li class=\"action-links-item\"><a href=\"/node/add\" class=\"button button-action\" data-drupal-link-system-path=\"node/add\">Add content</a></li>\n\n    </div>",
+      "failure_summary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "likely_template": "block.html.twig",
+      "template_hint": "Block template",
+      "drupal_file": "core/themes/olivero/templates/layout/page.html.twig\n    Core block placement configuration",
+      "expected_behaviour": "Block content is inside a <main>, <nav>, <aside>, or equivalent landmark",
+      "actual_behaviour": "#block-olivero-primary-admin-actions .block__content is outside all landmarks",
+      "suggested_fix": "Wrap the admin actions block in a <nav> in the page template, or ensure block region\nis inside an appropriate landmark:\n\n{# Olivero page.html.twig — ensure admin actions region is inside <main> or wrap it #}\n<nav aria-label=\"{{ 'Page actions'|t }}\">\n  {{ page.primary_admin_actions }}\n</nav>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318396",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"region\" on selector: #block-olivero-primary-admin-actions > .block__content",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-017",
+      "pattern_id": "DRU-954A78DB",
+      "priority": 17,
+      "isTemplateLevelIssue": true,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Status messages block uses role=\"contentinfo\", duplicating the page <footer>",
+      "rule_id": "landmark-no-duplicate-contentinfo",
+      "impact": "moderate",
+      "wcag_sc": "1.3.6",
+      "wcag_level": "A",
+      "wcag_name": "Identify Purpose",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=playwright",
+      "frequency": {
+        "pages_affected": 3,
+        "total_pages_scanned": 29,
+        "percentage": 10
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-06B9A6FE",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-43FA80E2",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1A9B720A",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".messages-list__item",
+      "xpath": "//*[contains(@class,\"messages-list__item\")]",
+      "html_snippet": "<div class=\"messages-list__item messages messages--error\" data-drupal-selector=\"messages\" role=\"contentinfo\" aria-label=\"Error message\" data-once=\"messages\">",
+      "failure_summary": "Fix any of the following:\n  Document has more than one contentinfo landmark",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/templates/misc/status-messages.html.twig\n    core/modules/system/templates/status-messages.html.twig",
+      "expected_behaviour": "Status messages use role=\"status\" (non-error) or role=\"alert\" (errors)",
+      "actual_behaviour": "<div role=\"contentinfo\" aria-labelledby=\"…\"> — conflicts with the page footer landmark",
+      "suggested_fix": "Change the outer wrapper role based on message type:\n\n{# Before (broken) #}\n<div role=\"contentinfo\" aria-labelledby=\"{{ title_ids[type] }}\"…>\n\n{# After (fixed) #}\n{%- set msg_role = (type == 'error') ? 'alert' : 'status' -%}\n<div role=\"{{ msg_role }}\" aria-labelledby=\"{{ title_ids[type] }}\"…>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/appearance",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"landmark-no-duplicate-contentinfo\" on selector: .messages-list__item",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-018",
+      "pattern_id": "DRU-E877649B",
+      "priority": 18,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "Local task tab headings (#primary-tabs-title) are outside any landmark region",
+      "rule_id": "region",
+      "impact": "moderate",
+      "wcag_sc": "1.3.6",
+      "wcag_level": "A",
+      "wcag_name": "Identify Purpose",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "frequency": {
+        "pages_affected": 2,
+        "total_pages_scanned": 29,
+        "percentage": 7
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-4AA1B1B9",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-CA3F486A",
+          "name": "Admin dashboard (mobile)",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ],
+      "selector": "#primary-tabs-title",
+      "xpath": "//*[@id=\"primary-tabs-title\"]",
+      "html_snippet": "<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">Primary tabs</h2>",
+      "failure_summary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/templates/menu-local-tasks.html.twig\n    core/themes/olivero/templates/navigation/menu-local-tasks.html.twig",
+      "expected_behaviour": "The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark",
+      "actual_behaviour": "<h2 id=\"primary-tabs-title\"> is a sibling of <nav>, and the nav may be outside main/aside/etc.",
+      "suggested_fix": "Move the heading inside the <nav> it labels:\n\n{# Before #}\n<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">…</nav>\n\n{# After — h2 moves inside nav #}\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">\n  <h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n  …\n</nav>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318396",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/user/login",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"region\" on selector: #primary-tabs-title",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-019",
+      "pattern_id": "DRU-FE39ED4A",
+      "priority": 19,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+      "rule_id": "page-has-heading-one",
+      "impact": "moderate",
+      "wcag_sc": "1.3.1",
+      "wcag_level": "A",
+      "wcag_name": "Info and Relationships",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-C56E21D1",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "html",
+      "xpath": "//html",
+      "html_snippet": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
+      "failure_summary": "Fix all of the following:\n  Page must have a level-one heading",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+      "expected_behaviour": "Every page contains exactly one <h1> that identifies the page",
+      "actual_behaviour": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+      "suggested_fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"page-has-heading-one\" on selector: html",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-020",
+      "pattern_id": "DRU-2DD6D8F2",
+      "priority": 20,
+      "isTemplateLevelIssue": false,
+      "screen": "mobile",
+      "mode": "light",
+      "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+      "rule_id": "page-has-heading-one",
+      "impact": "moderate",
+      "wcag_sc": "1.3.1",
+      "wcag_level": "A",
+      "wcag_name": "Info and Relationships",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-13EEEC14",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ],
+      "selector": "html",
+      "xpath": "//html",
+      "html_snippet": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
+      "failure_summary": "Fix all of the following:\n  Page must have a level-one heading",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+      "expected_behaviour": "Every page contains exactly one <h1> that identifies the page",
+      "actual_behaviour": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+      "suggested_fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"page-has-heading-one\" on selector: html",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-021",
+      "pattern_id": "DRU-4D24D5C1",
+      "priority": 21,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Local task tab headings (#primary-tabs-title) are outside any landmark region",
+      "rule_id": "region",
+      "impact": "moderate",
+      "wcag_sc": "1.3.6",
+      "wcag_level": "A",
+      "wcag_name": "Identify Purpose",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-F6796033",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": "#secondary-tabs-title",
+      "xpath": "//*[@id=\"secondary-tabs-title\"]",
+      "html_snippet": "<h2 id=\"secondary-tabs-title\" class=\"visually-hidden\">Secondary tabs</h2>",
+      "failure_summary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/themes/claro/templates/menu-local-tasks.html.twig\n    core/themes/olivero/templates/navigation/menu-local-tasks.html.twig",
+      "expected_behaviour": "The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark",
+      "actual_behaviour": "<h2 id=\"primary-tabs-title\"> is a sibling of <nav>, and the nav may be outside main/aside/etc.",
+      "suggested_fix": "Move the heading inside the <nav> it labels:\n\n{# Before #}\n<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">…</nav>\n\n{# After — h2 moves inside nav #}\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">\n  <h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n  …\n</nav>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318396",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"region\" on selector: #secondary-tabs-title",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    },
+    {
+      "id": "DRUPAL-A11Y-022",
+      "pattern_id": "DRU-994C4E5C",
+      "priority": 22,
+      "isTemplateLevelIssue": false,
+      "screen": "desktop",
+      "mode": "light",
+      "summary": "Admin Configuration page has heading-order violations (h3 appears before h2)",
+      "rule_id": "heading-order",
+      "impact": "moderate",
+      "wcag_sc": "1.3.1",
+      "wcag_level": "A",
+      "wcag_name": "Info and Relationships",
+      "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
+      "axe_url": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+      "frequency": {
+        "pages_affected": 1,
+        "total_pages_scanned": 29,
+        "percentage": 3
+      },
+      "affected_pages": [
+        {
+          "instanceId": "INS-16429CD3",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "selector": ".layout-column.layout-column--half:nth-child(2) > .panel:nth-child(1) > .panel__title",
+      "xpath": "//*[contains(@class,\"layout-column.layout-column--half:nth-child(2) > .panel:nth-child(1) > .panel__title\")]",
+      "html_snippet": "<h3 class=\"panel__title\">People</h3>",
+      "failure_summary": "Fix any of the following:\n  Heading order invalid",
+      "likely_template": "unknown",
+      "template_hint": "Could not infer template from selector",
+      "drupal_file": "core/modules/system/templates/system-admin-index.html.twig\n    core/themes/claro/templates (panel/section templates)",
+      "expected_behaviour": "Heading levels increment by one: h1 → h2 → h3",
+      "actual_behaviour": "Panel titles use <h3> but their section headings may be absent or at wrong level",
+      "suggested_fix": "Audit the heading hierarchy on /admin/config and adjust panel titles:\n\n{# system-admin-index.html.twig — ensure section uses h2, panel uses h3 #}\n<h2 class=\"system-admin-section__title\">{{ section.title }}</h2>\n<div class=\"panel\">\n  <h3 class=\"panel__title\">{{ panel.title }}</h3>\n</div>",
+      "drupal_issue": "https://www.drupal.org/project/drupal/issues/3318398",
+      "impact_groups": [
+        "blind",
+        "low-vision"
+      ],
+      "steps_to_reproduce": [
+        "Navigate to https://drupal-core.ddev.site/admin/config",
+        "Open browser DevTools and run: axe.run()",
+        "Look for rule \"heading-order\" on selector: .layout-column.layout-column--half:nth-child(2) > .panel:nth-child(1) > .panel__title",
+        "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
+      ],
+      "environment": {
+        "browser": "Chromium (via Playwright)",
+        "os": "darwin",
+        "tool": "axe-core via @axe-core/playwright",
+        "baseUrl": "https://drupal-core.ddev.site"
+      }
+    }
+  ]
+}
