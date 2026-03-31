@@ -4,10 +4,13 @@
  * Each entry defines a page to audit. Add entries here when:
  *   - A new core page is introduced.
  *   - A module adds a significant template-rendered route.
- *   - A disabled axe rule is being re-enabled for a specific page type.
  *
  * Entries are intentionally minimal — no site-install required.
  * The crawler runs against an existing DDEV site.
+ *
+ * All axe rules are enabled (full WCAG 2.x + best-practice suite).
+ * To gate a specific rule as a hard failure once it is clean, promote
+ * it to a11y-regressions.spec.ts instead of suppressing it here.
  */
 
 export interface PageEntry {
@@ -19,8 +22,6 @@ export interface PageEntry {
   requiresAuth: boolean;
   /** Viewport override, e.g. for mobile-specific templates. */
   viewport?: { width: number; height: number };
-  /** Axe rules to disable for this page, with a tracking issue reference. */
-  disabledRules?: Array<{ rule: string; issue: string }>;
 }
 
 /** Pages rendered by the default (Olivero) theme — no authentication. */
@@ -29,15 +30,7 @@ export const anonymousPages: PageEntry[] = [
   { name: 'User login', path: '/user/login', requiresAuth: false },
   { name: 'User register', path: '/user/register', requiresAuth: false },
   { name: 'User password reset', path: '/user/password', requiresAuth: false },
-  {
-    name: 'Search results',
-    path: '/search/node',
-    requiresAuth: false,
-    disabledRules: [
-      { rule: 'heading-order', issue: 'https://drupal.org/i/3318398' },
-      { rule: 'duplicate-id-aria', issue: 'https://drupal.org/i/3318398' },
-    ],
-  },
+  { name: 'Search results', path: '/search/node', requiresAuth: false },
   { name: '404 page', path: '/this-page-does-not-exist', requiresAuth: false },
   {
     name: 'Homepage (mobile)',
@@ -105,11 +98,6 @@ export const adminPages: PageEntry[] = [
     path: '/admin/structure/block',
     requiresAuth: true,
     viewport: { width: 415, height: 823 },
-    disabledRules: [
-      { rule: 'color-contrast', issue: 'https://drupal.org/i/3318394' },
-      { rule: 'duplicate-id-active', issue: 'https://drupal.org/i/3318394' },
-      { rule: 'region', issue: 'https://drupal.org/i/3318396' },
-    ],
   },
 ];
 
