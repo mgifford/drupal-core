@@ -95,16 +95,24 @@
       }
     });
 
+    let previousNavIsDesktop = props.olivero.isDesktopNav();
+
     // Remove overlays when browser is resized and desktop nav appears.
     window.addEventListener('resize', () => {
-      if (props.olivero.isDesktopNav()) {
-        toggleNav(props, false);
-        props.body.classList.remove('is-overlay-active');
-        props.body.classList.remove('is-fixed');
+      const currentNavIsDesktop = props.olivero.isDesktopNav();
+
+      if (previousNavIsDesktop !== currentNavIsDesktop) {
+        if (currentNavIsDesktop) {
+          toggleNav(props, false);
+          props.body.classList.remove('is-overlay-active');
+          props.body.classList.remove('is-fixed');
+        }
+
+        // Close sub-navigation menus only when the nav mode changes.
+        Drupal.olivero.closeAllSubNav();
       }
 
-      // Ensure that all sub-navigation menus close when the browser is resized.
-      Drupal.olivero.closeAllSubNav();
+      previousNavIsDesktop = currentNavIsDesktop;
     });
 
     // If hyperlink links to an anchor in the current page, close the
