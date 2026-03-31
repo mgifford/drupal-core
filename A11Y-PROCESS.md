@@ -108,7 +108,7 @@ For each theme:
 1. Drush switches `system.theme.default` and `system.theme.admin` to that theme
 2. Drush rebuilds the cache (~5–10s per theme)
 3. Playwright visits all applicable pages with Chromium
-4. axe-core runs the full WCAG 2.x + best-practice rule set — **no rules are suppressed**
+4. axe-core runs the full WCAG 2.2 + best-practice rule set — **no rules are suppressed**
 5. Violations are recorded with `theme`, `screen` (desktop/mobile), and page info
 
 At the end:
@@ -385,11 +385,11 @@ Each committed `bugs-YYYY-MM-DD.json` in git history gives a permanent record. T
 
 The Nightwatch tests still suppress some axe rules for CI noise reasons. Now that the Playwright crawl captures everything, re-enabling them in Nightwatch is lower urgency. The current priority (tracked in `ACCESSIBILITY.md` section 9):
 
-1. `duplicate-id-aria` — Critical, WCAG A → [#3318398](https://drupal.org/i/3318398)
-2. `duplicate-id-active` — Serious, WCAG A → [#3318394](https://drupal.org/i/3318394)
-3. `color-contrast` — Serious, WCAG AA → [#3318394](https://drupal.org/i/3318394)
-4. `heading-order` — Moderate, WCAG A → [#3318398](https://drupal.org/i/3318398)
-5. `region` — Moderate, WCAG A → [#3318396](https://drupal.org/i/3318396)
+1. `duplicate-id-aria` — Critical, WCAG 2.2 A → [#3318398](https://drupal.org/i/3318398)
+2. `duplicate-id-active` — Serious, WCAG 2.2 A → [#3318394](https://drupal.org/i/3318394)
+3. `color-contrast` — Serious, WCAG 2.2 AA → [#3318394](https://drupal.org/i/3318394)
+4. `heading-order` — Moderate, WCAG 2.2 A → [#3318398](https://drupal.org/i/3318398)
+5. `region` — Moderate, WCAG 2.2 A → [#3318396](https://drupal.org/i/3318396)
 
 Work one rule at a time. File all child issues before starting. See `ACCESSIBILITY.md` section 9 for the full process.
 

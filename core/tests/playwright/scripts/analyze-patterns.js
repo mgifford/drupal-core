@@ -98,8 +98,10 @@ const RULE_WCAG = {
   'definition-list':                 { sc: '1.3.1', level: 'A',  name: 'Info and Relationships' },
   'dlitem':                          { sc: '1.3.1', level: 'A',  name: 'Info and Relationships' },
   'document-title':                  { sc: '2.4.2', level: 'A',  name: 'Page Titled' },
-  'duplicate-id-active':            { sc: '4.1.1', level: 'A',  name: 'Parsing' },
-  'duplicate-id-aria':              { sc: '4.1.1', level: 'A',  name: 'Parsing' },
+  // SC 4.1.1 (Parsing) was deprecated in WCAG 2.2; axe maps these rules to it for legacy reasons.
+  // Treat violations as WCAG 2.2 A failures via the underlying duplicate-id issue (4.1.2).
+  'duplicate-id-active':            { sc: '4.1.1', level: 'A',  name: 'Parsing (deprecated in WCAG 2.2)' },
+  'duplicate-id-aria':              { sc: '4.1.1', level: 'A',  name: 'Parsing (deprecated in WCAG 2.2)' },
   'form-field-multiple-labels':     { sc: '1.3.1', level: 'A',  name: 'Info and Relationships' },
   'frame-focusable-content':        { sc: '4.1.2', level: 'A',  name: 'Name, Role, Value' },
   'frame-title':                     { sc: '4.1.2', level: 'A',  name: 'Name, Role, Value' },
@@ -604,7 +606,9 @@ function main() {
       wcag_sc: p.wcag.sc,
       wcag_level: p.wcag.level,
       wcag_name: p.wcag.name,
-      wcag_url: `https://www.w3.org/WAI/WCAG22/Understanding/${p.wcag.sc.replace(/\./g, '')}.html`,
+      wcag_url: p.wcag.sc === '4.1.1'
+        ? 'https://www.w3.org/TR/WCAG22/#parsing' // SC 4.1.1 deprecated in WCAG 2.2; no Understanding doc
+        : `https://www.w3.org/WAI/WCAG22/Understanding/${p.wcag.sc.replace(/\./g, '')}.html`,
       axe_url: p.helpUrl,
       frequency: {
         pages_affected: p.pages.length,
