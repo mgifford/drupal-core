@@ -370,24 +370,45 @@ function escapeCsv(val) {
 
 // ─── Archive old dated reports ───────────────────────────────────────────────
 /**
- * Move all dated report files from a previous scan into reports/archive/.
- * Keeps the current DATE_STAMP's files in place and the *-latest.* copies.
+ * Groups all dated report files not from today by date, then creates one
+ * gzip'd tar archive per day: reports/archive/YYYY-MM-DD.tar.gz
+ * Originals are deleted after successful archiving.
  */
 function archiveOldReports(reportsDir, currentDate) {
+  const { execSync } = require('child_process');
   const archiveDir = path.join(reportsDir, 'archive');
   const datedPattern = /-(20\d{2}-\d{2}-\d{2})\.(json|csv|md)$/;
 
-  let archived = 0;
+  // Group files by date so each day becomes one .tar.gz
+  const filesByDate = new Map();
   for (const file of fs.readdirSync(reportsDir)) {
     const match = file.match(datedPattern);
     if (match && match[1] !== currentDate) {
-      fs.mkdirSync(archiveDir, { recursive: true });
-      fs.renameSync(path.join(reportsDir, file), path.join(archiveDir, file));
-      archived++;
+      const date = match[1];
+      if (!filesByDate.has(date)) filesByDate.set(date, []);
+      filesByDate.get(date).push(file);
     }
   }
-  if (archived > 0) {
-    console.log(`📦 Archived ${archived} file(s) from previous scans → reports/archive/`);
+
+  if (filesByDate.size === 0) return;
+
+  fs.mkdirSync(archiveDir, { recursive: true });
+
+  for (const [date, files] of filesByDate) {
+    const tarFile = path.join(archiveDir, `${date}.tar.gz`);
+
+    // Skip if already archived (re-run on same day as old files)
+    if (fs.existsSync(tarFile)) {
+      for (const file of files) fs.unlinkSync(path.join(reportsDir, file));
+      continue;
+    }
+
+    const fileList = files.map((f) => `'${f}'`).join(' ');
+    execSync(`tar -czf '${tarFile}' -C '${reportsDir}' ${fileList}`);
+    for (const file of files) fs.unlinkSync(path.join(reportsDir, file));
+
+    const sizeMb = (fs.statSync(tarFile).size / 1024).toFixed(1);
+    console.log(`📦 Archived ${files.length} file(s) for ${date} → reports/archive/${date}.tar.gz (${sizeMb} KB)`);
   }
 }
 
