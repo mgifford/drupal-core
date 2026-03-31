@@ -500,6 +500,60 @@ default:
       - ./core/.yarn/cache
     policy: pull
 
+'🎭 Playwright A11y':
+  <<: [ *with-composer, *test-setup ]
+  stage: 🗜️ Additional tests
+  rules:
+    # Run on schedule (daily crawl).
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    # Run on MR when accessibility-related files change.
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "core/tests/playwright/**/*"
+        - "core/themes/olivero/**/*.twig"
+        - "core/themes/claro/**/*.twig"
+        - "core/**/*.html.twig"
+        - ".gitlab-ci.yml"
+    # Allow manual trigger.
+    - when: manual
+      allow_failure: true
+  allow_failure: true
+  variables:
+    KUBERNETES_CPU_REQUEST: "4"
+    DRUPAL_BASE_URL: "http://localhost/subdirectory"
+    DRUPAL_ADMIN_USER: "admin"
+    DRUPAL_ADMIN_PASS: "drupal"
+  services:
+    - <<: *with-database
+    - <<: *with-selenium-chrome
+  script:
+    - export DRUPAL_TEST_DB_URL=$SIMPLETEST_DB
+    - cp ./core/.env.example ./core/.env
+    - echo "DRUPAL_TEST_BASE_URL='${DRUPAL_BASE_URL}'" >> ./core/.env
+    - echo "DRUPAL_TEST_DB_URL='${DRUPAL_TEST_DB_URL}'" >> ./core/.env
+    - echo "COLUMNS=1000" >> ./core/.env
+    - chown -R www-data:www-data ./sites /var/www
+    - cd core
+    - corepack enable
+    - yarn install
+    - npx playwright install chromium --with-deps
+    - echo -e "Node $(node --version) | Playwright $(npx playwright --version)"
+    # Run axe crawl + regression tests; capture all results even on failure.
+    - sudo -u www-data -E -H DRUPAL_BASE_URL=$DRUPAL_BASE_URL DRUPAL_ADMIN_USER=$DRUPAL_ADMIN_USER DRUPAL_ADMIN_PASS=$DRUPAL_ADMIN_PASS npx playwright test --config=tests/playwright/playwright.config.ts tests/playwright/tests/a11y-axe-crawl.spec.ts tests/playwright/tests/a11y-regressions.spec.ts || true
+    # Run pattern analysis on the crawl results.
+    - node tests/playwright/scripts/analyze-patterns.js || true
+  after_script:
+    - cp ./core/tests/playwright/reports/PATTERN-REPORT.md ./ 2>/dev/null || true
+  artifacts:
+    when: always
+    expire_in: 90 days
+    paths:
+      - ./core/tests/playwright/reports/axe-results.json
+      - ./core/tests/playwright/reports/pattern-report.json
+      - ./core/tests/playwright/reports/PATTERN-REPORT.md
+      - ./core/tests/playwright/reports/html/
+      - PATTERN-REPORT.md
+
 '🔁 Repeat Class Test':
   <<: [ *with-composer, *test-setup ]
   stage: 🗜️ Additional tests
