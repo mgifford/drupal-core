@@ -18,6 +18,7 @@
 
 'use strict';
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -43,6 +44,33 @@ const minPagesArg = args.indexOf('--min-pages');
 const MIN_PAGES = minPagesArg >= 0 ? parseInt(args[minPagesArg + 1], 10) : 1;
 
 const IMPACT_ORDER = { critical: 0, serious: 1, moderate: 2, minor: 3, null: 4 };
+
+// ─── Screen / mode helpers ───────────────────────────────────────────────────
+
+/** Infer screen type from viewport width stored in axe-results.json. */
+function getScreenType(viewport) {
+  return viewport && viewport.width <= 768 ? 'mobile' : 'desktop';
+}
+
+/**
+ * Generate a stable 8-char hex ID for a unique violation pattern.
+ * Pattern ID: same rule + selector + screen (across all pages).
+ * Instance ID: adds page path — unique per page.
+ *
+ * Inputs are joined with | so partial collisions are impossible.
+ * Example: "DRU-A1B2C3D4" (pattern) or "INS-A1B2C3D4" (instance)
+ */
+function md5Short(str) {
+  return crypto.createHash('md5').update(str).digest('hex').slice(0, 8).toUpperCase();
+}
+
+function generatePatternId(selectorKey, ruleId, screenType) {
+  return `DRU-${md5Short([selectorKey, ruleId, screenType].join('|'))}`;
+}
+
+function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
+  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
+}
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
 // Source: https://dequeuniversity.com/rules/axe/
@@ -340,6 +368,29 @@ function escapeCsv(val) {
   return `"${str}"`;
 }
 
+// ─── Archive old dated reports ───────────────────────────────────────────────
+/**
+ * Move all dated report files from a previous scan into reports/archive/.
+ * Keeps the current DATE_STAMP's files in place and the *-latest.* copies.
+ */
+function archiveOldReports(reportsDir, currentDate) {
+  const archiveDir = path.join(reportsDir, 'archive');
+  const datedPattern = /-(20\d{2}-\d{2}-\d{2})\.(json|csv|md)$/;
+
+  let archived = 0;
+  for (const file of fs.readdirSync(reportsDir)) {
+    const match = file.match(datedPattern);
+    if (match && match[1] !== currentDate) {
+      fs.mkdirSync(archiveDir, { recursive: true });
+      fs.renameSync(path.join(reportsDir, file), path.join(archiveDir, file));
+      archived++;
+    }
+  }
+  if (archived > 0) {
+    console.log(`📦 Archived ${archived} file(s) from previous scans → reports/archive/`);
+  }
+}
+
 function priorityScore(pattern) {
   // Lower score = higher priority. Impact weight + inverse page count.
   const impactWeight = (IMPACT_ORDER[pattern.impact] ?? 4) * 1000;
@@ -357,22 +408,31 @@ function main() {
   const scanDate = new Date().toISOString();
   const axeVersion = rawResults[0]?.violations?.[0] ? 'axe-core (via @axe-core/playwright)' : 'axe-core';
 
-  // ── Build pattern map (rule + selector → aggregated across pages) ──────────
+  // Archive dated files from previous scans before writing new ones.
+  archiveOldReports(REPORTS_DIR, DATE_STAMP);
+
+  // ── Build pattern map (rule + selector + screenType → aggregated across pages) ──
   const patternMap = new Map();
 
   for (const pageResult of rawResults) {
+    const screenType = getScreenType(pageResult.viewport);
+
     for (const violation of pageResult.violations) {
       for (const node of violation.nodes) {
         const selKey = selectorKey(node);
-        const key = `${violation.id}::${selKey}`;
+        // Include screenType in key so desktop and mobile are tracked separately.
+        const key = `${violation.id}::${selKey}::${screenType}`;
 
         if (!patternMap.has(key)) {
           const drupalFix = getDrupalFix(violation.id, selKey, node.html ?? '');
           const wcag = RULE_WCAG[violation.id] ?? { sc: 'unknown', level: '?', name: 'See axe docs' };
           const xpath = cssToXpath(Array.isArray(node.target) ? node.target[0] : node.target);
+          const patternId = generatePatternId(selKey, violation.id, screenType);
 
           patternMap.set(key, {
+            patternId,
             ruleId: violation.id,
+            screenType,
             impact: violation.impact,
             description: violation.description,
             helpUrl: violation.helpUrl,
@@ -389,10 +449,14 @@ function main() {
           });
         }
 
+        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType);
         patternMap.get(key).pages.push({
+          instanceId,
           name: pageResult.page,
           path: pageResult.path,
           url: `https://drupal-core.ddev.site${pageResult.path}`,
+          screen: screenType,
+          viewport: pageResult.viewport ?? { width: 1280, height: 800 },
         });
       }
     }
@@ -433,8 +497,11 @@ function main() {
     summary,
     issues: patterns.map((p, i) => ({
       id: `DRUPAL-A11Y-${String(i + 1).padStart(3, '0')}`,
+      pattern_id: p.patternId,          // stable hash: rule + selector + screen
       priority: i + 1,
       isTemplateLevelIssue: p.pages.length >= 3,
+      screen: p.screenType,
+      mode: 'light',                    // placeholder; extend for dark-mode scans
       summary: p.drupalFix?.summary ??
         `${p.ruleId}: ${p.description.slice(0, 80)}`,
       rule_id: p.ruleId,
@@ -449,6 +516,7 @@ function main() {
         total_pages_scanned: totalPages,
         percentage: Math.round((p.pages.length / totalPages) * 100),
       },
+      // Each page instance has its own stable instance_id for regression tracking.
       affected_pages: p.pages,
       selector: p.selectorKey,
       xpath: p.xpath,
@@ -478,11 +546,11 @@ function main() {
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
-    'Priority', 'ID', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
+    'Priority', 'ID', 'Pattern_ID', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
     'Rule_ID', 'Pages_Affected', 'Pct_Pages', 'Is_Template_Issue',
     'Summary', 'Selector', 'Likely_Template', 'Drupal_File',
     'Expected', 'Actual', 'Suggested_Fix', 'Drupal_Issue', 'Axe_URL',
-    'Affected_Page_Paths',
+    'Instance_IDs', 'Affected_Page_Paths',
   ];
 
   const csvRows = [csvHeaders.map(escapeCsv).join(',')];
@@ -490,6 +558,8 @@ function main() {
     csvRows.push([
       issue.priority,
       issue.id,
+      issue.pattern_id,
+      issue.screen,
       issue.impact,
       issue.wcag_sc,
       issue.wcag_level,
@@ -507,6 +577,7 @@ function main() {
       issue.suggested_fix,
       issue.drupal_issue ?? '',
       issue.axe_url,
+      issue.affected_pages.map((pg) => pg.instanceId).join('; '),
       issue.affected_pages.map((pg) => pg.path).join('; '),
     ].map(escapeCsv).join(','));
   }
@@ -553,8 +624,10 @@ function main() {
     lines.push('| Field | Value |');
     lines.push('| :--- | :--- |');
     lines.push(`| **ID** | \`${issue.id}\` |`);
+    lines.push(`| **Pattern ID** | \`${issue.pattern_id}\` *(stable hash — use to track regressions)* |`);
     lines.push(`| **Rule** | [\`${issue.rule_id}\`](${issue.axe_url}) |`);
     lines.push(`| **Impact** | **${issue.impact}** |`);
+    lines.push(`| **Screen** | ${issue.screen} |`);
     lines.push(`| **WCAG SC** | [${issue.wcag_sc} ${issue.wcag_name}](${issue.wcag_url}) (Level ${issue.wcag_level}) |`);
     lines.push(`| **Frequency** | ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%) |`);
     lines.push(`| **Template-level** | ${isTemplate ? '✅ YES — fix once fixes all affected pages' : 'No'} |`);
@@ -568,7 +641,7 @@ function main() {
 
     lines.push('**Affected pages:**');
     for (const pg of issue.affected_pages) {
-      lines.push(`- [\`${pg.path}\`](${pg.url}) — ${pg.name}`);
+      lines.push(`- [\`${pg.path}\`](${pg.url}) — ${pg.name} \`[${pg.instanceId}]\``);
     }
     lines.push('');
 
