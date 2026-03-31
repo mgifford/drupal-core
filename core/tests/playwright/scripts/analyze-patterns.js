@@ -65,11 +65,13 @@ function md5Short(str) {
 }
 
 function generatePatternId(selectorKey, ruleId, screenType) {
+  // Theme intentionally excluded so the same bug in different themes shares one DRU-XXXXXXXX.
   return `DRU-${md5Short([selectorKey, ruleId, screenType].join('|'))}`;
 }
 
-function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
-  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
+function generateInstanceId(pagePath, selectorKey, ruleId, screenType, themeId) {
+  // Theme included so the same page+rule combo in different themes gets distinct instance IDs.
+  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType, themeId].join('|'))}`;
 }
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
@@ -432,17 +434,19 @@ function main() {
   // Archive dated files from previous scans before writing new ones.
   archiveOldReports(REPORTS_DIR, DATE_STAMP);
 
-  // ── Build pattern map (rule + selector + screenType → aggregated across pages) ──
+  // ── Build pattern map (rule + selector + screenType + theme → aggregated across pages) ──
   const patternMap = new Map();
 
   for (const pageResult of rawResults) {
     const screenType = getScreenType(pageResult.viewport);
+    // Support both new (multi-theme) and legacy (single-theme) result records.
+    const themeId = pageResult.theme ?? 'unknown';
 
     for (const violation of pageResult.violations) {
       for (const node of violation.nodes) {
         const selKey = selectorKey(node);
-        // Include screenType in key so desktop and mobile are tracked separately.
-        const key = `${violation.id}::${selKey}::${screenType}`;
+        // Include theme in key so each theme's results are tracked separately.
+        const key = `${violation.id}::${selKey}::${screenType}::${themeId}`;
 
         if (!patternMap.has(key)) {
           const drupalFix = getDrupalFix(violation.id, selKey, node.html ?? '');
@@ -454,6 +458,7 @@ function main() {
             patternId,
             ruleId: violation.id,
             screenType,
+            theme: themeId,
             impact: violation.impact,
             description: violation.description,
             helpUrl: violation.helpUrl,
@@ -470,13 +475,14 @@ function main() {
           });
         }
 
-        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType);
+        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType, themeId);
         patternMap.get(key).pages.push({
           instanceId,
           name: pageResult.page,
           path: pageResult.path,
           url: `https://drupal-core.ddev.site${pageResult.path}`,
           screen: screenType,
+          theme: themeId,
           viewport: pageResult.viewport ?? { width: 1280, height: 800 },
         });
       }
@@ -487,6 +493,65 @@ function main() {
   const patterns = Array.from(patternMap.values())
     .filter((p) => p.pages.length >= MIN_PAGES)
     .sort((a, b) => priorityScore(a) - priorityScore(b));
+
+  // ── Cross-theme analysis ─────────────────────────────────────────────────
+  // Group per-theme patterns by (ruleId::selectorKey::screenType) — without theme —
+  // to find issues that appear across multiple theme configurations.
+  const crossThemeGroups = new Map(); // key: ruleId::selectorKey::screenType
+  for (const p of patterns) {
+    const groupKey = `${p.ruleId}::${p.selectorKey}::${p.screenType}`;
+    if (!crossThemeGroups.has(groupKey)) {
+      crossThemeGroups.set(groupKey, {
+        patternId: p.patternId, // same across themes by design
+        ruleId: p.ruleId,
+        selectorKey: p.selectorKey,
+        screenType: p.screenType,
+        impact: p.impact,
+        description: p.description,
+        summary: p.drupalFix?.summary ?? `${p.ruleId}: ${p.description.slice(0, 80)}`,
+        themes: new Set(),
+      });
+    }
+    crossThemeGroups.get(groupKey).themes.add(p.theme);
+  }
+
+  // Collect distinct theme IDs present in the result set.
+  const allThemeIds = [...new Set(patterns.map((p) => p.theme))];
+  const themeCount = allThemeIds.length || 1;
+
+  const crossThemeUniversal = [];
+  const crossThemeMulti = [];
+  const crossThemeSpecific = {}; // keyed by theme id
+
+  for (const group of crossThemeGroups.values()) {
+    const themes = [...group.themes];
+    const entry = {
+      patternId: group.patternId,
+      ruleId: group.ruleId,
+      selectorKey: group.selectorKey,
+      screenType: group.screenType,
+      impact: group.impact,
+      summary: group.summary,
+      themes,
+      themeCount: themes.length,
+    };
+
+    if (themes.length >= themeCount) {
+      crossThemeUniversal.push(entry);
+    } else if (themes.length >= 2) {
+      crossThemeMulti.push(entry);
+    } else {
+      const themeId = themes[0];
+      if (!crossThemeSpecific[themeId]) crossThemeSpecific[themeId] = [];
+      crossThemeSpecific[themeId].push(entry);
+    }
+  }
+
+  // Sort universal and multi-theme groups by impact.
+  const crossThemeSort = (a, b) =>
+    (IMPACT_ORDER[a.impact] ?? 4) - (IMPACT_ORDER[b.impact] ?? 4);
+  crossThemeUniversal.sort(crossThemeSort);
+  crossThemeMulti.sort(crossThemeSort);
 
   // ── Summary stats ────────────────────────────────────────────────────────
   const summary = {
@@ -516,10 +581,19 @@ function main() {
   const bugsJson = {
     $schema: 'https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md',
     summary,
+    crossThemeAnalysis: {
+      // Issues appearing in ALL tested themes — highest priority for core fixes.
+      universal: crossThemeUniversal,
+      // Issues appearing in 2+ themes but not all — worth coordinated fixes.
+      multiTheme: crossThemeMulti,
+      // Issues unique to one theme — theme-specific fixes.
+      themeSpecific: crossThemeSpecific,
+    },
     issues: patterns.map((p, i) => ({
       id: `DRUPAL-A11Y-${String(i + 1).padStart(3, '0')}`,
-      pattern_id: p.patternId,          // stable hash: rule + selector + screen
+      pattern_id: p.patternId,          // stable hash: rule + selector + screen (no theme)
       priority: i + 1,
+      theme: p.theme,
       isTemplateLevelIssue: p.pages.length >= 3,
       screen: p.screenType,
       mode: 'light',                    // placeholder; extend for dark-mode scans
@@ -567,7 +641,7 @@ function main() {
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
-    'Priority', 'ID', 'Pattern_ID', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
+    'Priority', 'ID', 'Pattern_ID', 'Theme', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
     'Rule_ID', 'Pages_Affected', 'Pct_Pages', 'Is_Template_Issue',
     'Summary', 'Selector', 'Likely_Template', 'Drupal_File',
     'Expected', 'Actual', 'Suggested_Fix', 'Drupal_Issue', 'Axe_URL',
@@ -580,6 +654,7 @@ function main() {
       issue.priority,
       issue.id,
       issue.pattern_id,
+      issue.theme,
       issue.screen,
       issue.impact,
       issue.wcag_sc,
@@ -631,6 +706,55 @@ function main() {
   lines.push(`| Moderate | ${summary.byImpact.moderate} |`);
   lines.push(`| Minor | ${summary.byImpact.minor} |`);
   lines.push('');
+
+  // ── Cross-Theme Analysis section ──────────────────────────────────────────
+  lines.push('## Cross-Theme Analysis');
+  lines.push('');
+  lines.push('Issues found across multiple Drupal themes. Universal issues affect ALL tested themes');
+  lines.push('and are highest priority for core fixes since a single template change benefits everyone.');
+  lines.push('');
+  lines.push(`**Themes tested:** ${allThemeIds.join(', ') || 'none'}`);
+  lines.push('');
+
+  // Universal issues table.
+  lines.push('### 🌐 Universal Issues (appear in ALL themes)');
+  lines.push('');
+  if (crossThemeUniversal.length === 0) {
+    lines.push('_No universal issues found across all tested themes._');
+  } else {
+    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
+    for (const g of crossThemeUniversal) {
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.summary} |`);
+    }
+  }
+  lines.push('');
+
+  // Multi-theme issues.
+  lines.push('### 🔗 Multi-Theme Issues (appear in 2+ themes)');
+  lines.push('');
+  if (crossThemeMulti.length === 0) {
+    lines.push('_No multi-theme issues found._');
+  } else {
+    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
+    for (const g of crossThemeMulti) {
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.summary} |`);
+    }
+  }
+  lines.push('');
+
+  // Per-theme unique issues.
+  lines.push('### 🎨 Theme-Specific Issue Counts');
+  lines.push('');
+  lines.push('| Theme | Unique Issues |');
+  lines.push('| :--- | :--- |');
+  for (const themeId of allThemeIds) {
+    const count = (crossThemeSpecific[themeId] ?? []).length;
+    lines.push(`| \`${themeId}\` | ${count} |`);
+  }
+  lines.push('');
+
   lines.push('## Issues (sorted by priority: impact × frequency)');
   lines.push('');
   lines.push('🔁 = Template-level issue (≥3 pages) — fix once, improves many pages.');
@@ -646,6 +770,7 @@ function main() {
     lines.push('| :--- | :--- |');
     lines.push(`| **ID** | \`${issue.id}\` |`);
     lines.push(`| **Pattern ID** | \`${issue.pattern_id}\` *(stable hash — use to track regressions)* |`);
+    lines.push(`| **Theme** | \`${issue.theme}\` |`);
     lines.push(`| **Rule** | [\`${issue.rule_id}\`](${issue.axe_url}) |`);
     lines.push(`| **Impact** | **${issue.impact}** |`);
     lines.push(`| **Screen** | ${issue.screen} |`);
