@@ -122,12 +122,21 @@ test.describe('Axe crawl — admin pages (Claro)', () => {
 
 // Write combined results after all tests complete.
 test.afterAll(async () => {
-  const outDir = path.join(__dirname, '../reports');
+  // Root-level /reports directory (repo root, not inside core/tests/playwright).
+  const outDir = path.resolve(__dirname, '../../../../reports');
   fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(
-    path.join(outDir, 'axe-results.json'),
-    JSON.stringify(results, null, 2),
-  );
-  console.log(`\n📊 Axe results written to core/tests/playwright/reports/axe-results.json`);
+
+  // Date-stamped file so each scan is distinguishable.
+  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const datedFile = path.join(outDir, `axe-results-${date}.json`);
+  const latestFile = path.join(outDir, 'axe-results.json');
+
+  const json = JSON.stringify(results, null, 2);
+  fs.writeFileSync(datedFile, json);
+  fs.writeFileSync(latestFile, json); // always-current copy for analyze-patterns.js
+
+  console.log(`\n📊 Axe results written to:`);
+  console.log(`   ${datedFile}`);
+  console.log(`   ${latestFile} (latest)`);
   console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
 });
