@@ -344,7 +344,7 @@ When filing child issues for each disabled rule, set the drupal.org priority to 
 | `color-contrast` | Serious | 1.4.3 (AA) | `a11yTestAdmin.js` | [#3318394](https://drupal.org/i/3318394) |
 | `duplicate-id-active` | Serious | 4.1.1 (A) | `a11yTestAdmin.js` | [#3318394](https://drupal.org/i/3318394) |
 
-Address in this order: `duplicate-id-aria` and `duplicate-id-active` (Critical/Serious, WCAG A) → `color-contrast` (Serious, WCAG AA) → `heading-order` and `region` (Moderate).
+Address in this order: `duplicate-id-aria` and `duplicate-id-active` (Critical/Serious, WCAG 2.2 A) → `color-contrast` (Serious, WCAG 2.2 AA) → `heading-order` and `region` (Moderate).
 
 ### Contribution queue guidance
 
