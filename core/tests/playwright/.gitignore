@@ -1,0 +1,12 @@
+# Generated reports — committed in CI as artifacts, not in source control.
+reports/axe-results.json
+reports/pattern-report.json
+reports/PATTERN-REPORT.md
+reports/lighthouse-results.json
+reports/lighthouse/
+reports/html/
+reports/test-results/
+reports/auth-state.json
+
+# Playwright cache
+.playwright/

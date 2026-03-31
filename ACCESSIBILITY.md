@@ -247,6 +247,59 @@ Run the GitHub Accessibility Scanner monthly. Skip the scan if open accessibilit
 - Failures from scheduled scans must be filed as issues and triaged within 5 business days.
 - If open accessibility issues exist, subsequent scheduled scans are paused.
 
+### 8.9 Playwright Crawl Workflow
+
+Drupal core runs a **Playwright-based full-site crawler** in addition to the Nightwatch axe tests. The crawler lives in `core/tests/playwright/` and runs axe-core and Lighthouse against every page in the inventory.
+
+**Why a separate crawler?**
+Nightwatch tests cover ~10 hand-picked pages. Many violations originate in shared Twig templates — the same broken selector repeated across dozens of pages. The crawler surfaces these template-level patterns automatically.
+
+**Running locally (requires DDEV):**
+```bash
+ddev start
+cd core
+
+# Install Playwright browser once:
+npx playwright install chromium
+
+# Run axe crawl + regression tests:
+yarn test:a11y:playwright
+
+# Run Lighthouse audit:
+yarn test:a11y:lighthouse
+
+# Analyze results — generate PATTERN-REPORT.md:
+yarn a11y:analyze
+
+# View the pattern report:
+open tests/playwright/reports/PATTERN-REPORT.md
+```
+
+**Reading the pattern report:**
+- Patterns marked 🔁 appear on ≥3 pages — these are almost certainly template issues
+- Sorted by axe impact (Critical first), then page count
+- Each pattern includes the likely Twig template inferred from CSS class naming
+- Fix the template, not each page individually
+
+**After fixing a violation, add a regression test:**
+```bash
+yarn a11y:add-regression \
+  --rule duplicate-id-aria \
+  --page /search/node \
+  --issue 3318398 \
+  --name "Search page has no duplicate-id-aria violations"
+```
+
+This appends a permanent guard to `tests/playwright/tests/a11y-regressions.spec.ts` that runs on every MR.
+
+**CI integration:**
+The `🎭 Playwright A11y` GitLab CI job runs:
+- On a daily schedule (full crawl)
+- On any MR that touches `.twig` files or the `tests/playwright/` directory
+- Artifacts include `axe-results.json`, `pattern-report.json`, and `PATTERN-REPORT.md`
+
+The crawler does **not** hard-fail on new violations — it records them. Hard failures are the regression tests. This keeps CI actionable without noise.
+
 ## 9. Phased Axe Rule Expansion & Issue Intake
 
 ### The alert-fatigue problem
