@@ -36,7 +36,8 @@
     "a11y:analyze": "node tests/playwright/scripts/analyze-patterns.js",
     "a11y:add-regression": "node tests/playwright/scripts/add-regression.js",
     "a11y:setup": "playwright install chromium && playwright test --config=tests/playwright/playwright.config.ts --global-setup tests/playwright/lib/auth-setup.ts",
-    "a11y:crawl-and-report": "yarn test:a11y:playwright && yarn a11y:analyze"
+    "a11y:crawl-and-report": "yarn test:a11y:playwright && yarn a11y:analyze",
+    "a11y:extract-content": "node tests/playwright/scripts/extract-content-patterns.js"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-alignment": "~47.3.0",
