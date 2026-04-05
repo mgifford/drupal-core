@@ -145,7 +145,7 @@ Drupal Core uses specific terms for auth flows. Do not substitute synonyms.
 | "Extend" | Modules page h1 — the navigation label is "Modules" but h1 is "Extend" |
 | State/role pages | "Permissions", "Roles", "Block layout", "Appearance", "Maintenance mode" |
 
-**Key inconsistency to be aware of:** Content type labels are appended verbatim to "Create", so the case follows the content type's human-readable name (e.g., "Article" is capitalised, "Basic page" is not). This is expected behaviour from the Node module, not a bug.
+**Key inconsistency to be aware of:** Content type labels are appended verbatim to "Create", so the case follows the content type's human-readable name (e.g., "Article" is capitalized, "Basic page" is not). This is expected behavior from the Node module, not a bug.
 
 **Heading hierarchy in admin pages (DOM order):**
 
@@ -181,7 +181,7 @@ Common field label vocabulary observed:
 | Contextual instruction | "Specify an alternative path by which this data can be accessed." |
 | Cross-reference | "Control which roles can \"View the administration theme\" on the Permissions page." |
 | Authorship | "The username of the content author." |
-| Hover/UI behaviour | "Shown when hovering over the menu link." |
+| Hover/UI behavior | "Shown when hovering over the menu link." |
 
 **Help text rules:**
 - End every help text sentence with a period.
@@ -390,7 +390,125 @@ Source of truth: `core/themes/olivero/css/base/variables.pcss.css`
 
 ---
 
-## 7. Known accessibility issues (do not regress)
+## 7. Plain language standard
+
+### 7.1 Target and philosophy
+
+Drupal Core UI strings (help text, module descriptions, status messages, field descriptions) should target:
+
+| Metric | Target | Current baseline (April 2026) |
+| :--- | :--- | :--- |
+| Flesch Reading Ease | ≥ 60 (standard/plain English) | **48** — college level |
+| Flesch-Kincaid Grade Level | ≤ 8 | **9.3** |
+| Average words per sentence | ≤ 20 | 10.9 ✅ |
+
+> **Important:** Readability scores are a *diagnostic tool*, not a pass/fail gate.
+> Canada.ca (2024 update) and the ISO plain language standard (2023) both caution
+> against relying on formulas alone — scores can conflict, penalize necessary technical
+> terms, and miss structural problems. Use them to find candidates for human review.
+
+References:
+- [Canada.ca Content Style Guide §2 — Communicate clearly with plain language](https://design.canada.ca/style-guide/#toc6) (2024 update)
+- [18F Content Guide — Plain language](https://guides.18f.gov/content-guide/our-style/plain-language/)
+- [Colorado OIT Plain Language guide](https://oit.colorado.gov/standards-policies-guides/guide-to-accessible-web-services/plain-language)
+
+### 7.2 Issue baseline (automated scan, April 2026)
+
+Scanned 330 text samples across 40 pages. Run `yarn a11y:plain-language` to refresh.
+
+| Issue type | Count | Priority |
+| :--- | :--- | :--- |
+| Passive voice | 69 | High — rewrite to active voice |
+| Nominalization | 33 | Medium — replace noun forms with verbs |
+| Jargon (`via`, `item`, technical strings) | 14 | Medium — use plain alternatives |
+| Long sentences (> 25 words) | 1 | Low |
+
+### 7.3 Writing rules (derived from scan findings)
+
+#### Prefer active voice
+
+The scan found 69 passive voice instances. Active voice is shorter, clearer, and more direct.
+
+| Passive (avoid) | Active (use) |
+| :--- | :--- |
+| "This is only used when the site is configured…" | "Drupal uses this only when you configure…" |
+| "Ensures that the latest versions… are displayed" | "Shows the latest version of each image" |
+| "Images uploaded via a Text Editor are tracked" | "Tracks images you upload through a Text Editor" |
+| "If dimensions are specified" | "If you set image dimensions" |
+
+#### Replace nominalizations with verbs
+
+The scan found 33 instances of abstract noun forms that obscure the action. Replace with the underlying verb where possible.
+
+| Nominalization (avoid in help text) | Plain alternative |
+| :--- | :--- |
+| "configuration" (as a noun) | "settings", "set up", or just name the setting |
+| "administration" | "managing", "admin" |
+| "implementation" | "how it works", "sets up" |
+| "authentication" | "sign-in", "login" |
+| "authorization" | "permission", "access" |
+| "specification" | "standard", "format" |
+| "documentation" | "help", "docs", "guide" |
+
+**Exception:** Use the technical term when writing for a developer audience or when the noun is the actual name of a UI element (e.g., "Configuration" as a menu label).
+
+#### Replace jargon
+
+| Jargon (avoid) | Plain alternative |
+| :--- | :--- |
+| via | through, using, with |
+| item | node, page, piece of content — or the specific type name |
+| utilize | use |
+| facilitate | help, allow |
+| implement | set up, add, turn on |
+| leverage | use |
+| i.e. | that is |
+| e.g. | for example |
+
+#### Keep sentences short and direct
+
+- Aim for 15–20 words per sentence in help text.
+- If a sentence has more than 25 words, split it.
+- Lead with the most important information — inverted-pyramid style.
+- One idea per sentence.
+
+#### Module descriptions
+
+Module descriptions currently score as the hardest text in core (some at grade 17–25) because the machine-readable metadata ("Machine name:", "Requires:", "Version:") is concatenated with the human-readable description. This is a rendering issue, not a writing issue — the description sentence itself is usually grade 8–10.
+
+The description sentence should:
+- Be one sentence.
+- Begin with a present-tense third-person verb: "Provides", "Allows", "Manages", "Logs".
+- Avoid the module name in the sentence: ❌ "CKEditor 5 provides…" → ✅ "Provides the CKEditor 5 rich text editor."
+
+#### Help text checklist
+
+Before committing new help text, verify:
+- [ ] Active voice
+- [ ] ≤ 20 words per sentence
+- [ ] No jargon from the list above
+- [ ] Ends with a period
+- [ ] Includes "For example:" when giving an example
+- [ ] Cross-references name the exact page or permission in quotes
+
+### 7.4 Running the analysis
+
+```bash
+# From repo root (uses npx since yarn is not always available)
+cd core && node tests/playwright/scripts/plain-language-analysis.js
+```
+
+Or via the registered script:
+
+```bash
+cd core && yarn a11y:plain-language
+```
+
+Output: `reports/plain-language-report.md` (human-readable) and `reports/plain-language-report.json`.
+
+---
+
+## 8. Known accessibility issues (do not regress)
 
 These violations were detected by the automated axe crawl on 2026-04-04. They represent the current baseline. **Do not introduce additional instances** of these patterns.
 
@@ -414,7 +532,7 @@ Results are written to `reports/axe-results.json`. Run `node core/tests/playwrig
 
 ---
 
-## 8. AI agent rules
+## 9. AI agent rules
 
 - Read [AGENTS.md](./AGENTS.md) before making any change.
 - Read [ACCESSIBILITY.md](./ACCESSIBILITY.md) before touching any template, CSS, or JavaScript.
@@ -435,7 +553,7 @@ Results are written to `reports/axe-results.json`. Run `node core/tests/playwrig
 
 ---
 
-## 9. References
+## 10. References
 
 - [Drupal Core Claro theme variables](./core/themes/claro/css/base/variables.pcss.css)
 - [Drupal Core Olivero theme variables](./core/themes/olivero/css/base/variables.pcss.css)
