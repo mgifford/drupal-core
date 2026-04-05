@@ -5,9 +5,10 @@ Instructions for AI coding assistants contributing to this repository.
 ## Primary references (read first)
 
 1. Local policy: `ACCESSIBILITY.md`
-2. Sustainability policy reference: https://mgifford.github.io/ACCESSIBILITY.md/SUSTAINABILITY.html
-3. Browser support policy reference: https://mgifford.github.io/ACCESSIBILITY.md/BROWSER_SUPPORT.html
-4. Agent guidance reference: https://mgifford.github.io/ACCESSIBILITY.md/AGENTS.html
+2. Local style guide: `STYLES.md` — design tokens, UI copy patterns, button vocabulary, heading conventions
+3. Sustainability policy reference: https://mgifford.github.io/ACCESSIBILITY.md/SUSTAINABILITY.html
+4. Browser support policy reference: https://mgifford.github.io/ACCESSIBILITY.md/BROWSER_SUPPORT.html
+5. Agent guidance reference: https://mgifford.github.io/ACCESSIBILITY.md/AGENTS.html
 
 ## Core requirements
 
