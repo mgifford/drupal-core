@@ -1,0 +1,80 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.checkbox_radio
+    - field.field.contact_message.checkbox_radio.checkbox
+    - field.field.contact_message.checkbox_radio.checkbox_disabled
+    - field.field.contact_message.checkbox_radio.checkbox_hidden_label
+    - field.field.contact_message.checkbox_radio.checkbox_hidden_label_disabled
+    - field.field.contact_message.checkbox_radio.checkboxes
+    - field.field.contact_message.checkbox_radio.checkboxes_disabled
+    - field.field.contact_message.checkbox_radio.radios
+    - field.field.contact_message.checkbox_radio.radios_disabled
+  module:
+    - theming_tools
+id: contact_message.checkbox_radio.default
+targetEntityType: contact_message
+bundle: checkbox_radio
+mode: default
+content:
+  checkbox:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  checkbox_disabled:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  checkbox_hidden_label:
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  checkbox_hidden_label_disabled:
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  checkboxes:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  checkboxes_disabled:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  radios:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  radios_disabled:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+hidden:
+  copy: true
+  langcode: true
+  mail: true
+  message: true
+  name: true
+  preview: true
+  subject: true

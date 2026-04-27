@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.select
+    - field.field.contact_message.select.select_multiple
+    - field.field.contact_message.select.select_multiple_disabled
+    - field.field.contact_message.select.select_single
+    - field.field.contact_message.select.select_single_disabled
+  module:
+    - theming_tools
+id: contact_message.select.default
+targetEntityType: contact_message
+bundle: select
+mode: default
+content:
+  select_multiple:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  select_multiple_disabled:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  select_single:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  select_single_disabled:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  copy: true
+  langcode: true
+  mail: true
+  message: true
+  name: true
+  preview: true
+  subject: true

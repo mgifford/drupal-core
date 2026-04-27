@@ -1,0 +1,17 @@
+form_style.form:
+  path: '/admin/form_style'
+  defaults:
+    _form: '\Drupal\form_style\Form\FormStyleForm'
+    _title: 'Form Style'
+  requirements:
+    _permission: 'access content'
+  options:
+    _admin_route: FALSE
+
+form_style.settings:
+  path: '/admin/config/form_style'
+  defaults:
+    _form: 'Drupal\form_style\Form\FormStyleSettingsForm'
+    _title: 'Form Style settings'
+  requirements:
+    _permission: 'administer site configuration'
