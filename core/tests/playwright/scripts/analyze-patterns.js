@@ -59,17 +59,25 @@ function getScreenType(viewport) {
  * Example input:  ['admin::dark', 'admin::light', 'claro::dark', 'claro::light', 'olivero::light']
  * Example output: 'admin (light, dark), claro (light, dark), olivero (light)'
  */
+/**
+ * Format conditions array into a human-readable summary grouped by base theme.
+ *
+ * Conditions format: "themeId::colorScheme::screenType"
+ * Example input:  ['admin::dark::desktop', 'admin::light::desktop', 'claro::light::mobile']
+ * Example output: '`admin` (dark desktop, light desktop), `claro` (light mobile)'
+ */
 function formatConditions(conditions) {
   if (!conditions || conditions.length === 0) return 'unknown';
   const byTheme = {};
   for (const c of conditions) {
-    const [theme, scheme] = c.split('::');
-    if (!byTheme[theme]) byTheme[theme] = new Set();
-    byTheme[theme].add(scheme ?? 'light');
+    const [theme, scheme, screen] = c.split('::');
+    const baseTheme = theme.replace(/-dark$/, '');
+    if (!byTheme[baseTheme]) byTheme[baseTheme] = new Set();
+    byTheme[baseTheme].add(`${scheme ?? 'light'} ${screen ?? 'desktop'}`);
   }
   return Object.entries(byTheme)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([theme, schemes]) => `\`${theme}\` (${[...schemes].sort().join(', ')})`)
+    .map(([theme, modes]) => `\`${theme}\` (${[...modes].sort().join(', ')})`)
     .join(', ');
 }
 
@@ -85,9 +93,10 @@ function md5Short(str) {
   return crypto.createHash('md5').update(str).digest('hex').slice(0, 8).toUpperCase();
 }
 
-function generatePatternId(selectorKey, ruleId, screenType) {
-  // Theme intentionally excluded so the same bug in different themes shares one DRU-XXXXXXXX.
-  return `DRU-${md5Short([selectorKey, ruleId, screenType].join('|'))}`;
+function generatePatternId(selectorKey, ruleId) {
+  // screenType intentionally excluded: desktop and mobile are the same bug.
+  // Theme/colorScheme also excluded: they go in conditions.
+  return `DRU-${md5Short([selectorKey, ruleId].join('|'))}`;
 }
 
 function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
@@ -359,8 +368,29 @@ function inferTemplate(selector) {
   return { template: 'unknown', hint: 'Could not infer template from selector' };
 }
 
+/**
+ * Normalise a CSS selector into a stable pattern key.
+ *
+ * Axe returns element-specific IDs like `#edit-imagefile-file-limited-0-display`
+ * which differ only by cardinality index (0, 1, 2 ...) or Drupal delta suffixes.
+ * Without normalisation each numbered element becomes a separate pattern even
+ * though they share one template and one fix.
+ *
+ * Rules applied:
+ *  - `[0]` -> `[N]`  (Drupal field cardinality in name attributes)
+ *  - `-0-` in the middle of an id -> `-N-`
+ *  - Trailing `-0` at end of id -> `-N`
+ */
+function normaliseSelectorForKey(raw) {
+  return raw
+    .replace(/\[\d+\]/g, '[N]')
+    .replace(/-(\d+)-/g, '-N-')
+    .replace(/-(\d+)$/g, '-N');
+}
+
 function selectorKey(node) {
-  return (node.target ?? []).join(' >> ');
+  const raw = (node.target ?? []).join(' >> ');
+  return normaliseSelectorForKey(raw);
 }
 
 function getDrupalFix(ruleId, selectorStr, htmlSnippet) {
@@ -478,22 +508,21 @@ function main() {
     for (const violation of pageResult.violations) {
       for (const node of violation.nodes) {
         const selKey = selectorKey(node);
-        // Key on rule + selector + screenType only — theme/colorScheme become conditions metadata.
-        // This means the same bug in olivero-light and olivero-dark is ONE pattern, not two.
-        const key = `${violation.id}::${selKey}::${screenType}`;
-        const conditionKey = `${themeId}::${colorScheme}`;
+        // Key on rule + selector only. Both theme/colorScheme and screenType become conditions
+        // metadata so desktop/mobile and dark/light variants of the same bug are ONE pattern.
+        const key = `${violation.id}::${selKey}`;
+        const conditionKey = `${themeId}::${colorScheme}::${screenType}`;
 
         if (!patternMap.has(key)) {
           const drupalFix = getDrupalFix(violation.id, selKey, node.html ?? '');
           const wcag = RULE_WCAG[violation.id] ?? { sc: 'unknown', level: '?', name: 'See axe docs' };
           const xpath = cssToXpath(Array.isArray(node.target) ? node.target[0] : node.target);
-          const patternId = generatePatternId(selKey, violation.id, screenType);
+          const patternId = generatePatternId(selKey, violation.id);
 
           patternMap.set(key, {
             patternId,
             ruleId: violation.id,
-            screenType,
-            // conditions: Set of "themeId::colorScheme" strings seen for this pattern.
+            // conditions: Set of "themeId::colorScheme::screenType" strings seen for this pattern.
             // Converted to sorted array before output.
             conditions: new Set(),
             impact: violation.impact,
@@ -568,7 +597,6 @@ function main() {
       patternId: p.patternId,
       ruleId: p.ruleId,
       selectorKey: p.selectorKey,
-      screenType: p.screenType,
       impact: p.impact,
       summary: p.drupalFix?.summary ?? `${p.ruleId}: ${p.description.slice(0, 80)}`,
       themes: baseThemes,
@@ -631,11 +659,10 @@ function main() {
     },
     issues: patterns.map((p, i) => ({
       id: `DRUPAL-A11Y-${String(i + 1).padStart(3, '0')}`,
-      pattern_id: p.patternId,          // stable hash: rule + selector + screen (no theme)
+      pattern_id: p.patternId,          // stable hash: rule + selector (no theme/screen)
       priority: i + 1,
       conditions: p.conditions,
       isTemplateLevelIssue: p.pages.length >= 3,
-      screen: p.screenType,
       summary: p.drupalFix?.summary ??
         `${p.ruleId}: ${p.description.slice(0, 80)}`,
       rule_id: p.ruleId,
@@ -682,7 +709,7 @@ function main() {
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
-    'Priority', 'ID', 'Pattern_ID', 'Conditions', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
+    'Priority', 'ID', 'Pattern_ID', 'Conditions', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
     'Rule_ID', 'Pages_Affected', 'Pct_Pages', 'Is_Template_Issue',
     'Summary', 'Selector', 'Likely_Template', 'Drupal_File',
     'Expected', 'Actual', 'Suggested_Fix', 'Drupal_Issue', 'Axe_URL',
@@ -696,7 +723,6 @@ function main() {
       issue.id,
       issue.pattern_id,
       issue.conditions.join(' | '),
-      issue.screen,
       issue.impact,
       issue.wcag_sc,
       issue.wcag_level,
@@ -764,10 +790,10 @@ function main() {
   if (crossThemeUniversal.length === 0) {
     lines.push('_No universal issues found across all tested themes._');
   } else {
-    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Conditions | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
+    lines.push('| Pattern ID | Rule | Impact | Themes | Conditions | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
     for (const g of crossThemeUniversal) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
     }
   }
   lines.push('');
@@ -778,10 +804,10 @@ function main() {
   if (crossThemeMulti.length === 0) {
     lines.push('_No multi-theme issues found._');
   } else {
-    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Conditions | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
+    lines.push('| Pattern ID | Rule | Impact | Themes | Conditions | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
     for (const g of crossThemeMulti) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
     }
   }
   lines.push('');
@@ -817,7 +843,6 @@ function main() {
     lines.push(`| **Conditions** | ${conditionsSummary} |`);
     lines.push(`| **Rule** | [\`${issue.rule_id}\`](${issue.axe_url}) |`);
     lines.push(`| **Impact** | **${issue.impact}** |`);
-    lines.push(`| **Screen** | ${issue.screen} |`);
     lines.push(`| **WCAG SC** | [${issue.wcag_sc} ${issue.wcag_name}](${issue.wcag_url}) (Level ${issue.wcag_level}) |`);
     lines.push(`| **Frequency** | ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%) |`);
     lines.push(`| **Template-level** | ${isTemplate ? '✅ YES — fix once fixes all affected pages' : 'No'} |`);
