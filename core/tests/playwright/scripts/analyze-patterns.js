@@ -90,9 +90,10 @@ function generatePatternId(selectorKey, ruleId, screenType) {
   return `DRU-${md5Short([selectorKey, ruleId, screenType].join('|'))}`;
 }
 
-function generateInstanceId(pagePath, selectorKey, ruleId, screenType, themeId, colorScheme) {
-  // Theme + colorScheme included so the same page+rule combo in different conditions gets distinct instance IDs.
-  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType, themeId, colorScheme].join('|'))}`;
+function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
+  // Stable per page+rule+selector+screen. Theme/colorScheme intentionally excluded:
+  // conditions are tracked at the pattern level, not per page occurrence.
+  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
 }
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
@@ -513,21 +514,20 @@ function main() {
 
         patternMap.get(key).conditions.add(conditionKey);
 
-        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType, themeId, colorScheme);
-        // Only record one page+condition combination once (deduplicate repeated axe nodes).
+        // Deduplicate pages by path+screenType — conditions are already on the pattern.
+        // A page is the same page regardless of which theme/colorScheme surfaced the bug.
         const pat = patternMap.get(key);
-        const pageCondKey = `${pageResult.path}::${conditionKey}`;
-        if (!pat.pages.some((pg) => pg._condKey === pageCondKey)) {
+        const pageKey = `${pageResult.path}::${screenType}`;
+        if (!pat.pages.some((pg) => pg._pageKey === pageKey)) {
+          const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType);
           pat.pages.push({
             instanceId,
             name: pageResult.page,
             path: pageResult.path,
             url: `https://drupal-core.ddev.site${pageResult.path}`,
             screen: screenType,
-            theme: themeId,
-            colorScheme,
             viewport: pageResult.viewport ?? { width: 1280, height: 800 },
-            _condKey: pageCondKey,
+            _pageKey: pageKey,
           });
         }
       }
@@ -535,11 +535,11 @@ function main() {
   }
 
   // ── Sort, filter, and finalise ──────────────────────────────────────────
-  // Convert conditions Sets to sorted arrays and strip internal _condKey field.
+  // Convert conditions Sets to sorted arrays and strip internal _pageKey field.
   for (const p of patternMap.values()) {
     p.conditions = [...p.conditions].sort();
     for (const pg of p.pages) {
-      delete pg._condKey;
+      delete pg._pageKey;
     }
   }
 
@@ -832,7 +832,7 @@ function main() {
     lines.push('**Affected pages:**');
     for (const [index, pg] of issue.affected_pages.slice(0, maxVisibleAffectedPages).entries()) {
       const infoHint = index === 0
-        ? ' <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>'
+        ? ' <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>'
         : '';
       lines.push(`- \`${pg.path}\` — ${escapeMarkdownInline(pg.name)} \`[${pg.instanceId}]\`${infoHint}`);
     }
