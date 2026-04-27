@@ -372,6 +372,14 @@ function escapeCsv(val) {
   return `"${str}"`;
 }
 
+function escapeMarkdownInline(val) {
+  if (val === null || val === undefined) return '';
+  return String(val)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 // ─── Archive old dated reports ───────────────────────────────────────────────
 /**
  * Groups all dated report files not from today by date, then creates one
@@ -573,7 +581,7 @@ function main() {
       browser: 'Chromium (via Playwright)',
       os: process.platform,
       tool: 'axe-core via @axe-core/playwright',
-      baseUrl: 'https://drupal-core.ddev.site',
+      baseUrl: 'YOUR_LOCAL_BASE_URL',
     },
   };
 
@@ -630,7 +638,7 @@ function main() {
       drupal_issue: p.drupalFix?.drupalIssue ?? null,
       impact_groups: p.impactGroups,
       steps_to_reproduce: [
-        `Navigate to ${p.pages[0]?.url ?? p.pages[0]?.path}`,
+        `Navigate to this route on your local Drupal install: ${p.pages[0]?.path ?? '/'}`,
         'Open browser DevTools and run: axe.run()',
         `Look for rule "${p.ruleId}" on selector: ${p.selectorKey}`,
         'Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js',
@@ -766,9 +774,10 @@ function main() {
 
   for (const issue of bugsJson.issues) {
     const isTemplate = issue.isTemplateLevelIssue;
+    const maxVisibleAffectedPages = 3;
     lines.push(`---`);
     lines.push('');
-    lines.push(`### ${issue.priority}. ${issue.summary} ${isTemplate ? '🔁' : ''}`);
+    lines.push(`### ${issue.priority}. ${escapeMarkdownInline(issue.summary)} ${isTemplate ? '🔁' : ''}`);
     lines.push('');
     lines.push('| Field | Value |');
     lines.push('| :--- | :--- |');
@@ -790,8 +799,22 @@ function main() {
     lines.push('');
 
     lines.push('**Affected pages:**');
-    for (const pg of issue.affected_pages) {
-      lines.push(`- [\`${pg.path}\`](${pg.url}) — ${pg.name} \`[${pg.instanceId}]\``);
+    for (const [index, pg] of issue.affected_pages.slice(0, maxVisibleAffectedPages).entries()) {
+      const infoHint = index === 0
+        ? ' <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>'
+        : '';
+      lines.push(`- \`${pg.path}\` — ${escapeMarkdownInline(pg.name)} \`[${pg.instanceId}]\`${infoHint}`);
+    }
+    if (issue.affected_pages.length > maxVisibleAffectedPages) {
+      const remaining = issue.affected_pages.slice(maxVisibleAffectedPages);
+      lines.push('');
+      lines.push(`<details><summary>Show ${remaining.length} more affected page(s)</summary>`);
+      lines.push('');
+      for (const pg of remaining) {
+        lines.push(`- \`${pg.path}\` — ${escapeMarkdownInline(pg.name)} \`[${pg.instanceId}]\``);
+      }
+      lines.push('');
+      lines.push('</details>');
     }
     lines.push('');
 
@@ -814,11 +837,11 @@ function main() {
     lines.push('');
 
     if (issue.expected_behaviour) {
-      lines.push(`**Expected behaviour:** ${issue.expected_behaviour}`);
+      lines.push(`**Expected behaviour:** ${escapeMarkdownInline(issue.expected_behaviour)}`);
       lines.push('');
     }
     if (issue.actual_behaviour) {
-      lines.push(`**Actual behaviour:** ${issue.actual_behaviour}`);
+      lines.push(`**Actual behaviour:** ${escapeMarkdownInline(issue.actual_behaviour)}`);
       lines.push('');
     }
 

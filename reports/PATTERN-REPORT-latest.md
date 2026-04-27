@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-04-27T15:51:10.639Z
+> **Generated:** 2026-04-27T18:00:15.010Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -53,7 +53,7 @@ and are highest priority for core fixes since a single template change benefits 
 
 ---
 
-### 1. document-title: Ensure each HTML document contains a non-empty <title> element 🔁
+### 1. document-title: Ensure each HTML document contains a non-empty &lt;title&gt; element 🔁
 
 | Field | Value |
 | :--- | :--- |
@@ -71,10 +71,15 @@ and are highest priority for core fixes since a single template change benefits 
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-EC568562]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-E8E7903B]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-124C15FB]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-2E04BCB2]`
+- `/admin/form_style` — Form style demo `[INS-EC568562]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-E8E7903B]`
+- `/node/add/page` — Create basic page `[INS-124C15FB]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-2E04BCB2]`
+
+</details>
 
 **Selector:**
 ```css
@@ -97,7 +102,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "document-title" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -122,10 +127,15 @@ See axe documentation.
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-4852BC01]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-B8596C33]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-49C645C5]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-BEDA3A9C]`
+- `/admin/form_style` — Form style demo `[INS-4852BC01]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-B8596C33]`
+- `/node/add/page` — Create basic page `[INS-49C645C5]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-BEDA3A9C]`
+
+</details>
 
 **Selector:**
 ```css
@@ -148,7 +158,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "html-has-lang" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -173,8 +183,8 @@ See axe documentation.
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-30CCB04A]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-9E3C567D]`
+- `/admin/content` — Content list `[INS-30CCB04A]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/people` — People `[INS-9E3C567D]`
 
 **Selector:**
 ```css
@@ -197,7 +207,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: #edit-submit
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -223,8 +233,8 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | blind, low-vision, voice-control |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-333A0C48]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-A6512BE5]`
+- `/admin/content` — Content list `[INS-333A0C48]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/people` — People `[INS-A6512BE5]`
 
 **Selector:**
 ```css
@@ -241,7 +251,7 @@ input[title="Select all rows in this table"]
 <input type="checkbox" class="form-checkbox form-boolean form-boolean--type-checkbox" title="Select all rows in this table">
 ```
 
-**Expected behaviour:** Checkbox has a visible or visually-hidden <label>, or aria-label
+**Expected behaviour:** Checkbox has a visible or visually-hidden &lt;label&gt;, or aria-label
 
 **Actual behaviour:** input[title="Select all rows in this table"] — title is the sole label source
 
@@ -258,7 +268,7 @@ Replace the title-only label with aria-label:
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "label-title-only" on selector: input[title="Select all rows in this table"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -284,8 +294,8 @@ Replace the title-only label with aria-label:
 | **Affected users** | blind, low-vision, voice-control |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-4E756E59]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-8302F38F]`
+- `/admin/content` — Content list `[INS-4E756E59]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/people` — People `[INS-8302F38F]`
 
 **Selector:**
 ```css
@@ -302,7 +312,7 @@ input[title="Select all rows in this table"]
 <input type="checkbox" class="form-checkbox" title="Select all rows in this table">
 ```
 
-**Expected behaviour:** Checkbox has a visible or visually-hidden <label>, or aria-label
+**Expected behaviour:** Checkbox has a visible or visually-hidden &lt;label&gt;, or aria-label
 
 **Actual behaviour:** input[title="Select all rows in this table"] — title is the sole label source
 
@@ -319,7 +329,7 @@ Replace the title-only label with aria-label:
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "label-title-only" on selector: input[title="Select all rows in this table"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -344,8 +354,8 @@ Replace the title-only label with aria-label:
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-E49123E1]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-0EF5C7A4]`
+- `/admin/content` — Content list `[INS-E49123E1]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/people` — People `[INS-0EF5C7A4]`
 
 **Selector:**
 ```css
@@ -368,7 +378,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: #edit-submit--2
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -393,7 +403,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout `[INS-E471277A]`
+- `/admin/structure/block` — Block layout `[INS-E471277A]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -416,7 +426,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/structure/block
+1. Navigate to this route on your local Drupal install: /admin/structure/block
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: tr[data-drupal-selector="edit-blocks-claro-help"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=""] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -441,7 +451,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout `[INS-1AE9FA8A]`
+- `/admin/structure/block` — Block layout `[INS-1AE9FA8A]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -464,7 +474,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/structure/block
+1. Navigate to this route on your local Drupal install: /admin/structure/block
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: .block-disabled.draggable[data-once="claroTabledrag"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=""] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -489,7 +499,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout (mobile) `[INS-66719F9C]`
+- `/admin/structure/block` — Block layout (mobile) `[INS-66719F9C]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -512,7 +522,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/structure/block
+1. Navigate to this route on your local Drupal install: /admin/structure/block
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: tr[data-drupal-selector="edit-blocks-claro-help"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=""] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -537,7 +547,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout (mobile) `[INS-BF1B340F]`
+- `/admin/structure/block` — Block layout (mobile) `[INS-BF1B340F]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -560,7 +570,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/structure/block
+1. Navigate to this route on your local Drupal install: /admin/structure/block
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: .block-disabled.draggable[data-once="claroTabledrag"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=""] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -585,7 +595,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-C63849E0]`
+- `/` — Homepage `[INS-C63849E0]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -608,7 +618,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[rel="tag"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -633,7 +643,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-0D4B42E2]`
+- `/` — Homepage (mobile) `[INS-0D4B42E2]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -656,7 +666,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[rel="tag"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -681,7 +691,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-CD72ACAA]`
+- `/user/login` — User login (mobile) `[INS-CD72ACAA]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -704,7 +714,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/user/login
+1. Navigate to this route on your local Drupal install: /user/login
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: input[value="Log in"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -729,7 +739,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-36B26A93]`
+- `/admin/content` — Content list `[INS-36B26A93]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -755,7 +765,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[href="?page=0"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -780,7 +790,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-DC683448]`
+- `/admin/content` — Content list `[INS-DC683448]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -806,7 +816,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[title="Go to page 2"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -831,7 +841,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-C117FC78]`
+- `/admin/content` — Content list `[INS-C117FC78]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -857,7 +867,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[title="Go to next page"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -882,7 +892,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-649CFA51]`
+- `/admin/content` — Content list `[INS-649CFA51]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -908,7 +918,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: a[title="Go to last page"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -933,7 +943,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | low-vision |
 
 **Affected pages:**
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-C3282CAD]`
+- `/admin/appearance` — Appearance `[INS-C3282CAD]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -956,7 +966,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/appearance
+1. Navigate to this route on your local Drupal install: /admin/appearance
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "color-contrast" on selector: .admin-missing
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -981,7 +991,7 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-56C43905]`
+- `/admin/config/system/site-information` — Site information `[INS-56C43905]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -1004,7 +1014,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/config/system/site-information
+1. Navigate to this route on your local Drupal install: /admin/config/system/site-information
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: summary[aria-controls="edit-site-information"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1029,7 +1039,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-BD996098]`
+- `/admin/config/system/site-information` — Site information `[INS-BD996098]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -1052,7 +1062,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/config/system/site-information
+1. Navigate to this route on your local Drupal install: /admin/config/system/site-information
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: summary[aria-controls="edit-front-page"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1077,7 +1087,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | motor, low-vision |
 
 **Affected pages:**
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-D2F9E6D9]`
+- `/admin/config/system/site-information` — Site information `[INS-D2F9E6D9]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -1100,7 +1110,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/config/system/site-information
+1. Navigate to this route on your local Drupal install: /admin/config/system/site-information
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "target-size" on selector: summary[aria-controls="edit-error-page"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1125,33 +1135,38 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-F8827C54]`
-- [`/action-link`](https://drupal-core.ddev.site/action-link) — Action link demo `[INS-67D44CCE]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login `[INS-1DA96D9D]`
-- [`/user/register`](https://drupal-core.ddev.site/user/register) — User register `[INS-6C398E97]`
-- [`/user/password`](https://drupal-core.ddev.site/user/password) — User password reset `[INS-6C5B7C93]`
-- [`/search/node`](https://drupal-core.ddev.site/search/node) — Search results `[INS-A695C315]`
-- [`/this-page-does-not-exist`](https://drupal-core.ddev.site/this-page-does-not-exist) — 404 page `[INS-0B3EE67E]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard `[INS-FF128C56]`
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-9AC3040C]`
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-96363970]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-98495517]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-C2F7FA35]`
-- [`/admin/structure`](https://drupal-core.ddev.site/admin/structure) — Structure `[INS-1981CB52]`
-- [`/admin/structure/types`](https://drupal-core.ddev.site/admin/structure/types) — Content types `[INS-4ECE022D]`
-- [`/admin/structure/types/add`](https://drupal-core.ddev.site/admin/structure/types/add) — Add content type `[INS-1DC30C0C]`
-- [`/admin/structure/taxonomy`](https://drupal-core.ddev.site/admin/structure/taxonomy) — Taxonomy `[INS-60C8DDAF]`
-- [`/admin/structure/taxonomy/add`](https://drupal-core.ddev.site/admin/structure/taxonomy/add) — Add vocabulary `[INS-DE8799B2]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout `[INS-4535042B]`
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-087DE69B]`
-- [`/admin/modules`](https://drupal-core.ddev.site/admin/modules) — Modules `[INS-CA114DF0]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-79B55CBF]`
-- [`/user/1/edit`](https://drupal-core.ddev.site/user/1/edit) — User edit (uid 1) `[INS-891F79A4]`
-- [`/admin/config`](https://drupal-core.ddev.site/admin/config) — Configuration `[INS-40A07FBA]`
-- [`/admin/config/content/formats`](https://drupal-core.ddev.site/admin/config/content/formats) — Text formats `[INS-7CEE7C80]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-5551952A]`
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-6FA84AFC]`
-- [`/admin/reports`](https://drupal-core.ddev.site/admin/reports) — Reports `[INS-CEE1A2AA]`
+- `/` — Homepage `[INS-F8827C54]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/action-link` — Action link demo `[INS-67D44CCE]`
+- `/user/login` — User login `[INS-1DA96D9D]`
+
+<details><summary>Show 24 more affected page(s)</summary>
+
+- `/user/register` — User register `[INS-6C398E97]`
+- `/user/password` — User password reset `[INS-6C5B7C93]`
+- `/search/node` — Search results `[INS-A695C315]`
+- `/this-page-does-not-exist` — 404 page `[INS-0B3EE67E]`
+- `/admin` — Admin dashboard `[INS-FF128C56]`
+- `/admin/form_style` — Form style demo `[INS-9AC3040C]`
+- `/admin/content` — Content list `[INS-96363970]`
+- `/node/add/article` — Create article `[INS-98495517]`
+- `/node/add/page` — Create basic page `[INS-C2F7FA35]`
+- `/admin/structure` — Structure `[INS-1981CB52]`
+- `/admin/structure/types` — Content types `[INS-4ECE022D]`
+- `/admin/structure/types/add` — Add content type `[INS-1DC30C0C]`
+- `/admin/structure/taxonomy` — Taxonomy `[INS-60C8DDAF]`
+- `/admin/structure/taxonomy/add` — Add vocabulary `[INS-DE8799B2]`
+- `/admin/structure/block` — Block layout `[INS-4535042B]`
+- `/admin/appearance` — Appearance `[INS-087DE69B]`
+- `/admin/modules` — Modules `[INS-CA114DF0]`
+- `/admin/people` — People `[INS-79B55CBF]`
+- `/user/1/edit` — User edit (uid 1) `[INS-891F79A4]`
+- `/admin/config` — Configuration `[INS-40A07FBA]`
+- `/admin/config/content/formats` — Text formats `[INS-7CEE7C80]`
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-5551952A]`
+- `/admin/config/system/site-information` — Site information `[INS-6FA84AFC]`
+- `/admin/reports` — Reports `[INS-CEE1A2AA]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1174,14 +1189,14 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
 
 ---
 
-### 23. Homepage has no <h1> heading — screen reader users cannot identify page topic 🔁
+### 23. Homepage has no &lt;h1&gt; heading — screen reader users cannot identify page topic 🔁
 
 | Field | Value |
 | :--- | :--- |
@@ -1200,33 +1215,38 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-B1E51EE3]`
-- [`/action-link`](https://drupal-core.ddev.site/action-link) — Action link demo `[INS-439A4705]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login `[INS-14F3BC8E]`
-- [`/user/register`](https://drupal-core.ddev.site/user/register) — User register `[INS-1C8C274C]`
-- [`/user/password`](https://drupal-core.ddev.site/user/password) — User password reset `[INS-E3BCD87B]`
-- [`/search/node`](https://drupal-core.ddev.site/search/node) — Search results `[INS-D57620CE]`
-- [`/this-page-does-not-exist`](https://drupal-core.ddev.site/this-page-does-not-exist) — 404 page `[INS-A2F9943B]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard `[INS-8D0B551F]`
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-A6C33528]`
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-A3AB7C2F]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-6CEFB341]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-51CDA53A]`
-- [`/admin/structure`](https://drupal-core.ddev.site/admin/structure) — Structure `[INS-A45D63AF]`
-- [`/admin/structure/types`](https://drupal-core.ddev.site/admin/structure/types) — Content types `[INS-1B242E49]`
-- [`/admin/structure/types/add`](https://drupal-core.ddev.site/admin/structure/types/add) — Add content type `[INS-F72130DD]`
-- [`/admin/structure/taxonomy`](https://drupal-core.ddev.site/admin/structure/taxonomy) — Taxonomy `[INS-84E1E015]`
-- [`/admin/structure/taxonomy/add`](https://drupal-core.ddev.site/admin/structure/taxonomy/add) — Add vocabulary `[INS-2021033E]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout `[INS-3767E6E5]`
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-99B9A5D7]`
-- [`/admin/modules`](https://drupal-core.ddev.site/admin/modules) — Modules `[INS-9572160C]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-5498FDF7]`
-- [`/user/1/edit`](https://drupal-core.ddev.site/user/1/edit) — User edit (uid 1) `[INS-44170817]`
-- [`/admin/config`](https://drupal-core.ddev.site/admin/config) — Configuration `[INS-78A19F48]`
-- [`/admin/config/content/formats`](https://drupal-core.ddev.site/admin/config/content/formats) — Text formats `[INS-4CBF3459]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-F6A4E3CF]`
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-55B2EA69]`
-- [`/admin/reports`](https://drupal-core.ddev.site/admin/reports) — Reports `[INS-BCB919FF]`
+- `/` — Homepage `[INS-B1E51EE3]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/action-link` — Action link demo `[INS-439A4705]`
+- `/user/login` — User login `[INS-14F3BC8E]`
+
+<details><summary>Show 24 more affected page(s)</summary>
+
+- `/user/register` — User register `[INS-1C8C274C]`
+- `/user/password` — User password reset `[INS-E3BCD87B]`
+- `/search/node` — Search results `[INS-D57620CE]`
+- `/this-page-does-not-exist` — 404 page `[INS-A2F9943B]`
+- `/admin` — Admin dashboard `[INS-8D0B551F]`
+- `/admin/form_style` — Form style demo `[INS-A6C33528]`
+- `/admin/content` — Content list `[INS-A3AB7C2F]`
+- `/node/add/article` — Create article `[INS-6CEFB341]`
+- `/node/add/page` — Create basic page `[INS-51CDA53A]`
+- `/admin/structure` — Structure `[INS-A45D63AF]`
+- `/admin/structure/types` — Content types `[INS-1B242E49]`
+- `/admin/structure/types/add` — Add content type `[INS-F72130DD]`
+- `/admin/structure/taxonomy` — Taxonomy `[INS-84E1E015]`
+- `/admin/structure/taxonomy/add` — Add vocabulary `[INS-2021033E]`
+- `/admin/structure/block` — Block layout `[INS-3767E6E5]`
+- `/admin/appearance` — Appearance `[INS-99B9A5D7]`
+- `/admin/modules` — Modules `[INS-9572160C]`
+- `/admin/people` — People `[INS-5498FDF7]`
+- `/user/1/edit` — User edit (uid 1) `[INS-44170817]`
+- `/admin/config` — Configuration `[INS-78A19F48]`
+- `/admin/config/content/formats` — Text formats `[INS-4CBF3459]`
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-F6A4E3CF]`
+- `/admin/config/system/site-information` — Site information `[INS-55B2EA69]`
+- `/admin/reports` — Reports `[INS-BCB919FF]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1243,9 +1263,9 @@ html
 <html lang="en" dir="ltr" class=" js">
 ```
 
-**Expected behaviour:** Every page contains exactly one <h1> that identifies the page
+**Expected behaviour:** Every page contains exactly one &lt;h1&gt; that identifies the page
 
-**Actual behaviour:** Olivero front page renders no <h1>; the site name in the header is not an <h1>
+**Actual behaviour:** Olivero front page renders no &lt;h1&gt;; the site name in the header is not an &lt;h1&gt;
 
 **Suggested fix:**
 ```
@@ -1262,7 +1282,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "page-has-heading-one" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1287,29 +1307,34 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-023C0C14]`
-- [`/action-link`](https://drupal-core.ddev.site/action-link) — Action link demo `[INS-317C3E04]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login `[INS-51939F77]`
-- [`/user/register`](https://drupal-core.ddev.site/user/register) — User register `[INS-C480966D]`
-- [`/user/password`](https://drupal-core.ddev.site/user/password) — User password reset `[INS-86B29A81]`
-- [`/search/node`](https://drupal-core.ddev.site/search/node) — Search results `[INS-7FE60C8F]`
-- [`/this-page-does-not-exist`](https://drupal-core.ddev.site/this-page-does-not-exist) — 404 page `[INS-ADE63447]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard `[INS-2BC359AA]`
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-7ECAFC89]`
-- [`/admin/structure`](https://drupal-core.ddev.site/admin/structure) — Structure `[INS-65B63B2A]`
-- [`/admin/structure/types`](https://drupal-core.ddev.site/admin/structure/types) — Content types `[INS-69A67690]`
-- [`/admin/structure/types/add`](https://drupal-core.ddev.site/admin/structure/types/add) — Add content type `[INS-3D37A534]`
-- [`/admin/structure/taxonomy`](https://drupal-core.ddev.site/admin/structure/taxonomy) — Taxonomy `[INS-7C35EF21]`
-- [`/admin/structure/taxonomy/add`](https://drupal-core.ddev.site/admin/structure/taxonomy/add) — Add vocabulary `[INS-83B31CD4]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout `[INS-B723E4A5]`
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-749172A9]`
-- [`/admin/modules`](https://drupal-core.ddev.site/admin/modules) — Modules `[INS-CA5C3957]`
-- [`/admin/people`](https://drupal-core.ddev.site/admin/people) — People `[INS-3F530281]`
-- [`/user/1/edit`](https://drupal-core.ddev.site/user/1/edit) — User edit (uid 1) `[INS-3E34BE50]`
-- [`/admin/config`](https://drupal-core.ddev.site/admin/config) — Configuration `[INS-FD3B185F]`
-- [`/admin/config/content/formats`](https://drupal-core.ddev.site/admin/config/content/formats) — Text formats `[INS-C8614C7B]`
-- [`/admin/config/system/site-information`](https://drupal-core.ddev.site/admin/config/system/site-information) — Site information `[INS-6320C953]`
-- [`/admin/reports`](https://drupal-core.ddev.site/admin/reports) — Reports `[INS-9A54A2EB]`
+- `/` — Homepage `[INS-023C0C14]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/action-link` — Action link demo `[INS-317C3E04]`
+- `/user/login` — User login `[INS-51939F77]`
+
+<details><summary>Show 20 more affected page(s)</summary>
+
+- `/user/register` — User register `[INS-C480966D]`
+- `/user/password` — User password reset `[INS-86B29A81]`
+- `/search/node` — Search results `[INS-7FE60C8F]`
+- `/this-page-does-not-exist` — 404 page `[INS-ADE63447]`
+- `/admin` — Admin dashboard `[INS-2BC359AA]`
+- `/admin/content` — Content list `[INS-7ECAFC89]`
+- `/admin/structure` — Structure `[INS-65B63B2A]`
+- `/admin/structure/types` — Content types `[INS-69A67690]`
+- `/admin/structure/types/add` — Add content type `[INS-3D37A534]`
+- `/admin/structure/taxonomy` — Taxonomy `[INS-7C35EF21]`
+- `/admin/structure/taxonomy/add` — Add vocabulary `[INS-83B31CD4]`
+- `/admin/structure/block` — Block layout `[INS-B723E4A5]`
+- `/admin/appearance` — Appearance `[INS-749172A9]`
+- `/admin/modules` — Modules `[INS-CA5C3957]`
+- `/admin/people` — People `[INS-3F530281]`
+- `/user/1/edit` — User edit (uid 1) `[INS-3E34BE50]`
+- `/admin/config` — Configuration `[INS-FD3B185F]`
+- `/admin/config/content/formats` — Text formats `[INS-C8614C7B]`
+- `/admin/config/system/site-information` — Site information `[INS-6320C953]`
+- `/admin/reports` — Reports `[INS-9A54A2EB]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1332,7 +1357,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1357,13 +1382,18 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-B7EC21C6]`
-- [`/action-link`](https://drupal-core.ddev.site/action-link) — Action link demo `[INS-1548AA5E]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login `[INS-BC0E758C]`
-- [`/user/register`](https://drupal-core.ddev.site/user/register) — User register `[INS-C5F240D9]`
-- [`/user/password`](https://drupal-core.ddev.site/user/password) — User password reset `[INS-3F2AC72F]`
-- [`/search/node`](https://drupal-core.ddev.site/search/node) — Search results `[INS-0F6CD979]`
-- [`/this-page-does-not-exist`](https://drupal-core.ddev.site/this-page-does-not-exist) — 404 page `[INS-D00DC29B]`
+- `/` — Homepage `[INS-B7EC21C6]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/action-link` — Action link demo `[INS-1548AA5E]`
+- `/user/login` — User login `[INS-BC0E758C]`
+
+<details><summary>Show 4 more affected page(s)</summary>
+
+- `/user/register` — User register `[INS-C5F240D9]`
+- `/user/password` — User password reset `[INS-3F2AC72F]`
+- `/search/node` — Search results `[INS-0F6CD979]`
+- `/this-page-does-not-exist` — 404 page `[INS-D00DC29B]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1386,7 +1416,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1411,10 +1441,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-FFDDC742]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-027F8B62]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard (mobile) `[INS-BA767068]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout (mobile) `[INS-55CE76E2]`
+- `/` — Homepage (mobile) `[INS-FFDDC742]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/user/login` — User login (mobile) `[INS-027F8B62]`
+- `/admin` — Admin dashboard (mobile) `[INS-BA767068]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/structure/block` — Block layout (mobile) `[INS-55CE76E2]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1437,14 +1472,14 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
 
 ---
 
-### 27. Homepage has no <h1> heading — screen reader users cannot identify page topic 🔁
+### 27. Homepage has no &lt;h1&gt; heading — screen reader users cannot identify page topic 🔁
 
 | Field | Value |
 | :--- | :--- |
@@ -1463,10 +1498,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-935205AF]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-12DE4D98]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard (mobile) `[INS-2E8EF0BE]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout (mobile) `[INS-7266FF83]`
+- `/` — Homepage (mobile) `[INS-935205AF]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/user/login` — User login (mobile) `[INS-12DE4D98]`
+- `/admin` — Admin dashboard (mobile) `[INS-2E8EF0BE]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/structure/block` — Block layout (mobile) `[INS-7266FF83]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1483,9 +1523,9 @@ html
 <html lang="en" dir="ltr" class=" js">
 ```
 
-**Expected behaviour:** Every page contains exactly one <h1> that identifies the page
+**Expected behaviour:** Every page contains exactly one &lt;h1&gt; that identifies the page
 
-**Actual behaviour:** Olivero front page renders no <h1>; the site name in the header is not an <h1>
+**Actual behaviour:** Olivero front page renders no &lt;h1&gt;; the site name in the header is not an &lt;h1&gt;
 
 **Suggested fix:**
 ```
@@ -1502,7 +1542,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "page-has-heading-one" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1527,10 +1567,15 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-9ABEE34E]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-2105F176]`
-- [`/admin`](https://drupal-core.ddev.site/admin) — Admin dashboard (mobile) `[INS-984F7D3B]`
-- [`/admin/structure/block`](https://drupal-core.ddev.site/admin/structure/block) — Block layout (mobile) `[INS-ED320798]`
+- `/` — Homepage (mobile) `[INS-9ABEE34E]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/user/login` — User login (mobile) `[INS-2105F176]`
+- `/admin` — Admin dashboard (mobile) `[INS-984F7D3B]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/structure/block` — Block layout (mobile) `[INS-ED320798]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1553,7 +1598,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1578,10 +1623,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-254D9440]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-7E81F188]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-631D2EDC]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-3BC2C656]`
+- `/admin/form_style` — Form style demo `[INS-254D9440]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-7E81F188]`
+- `/node/add/page` — Create basic page `[INS-631D2EDC]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-3BC2C656]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1604,7 +1654,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "landmark-one-main" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1629,10 +1679,15 @@ See axe documentation.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-78DCEE99]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-4707A980]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-4511B678]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-C18723C2]`
+- `/admin/form_style` — Form style demo `[INS-78DCEE99]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-4707A980]`
+- `/node/add/page` — Create basic page `[INS-4511B678]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-C18723C2]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1655,7 +1710,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: em:nth-child(3)
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1680,10 +1735,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-90E2FF90]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-3B77EF17]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-0A1EB9A5]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-229AA40E]`
+- `/admin/form_style` — Form style demo `[INS-90E2FF90]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-3B77EF17]`
+- `/node/add/page` — Create basic page `[INS-0A1EB9A5]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-229AA40E]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1706,7 +1766,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: em:nth-child(4)
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1731,10 +1791,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-6F778062]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-C1B2A742]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-EDA9CB70]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-93F91D1C]`
+- `/admin/form_style` — Form style demo `[INS-6F778062]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-C1B2A742]`
+- `/node/add/page` — Create basic page `[INS-EDA9CB70]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-93F91D1C]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1757,7 +1822,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: em:nth-child(5)
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1782,10 +1847,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-87A97076]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-9BC30748]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-4E5170C4]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-5B806DBF]`
+- `/admin/form_style` — Form style demo `[INS-87A97076]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-9BC30748]`
+- `/node/add/page` — Create basic page `[INS-4E5170C4]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-5B806DBF]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1808,7 +1878,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: em:nth-child(6)
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1833,10 +1903,15 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-E30C1FE5]`
-- [`/node/add/article`](https://drupal-core.ddev.site/node/add/article) — Create article `[INS-0FDB6CCC]`
-- [`/node/add/page`](https://drupal-core.ddev.site/node/add/page) — Create basic page `[INS-76EE2281]`
-- [`/admin/config/content/formats/manage/restricted_html`](https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html) — Text format (restricted) `[INS-1A6431B5]`
+- `/admin/form_style` — Form style demo `[INS-E30C1FE5]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/node/add/article` — Create article `[INS-0FDB6CCC]`
+- `/node/add/page` — Create basic page `[INS-76EE2281]`
+
+<details><summary>Show 1 more affected page(s)</summary>
+
+- `/admin/config/content/formats/manage/restricted_html` — Text format (restricted) `[INS-1A6431B5]`
+
+</details>
 
 **Selector:**
 ```css
@@ -1859,7 +1934,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: pre
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1884,9 +1959,9 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-3B986C77]`
-- [`/admin/modules`](https://drupal-core.ddev.site/admin/modules) — Modules `[INS-00D8B74E]`
-- [`/admin/config`](https://drupal-core.ddev.site/admin/config) — Configuration `[INS-C2D0B460]`
+- `/admin/appearance` — Appearance `[INS-3B986C77]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/modules` — Modules `[INS-00D8B74E]`
+- `/admin/config` — Configuration `[INS-C2D0B460]`
 
 **Selector:**
 ```css
@@ -1909,7 +1984,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/appearance
+1. Navigate to this route on your local Drupal install: /admin/appearance
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "landmark-contentinfo-is-top-level" on selector: .messages-list__item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1934,9 +2009,9 @@ See axe documentation.
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/admin/appearance`](https://drupal-core.ddev.site/admin/appearance) — Appearance `[INS-9759D408]`
-- [`/admin/modules`](https://drupal-core.ddev.site/admin/modules) — Modules `[INS-3FC6D146]`
-- [`/admin/config`](https://drupal-core.ddev.site/admin/config) — Configuration `[INS-28B699FB]`
+- `/admin/appearance` — Appearance `[INS-9759D408]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/admin/modules` — Modules `[INS-3FC6D146]`
+- `/admin/config` — Configuration `[INS-28B699FB]`
 
 **Selector:**
 ```css
@@ -1959,7 +2034,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/appearance
+1. Navigate to this route on your local Drupal install: /admin/appearance
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "landmark-contentinfo-is-top-level" on selector: div[role="contentinfo"]
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -1985,8 +2060,8 @@ See axe documentation.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login `[INS-EE604664]`
-- [`/user/password`](https://drupal-core.ddev.site/user/password) — User password reset `[INS-DF16DD53]`
+- `/user/login` — User login `[INS-EE604664]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/user/password` — User password reset `[INS-DF16DD53]`
 
 **Selector:**
 ```css
@@ -2003,9 +2078,9 @@ See axe documentation.
 <h2 id="primary-tabs-title" class="visually-hidden">Primary tabs</h2>
 ```
 
-**Expected behaviour:** The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark
+**Expected behaviour:** The &lt;h2&gt; heading is inside the &lt;nav&gt; it labels, or the &lt;nav&gt; itself is inside a landmark
 
-**Actual behaviour:** <h2 id="primary-tabs-title"> is a sibling of <nav>, and the nav may be outside main/aside/etc.
+**Actual behaviour:** &lt;h2 id="primary-tabs-title"&gt; is a sibling of &lt;nav&gt;, and the nav may be outside main/aside/etc.
 
 **Suggested fix:**
 ```
@@ -2023,7 +2098,7 @@ Move the heading inside the <nav> it labels:
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/user/login
+1. Navigate to this route on your local Drupal install: /user/login
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: #primary-tabs-title
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2048,8 +2123,8 @@ Move the heading inside the <nav> it labels:
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-8CE0429C]`
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-94D67B9A]`
+- `/` — Homepage (mobile) `[INS-8CE0429C]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
+- `/user/login` — User login (mobile) `[INS-94D67B9A]`
 
 **Selector:**
 ```css
@@ -2072,14 +2147,14 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: .themeswitcher-form__form-item
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
 
 ---
 
-### 39. Homepage has no <h1> heading — screen reader users cannot identify page topic 
+### 39. Homepage has no &lt;h1&gt; heading — screen reader users cannot identify page topic 
 
 | Field | Value |
 | :--- | :--- |
@@ -2098,7 +2173,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-F78161F0]`
+- `/` — Homepage `[INS-F78161F0]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2115,9 +2190,9 @@ html
 <html lang="en" dir="ltr" style="--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50" class=" js">
 ```
 
-**Expected behaviour:** Every page contains exactly one <h1> that identifies the page
+**Expected behaviour:** Every page contains exactly one &lt;h1&gt; that identifies the page
 
-**Actual behaviour:** Olivero front page renders no <h1>; the site name in the header is not an <h1>
+**Actual behaviour:** Olivero front page renders no &lt;h1&gt;; the site name in the header is not an &lt;h1&gt;
 
 **Suggested fix:**
 ```
@@ -2134,14 +2209,14 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "page-has-heading-one" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
 
 ---
 
-### 40. Homepage has no <h1> heading — screen reader users cannot identify page topic 
+### 40. Homepage has no &lt;h1&gt; heading — screen reader users cannot identify page topic 
 
 | Field | Value |
 | :--- | :--- |
@@ -2160,7 +2235,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-47B4408E]`
+- `/` — Homepage (mobile) `[INS-47B4408E]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2177,9 +2252,9 @@ html
 <html lang="en" dir="ltr" style="--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50" class=" js">
 ```
 
-**Expected behaviour:** Every page contains exactly one <h1> that identifies the page
+**Expected behaviour:** Every page contains exactly one &lt;h1&gt; that identifies the page
 
-**Actual behaviour:** Olivero front page renders no <h1>; the site name in the header is not an <h1>
+**Actual behaviour:** Olivero front page renders no &lt;h1&gt;; the site name in the header is not an &lt;h1&gt;
 
 **Suggested fix:**
 ```
@@ -2196,7 +2271,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "page-has-heading-one" on selector: html
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2222,7 +2297,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/user/login`](https://drupal-core.ddev.site/user/login) — User login (mobile) `[INS-B2C79C3A]`
+- `/user/login` — User login (mobile) `[INS-B2C79C3A]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2239,9 +2314,9 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 <h2 id="primary-tabs-title" class="visually-hidden">Primary tabs</h2>
 ```
 
-**Expected behaviour:** The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark
+**Expected behaviour:** The &lt;h2&gt; heading is inside the &lt;nav&gt; it labels, or the &lt;nav&gt; itself is inside a landmark
 
-**Actual behaviour:** <h2 id="primary-tabs-title"> is a sibling of <nav>, and the nav may be outside main/aside/etc.
+**Actual behaviour:** &lt;h2 id="primary-tabs-title"&gt; is a sibling of &lt;nav&gt;, and the nav may be outside main/aside/etc.
 
 **Suggested fix:**
 ```
@@ -2259,7 +2334,7 @@ Move the heading inside the <nav> it labels:
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/user/login
+1. Navigate to this route on your local Drupal install: /user/login
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "region" on selector: #primary-tabs-title
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2284,7 +2359,7 @@ Move the heading inside the <nav> it labels:
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/form_style`](https://drupal-core.ddev.site/admin/form_style) — Form style demo `[INS-A072EE82]`
+- `/admin/form_style` — Form style demo `[INS-A072EE82]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2307,7 +2382,7 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/form_style
+1. Navigate to this route on your local Drupal install: /admin/form_style
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "heading-order" on selector: .form-datetime-wrapper.form-item:nth-child(4) > h4
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2332,7 +2407,7 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 | **Affected users** | blind, low-vision |
 
 **Affected pages:**
-- [`/admin/content`](https://drupal-core.ddev.site/admin/content) — Content list `[INS-434B52A1]`
+- `/admin/content` — Content list `[INS-434B52A1]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2355,7 +2430,7 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/admin/content
+1. Navigate to this route on your local Drupal install: /admin/content
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "heading-order" on selector: #pagination-heading
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2380,7 +2455,7 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage `[INS-C94EE4FD]`
+- `/` — Homepage `[INS-C94EE4FD]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2403,7 +2478,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "empty-heading" on selector: h1
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
@@ -2428,7 +2503,7 @@ See axe documentation.
 | **Affected users** | users with disabilities |
 
 **Affected pages:**
-- [`/`](https://drupal-core.ddev.site/) — Homepage (mobile) `[INS-FC2D7546]`
+- `/` — Homepage (mobile) `[INS-FC2D7546]` <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen + theme). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>
 
 **Selector:**
 ```css
@@ -2451,7 +2526,7 @@ See axe documentation.
 ```
 
 **Steps to reproduce:**
-1. Navigate to https://drupal-core.ddev.site/
+1. Navigate to this route on your local Drupal install: /
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "empty-heading" on selector: h1
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js

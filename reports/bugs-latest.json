@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-04-27T15:51:10.639Z",
+    "generatedAt": "2026-04-27T18:00:15.010Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 71,
     "totalViolationInstances": 168,
@@ -17,7 +17,7 @@
       "browser": "Chromium (via Playwright)",
       "os": "darwin",
       "tool": "axe-core via @axe-core/playwright",
-      "baseUrl": "https://drupal-core.ddev.site"
+      "baseUrl": "YOUR_LOCAL_BASE_URL"
     }
   },
   "crossThemeAnalysis": {
@@ -584,7 +584,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"document-title\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -593,7 +593,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -682,7 +682,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"html-has-lang\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -691,7 +691,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -756,7 +756,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: #edit-submit",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -765,7 +765,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -832,7 +832,7 @@
         "voice-control"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"label-title-only\" on selector: input[title=\"Select all rows in this table\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -841,7 +841,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -908,7 +908,7 @@
         "voice-control"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"label-title-only\" on selector: input[title=\"Select all rows in this table\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -917,7 +917,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -983,7 +983,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: #edit-submit--2",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -992,7 +992,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1045,7 +1045,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Navigate to this route on your local Drupal install: /admin/structure/block",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1054,7 +1054,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1107,7 +1107,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Navigate to this route on your local Drupal install: /admin/structure/block",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: .block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1116,7 +1116,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1169,7 +1169,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Navigate to this route on your local Drupal install: /admin/structure/block",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1178,7 +1178,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1231,7 +1231,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/structure/block",
+        "Navigate to this route on your local Drupal install: /admin/structure/block",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: .block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1240,7 +1240,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1294,7 +1294,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[rel=\"tag\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1303,7 +1303,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1357,7 +1357,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[rel=\"tag\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1366,7 +1366,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1420,7 +1420,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/user/login",
+        "Navigate to this route on your local Drupal install: /user/login",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: input[value=\"Log in\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1429,7 +1429,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1483,7 +1483,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[href=\"?page=0\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1492,7 +1492,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1546,7 +1546,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[title=\"Go to page 2\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1555,7 +1555,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1609,7 +1609,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[title=\"Go to next page\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1618,7 +1618,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1672,7 +1672,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: a[title=\"Go to last page\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1681,7 +1681,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1734,7 +1734,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/appearance",
+        "Navigate to this route on your local Drupal install: /admin/appearance",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"color-contrast\" on selector: .admin-missing",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1743,7 +1743,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1797,7 +1797,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/config/system/site-information",
+        "Navigate to this route on your local Drupal install: /admin/config/system/site-information",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: summary[aria-controls=\"edit-site-information\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1806,7 +1806,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1860,7 +1860,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/config/system/site-information",
+        "Navigate to this route on your local Drupal install: /admin/config/system/site-information",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: summary[aria-controls=\"edit-front-page\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1869,7 +1869,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -1923,7 +1923,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/config/system/site-information",
+        "Navigate to this route on your local Drupal install: /admin/config/system/site-information",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"target-size\" on selector: summary[aria-controls=\"edit-error-page\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -1932,7 +1932,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -2298,7 +2298,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -2307,7 +2307,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -2673,7 +2673,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"page-has-heading-one\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -2682,7 +2682,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3000,7 +3000,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3009,7 +3009,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3135,7 +3135,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3144,7 +3144,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3234,7 +3234,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3243,7 +3243,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3333,7 +3333,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"page-has-heading-one\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3342,7 +3342,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3432,7 +3432,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3441,7 +3441,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3530,7 +3530,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"landmark-one-main\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3539,7 +3539,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3629,7 +3629,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: em:nth-child(3)",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3638,7 +3638,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3728,7 +3728,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: em:nth-child(4)",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3737,7 +3737,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3827,7 +3827,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: em:nth-child(5)",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3836,7 +3836,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -3926,7 +3926,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: em:nth-child(6)",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -3935,7 +3935,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4025,7 +4025,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: pre",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4034,7 +4034,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4111,7 +4111,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/appearance",
+        "Navigate to this route on your local Drupal install: /admin/appearance",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"landmark-contentinfo-is-top-level\" on selector: .messages-list__item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4120,7 +4120,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4197,7 +4197,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/appearance",
+        "Navigate to this route on your local Drupal install: /admin/appearance",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"landmark-contentinfo-is-top-level\" on selector: div[role=\"contentinfo\"]",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4206,7 +4206,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4272,7 +4272,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/user/login",
+        "Navigate to this route on your local Drupal install: /user/login",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: #primary-tabs-title",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4281,7 +4281,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4347,7 +4347,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: .themeswitcher-form__form-item",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4356,7 +4356,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4410,7 +4410,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"page-has-heading-one\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4419,7 +4419,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4473,7 +4473,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"page-has-heading-one\" on selector: html",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4482,7 +4482,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4536,7 +4536,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/user/login",
+        "Navigate to this route on your local Drupal install: /user/login",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"region\" on selector: #primary-tabs-title",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4545,7 +4545,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4599,7 +4599,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/form_style",
+        "Navigate to this route on your local Drupal install: /admin/form_style",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"heading-order\" on selector: .form-datetime-wrapper.form-item:nth-child(4) > h4",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4608,7 +4608,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4662,7 +4662,7 @@
         "low-vision"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/admin/content",
+        "Navigate to this route on your local Drupal install: /admin/content",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"heading-order\" on selector: #pagination-heading",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4671,7 +4671,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4724,7 +4724,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"empty-heading\" on selector: h1",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4733,7 +4733,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     },
     {
@@ -4786,7 +4786,7 @@
         "users with disabilities"
       ],
       "steps_to_reproduce": [
-        "Navigate to https://drupal-core.ddev.site/",
+        "Navigate to this route on your local Drupal install: /",
         "Open browser DevTools and run: axe.run()",
         "Look for rule \"empty-heading\" on selector: h1",
         "Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js"
@@ -4795,7 +4795,7 @@
         "browser": "Chromium (via Playwright)",
         "os": "darwin",
         "tool": "axe-core via @axe-core/playwright",
-        "baseUrl": "https://drupal-core.ddev.site"
+        "baseUrl": "YOUR_LOCAL_BASE_URL"
       }
     }
   ]
