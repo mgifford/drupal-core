@@ -2455,3 +2455,236 @@ See axe documentation.
 1. Open browser DevTools and run: axe.run()
 1. Look for rule "empty-heading" on selector: h1
 1. Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js
+
+---
+
+## Top 10 New Issues to File
+
+> **Generated:** 2026-04-27 | Cross-referenced against Drupal Admin theme + Accessibility issue queues.
+> Screened against: [Admin theme & Accessibility](https://www.drupal.org/project/issues/search/drupal?component%5B%5D=Admin+theme&issue_tags=Accessibility) | [All Accessibility](https://www.drupal.org/project/issues/search/drupal?issue_tags=Accessibility)
+
+These are the highest-value candidates for new issue reports — not duplicates of existing tracked issues.
+
+---
+
+### 🆕 #1 — Admin content tables: "Select all rows" checkbox has title-only accessible name *(Serious — WCAG 1.3.1)*
+
+**Pattern ID:** `DRU-7A2CD202` | **Themes affected:** claro, admin
+**Affected pages:** /admin/content, /admin/people
+**Affected templates:** `core/themes/claro/templates/classy/dataset/table.html.twig`, `core/themes/admin/templates/dataset/table.html.twig`
+**Duplicate risk:** Medium — check [#2969660](https://www.drupal.org/project/drupal/issues/2969660) for scope; file if title-only checkbox pattern is not addressed there.
+
+**Suggested issue title:** `Admin content tables: "Select all rows" checkbox is title-only and lacks proper programmatic label`
+
+**Suggested wording:**
+> **Problem/Motivation:** On `/admin/content` and `/admin/people`, the bulk-select checkbox uses only the `title` attribute as its accessible name (`title="Select all rows in this table"`). The `title` attribute is unreliable as a label source for screen readers and voice-control tools.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/content`
+> 2. Run axe in DevTools — look for rule `label-title-only` on `input[title="Select all rows in this table"]`
+>
+> **Expected behaviour:** Checkbox has a `<label>` element, `aria-label`, or `aria-labelledby`.
+> **Actual behaviour:** `title` attribute is the sole label source.
+>
+> **Proposed resolution:** Add `aria-label="{{ 'Select all rows in this table'|t }}"` to the checkbox in the table template.
+
+---
+
+### 🆕 #2 — Claro: bulk action "Apply to selected items" button fails color contrast *(Serious — WCAG 1.4.3)*
+
+**Pattern ID:** `DRU-90FD983D` | **Theme affected:** claro
+**Affected pages:** /admin/content, /admin/people
+**Affected templates:** Claro action-button/submit styling (selector `#edit-submit`)
+
+**Suggested issue title:** `Claro: "Apply to selected items" button contrast fails WCAG AA on admin content/people`
+
+**Suggested wording:**
+> **Problem/Motivation:** The primary bulk action submit control on admin listing pages fails the WCAG 1.4.3 color contrast minimum.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/content`
+> 2. Run axe — rule `color-contrast`, selector `#edit-submit`
+>
+> **Expected behaviour:** Text/background contrast meets 4.5:1 ratio.
+> **Actual behaviour:** Contrast fails in Claro theme.
+>
+> **Proposed resolution:** Adjust button foreground/background token values used for bulk action controls in Claro.
+
+---
+
+### 🆕 #3 — Admin theme: bulk action submit button target area below WCAG 2.5.8 minimum *(Serious — WCAG 2.5.8)*
+
+**Pattern ID:** `DRU-74CA7842` | **Theme affected:** admin
+**Affected pages:** /admin/content, /admin/people
+**Affected templates:** Bulk action form submit rendering (selector `#edit-submit--2`)
+
+**Suggested issue title:** `Admin theme: bulk action submit button touch target below WCAG 2.5.8 minimum`
+
+**Suggested wording:**
+> **Problem/Motivation:** The secondary bulk action submit on admin list pages (`#edit-submit--2`) is too small for reliable touch interaction.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/content`
+> 2. Run axe — rule `target-size`, selector `#edit-submit--2`
+>
+> **Expected behaviour:** Minimum 24×24px target size/spacing (WCAG 2.5.8 AA).
+> **Actual behaviour:** `target-size` violation.
+>
+> **Proposed resolution:** Increase `min-height`/`min-width` or padding for bulk action buttons in admin theme stylesheet.
+
+---
+
+### 🆕 #4 — Claro block layout: dropbutton "Enable" links fail color contrast (desktop + mobile) *(Serious — WCAG 1.4.3)*
+
+**Pattern IDs:** `DRU-7DE8109C`, `DRU-A86FEC99`, `DRU-B03C849D`, `DRU-431AA300` | **Theme affected:** claro
+**Affected pages:** /admin/structure/block (desktop and mobile)
+**Affected templates:** Block layout dropbutton rows; `block.html.twig` in one variant
+
+**Suggested issue title:** `Claro block layout: dropbutton "Enable" action link contrast fails in disabled block rows`
+
+**Suggested wording:**
+> **Problem/Motivation:** On `/admin/structure/block`, "Enable" links inside compact dropbuttons fail color contrast for both disabled and enabled block rows, on desktop and mobile viewports.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/structure/block`
+> 2. Run axe (desktop and mobile emulation) — rule `color-contrast`, look for dropbutton action link violations
+>
+> **Expected behaviour:** All action link text satisfies 4.5:1 contrast ratio.
+> **Actual behaviour:** Four distinct color-contrast failures in dropbutton action states.
+>
+> **Proposed resolution:** Tune dropbutton/link color tokens in Claro for disabled and compact states.
+
+---
+
+### 🆕 #5 — Admin content pager links fail target-size requirements *(Serious — WCAG 2.5.8)*
+
+**Pattern IDs:** `DRU-3B7B8C5B`, `DRU-765CC364`, `DRU-11E18AF0`, `DRU-C2A88283` | **Theme affected:** admin
+**Affected pages:** /admin/content
+**Affected templates:** Pager/pagination templates used by admin content listing
+
+**Suggested issue title:** `Admin content list pager links (page number, next, last) fail target-size requirements`
+
+**Suggested wording:**
+> **Problem/Motivation:** Pagination controls on `/admin/content` (page number, next page, last page links) fail the WCAG 2.5.8 minimum target-size requirement.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/content`
+> 2. Run axe — rule `target-size`, inspect pager anchor violations
+>
+> **Expected behaviour:** Each pager link meets the 24×24px minimum clickable area.
+> **Actual behaviour:** Four target-size violations across pager links.
+>
+> **Proposed resolution:** Increase clickable area and spacing for pager controls in admin theme pager styling.
+
+---
+
+### 🆕 #6 — Admin config details summaries fail target-size on site-information page *(Serious — WCAG 2.5.8)*
+
+**Pattern IDs:** `DRU-4791601D`, `DRU-A7F049C2`, `DRU-AC904086` | **Theme affected:** admin
+**Affected pages:** /admin/config/system/site-information
+**Affected templates:** Details/summary rendering for admin config forms
+
+**Suggested issue title:** `Admin theme details summary toggles ("Site details", "Front page", "Error pages") fail target-size`
+
+**Suggested wording:**
+> **Problem/Motivation:** The `<details>`/`<summary>` section toggles on `/admin/config/system/site-information` are too small as touch targets.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/config/system/site-information`
+> 2. Run axe — rule `target-size`, inspect all three summary elements
+>
+> **Expected behaviour:** Summary controls meet the 24×24px minimum.
+> **Actual behaviour:** target-size violations on "Site details", "Front page", and "Error pages" summaries.
+>
+> **Proposed resolution:** Increase summary hit area via padding/min-height in admin theme form-details styling.
+
+---
+
+### 🆕 #7 — Front-page node teaser "Read more" link target-size fails on admin theme (desktop + mobile) *(Serious — WCAG 2.5.8)*
+
+**Pattern IDs:** `DRU-3DB41465`, `DRU-408CC90A` | **Theme affected:** admin
+**Affected pages:** / (Homepage, desktop and mobile)
+**Affected templates:** Front-page teaser/read-more link output (selector `a[rel="tag"]`)
+
+**Suggested issue title:** `Admin theme front page: teaser "Read more" link target-size fails on desktop and mobile`
+
+**Suggested wording:**
+> **Problem/Motivation:** The read-more anchor (`a[rel="tag"]`) on the front-page teaser fails target-size on both desktop and mobile viewport simulations.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/`
+> 2. Run axe (desktop and mobile) — rule `target-size`, selector `a[rel="tag"]`
+>
+> **Expected behaviour:** Read-more link meets WCAG 2.5.8 minimum.
+> **Actual behaviour:** target-size violations on both viewport sizes.
+>
+> **Proposed resolution:** Increase inline-link click target via padding, line-height, or link container approach in admin theme teaser styling.
+
+---
+
+### 🆕 #8 — Front page lacks a programmatic H1 across admin and Olivero themes *(Moderate — WCAG 1.3.1)*
+
+**Pattern IDs:** `DRU-FE39ED4A`, `DRU-2DD6D8F2` | **Themes affected:** admin, olivero
+**Affected pages:** / (and many admin pages — 27 of 71 pages across themes)
+**Affected templates:** `core/themes/olivero/templates/layout/page--front.html.twig`
+
+**Suggested issue title:** `Front page lacks a programmatic <h1> in Olivero/admin contexts — page-has-heading-one failure`
+
+**Suggested wording:**
+> **Problem/Motivation:** The front page renders without a programmatic `<h1>` element in both the admin and Olivero theme contexts. Screen reader users cannot identify the page topic.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/`
+> 2. Run axe (desktop and mobile) — rule `page-has-heading-one`
+>
+> **Expected behaviour:** Every page has exactly one `<h1>` identifying the page topic.
+> **Actual behaviour:** No `<h1>` detected on the front page in affected configurations.
+>
+> **Proposed resolution:**
+> - Option A — In `page--front.html.twig`, render the site name as `<h1>` on the front page only.
+> - Option B — Ensure the front page node's title is rendered as `<h1>`.
+
+---
+
+### 🆕 #9 — Admin messages component uses contentinfo landmark in nested (non-top-level) context *(Moderate — WCAG 1.3.6)*
+
+**Pattern IDs:** `DRU-C00D2E42`, `DRU-5EECAF91` | **Themes affected:** claro, admin
+**Affected pages:** /admin/appearance, /admin/modules, /admin/config
+**Affected templates:** Admin message rendering templates (`role="contentinfo"` applied to message wrappers)
+
+**Suggested issue title:** `Admin messages: contentinfo landmark is not top-level — landmark-contentinfo-is-top-level failure`
+
+**Suggested wording:**
+> **Problem/Motivation:** Error/status message wrappers in Claro and admin theme use `role="contentinfo"`, but the landmark is nested inside page content rather than at the top level.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/appearance`
+> 2. Run axe — rule `landmark-contentinfo-is-top-level`, selectors `.messages-list__item` and `div[role="contentinfo"]`
+>
+> **Expected behaviour:** contentinfo landmarks appear at top level in document structure.
+> **Actual behaviour:** Violations in both claro and admin themes across three pages.
+>
+> **Proposed resolution:** Refactor message wrapper role assignment or placement so `role="contentinfo"` is not nested inside other landmark regions.
+
+---
+
+### 🆕 #10 — Claro pagination heading level skips, breaking heading order on admin/content *(Moderate — WCAG 1.3.1)*
+
+**Pattern ID:** `DRU-D87CB13C` | **Theme affected:** claro
+**Affected pages:** /admin/content
+**Affected templates:** Pagination heading output (`#pagination-heading`)
+
+**Suggested issue title:** `Claro admin content list: pagination heading level skips and breaks heading order`
+
+**Suggested wording:**
+> **Problem/Motivation:** The pagination heading on `/admin/content` (`<h4 id="pagination-heading">`) skips heading levels relative to surrounding page structure.
+>
+> **Steps to reproduce:**
+> 1. Navigate to `/admin/content`
+> 2. Run axe — rule `heading-order`, selector `#pagination-heading`
+>
+> **Expected behaviour:** Heading hierarchy progresses without skipped levels.
+> **Actual behaviour:** `heading-order` violation.
+>
+> **Proposed resolution:** Normalize the pagination heading level to align with surrounding page heading structure, or use a visually-hidden non-heading label pattern instead.
+

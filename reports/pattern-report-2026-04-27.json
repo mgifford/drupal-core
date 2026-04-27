@@ -1,0 +1,3541 @@
+{
+  "summary": {
+    "generatedAt": "2026-04-27T15:51:10.639Z",
+    "tool": "axe-core (via @axe-core/playwright)",
+    "totalPagesCrawled": 71,
+    "totalViolationInstances": 168,
+    "uniquePatterns": 45,
+    "templateLevelPatterns": 17,
+    "byImpact": {
+      "critical": 0,
+      "serious": 21,
+      "moderate": 22,
+      "minor": 2
+    },
+    "environment": {
+      "browser": "Chromium (via Playwright)",
+      "os": "darwin",
+      "tool": "axe-core via @axe-core/playwright",
+      "baseUrl": "https://drupal-core.ddev.site"
+    }
+  },
+  "patterns": [
+    {
+      "patternId": "DRU-C235B83D",
+      "ruleId": "document-title",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure each HTML document contains a non-empty <title> element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/document-title?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html>",
+      "failureSummary": "Fix any of the following:\n  Document does not have a non-empty <title> element",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "2.4.2",
+        "level": "A",
+        "name": "Page Titled"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-EC568562",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E8E7903B",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-124C15FB",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2E04BCB2",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-3889F3F3",
+      "ruleId": "html-has-lang",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure every HTML document has a lang attribute",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/html-has-lang?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html>",
+      "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "3.1.1",
+        "level": "A",
+        "name": "Language of Page"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-4852BC01",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B8596C33",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-49C645C5",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BEDA3A9C",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-90FD983D",
+      "ruleId": "color-contrast",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        "#edit-submit"
+      ],
+      "selectorKey": "#edit-submit",
+      "html": "<input class=\"button--small button button--primary js-form-submit form-submit\" data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Apply to selected items\">",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #ffffff, background color: #3371ff, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
+      "xpath": "//*[@id=\"edit-submit\"]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-30CCB04A",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9E3C567D",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-7A2CD202",
+      "ruleId": "label-title-only",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label-title-only?application=playwright",
+      "selector": [
+        "input[title=\"Select all rows in this table\"]"
+      ],
+      "selectorKey": "input[title=\"Select all rows in this table\"]",
+      "html": "<input type=\"checkbox\" class=\"form-checkbox form-boolean form-boolean--type-checkbox\" title=\"Select all rows in this table\">",
+      "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element",
+      "xpath": "//input[@title=\"Select all rows in this table\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision",
+        "voice-control"
+      ],
+      "drupalFix": {
+        "rule": "label-title-only",
+        "selectorContains": "Select all rows",
+        "drupalFile": "core/themes/claro/templates/classy/dataset/table.html.twig\n    core/themes/admin/templates/dataset/table.html.twig",
+        "summary": "\"Select all rows\" checkbox is labeled only by its title attribute",
+        "expected": "Checkbox has a visible or visually-hidden <label>, or aria-label",
+        "actual": "input[title=\"Select all rows in this table\"] — title is the sole label source",
+        "fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-333A0C48",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A6512BE5",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-7A2CD202",
+      "ruleId": "label-title-only",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label-title-only?application=playwright",
+      "selector": [
+        "input[title=\"Select all rows in this table\"]"
+      ],
+      "selectorKey": "input[title=\"Select all rows in this table\"]",
+      "html": "<input type=\"checkbox\" class=\"form-checkbox\" title=\"Select all rows in this table\">",
+      "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element",
+      "xpath": "//input[@title=\"Select all rows in this table\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision",
+        "voice-control"
+      ],
+      "drupalFix": {
+        "rule": "label-title-only",
+        "selectorContains": "Select all rows",
+        "drupalFile": "core/themes/claro/templates/classy/dataset/table.html.twig\n    core/themes/admin/templates/dataset/table.html.twig",
+        "summary": "\"Select all rows\" checkbox is labeled only by its title attribute",
+        "expected": "Checkbox has a visible or visually-hidden <label>, or aria-label",
+        "actual": "input[title=\"Select all rows in this table\"] — title is the sole label source",
+        "fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-4E756E59",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8302F38F",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-74CA7842",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "#edit-submit--2"
+      ],
+      "selectorKey": "#edit-submit--2",
+      "html": "<input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit--2\" name=\"op\" value=\"Apply to selected items\" class=\"button js-form-submit form-submit\">",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (153.1px by 21px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px.",
+      "xpath": "//*[@id=\"edit-submit--2\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-E49123E1",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0EF5C7A4",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-7DE8109C",
+      "ruleId": "color-contrast",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        "tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a"
+      ],
+      "selectorKey": "tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+      "html": "<a href=\"/admin/structure/block/manage/claro_help/enable?destination=/admin/structure/block&amp;token=ImxVB9mE8szPh7cm904GCJsAsl4XxfRBzIRzi49o7gg\">Enable</a>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.1 (foreground color: #6a6b6f, background color: #e1e2e5, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
+      "xpath": "//tr[@data-drupal-selector=\"edit-blocks-claro-help\"]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "(theme-specific template)",
+        "hint": "Theme template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-E471277A",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-A86FEC99",
+      "ruleId": "color-contrast",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        ".block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a"
+      ],
+      "selectorKey": ".block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+      "html": "<a href=\"/admin/structure/block/manage/claro_vertical_tabs_test/enable?destination=/admin/structure/block&amp;token=5lFi1W2jOuJKWNol6l8DiR1NCsfdaKhNaVWq2S8FmPM\">Enable</a>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.1 (foreground color: #6a6b6f, background color: #e1e2e5, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
+      "xpath": "//*[contains(@class,\"block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a\")]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "block.html.twig",
+        "hint": "Block template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-1AE9FA8A",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-B03C849D",
+      "ruleId": "color-contrast",
+      "screenType": "mobile",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        "tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a"
+      ],
+      "selectorKey": "tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+      "html": "<a href=\"/admin/structure/block/manage/claro_help/enable?destination=/admin/structure/block&amp;token=ImxVB9mE8szPh7cm904GCJsAsl4XxfRBzIRzi49o7gg\">Enable</a>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.1 (foreground color: #6a6b6f, background color: #e1e2e5, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
+      "xpath": "//tr[@data-drupal-selector=\"edit-blocks-claro-help\"]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "(theme-specific template)",
+        "hint": "Theme template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-66719F9C",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-431AA300",
+      "ruleId": "color-contrast",
+      "screenType": "mobile",
+      "theme": "claro",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        ".block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a"
+      ],
+      "selectorKey": ".block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+      "html": "<a href=\"/admin/structure/block/manage/claro_vertical_tabs_test/enable?destination=/admin/structure/block&amp;token=5lFi1W2jOuJKWNol6l8DiR1NCsfdaKhNaVWq2S8FmPM\">Enable</a>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.1 (foreground color: #6a6b6f, background color: #e1e2e5, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
+      "xpath": "//*[contains(@class,\"block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a\")]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "block.html.twig",
+        "hint": "Block template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-BF1B340F",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-3DB41465",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[rel=\"tag\"]"
+      ],
+      "selectorKey": "a[rel=\"tag\"]",
+      "html": "<a href=\"/node/1\" rel=\"tag\" title=\"testing now\" hreflang=\"en\">Read more<span class=\"visually-hidden\"> about testing now</span></a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (69.8px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px.",
+      "xpath": "//a[@rel=\"tag\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-C63849E0",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-408CC90A",
+      "ruleId": "target-size",
+      "screenType": "mobile",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[rel=\"tag\"]"
+      ],
+      "selectorKey": "a[rel=\"tag\"]",
+      "html": "<a href=\"/node/1\" rel=\"tag\" title=\"testing now\" hreflang=\"en\">Read more<span class=\"visually-hidden\"> about testing now</span></a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (69.8px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px.",
+      "xpath": "//a[@rel=\"tag\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-0D4B42E2",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-C1935DC5",
+      "ruleId": "target-size",
+      "screenType": "mobile",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "input[value=\"Log in\"]"
+      ],
+      "selectorKey": "input[value=\"Log in\"]",
+      "html": "<input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Log in\" class=\"button js-form-submit form-submit\">",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (52.3px by 21px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px.",
+      "xpath": "//input[@value=\"Log in\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-CD72ACAA",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-3B7B8C5B",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[href=\"?page=0\"]"
+      ],
+      "selectorKey": "a[href=\"?page=0\"]",
+      "html": "<a href=\"?page=0\" title=\"Current page\" aria-current=\"page\">\n            <span class=\"visually-hidden\">\n              Page\n            </span>1</a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (8px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px.",
+      "xpath": "//a[@href=\"?page=0\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-36B26A93",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-765CC364",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[title=\"Go to page 2\"]"
+      ],
+      "selectorKey": "a[title=\"Go to page 2\"]",
+      "html": "<a href=\"?page=1\" title=\"Go to page 2\">\n            <span class=\"visually-hidden\">\n              Page\n            </span>2</a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (8px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px.",
+      "xpath": "//a[@title=\"Go to page 2\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-DC683448",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-11E18AF0",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[title=\"Go to next page\"]"
+      ],
+      "selectorKey": "a[title=\"Go to next page\"]",
+      "html": "<a href=\"?page=1\" title=\"Go to next page\" rel=\"next\">\n            <span class=\"visually-hidden\">Next page</span>\n            <span aria-hidden=\"true\">Next ›</span>\n          </a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (40.4px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px.",
+      "xpath": "//a[@title=\"Go to next page\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-C117FC78",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-C2A88283",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "a[title=\"Go to last page\"]"
+      ],
+      "selectorKey": "a[title=\"Go to last page\"]",
+      "html": "<a href=\"?page=1\" title=\"Go to last page\">\n            <span class=\"visually-hidden\">Last page</span>\n            <span aria-hidden=\"true\">Last »</span>\n          </a>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (39.5px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px.",
+      "xpath": "//a[@title=\"Go to last page\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-649CFA51",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-B8F05163",
+      "ruleId": "color-contrast",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        ".admin-missing"
+      ],
+      "selectorKey": ".admin-missing",
+      "html": "<span class=\"admin-missing\">missing</span>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.99 (foreground color: #ff0000, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "xpath": "//*[contains(@class,\"admin-missing\")]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-C3282CAD",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-4791601D",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "summary[aria-controls=\"edit-site-information\"]"
+      ],
+      "selectorKey": "summary[aria-controls=\"edit-site-information\"]",
+      "html": "<summary role=\"button\" aria-controls=\"edit-site-information\" aria-expanded=\"true\">Site details<span class=\"summary\"></span></summary>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (920px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px.",
+      "xpath": "//summary[@aria-controls=\"edit-site-information\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-56C43905",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-A7F049C2",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "summary[aria-controls=\"edit-front-page\"]"
+      ],
+      "selectorKey": "summary[aria-controls=\"edit-front-page\"]",
+      "html": "<summary role=\"button\" aria-controls=\"edit-front-page\" aria-expanded=\"true\">Front page<span class=\"summary\"></span></summary>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (920px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px.",
+      "xpath": "//summary[@aria-controls=\"edit-front-page\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-BD996098",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-AC904086",
+      "ruleId": "target-size",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "serious",
+      "description": "Ensure touch targets have sufficient size and space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "selector": [
+        "summary[aria-controls=\"edit-error-page\"]"
+      ],
+      "selectorKey": "summary[aria-controls=\"edit-error-page\"]",
+      "html": "<summary role=\"button\" aria-controls=\"edit-error-page\" aria-expanded=\"true\">Error pages<span class=\"summary\"></span></summary>",
+      "failureSummary": "Fix any of the following:\n  Target has insufficient size (920px by 18px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px.",
+      "xpath": "//summary[@aria-controls=\"edit-error-page\"]",
+      "wcag": {
+        "sc": "2.5.8",
+        "level": "AA",
+        "name": "Target Size (Minimum)"
+      },
+      "impactGroups": [
+        "motor",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-D2F9E6D9",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-BEADC0A1",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-F8827C54",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-67D44CCE",
+          "name": "Action link demo",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1DA96D9D",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6C398E97",
+          "name": "User register",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6C5B7C93",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A695C315",
+          "name": "Search results",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0B3EE67E",
+          "name": "404 page",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FF128C56",
+          "name": "Admin dashboard",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9AC3040C",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-96363970",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-98495517",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C2F7FA35",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1981CB52",
+          "name": "Structure",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4ECE022D",
+          "name": "Content types",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1DC30C0C",
+          "name": "Add content type",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-60C8DDAF",
+          "name": "Taxonomy",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DE8799B2",
+          "name": "Add vocabulary",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4535042B",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-087DE69B",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CA114DF0",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-79B55CBF",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-891F79A4",
+          "name": "User edit (uid 1)",
+          "path": "/user/1/edit",
+          "url": "https://drupal-core.ddev.site/user/1/edit",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-40A07FBA",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7CEE7C80",
+          "name": "Text formats",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5551952A",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6FA84AFC",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CEE1A2AA",
+          "name": "Reports",
+          "path": "/admin/reports",
+          "url": "https://drupal-core.ddev.site/admin/reports",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-FE39ED4A",
+      "ruleId": "page-has-heading-one",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html lang=\"en\" dir=\"ltr\" class=\" js\">",
+      "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "page-has-heading-one",
+        "selectorContains": "html",
+        "drupalFile": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+        "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+        "expected": "Every page contains exactly one <h1> that identifies the page",
+        "actual": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+        "fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-B1E51EE3",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-439A4705",
+          "name": "Action link demo",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-14F3BC8E",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1C8C274C",
+          "name": "User register",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E3BCD87B",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D57620CE",
+          "name": "Search results",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A2F9943B",
+          "name": "404 page",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8D0B551F",
+          "name": "Admin dashboard",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A6C33528",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A3AB7C2F",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6CEFB341",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-51CDA53A",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A45D63AF",
+          "name": "Structure",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1B242E49",
+          "name": "Content types",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F72130DD",
+          "name": "Add content type",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-84E1E015",
+          "name": "Taxonomy",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2021033E",
+          "name": "Add vocabulary",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3767E6E5",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-99B9A5D7",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9572160C",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5498FDF7",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-44170817",
+          "name": "User edit (uid 1)",
+          "path": "/user/1/edit",
+          "url": "https://drupal-core.ddev.site/user/1/edit",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-78A19F48",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4CBF3459",
+          "name": "Text formats",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F6A4E3CF",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-55B2EA69",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BCB919FF",
+          "name": "Reports",
+          "path": "/admin/reports",
+          "url": "https://drupal-core.ddev.site/admin/reports",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-BEADC0A1",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-023C0C14",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-317C3E04",
+          "name": "Action link demo",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-51939F77",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C480966D",
+          "name": "User register",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-86B29A81",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7FE60C8F",
+          "name": "Search results",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-ADE63447",
+          "name": "404 page",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2BC359AA",
+          "name": "Admin dashboard",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7ECAFC89",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-65B63B2A",
+          "name": "Structure",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-69A67690",
+          "name": "Content types",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3D37A534",
+          "name": "Add content type",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7C35EF21",
+          "name": "Taxonomy",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-83B31CD4",
+          "name": "Add vocabulary",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B723E4A5",
+          "name": "Block layout",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-749172A9",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CA5C3957",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3F530281",
+          "name": "People",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3E34BE50",
+          "name": "User edit (uid 1)",
+          "path": "/user/1/edit",
+          "url": "https://drupal-core.ddev.site/user/1/edit",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FD3B185F",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C8614C7B",
+          "name": "Text formats",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6320C953",
+          "name": "Site information",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9A54A2EB",
+          "name": "Reports",
+          "path": "/admin/reports",
+          "url": "https://drupal-core.ddev.site/admin/reports",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-BEADC0A1",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-B7EC21C6",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1548AA5E",
+          "name": "Action link demo",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BC0E758C",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C5F240D9",
+          "name": "User register",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3F2AC72F",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0F6CD979",
+          "name": "Search results",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D00DC29B",
+          "name": "404 page",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-6825C79C",
+      "ruleId": "region",
+      "screenType": "mobile",
+      "theme": "claro",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-FFDDC742",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-027F8B62",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-BA767068",
+          "name": "Admin dashboard (mobile)",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-55CE76E2",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-2DD6D8F2",
+      "ruleId": "page-has-heading-one",
+      "screenType": "mobile",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html lang=\"en\" dir=\"ltr\" class=\" js\">",
+      "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "page-has-heading-one",
+        "selectorContains": "html",
+        "drupalFile": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+        "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+        "expected": "Every page contains exactly one <h1> that identifies the page",
+        "actual": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+        "fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-935205AF",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-12DE4D98",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-2E8EF0BE",
+          "name": "Admin dashboard (mobile)",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-7266FF83",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-6825C79C",
+      "ruleId": "region",
+      "screenType": "mobile",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-9ABEE34E",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-2105F176",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-984F7D3B",
+          "name": "Admin dashboard (mobile)",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-ED320798",
+          "name": "Block layout (mobile)",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "theme": "admin",
+          "viewport": {
+            "width": 415,
+            "height": 823
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-C2F5C18F",
+      "ruleId": "landmark-one-main",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure the document has a main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-one-main?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html>",
+      "failureSummary": "Fix all of the following:\n  Document does not have a main landmark",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-254D9440",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7E81F188",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-631D2EDC",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3BC2C656",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-6D993968",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "em:nth-child(3)"
+      ],
+      "selectorKey": "em:nth-child(3)",
+      "html": "<em class=\"placeholder\">Drupal\\Core\\Extension\\Exception\\UnknownExtensionException</em>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//em:nth-child(3)",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-78DCEE99",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4707A980",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4511B678",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C18723C2",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-C0E2CD50",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "em:nth-child(4)"
+      ],
+      "selectorKey": "em:nth-child(4)",
+      "html": "<em class=\"placeholder\">Drupal\\Core\\Extension\\ExtensionList-&gt;getPathname()</em>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//em:nth-child(4)",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-90E2FF90",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3B77EF17",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0A1EB9A5",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-229AA40E",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-F3CDEB14",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "em:nth-child(5)"
+      ],
+      "selectorKey": "em:nth-child(5)",
+      "html": "<em class=\"placeholder\">533</em>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//em:nth-child(5)",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-6F778062",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C1B2A742",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-EDA9CB70",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-93F91D1C",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-48456B2D",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "em:nth-child(6)"
+      ],
+      "selectorKey": "em:nth-child(6)",
+      "html": "<em class=\"placeholder\">core/lib/Drupal/Core/Extension/ExtensionList.php</em>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//em:nth-child(6)",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-87A97076",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9BC30748",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4E5170C4",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5B806DBF",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-713ADB88",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "pre"
+      ],
+      "selectorKey": "pre",
+      "html": "<pre class=\"backtrace\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//pre",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-E30C1FE5",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0FDB6CCC",
+          "name": "Create article",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-76EE2281",
+          "name": "Create basic page",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1A6431B5",
+          "name": "Text format (restricted)",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-C00D2E42",
+      "ruleId": "landmark-contentinfo-is-top-level",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "moderate",
+      "description": "Ensure the contentinfo landmark is at top level",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=playwright",
+      "selector": [
+        ".messages-list__item"
+      ],
+      "selectorKey": ".messages-list__item",
+      "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+      "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark.",
+      "xpath": "//*[contains(@class,\"messages-list__item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-3B986C77",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-00D8B74E",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C2D0B460",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-5EECAF91",
+      "ruleId": "landmark-contentinfo-is-top-level",
+      "screenType": "desktop",
+      "theme": "admin",
+      "impact": "moderate",
+      "description": "Ensure the contentinfo landmark is at top level",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=playwright",
+      "selector": [
+        "div[role=\"contentinfo\"]"
+      ],
+      "selectorKey": "div[role=\"contentinfo\"]",
+      "html": "<div role=\"contentinfo\" aria-label=\"Error message\">",
+      "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark.",
+      "xpath": "//div[@role=\"contentinfo\"]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-9759D408",
+          "name": "Appearance",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3FC6D146",
+          "name": "Modules",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-28B699FB",
+          "name": "Configuration",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "theme": "admin",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-12C757FE",
+      "ruleId": "region",
+      "screenType": "desktop",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "#primary-tabs-title"
+      ],
+      "selectorKey": "#primary-tabs-title",
+      "html": "<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">Primary tabs</h2>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[@id=\"primary-tabs-title\"]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "region",
+        "selectorContains": "tabs-title",
+        "drupalFile": "core/themes/claro/templates/menu-local-tasks.html.twig\n    core/themes/olivero/templates/navigation/menu-local-tasks.html.twig",
+        "summary": "Local task tab headings (#primary-tabs-title) are outside any landmark region",
+        "expected": "The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark",
+        "actual": "<h2 id=\"primary-tabs-title\"> is a sibling of <nav>, and the nav may be outside main/aside/etc.",
+        "fix": "Move the heading inside the <nav> it labels:\n\n{# Before #}\n<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">…</nav>\n\n{# After — h2 moves inside nav #}\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">\n  <h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n  …\n</nav>",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/3318396"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-EE604664",
+          "name": "User login",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DF16DD53",
+          "name": "User password reset",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-6825C79C",
+      "ruleId": "region",
+      "screenType": "mobile",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-8CE0429C",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "olivero",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-94D67B9A",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "olivero",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-FE39ED4A",
+      "ruleId": "page-has-heading-one",
+      "screenType": "desktop",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
+      "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "page-has-heading-one",
+        "selectorContains": "html",
+        "drupalFile": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+        "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+        "expected": "Every page contains exactly one <h1> that identifies the page",
+        "actual": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+        "fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-F78161F0",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "olivero",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-2DD6D8F2",
+      "ruleId": "page-has-heading-one",
+      "screenType": "mobile",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "html": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
+      "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "page-has-heading-one",
+        "selectorContains": "html",
+        "drupalFile": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+        "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+        "expected": "Every page contains exactly one <h1> that identifies the page",
+        "actual": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+        "fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-47B4408E",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "olivero",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-E877649B",
+      "ruleId": "region",
+      "screenType": "mobile",
+      "theme": "olivero",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        "#primary-tabs-title"
+      ],
+      "selectorKey": "#primary-tabs-title",
+      "html": "<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">Primary tabs</h2>",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[@id=\"primary-tabs-title\"]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "region",
+        "selectorContains": "tabs-title",
+        "drupalFile": "core/themes/claro/templates/menu-local-tasks.html.twig\n    core/themes/olivero/templates/navigation/menu-local-tasks.html.twig",
+        "summary": "Local task tab headings (#primary-tabs-title) are outside any landmark region",
+        "expected": "The <h2> heading is inside the <nav> it labels, or the <nav> itself is inside a landmark",
+        "actual": "<h2 id=\"primary-tabs-title\"> is a sibling of <nav>, and the nav may be outside main/aside/etc.",
+        "fix": "Move the heading inside the <nav> it labels:\n\n{# Before #}\n<h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">…</nav>\n\n{# After — h2 moves inside nav #}\n<nav class=\"tabs-wrapper\" aria-labelledby=\"primary-tabs-title\">\n  <h2 id=\"primary-tabs-title\" class=\"visually-hidden\">{{ 'Primary tabs'|t }}</h2>\n  …\n</nav>",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/3318396"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-B2C79C3A",
+          "name": "User login (mobile)",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "theme": "olivero",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-3ADA94F4",
+      "ruleId": "heading-order",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+      "selector": [
+        ".form-datetime-wrapper.form-item:nth-child(4) > h4"
+      ],
+      "selectorKey": ".form-datetime-wrapper.form-item:nth-child(4) > h4",
+      "html": "<h4 class=\"form-item__label\">Datelist</h4>",
+      "failureSummary": "Fix any of the following:\n  Heading order invalid",
+      "xpath": "//*[contains(@class,\"form-datetime-wrapper.form-item:nth-child(4) > h4\")]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-A072EE82",
+          "name": "Form style demo",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-D87CB13C",
+      "ruleId": "heading-order",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+      "selector": [
+        "#pagination-heading"
+      ],
+      "selectorKey": "#pagination-heading",
+      "html": "<h4 id=\"pagination-heading\" class=\"visually-hidden\">Pagination</h4>",
+      "failureSummary": "Fix any of the following:\n  Heading order invalid",
+      "xpath": "//*[@id=\"pagination-heading\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-434B52A1",
+          "name": "Content list",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-DC320928",
+      "ruleId": "empty-heading",
+      "screenType": "desktop",
+      "theme": "claro",
+      "impact": "minor",
+      "description": "Ensure headings have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/empty-heading?application=playwright",
+      "selector": [
+        "h1"
+      ],
+      "selectorKey": "h1",
+      "html": "<h1 class=\"page-title\"></h1>",
+      "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+      "xpath": "//h1",
+      "wcag": {
+        "sc": "unknown",
+        "level": "?",
+        "name": "See axe docs"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-C94EE4FD",
+          "name": "Homepage",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "theme": "claro",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ]
+    },
+    {
+      "patternId": "DRU-0CA45C5C",
+      "ruleId": "empty-heading",
+      "screenType": "mobile",
+      "theme": "claro",
+      "impact": "minor",
+      "description": "Ensure headings have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/empty-heading?application=playwright",
+      "selector": [
+        "h1"
+      ],
+      "selectorKey": "h1",
+      "html": "<h1 class=\"page-title\"></h1>",
+      "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+      "xpath": "//h1",
+      "wcag": {
+        "sc": "unknown",
+        "level": "?",
+        "name": "See axe docs"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-FC2D7546",
+          "name": "Homepage (mobile)",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "theme": "claro",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ]
+    }
+  ]
+}
