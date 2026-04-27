@@ -43,8 +43,8 @@ export const THEME_CONFIGS: ThemeConfig[] = [
   {
     id: 'admin',
     label: 'Admin (experimental/Gin)',
-    defaultTheme: 'admin',
-    adminTheme: 'admin',
+    defaultTheme: 'default_admin',
+    adminTheme: 'default_admin',
     testAnonymous: true,
     testAdmin: true,
   },

@@ -17,7 +17,7 @@
  *
  * To add a hard gate once a rule is clean, promote it to a11y-regressions.spec.ts.
  */
-import { test } from '@playwright/test';
+import { test, Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -62,6 +62,8 @@ const WCAG_TAGS = [
   'best-practice',
 ];
 
+const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
+
 // Accumulated across all themes and all pages.
 const results: AxeResultRecord[] = [];
 
@@ -73,6 +75,8 @@ const results: AxeResultRecord[] = [];
  * NOTE: cache:rebuild can take 5–10 s — this is expected.
  */
 function switchTheme(config: ThemeConfig): void {
+  const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(' ');
+  execSync(`ddev drush theme:enable ${themesToEnable} -y`);
   execSync(`ddev drush config:set system.theme default ${config.defaultTheme} -y`);
   execSync(`ddev drush config:set system.theme admin ${config.adminTheme} -y`);
   execSync(`ddev drush cache:rebuild`);
@@ -94,24 +98,86 @@ function buildAxeBuilder(page: any): AxeBuilder {
   return new AxeBuilder({ page }).withTags(WCAG_TAGS);
 }
 
+function resolveRoute(page: Page, route: string): string {
+  const configuredBaseUrl = page.context()._options.baseURL ?? DEFAULT_BASE_URL;
+  return new URL(route, configuredBaseUrl).toString();
+}
+
+/**
+ * Wait for page content to stabilize before running axe.
+ * Some admin pages can briefly report an empty <title> if scanned too early.
+ */
+async function ensurePageReadyForScan(page: Page, route: string): Promise<void> {
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForSelector('html', { state: 'attached', timeout: 10000 });
+  await page.waitForSelector('body', { state: 'attached', timeout: 10000 });
+
+  // Network-idle can timeout for pages with long-polling/background requests.
+  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => undefined);
+
+  await page
+    .waitForFunction(() => document.readyState === 'complete', undefined, { timeout: 10000 })
+    .catch(() => undefined);
+
+  const hasNonEmptyTitle = async (): Promise<boolean> => {
+    const title = await page.title();
+    return title.trim().length > 0;
+  };
+
+  if (await hasNonEmptyTitle()) {
+    return;
+  }
+
+  await page
+    .waitForFunction(() => document.title.trim().length > 0, undefined, { timeout: 4000 })
+    .catch(() => undefined);
+
+  const pageState = await page.evaluate(() => ({
+    title: document.title.trim(),
+    lang: document.documentElement.getAttribute('lang'),
+    bodyText: document.body?.innerText ?? '',
+  }));
+
+  if (pageState.title && pageState.lang) {
+    return;
+  }
+
+  if (pageState.bodyText.includes('The website encountered an unexpected error')) {
+    throw new Error(`Route ${route} rendered a Drupal exception page instead of the target document.`);
+  }
+
+  throw new Error(
+    `Route ${route} did not expose a valid HTML document for scanning (title="${pageState.title}", lang=${pageState.lang ?? 'null'}).`,
+  );
+
+  console.warn(`  ↻ Empty title after load on ${route}; retrying once before axe scan.`);
+  await page.goto(resolveRoute(page, route), { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('body', { state: 'attached', timeout: 10000 });
+  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => undefined);
+  await page
+    .waitForFunction(() => document.title.trim().length > 0, undefined, { timeout: 5000 })
+    .catch(() => undefined);
+}
+
 // ── Test suite ───────────────────────────────────────────────────────────────
 
 test.describe('Axe crawl — multi-theme', () => {
+  test.use({
+    baseURL: DEFAULT_BASE_URL,
+    ignoreHTTPSErrors: true,
+  });
+
   // Capture original theme settings so we can restore them after the full run.
   let originalDefault: string;
   let originalAdmin: string;
 
   test.beforeAll(async () => {
     originalDefault = getThemeSetting('default');
-    originalAdmin = getThemeSetting('admin');
+    // Some local installs may have an empty admin theme value.
+    originalAdmin = getThemeSetting('admin') || 'claro';
   });
 
   test.afterAll(async () => {
-    // Restore the site to its original theme configuration.
-    execSync(`ddev drush config:set system.theme default ${originalDefault} -y`);
-    execSync(`ddev drush config:set system.theme admin ${originalAdmin} -y`);
-    execSync(`ddev drush cache:rebuild`);
-
     // Write results to the root-level /reports directory.
     // __dirname = core/tests/playwright/tests/  →  ../../../../reports = repo-root/reports/
     const outDir = path.resolve(__dirname, '../../../../reports');
@@ -129,6 +195,11 @@ test.describe('Axe crawl — multi-theme', () => {
     console.log(`   ${datedFile}`);
     console.log(`   ${latestFile} (latest)`);
     console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
+
+    // Restore the site to its original theme configuration.
+    execSync(`ddev drush config:set system.theme default ${originalDefault} -y`);
+    execSync(`ddev drush config:set system.theme admin ${originalAdmin} -y`);
+    execSync(`ddev drush cache:rebuild`);
   });
 
   // ── Per-theme test groups ─────────────────────────────────────────────────
@@ -147,7 +218,8 @@ test.describe('Axe crawl — multi-theme', () => {
               await page.setViewportSize(entry.viewport);
             }
 
-            await page.goto(entry.path, { waitUntil: 'networkidle' });
+            await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+            await ensurePageReadyForScan(page, entry.path);
 
             const axeResults = await buildAxeBuilder(page).analyze();
 
@@ -187,7 +259,8 @@ test.describe('Axe crawl — multi-theme', () => {
               await page.setViewportSize(entry.viewport);
             }
 
-            await page.goto(entry.path, { waitUntil: 'networkidle' });
+            await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+            await ensurePageReadyForScan(page, entry.path);
 
             const axeResults = await buildAxeBuilder(page).analyze();
 
