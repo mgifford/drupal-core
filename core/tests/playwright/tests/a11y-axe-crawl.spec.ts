@@ -3,6 +3,8 @@
  *
  * Iterates over THEME_CONFIGS, switches the live Drupal site theme via drush,
  * then runs axe against every page in the inventory (anonymous + admin).
+ * Each page is tested at both desktop (1280×800) and mobile (375×812) viewports.
+ * Each Drupal theme is tested in both light and dark color scheme modes.
  * Violations are written to reports/axe-results.json for pattern analysis.
  *
  * Run locally:
@@ -12,8 +14,14 @@
  * records all findings so the pattern analyzer can group them by template.
  * Hard failures are reserved for the regression tests (a11y-regressions.spec.ts).
  *
- * NOTE: drush cache:rebuild takes 5–10 s per call. With 3 theme switches ×
- * 2 page groups each, budget ~60 s of overhead on top of axe scan time.
+ * Result accumulation strategy:
+ *   Each inner describe writes a partial JSON shard to .tmp-crawl/ in its
+ *   own afterAll. The outer afterAll merges all shards into axe-results.json.
+ *   This avoids a Playwright timing issue where the outer afterAll can fire
+ *   before inner describe tests push their results when test.use() is present.
+ *
+ * NOTE: drush cache:rebuild takes 5–10 s per call. Budget ~30 s overhead
+ * per unique Drupal theme switch (light + dark share the same switch).
  *
  * To add a hard gate once a rule is clean, promote it to a11y-regressions.spec.ts.
  */
@@ -42,11 +50,13 @@ interface AxeViolation {
 
 /** Per-page findings record written to axe-results.json. */
 interface AxeResultRecord {
-  /** Theme config id (e.g. 'olivero', 'claro', 'admin'). */
+  /** Theme config id (e.g. 'olivero', 'claro-dark', 'admin'). */
   theme: string;
   page: string;
   path: string;
   viewport: { width: number; height: number };
+  /** Browser color scheme preference used during this scan. */
+  colorScheme: 'light' | 'dark';
   timestamp: string;
   violations: AxeViolation[];
   incomplete: AxeViolation[];
@@ -64,15 +74,25 @@ const WCAG_TAGS = [
 
 const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 
-// Accumulated across all themes and all pages.
-const results: AxeResultRecord[] = [];
+/**
+ * Standard viewports for every page scan.
+ * All pages are tested at both sizes; no separate "(mobile)" page entries needed.
+ */
+const STANDARD_VIEWPORTS = [
+  { label: '',          width: 1280, height: 800  }, // desktop
+  { label: ' (mobile)', width: 375,  height: 812  }, // mobile
+] as const;
+
+/** Temp directory for per-describe partial result shards. */
+const OUT_DIR = path.resolve(__dirname, '../../../../reports');
+const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
 
 // ── Theme switching ──────────────────────────────────────────────────────────
 
 /**
  * Apply a theme configuration to the running Drupal site via drush.
  * Runs synchronously so Playwright's beforeAll sequencing is respected.
- * NOTE: cache:rebuild can take 5–10 s — this is expected.
+ * Dark/light variants of the same Drupal theme share one switch call.
  */
 function switchTheme(config: ThemeConfig): void {
   const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(' ');
@@ -149,14 +169,59 @@ async function ensurePageReadyForScan(page: Page, route: string): Promise<void> 
   throw new Error(
     `Route ${route} did not expose a valid HTML document for scanning (title="${pageState.title}", lang=${pageState.lang ?? 'null'}).`,
   );
+}
 
-  console.warn(`  ↻ Empty title after load on ${route}; retrying once before axe scan.`);
-  await page.goto(resolveRoute(page, route), { waitUntil: 'domcontentloaded' });
-  await page.waitForSelector('body', { state: 'attached', timeout: 10000 });
-  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => undefined);
-  await page
-    .waitForFunction(() => document.title.trim().length > 0, undefined, { timeout: 5000 })
-    .catch(() => undefined);
+// ── Shard helpers ─────────────────────────────────────────────────────────────
+
+/**
+ * Write a partial result shard to TEMP_DIR so results survive even if the
+ * outer afterAll fires before all inner describes have pushed their data.
+ */
+function writeResultShard(shardId: string, records: AxeResultRecord[]): void {
+  fs.mkdirSync(TEMP_DIR, { recursive: true });
+  const shardFile = path.join(TEMP_DIR, `${shardId}.json`);
+  fs.writeFileSync(shardFile, JSON.stringify(records, null, 2));
+}
+
+/**
+ * Merge all shard files written by inner describes into the final output files.
+ */
+function mergeAndWriteResults(originalDefault: string, originalAdmin: string): void {
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+
+  let allResults: AxeResultRecord[] = [];
+
+  if (fs.existsSync(TEMP_DIR)) {
+    const shards = fs.readdirSync(TEMP_DIR).filter((f) => f.endsWith('.json'));
+    for (const shard of shards.sort()) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(TEMP_DIR, shard), 'utf8'));
+        allResults = allResults.concat(data);
+      } catch {
+        console.warn(`  ⚠️  Could not read shard ${shard}, skipping.`);
+      }
+    }
+    fs.rmSync(TEMP_DIR, { recursive: true, force: true });
+  }
+
+  const date = new Date().toISOString().slice(0, 10);
+  const datedFile = path.join(OUT_DIR, `axe-results-${date}.json`);
+  const latestFile = path.join(OUT_DIR, 'axe-results.json');
+  const json = JSON.stringify(allResults, null, 2);
+
+  fs.writeFileSync(datedFile, json);
+  fs.writeFileSync(latestFile, json);
+
+  console.log(`\n📊 Axe results written to:`);
+  console.log(`   ${datedFile}`);
+  console.log(`   ${latestFile} (latest)`);
+  console.log(`   Total records: ${allResults.length}`);
+  console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
+
+  // Restore the site to its original theme configuration.
+  execSync(`ddev drush config:set system.theme default ${originalDefault} -y`);
+  execSync(`ddev drush config:set system.theme admin ${originalAdmin} -y`);
+  execSync(`ddev drush cache:rebuild`);
 }
 
 // ── Test suite ───────────────────────────────────────────────────────────────
@@ -172,34 +237,16 @@ test.describe('Axe crawl — multi-theme', () => {
   let originalAdmin: string;
 
   test.beforeAll(async () => {
+    // Clear any leftover shards from a previous partial run.
+    if (fs.existsSync(TEMP_DIR)) {
+      fs.rmSync(TEMP_DIR, { recursive: true, force: true });
+    }
     originalDefault = getThemeSetting('default');
-    // Some local installs may have an empty admin theme value.
     originalAdmin = getThemeSetting('admin') || 'claro';
   });
 
   test.afterAll(async () => {
-    // Write results to the root-level /reports directory.
-    // __dirname = core/tests/playwright/tests/  →  ../../../../reports = repo-root/reports/
-    const outDir = path.resolve(__dirname, '../../../../reports');
-    fs.mkdirSync(outDir, { recursive: true });
-
-    const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const datedFile = path.join(outDir, `axe-results-${date}.json`);
-    const latestFile = path.join(outDir, 'axe-results.json');
-
-    const json = JSON.stringify(results, null, 2);
-    fs.writeFileSync(datedFile, json);
-    fs.writeFileSync(latestFile, json);
-
-    console.log(`\n📊 Axe results written to:`);
-    console.log(`   ${datedFile}`);
-    console.log(`   ${latestFile} (latest)`);
-    console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
-
-    // Restore the site to its original theme configuration.
-    execSync(`ddev drush config:set system.theme default ${originalDefault} -y`);
-    execSync(`ddev drush config:set system.theme admin ${originalAdmin} -y`);
-    execSync(`ddev drush cache:rebuild`);
+    mergeAndWriteResults(originalDefault, originalAdmin);
   });
 
   // ── Per-theme test groups ─────────────────────────────────────────────────
@@ -208,38 +255,51 @@ test.describe('Axe crawl — multi-theme', () => {
     // Anonymous pages — no auth required.
     if (themeConfig.testAnonymous) {
       test.describe(`Theme: ${themeConfig.label} — anonymous pages`, () => {
+        test.use({ colorScheme: themeConfig.colorScheme });
+
+        const shardRecords: AxeResultRecord[] = [];
+
         test.beforeAll(() => {
-          switchTheme(themeConfig);
+          // Only switch the Drupal theme when colorScheme is 'light' (the first
+          // variant). The dark variant uses the same Drupal theme; no switch needed.
+          if (themeConfig.colorScheme === 'light') {
+            switchTheme(themeConfig);
+          }
+        });
+
+        test.afterAll(() => {
+          writeResultShard(`${themeConfig.id}-anon`, shardRecords);
         });
 
         for (const entry of anonymousPages) {
-          test(entry.name, async ({ page }) => {
-            if (entry.viewport) {
-              await page.setViewportSize(entry.viewport);
-            }
+          for (const vp of STANDARD_VIEWPORTS) {
+            const testName = `${entry.name}${vp.label}`;
+            test(testName, async ({ page }) => {
+              await page.setViewportSize({ width: vp.width, height: vp.height });
+              await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+              await ensurePageReadyForScan(page, entry.path);
 
-            await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-            await ensurePageReadyForScan(page, entry.path);
+              const axeResults = await buildAxeBuilder(page).analyze();
 
-            const axeResults = await buildAxeBuilder(page).analyze();
+              shardRecords.push({
+                theme: themeConfig.id,
+                page: testName,
+                path: entry.path,
+                viewport: { width: vp.width, height: vp.height },
+                colorScheme: themeConfig.colorScheme,
+                timestamp: new Date().toISOString(),
+                violations: axeResults.violations as AxeViolation[],
+                incomplete: axeResults.incomplete as AxeViolation[],
+              });
 
-            results.push({
-              theme: themeConfig.id,
-              page: entry.name,
-              path: entry.path,
-              viewport: entry.viewport ?? { width: 1280, height: 800 },
-              timestamp: new Date().toISOString(),
-              violations: axeResults.violations as AxeViolation[],
-              incomplete: axeResults.incomplete as AxeViolation[],
+              if (axeResults.violations.length > 0) {
+                console.log(
+                  `  ⚠️  [${themeConfig.id}/${vp.width}px] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
+                  axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
+                );
+              }
             });
-
-            if (axeResults.violations.length > 0) {
-              console.log(
-                `  ⚠️  [${themeConfig.id}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-              );
-            }
-          });
+          }
         }
       });
     }
@@ -247,40 +307,49 @@ test.describe('Axe crawl — multi-theme', () => {
     // Admin pages — use stored auth session.
     if (themeConfig.testAdmin) {
       test.describe(`Theme: ${themeConfig.label} — admin pages`, () => {
-        test.use({ storageState: AUTH_STATE_FILE });
+        test.use({ storageState: AUTH_STATE_FILE, colorScheme: themeConfig.colorScheme });
+
+        const shardRecords: AxeResultRecord[] = [];
 
         test.beforeAll(() => {
-          switchTheme(themeConfig);
+          if (themeConfig.colorScheme === 'light') {
+            switchTheme(themeConfig);
+          }
+        });
+
+        test.afterAll(() => {
+          writeResultShard(`${themeConfig.id}-admin`, shardRecords);
         });
 
         for (const entry of adminPages) {
-          test(entry.name, async ({ page }) => {
-            if (entry.viewport) {
-              await page.setViewportSize(entry.viewport);
-            }
+          for (const vp of STANDARD_VIEWPORTS) {
+            const testName = `${entry.name}${vp.label}`;
+            test(testName, async ({ page }) => {
+              await page.setViewportSize({ width: vp.width, height: vp.height });
+              await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+              await ensurePageReadyForScan(page, entry.path);
 
-            await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-            await ensurePageReadyForScan(page, entry.path);
+              const axeResults = await buildAxeBuilder(page).analyze();
 
-            const axeResults = await buildAxeBuilder(page).analyze();
+              shardRecords.push({
+                theme: themeConfig.id,
+                page: testName,
+                path: entry.path,
+                viewport: { width: vp.width, height: vp.height },
+                colorScheme: themeConfig.colorScheme,
+                timestamp: new Date().toISOString(),
+                violations: axeResults.violations as AxeViolation[],
+                incomplete: axeResults.incomplete as AxeViolation[],
+              });
 
-            results.push({
-              theme: themeConfig.id,
-              page: entry.name,
-              path: entry.path,
-              viewport: entry.viewport ?? { width: 1280, height: 800 },
-              timestamp: new Date().toISOString(),
-              violations: axeResults.violations as AxeViolation[],
-              incomplete: axeResults.incomplete as AxeViolation[],
+              if (axeResults.violations.length > 0) {
+                console.log(
+                  `  ⚠️  [${themeConfig.id}/${vp.width}px] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
+                  axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
+                );
+              }
             });
-
-            if (axeResults.violations.length > 0) {
-              console.log(
-                `  ⚠️  [${themeConfig.id}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-              );
-            }
-          });
+          }
         }
       });
     }

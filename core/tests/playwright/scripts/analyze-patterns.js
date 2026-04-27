@@ -53,6 +53,27 @@ function getScreenType(viewport) {
 }
 
 /**
+ * Format an array of "themeId::colorScheme" condition strings into a human-readable
+ * summary grouped by base theme.
+ *
+ * Example input:  ['admin::dark', 'admin::light', 'claro::dark', 'claro::light', 'olivero::light']
+ * Example output: 'admin (light, dark), claro (light, dark), olivero (light)'
+ */
+function formatConditions(conditions) {
+  if (!conditions || conditions.length === 0) return 'unknown';
+  const byTheme = {};
+  for (const c of conditions) {
+    const [theme, scheme] = c.split('::');
+    if (!byTheme[theme]) byTheme[theme] = new Set();
+    byTheme[theme].add(scheme ?? 'light');
+  }
+  return Object.entries(byTheme)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([theme, schemes]) => `\`${theme}\` (${[...schemes].sort().join(', ')})`)
+    .join(', ');
+}
+
+/**
  * Generate a stable 8-char hex ID for a unique violation pattern.
  * Pattern ID: same rule + selector + screen (across all pages).
  * Instance ID: adds page path — unique per page.
@@ -69,9 +90,9 @@ function generatePatternId(selectorKey, ruleId, screenType) {
   return `DRU-${md5Short([selectorKey, ruleId, screenType].join('|'))}`;
 }
 
-function generateInstanceId(pagePath, selectorKey, ruleId, screenType, themeId) {
-  // Theme included so the same page+rule combo in different themes gets distinct instance IDs.
-  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType, themeId].join('|'))}`;
+function generateInstanceId(pagePath, selectorKey, ruleId, screenType, themeId, colorScheme) {
+  // Theme + colorScheme included so the same page+rule combo in different conditions gets distinct instance IDs.
+  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType, themeId, colorScheme].join('|'))}`;
 }
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
@@ -451,12 +472,15 @@ function main() {
     const screenType = getScreenType(pageResult.viewport);
     // Support both new (multi-theme) and legacy (single-theme) result records.
     const themeId = pageResult.theme ?? 'unknown';
+    const colorScheme = pageResult.colorScheme ?? 'light';
 
     for (const violation of pageResult.violations) {
       for (const node of violation.nodes) {
         const selKey = selectorKey(node);
-        // Include theme in key so each theme's results are tracked separately.
-        const key = `${violation.id}::${selKey}::${screenType}::${themeId}`;
+        // Key on rule + selector + screenType only — theme/colorScheme become conditions metadata.
+        // This means the same bug in olivero-light and olivero-dark is ONE pattern, not two.
+        const key = `${violation.id}::${selKey}::${screenType}`;
+        const conditionKey = `${themeId}::${colorScheme}`;
 
         if (!patternMap.has(key)) {
           const drupalFix = getDrupalFix(violation.id, selKey, node.html ?? '');
@@ -468,7 +492,9 @@ function main() {
             patternId,
             ruleId: violation.id,
             screenType,
-            theme: themeId,
+            // conditions: Set of "themeId::colorScheme" strings seen for this pattern.
+            // Converted to sorted array before output.
+            conditions: new Set(),
             impact: violation.impact,
             description: violation.description,
             helpUrl: violation.helpUrl,
@@ -485,73 +511,77 @@ function main() {
           });
         }
 
-        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType, themeId);
-        patternMap.get(key).pages.push({
-          instanceId,
-          name: pageResult.page,
-          path: pageResult.path,
-          url: `https://drupal-core.ddev.site${pageResult.path}`,
-          screen: screenType,
-          theme: themeId,
-          viewport: pageResult.viewport ?? { width: 1280, height: 800 },
-        });
+        patternMap.get(key).conditions.add(conditionKey);
+
+        const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType, themeId, colorScheme);
+        // Only record one page+condition combination once (deduplicate repeated axe nodes).
+        const pat = patternMap.get(key);
+        const pageCondKey = `${pageResult.path}::${conditionKey}`;
+        if (!pat.pages.some((pg) => pg._condKey === pageCondKey)) {
+          pat.pages.push({
+            instanceId,
+            name: pageResult.page,
+            path: pageResult.path,
+            url: `https://drupal-core.ddev.site${pageResult.path}`,
+            screen: screenType,
+            theme: themeId,
+            colorScheme,
+            viewport: pageResult.viewport ?? { width: 1280, height: 800 },
+            _condKey: pageCondKey,
+          });
+        }
       }
     }
   }
 
-  // ── Sort and filter ──────────────────────────────────────────────────────
+  // ── Sort, filter, and finalise ──────────────────────────────────────────
+  // Convert conditions Sets to sorted arrays and strip internal _condKey field.
+  for (const p of patternMap.values()) {
+    p.conditions = [...p.conditions].sort();
+    for (const pg of p.pages) {
+      delete pg._condKey;
+    }
+  }
+
   const patterns = Array.from(patternMap.values())
     .filter((p) => p.pages.length >= MIN_PAGES)
     .sort((a, b) => priorityScore(a) - priorityScore(b));
 
-  // ── Cross-theme analysis ─────────────────────────────────────────────────
-  // Group per-theme patterns by (ruleId::selectorKey::screenType) — without theme —
-  // to find issues that appear across multiple theme configurations.
-  const crossThemeGroups = new Map(); // key: ruleId::selectorKey::screenType
-  for (const p of patterns) {
-    const groupKey = `${p.ruleId}::${p.selectorKey}::${p.screenType}`;
-    if (!crossThemeGroups.has(groupKey)) {
-      crossThemeGroups.set(groupKey, {
-        patternId: p.patternId, // same across themes by design
-        ruleId: p.ruleId,
-        selectorKey: p.selectorKey,
-        screenType: p.screenType,
-        impact: p.impact,
-        description: p.description,
-        summary: p.drupalFix?.summary ?? `${p.ruleId}: ${p.description.slice(0, 80)}`,
-        themes: new Set(),
-      });
-    }
-    crossThemeGroups.get(groupKey).themes.add(p.theme);
-  }
+  // ── Cross-condition analysis ──────────────────────────────────────────────
+  // Since patterns are now keyed without theme/colorScheme, each pattern already
+  // has a `conditions` array listing which theme×colorScheme combos triggered it.
+  // We derive distinct theme IDs from conditions for the cross-theme summary tables.
 
-  // Collect distinct theme IDs present in the result set.
-  const allThemeIds = [...new Set(patterns.map((p) => p.theme))];
+  // Collect all unique base theme IDs (strip -dark suffix) and full condition IDs.
+  const allConditionIds = [...new Set(patterns.flatMap((p) => p.conditions))];
+  const allThemeIds = [...new Set(allConditionIds.map((c) => c.split('::')[0]))];
   const themeCount = allThemeIds.length || 1;
 
+  // Build cross-theme groups: group patterns by how many distinct base themes they appear in.
   const crossThemeUniversal = [];
   const crossThemeMulti = [];
-  const crossThemeSpecific = {}; // keyed by theme id
+  const crossThemeSpecific = {}; // keyed by base theme id
 
-  for (const group of crossThemeGroups.values()) {
-    const themes = [...group.themes];
+  for (const p of patterns) {
+    const baseThemes = [...new Set(p.conditions.map((c) => c.split('::')[0]))];
     const entry = {
-      patternId: group.patternId,
-      ruleId: group.ruleId,
-      selectorKey: group.selectorKey,
-      screenType: group.screenType,
-      impact: group.impact,
-      summary: group.summary,
-      themes,
-      themeCount: themes.length,
+      patternId: p.patternId,
+      ruleId: p.ruleId,
+      selectorKey: p.selectorKey,
+      screenType: p.screenType,
+      impact: p.impact,
+      summary: p.drupalFix?.summary ?? `${p.ruleId}: ${p.description.slice(0, 80)}`,
+      themes: baseThemes,
+      conditions: p.conditions,
+      themeCount: baseThemes.length,
     };
 
-    if (themes.length >= themeCount) {
+    if (baseThemes.length >= themeCount) {
       crossThemeUniversal.push(entry);
-    } else if (themes.length >= 2) {
+    } else if (baseThemes.length >= 2) {
       crossThemeMulti.push(entry);
     } else {
-      const themeId = themes[0];
+      const themeId = baseThemes[0];
       if (!crossThemeSpecific[themeId]) crossThemeSpecific[themeId] = [];
       crossThemeSpecific[themeId].push(entry);
     }
@@ -603,10 +633,9 @@ function main() {
       id: `DRUPAL-A11Y-${String(i + 1).padStart(3, '0')}`,
       pattern_id: p.patternId,          // stable hash: rule + selector + screen (no theme)
       priority: i + 1,
-      theme: p.theme,
+      conditions: p.conditions,
       isTemplateLevelIssue: p.pages.length >= 3,
       screen: p.screenType,
-      mode: 'light',                    // placeholder; extend for dark-mode scans
       summary: p.drupalFix?.summary ??
         `${p.ruleId}: ${p.description.slice(0, 80)}`,
       rule_id: p.ruleId,
@@ -653,7 +682,7 @@ function main() {
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
-    'Priority', 'ID', 'Pattern_ID', 'Theme', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
+    'Priority', 'ID', 'Pattern_ID', 'Conditions', 'Screen', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
     'Rule_ID', 'Pages_Affected', 'Pct_Pages', 'Is_Template_Issue',
     'Summary', 'Selector', 'Likely_Template', 'Drupal_File',
     'Expected', 'Actual', 'Suggested_Fix', 'Drupal_Issue', 'Axe_URL',
@@ -666,7 +695,7 @@ function main() {
       issue.priority,
       issue.id,
       issue.pattern_id,
-      issue.theme,
+      issue.conditions.join(' | '),
       issue.screen,
       issue.impact,
       issue.wcag_sc,
@@ -726,6 +755,7 @@ function main() {
   lines.push('and are highest priority for core fixes since a single template change benefits everyone.');
   lines.push('');
   lines.push(`**Themes tested:** ${allThemeIds.join(', ') || 'none'}`);
+  lines.push(`**Conditions tested:** ${allConditionIds.sort().join(', ') || 'none'}`);
   lines.push('');
 
   // Universal issues table.
@@ -734,10 +764,10 @@ function main() {
   if (crossThemeUniversal.length === 0) {
     lines.push('_No universal issues found across all tested themes._');
   } else {
-    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
+    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Conditions | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
     for (const g of crossThemeUniversal) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.summary} |`);
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
     }
   }
   lines.push('');
@@ -748,10 +778,10 @@ function main() {
   if (crossThemeMulti.length === 0) {
     lines.push('_No multi-theme issues found._');
   } else {
-    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
+    lines.push('| Pattern ID | Rule | Impact | Screen | Themes | Conditions | Summary |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
     for (const g of crossThemeMulti) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.summary} |`);
+      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.screenType} | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
     }
   }
   lines.push('');
@@ -783,7 +813,8 @@ function main() {
     lines.push('| :--- | :--- |');
     lines.push(`| **ID** | \`${issue.id}\` |`);
     lines.push(`| **Pattern ID** | \`${issue.pattern_id}\` *(stable hash — use to track regressions)* |`);
-    lines.push(`| **Theme** | \`${issue.theme}\` |`);
+    const conditionsSummary = formatConditions(issue.conditions);
+    lines.push(`| **Conditions** | ${conditionsSummary} |`);
     lines.push(`| **Rule** | [\`${issue.rule_id}\`](${issue.axe_url}) |`);
     lines.push(`| **Impact** | **${issue.impact}** |`);
     lines.push(`| **Screen** | ${issue.screen} |`);

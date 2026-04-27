@@ -33,18 +33,6 @@ export const anonymousPages: PageEntry[] = [
   { name: 'User password reset', path: '/user/password', requiresAuth: false },
   { name: 'Search results', path: '/search/node', requiresAuth: false },
   { name: '404 page', path: '/this-page-does-not-exist', requiresAuth: false },
-  {
-    name: 'Homepage (mobile)',
-    path: '/',
-    requiresAuth: false,
-    viewport: { width: 375, height: 812 },
-  },
-  {
-    name: 'User login (mobile)',
-    path: '/user/login',
-    requiresAuth: false,
-    viewport: { width: 375, height: 812 },
-  },
 ];
 
 /** Pages rendered by the admin (Claro) theme — requires authentication. */
@@ -89,18 +77,6 @@ export const adminPages: PageEntry[] = [
     requiresAuth: true,
   },
   { name: 'Reports', path: '/admin/reports', requiresAuth: true },
-  {
-    name: 'Admin dashboard (mobile)',
-    path: '/admin',
-    requiresAuth: true,
-    viewport: { width: 375, height: 812 },
-  },
-  {
-    name: 'Block layout (mobile)',
-    path: '/admin/structure/block',
-    requiresAuth: true,
-    viewport: { width: 415, height: 823 },
-  },
   // Theming Tools pages
   { name: 'Autocomplete', path: '/autocomplete', requiresAuth: true },
   { name: 'Buttons', path: '/buttons', requiresAuth: true },
