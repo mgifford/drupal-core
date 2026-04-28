@@ -27,8 +27,10 @@ const path = require('path');
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
 
-// Date-stamped outputs so each scan is independently reviewable.
-const DATE_STAMP = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+// Date-stamped outputs so each scan is independently reviewable (LOCAL time).
+const pad = (n) => n.toString().padStart(2, '0');
+const now = new Date();
+const DATE_STAMP = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`; // YYYY-MM-DD
 const JSON_OUTPUT         = path.join(REPORTS_DIR, `pattern-report-${DATE_STAMP}.json`);
 const BUGS_JSON_OUTPUT    = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.json`);
 const BUGS_CSV_OUTPUT     = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.csv`);
@@ -106,6 +108,106 @@ function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
 }
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
+
+// ─── ARRM/W3C-Inspired Accessibility Category Mapping ─────────────────────────
+// Maps axe rule IDs to ARRM/W3C task-based categories for report grouping.
+// See: https://www.w3.org/WAI/planning/arrm/tasks/
+const RULE_ARRM_CATEGORY = {
+  // Images and Graphs
+  'image-alt': 'Images and Graphs',
+  'svg-img-alt': 'Images and Graphs',
+  'object-alt': 'Images and Graphs',
+  'area-alt': 'Images and Graphs',
+  'role-img-alt': 'Images and Graphs',
+
+  // Semantic Structure
+  'region': 'Semantic Structure',
+  'landmark-contentinfo-is-top-level': 'Semantic Structure',
+  'landmark-no-duplicate-contentinfo': 'Semantic Structure',
+  'landmark-unique': 'Semantic Structure',
+  'heading-order': 'Semantic Structure',
+  'page-has-heading-one': 'Semantic Structure',
+  'empty-heading': 'Semantic Structure',
+  'listitem': 'Semantic Structure',
+  'list': 'Semantic Structure',
+  'definition-list': 'Semantic Structure',
+  'dlitem': 'Semantic Structure',
+
+  // Input Modalities
+  'tabindex': 'Input Modalities',
+  'target-size': 'Input Modalities',
+  'scrollable-region-focusable': 'Input Modalities',
+  'meta-viewport': 'Input Modalities',
+
+  // Form Interactions
+  'label': 'Form Interactions',
+  'label-title-only': 'Form Interactions',
+  'input-button-name': 'Form Interactions',
+  'button-name': 'Form Interactions',
+  'select-name': 'Form Interactions',
+  'form-field-multiple-labels': 'Form Interactions',
+
+  // CSS and Presentation
+  'color-contrast': 'CSS and Presentation',
+  'meta-refresh': 'CSS and Presentation',
+  'bypass': 'CSS and Presentation',
+
+  // Navigation
+  'skip-link': 'Navigation',
+  'link-in-text-block': 'Navigation',
+  'link-name': 'Navigation',
+  'breadcrumb': 'Navigation', // not an axe rule, but for future custom rules
+
+  // Data Tables
+  'empty-table-header': 'Data Tables',
+  'table-duplicate-name': 'Data Tables',
+  'table-fake-caption': 'Data Tables',
+  'td-headers-attr': 'Data Tables',
+  'th-has-data-cells': 'Data Tables',
+
+  // Animation and Movement
+  // (axe does not directly test animation, but placeholder for future custom rules)
+
+  // Static Content
+  'document-title': 'Static Content',
+  'html-has-lang': 'Static Content',
+  'html-lang-valid': 'Static Content',
+  'valid-lang': 'Static Content',
+
+  // Dynamic Interactions
+  'aria-allowed-attr': 'Dynamic Interactions',
+  'aria-command-name': 'Dynamic Interactions',
+  'aria-hidden-body': 'Dynamic Interactions',
+  'aria-hidden-focus': 'Dynamic Interactions',
+  'aria-input-field-name': 'Dynamic Interactions',
+  'aria-meter-name': 'Dynamic Interactions',
+  'aria-progressbar-name': 'Dynamic Interactions',
+  'aria-required-attr': 'Dynamic Interactions',
+  'aria-required-children': 'Dynamic Interactions',
+  'aria-required-parent': 'Dynamic Interactions',
+  'aria-roles': 'Dynamic Interactions',
+  'aria-toggle-field-name': 'Dynamic Interactions',
+  'aria-valid-attr': 'Dynamic Interactions',
+  'aria-valid-attr-value': 'Dynamic Interactions',
+  'duplicate-id-active': 'Dynamic Interactions',
+  'duplicate-id-aria': 'Dynamic Interactions',
+  'frame-focusable-content': 'Dynamic Interactions',
+  'frame-title': 'Dynamic Interactions',
+  'server-side-image-map': 'Dynamic Interactions',
+  'landmark-banner-is-top-level': 'Dynamic Interactions',
+  'landmark-complementary-is-top-level': 'Dynamic Interactions',
+  'landmark-main-is-top-level': 'Dynamic Interactions',
+  'landmark-no-duplicate-banner': 'Dynamic Interactions',
+  'landmark-no-duplicate-main': 'Dynamic Interactions',
+  'landmark-one-main': 'Dynamic Interactions',
+
+  // Add more as needed for future rules
+};
+
+// Fallback for unmapped rules
+function getCategory(ruleId) {
+  return RULE_ARRM_CATEGORY[ruleId] || 'Other Accessibility Issues';
+}
 // Source: https://dequeuniversity.com/rules/axe/
 const RULE_WCAG = {
   'area-alt':                        { sc: '1.1.1', level: 'A',  name: 'Non-text Content' },
@@ -752,7 +854,7 @@ function main() {
   // ── Legacy pattern-report.json ────────────────────────────────────────────
   fs.writeFileSync(JSON_OUTPUT, JSON.stringify({ summary, patterns }, null, 2));
 
-  // ── PATTERN-REPORT.md — rich human-readable report ────────────────────────
+  // ── PATTERN-REPORT.md — rich human-readable report (by broad category) ──
   const lines = [];
   lines.push('# Drupal Core Accessibility Bug Report');
   lines.push('');
@@ -774,142 +876,30 @@ function main() {
   lines.push(`| Minor | ${summary.byImpact.minor} |`);
   lines.push('');
 
-  // ── Cross-Theme Analysis section ──────────────────────────────────────────
-  lines.push('## Cross-Theme Analysis');
+  // ── Aggregated by Accessibility Category ────────────────────────────────
+  lines.push('## Aggregated Accessibility Issues by Category');
   lines.push('');
-  lines.push('Issues found across multiple Drupal themes. Universal issues affect ALL tested themes');
-  lines.push('and are highest priority for core fixes since a single template change benefits everyone.');
-  lines.push('');
-  lines.push(`**Themes tested:** ${allThemeIds.join(', ') || 'none'}`);
-  lines.push(`**Conditions tested:** ${allConditionIds.sort().join(', ') || 'none'}`);
-  lines.push('');
-
-  // Universal issues table.
-  lines.push('### 🌐 Universal Issues (appear in ALL themes)');
-  lines.push('');
-  if (crossThemeUniversal.length === 0) {
-    lines.push('_No universal issues found across all tested themes._');
-  } else {
-    lines.push('| Pattern ID | Rule | Impact | Themes | Conditions | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
-    for (const g of crossThemeUniversal) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
-    }
-  }
-  lines.push('');
-
-  // Multi-theme issues.
-  lines.push('### 🔗 Multi-Theme Issues (appear in 2+ themes)');
-  lines.push('');
-  if (crossThemeMulti.length === 0) {
-    lines.push('_No multi-theme issues found._');
-  } else {
-    lines.push('| Pattern ID | Rule | Impact | Themes | Conditions | Summary |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
-    for (const g of crossThemeMulti) {
-      lines.push(`| \`${g.patternId}\` | \`${g.ruleId}\` | **${g.impact}** | ${g.themes.join(', ')} | ${g.conditions.join(', ')} | ${g.summary} |`);
-    }
-  }
-  lines.push('');
-
-  // Per-theme unique issues.
-  lines.push('### 🎨 Theme-Specific Issue Counts');
-  lines.push('');
-  lines.push('| Theme | Unique Issues |');
-  lines.push('| :--- | :--- |');
-  for (const themeId of allThemeIds) {
-    const count = (crossThemeSpecific[themeId] ?? []).length;
-    lines.push(`| \`${themeId}\` | ${count} |`);
-  }
-  lines.push('');
-
-  lines.push('## Issues (sorted by priority: impact × frequency)');
-  lines.push('');
-  lines.push('🔁 = Template-level issue (≥3 pages) — fix once, improves many pages.');
-  lines.push('');
-
+  // Group issues by category
+  const categoryMap = {};
   for (const issue of bugsJson.issues) {
-    const isTemplate = issue.isTemplateLevelIssue;
-    const maxVisibleAffectedPages = 3;
-    lines.push(`---`);
+    const cat = getCategory(issue.rule_id);
+    if (!categoryMap[cat]) categoryMap[cat] = [];
+    categoryMap[cat].push(issue);
+  }
+  for (const [cat, issues] of Object.entries(categoryMap)) {
+    lines.push(`### ${cat}`);
     lines.push('');
-    lines.push(`### ${issue.priority}. ${escapeMarkdownInline(issue.summary)} ${isTemplate ? '🔁' : ''}`);
+    lines.push(`- **Total patterns:** ${issues.length}`);
+    // List rules in this category
+    const rules = [...new Set(issues.map(i => i.rule_id))];
+    lines.push(`- **Rules:** ${rules.map(r => '`' + r + '`').join(', ')}`);
+    // List a few example summaries/selectors
     lines.push('');
-    lines.push('| Field | Value |');
-    lines.push('| :--- | :--- |');
-    lines.push(`| **ID** | \`${issue.id}\` |`);
-    lines.push(`| **Pattern ID** | \`${issue.pattern_id}\` *(stable hash — use to track regressions)* |`);
-    const conditionsSummary = formatConditions(issue.conditions);
-    lines.push(`| **Conditions** | ${conditionsSummary} |`);
-    lines.push(`| **Rule** | [\`${issue.rule_id}\`](${issue.axe_url}) |`);
-    lines.push(`| **Impact** | **${issue.impact}** |`);
-    lines.push(`| **WCAG SC** | [${issue.wcag_sc} ${issue.wcag_name}](${issue.wcag_url}) (Level ${issue.wcag_level}) |`);
-    lines.push(`| **Frequency** | ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%) |`);
-    lines.push(`| **Template-level** | ${isTemplate ? '✅ YES — fix once fixes all affected pages' : 'No'} |`);
-    lines.push(`| **Likely template** | \`${issue.likely_template}\` — ${issue.template_hint} |`);
-    lines.push(`| **Drupal file(s)** | ${issue.drupal_file.replace(/\n\s+/g, ', ')} |`);
-    if (issue.drupal_issue) {
-      lines.push(`| **Drupal issue** | ${issue.drupal_issue} |`);
+    for (const issue of issues.slice(0, 3)) {
+      lines.push(`  - ${issue.summary} (e.g. selector: ${issue.selector})`);
     }
-    lines.push(`| **Affected users** | ${issue.impact_groups.join(', ')} |`);
-    lines.push('');
-
-    lines.push('**Affected pages:**');
-    for (const [index, pg] of issue.affected_pages.slice(0, maxVisibleAffectedPages).entries()) {
-      const infoHint = index === 0
-        ? ' <sup><abbr title="INS IDs are stable per-instance identifiers (path + rule + selector + screen). Use them to track whether the exact same finding returns in future scans.">[i]</abbr></sup>'
-        : '';
-      lines.push(`- \`${pg.path}\` — ${escapeMarkdownInline(pg.name)} \`[${pg.instanceId}]\`${infoHint}`);
-    }
-    if (issue.affected_pages.length > maxVisibleAffectedPages) {
-      const remaining = issue.affected_pages.slice(maxVisibleAffectedPages);
-      lines.push('');
-      lines.push(`<details><summary>Show ${remaining.length} more affected page(s)</summary>`);
-      lines.push('');
-      for (const pg of remaining) {
-        lines.push(`- \`${pg.path}\` — ${escapeMarkdownInline(pg.name)} \`[${pg.instanceId}]\``);
-      }
-      lines.push('');
-      lines.push('</details>');
-    }
-    lines.push('');
-
-    lines.push('**Selector:**');
-    lines.push('```css');
-    lines.push(issue.selector);
-    lines.push('```');
-    lines.push('');
-
-    lines.push('**XPath:**');
-    lines.push('```');
-    lines.push(issue.xpath);
-    lines.push('```');
-    lines.push('');
-
-    lines.push('**HTML snippet:**');
-    lines.push('```html');
-    lines.push(issue.html_snippet ?? '');
-    lines.push('```');
-    lines.push('');
-
-    if (issue.expected_behaviour) {
-      lines.push(`**Expected behaviour:** ${escapeMarkdownInline(issue.expected_behaviour)}`);
-      lines.push('');
-    }
-    if (issue.actual_behaviour) {
-      lines.push(`**Actual behaviour:** ${escapeMarkdownInline(issue.actual_behaviour)}`);
-      lines.push('');
-    }
-
-    lines.push('**Suggested fix:**');
-    lines.push('```');
-    lines.push(issue.suggested_fix);
-    lines.push('```');
-    lines.push('');
-
-    lines.push('**Steps to reproduce:**');
-    for (const step of issue.steps_to_reproduce) {
-      lines.push(`1. ${step}`);
+    if (issues.length > 3) {
+      lines.push(`  - ...and ${issues.length - 3} more in this category.`);
     }
     lines.push('');
   }
@@ -931,6 +921,6 @@ function main() {
   console.log(`   ${BUGS_CSV_LATEST} (latest)`);
   console.log(`   ${MD_OUTPUT}`);
   console.log(`   ${MD_LATEST} (latest)`);
-}
 
 main();
+}

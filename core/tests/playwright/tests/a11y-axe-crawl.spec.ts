@@ -275,9 +275,9 @@ test.describe('Axe crawl — multi-theme', () => {
           for (const vp of STANDARD_VIEWPORTS) {
             const testName = `${entry.name}${vp.label}`;
             test(testName, async ({ page }) => {
-              await page.setViewportSize({ width: vp.width, height: vp.height });
-              await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-              await ensurePageReadyForScan(page, entry.path);
+		      await page.setViewportSize({ width: vp.width, height: vp.height });
+		      await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+		      await ensurePageReadyForScan(page, entry.path);
 
               const axeResults = await buildAxeBuilder(page).analyze();
 
