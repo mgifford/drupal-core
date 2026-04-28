@@ -54,6 +54,3 @@ sites/simpletest
 # OS files
 .DS_Store
 
-# Accessibility scan reports — processed reports ARE committed for history;
-# raw axe output is not (too large, derived from processed reports)
-/reports/axe-results*.json

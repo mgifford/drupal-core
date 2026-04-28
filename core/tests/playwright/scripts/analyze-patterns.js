@@ -904,6 +904,7 @@ function main() {
     lines.push('');
   }
 
+  // Always write the daily and latest markdown reports, even if content is unchanged.
   fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
   fs.writeFileSync(MD_LATEST, lines.join('\n'));
   console.log(`✅ Markdown report written to ${MD_OUTPUT}`);
