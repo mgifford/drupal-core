@@ -1,3 +1,5 @@
+console.log('DEBUG: analyze-patterns.js script starting...');
+console.log('DEBUG: About to call main()');
 // --- Advanced Deduplication: Merge by Rule + Fuzzy Summary ---
 function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
   const merged = [];
@@ -63,8 +65,63 @@ const MD_LATEST           = path.join(REPORTS_DIR, 'PATTERN-REPORT-latest.md');
 const args = process.argv.slice(2);
 const minPagesArg = args.indexOf('--min-pages');
 const MIN_PAGES = minPagesArg >= 0 ? parseInt(args[minPagesArg + 1], 10) : 1;
+const FUZZY_SELECTOR_THRESHOLD = 6;
 
 const IMPACT_ORDER = { critical: 0, serious: 1, moderate: 2, minor: 3, null: 4 };
+
+function levenshtein(a, b) {
+  if (a === b) return 0;
+  if (!a) return b.length;
+  if (!b) return a.length;
+
+  const matrix = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+  for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost,
+      );
+    }
+  }
+
+  return matrix[a.length][b.length];
+}
+
+function mergeSimilarPatterns(patterns, selectorThreshold = FUZZY_SELECTOR_THRESHOLD) {
+  const merged = [];
+  const used = new Set();
+
+  for (let i = 0; i < patterns.length; i++) {
+    if (used.has(i)) continue;
+
+    const base = patterns[i];
+    for (let j = i + 1; j < patterns.length; j++) {
+      if (used.has(j)) continue;
+
+      const candidate = patterns[j];
+      if (base.ruleId !== candidate.ruleId) continue;
+
+      const distance = levenshtein(base.selectorKey || '', candidate.selectorKey || '');
+      if (distance > selectorThreshold) continue;
+
+      base.pages.push(...candidate.pages);
+      base.conditions.push(...candidate.conditions);
+      base.mergedSelectors = [...new Set([...(base.mergedSelectors || [base.selectorKey]), candidate.selectorKey])];
+      used.add(j);
+    }
+
+    base.pages = base.pages.filter((v, idx, arr) => arr.findIndex((t) => t.instanceId === v.instanceId) === idx);
+    base.conditions = [...new Set(base.conditions)];
+    merged.push(base);
+  }
+
+  return merged;
+}
 
 // ─── Screen / mode helpers ───────────────────────────────────────────────────
 
@@ -559,6 +616,26 @@ function escapeMarkdownInline(val) {
     .replace(/>/g, '&gt;');
 }
 
+/**
+ * Collapse dynamic URL segments so issue instances dedupe by template route.
+ * Examples: /node/123 -> /node/[nid], /user/45/edit -> /user/[id]/edit
+ */
+function generalizePath(routePath) {
+  if (!routePath || routePath === '/') return '/';
+
+  return routePath
+    // Keep query strings out of the route fingerprint.
+    .split('?')[0]
+    // Common Drupal numeric entity IDs.
+    .replace(/^\/node\/\d+(?=\/|$)/, '/node/[nid]')
+    .replace(/^\/user\/\d+(?=\/|$)/, '/user/[id]')
+    .replace(/^\/taxonomy\/term\/\d+(?=\/|$)/, '/taxonomy/term/[tid]')
+    // Generic UUID-like segments.
+    .replace(/[0-9a-f]{8}-[0-9a-f-]{27,}/gi, '[uuid]')
+    // Fallback: collapse remaining standalone numeric segments.
+    .replace(/\/(\d+)(?=\/|$)/g, '/[id]');
+}
+
 // ─── Archive old dated reports ───────────────────────────────────────────────
 /**
  * Groups all dated report files not from today by date, then creates one
@@ -610,12 +687,15 @@ function priorityScore(pattern) {
 }
 
 function main() {
+  console.log('DEBUG: Entered main()');
+
   if (!fs.existsSync(INPUT_FILE)) {
     console.error(`❌ ${INPUT_FILE} not found. Run 'yarn test:a11y:playwright' first.`);
     process.exit(1);
   }
-
+  console.log('DEBUG: INPUT_FILE exists:', INPUT_FILE);
   const rawResults = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf8'));
+  console.log('DEBUG: Read rawResults, count:', rawResults.length);
   const totalPages = rawResults.length;
   const scanDate = new Date().toISOString();
   const axeVersion = rawResults[0]?.violations?.[0] ? 'axe-core (via @axe-core/playwright)' : 'axe-core';
@@ -850,6 +930,7 @@ function main() {
   fs.writeFileSync(BUGS_JSON_OUTPUT, JSON.stringify(bugsJson, null, 2));
   fs.writeFileSync(BUGS_JSON_LATEST, JSON.stringify(bugsJson, null, 2));
   console.log(`✅ Bug report written to ${BUGS_JSON_OUTPUT}`);
+  console.log('DEBUG: Wrote bugsJson outputs');
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
@@ -892,9 +973,11 @@ function main() {
   fs.writeFileSync(BUGS_CSV_OUTPUT, csvRows.join('\n'));
   fs.writeFileSync(BUGS_CSV_LATEST, csvRows.join('\n'));
   console.log(`✅ CSV report written to ${BUGS_CSV_OUTPUT}`);
+  console.log('DEBUG: Wrote CSV outputs');
 
   // ── Legacy pattern-report.json ────────────────────────────────────────────
   fs.writeFileSync(JSON_OUTPUT, JSON.stringify({ summary, patterns }, null, 2));
+  console.log('DEBUG: Wrote legacy pattern-report JSON');
 
   // ── PATTERN-REPORT.md — rich human-readable report (by broad category) ──
   const lines = [];
@@ -975,6 +1058,7 @@ function main() {
   fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
   fs.writeFileSync(MD_LATEST, lines.join('\n'));
   console.log(`✅ Markdown report written to ${MD_OUTPUT}`);
+  console.log('DEBUG: Wrote markdown outputs');
   console.log('');
   console.log('📊 Summary:');
   console.log(`   ${summary.totalPagesCrawled} pages crawled`);
@@ -989,6 +1073,7 @@ function main() {
   console.log(`   ${BUGS_CSV_LATEST} (latest)`);
   console.log(`   ${MD_OUTPUT}`);
   console.log(`   ${MD_LATEST} (latest)`);
+}
 
 main();
-}
+console.log('DEBUG: main() has finished');
