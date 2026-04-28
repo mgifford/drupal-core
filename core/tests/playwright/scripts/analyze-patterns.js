@@ -1,25 +1,11 @@
-#!/usr/bin/env node
-/**
- * Accessibility Pattern Analyzer for Drupal Core
- *
- * Reads reports/axe-results.json and groups violations by rule+selector,
- * producing structured bug reports following ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md
- *
- * Outputs:
- *   reports/bugs.json            — structured bug report (full schema per best practices)
- *   reports/bugs.csv             — CSV organized by rule, sorted by priority
- *   reports/PATTERN-REPORT.md    — human-readable prioritized report with fix guidance
- *   reports/pattern-report.json  — legacy pattern-only JSON (kept for compatibility)
- *
- * Usage:
- *   node scripts/analyze-patterns.js
- *   node scripts/analyze-patterns.js --min-pages 2  (only show patterns on ≥2 pages)
- */
+
+'use strict';
+const fs = require('fs');
+const crypto = require('crypto');
 
 'use strict';
 
-const crypto = require('crypto');
-const fs = require('fs');
+// --- PATCH END ---
 const path = require('path');
 
 // Root-level /reports directory — one level above the repo's core/ directory.
@@ -483,11 +469,17 @@ function inferTemplate(selector) {
  *  - `-0-` in the middle of an id -> `-N-`
  *  - Trailing `-0` at end of id -> `-N`
  */
+
+// Enhanced normalization: collapse hashes, UUIDs, and numeric fragments
 function normaliseSelectorForKey(raw) {
   return raw
-    .replace(/\[\d+\]/g, '[N]')
-    .replace(/-(\d+)-/g, '-N-')
-    .replace(/-(\d+)$/g, '-N');
+    .replace(/\[\d+\]/g, '[N]') // [0] → [N]
+    .replace(/-(\d+)-/g, '-N-')   // -0- → -N-
+    .replace(/-(\d+)$/g, '-N')    // -0 at end → -N
+    .replace(/[a-f0-9]{8,}/gi, '[HASH]') // long hex strings (UUIDs, hashes)
+    .replace(/([a-zA-Z]+)[-_][0-9]+/g, '$1-N') // class/id with trailing numbers
+    .replace(/data-uuid="[^"]+"/g, 'data-uuid="[ID]"') // data-uuid attr
+    .replace(/id="[^"]+"/g, 'id="[ID]"'); // id attr
 }
 
 function selectorKey(node) {
@@ -610,9 +602,18 @@ function main() {
     for (const violation of pageResult.violations) {
       for (const node of violation.nodes) {
         const selKey = selectorKey(node);
-        // Key on rule + selector only. Both theme/colorScheme and screenType become conditions
-        // metadata so desktop/mobile and dark/light variants of the same bug are ONE pattern.
-        const key = `${violation.id}::${selKey}`;
+
+        // Extract parent tag and ARIA role for context (if available)
+        let parentTag = '';
+        let parentRole = '';
+        if (node && node.ancestry && node.ancestry.length > 0) {
+          const parent = node.ancestry[node.ancestry.length - 1];
+          parentTag = parent.tagName ? parent.tagName.toLowerCase() : '';
+          parentRole = parent.role ? parent.role.toLowerCase() : '';
+        }
+        const parentContext = parentTag || parentRole ? `${parentTag}:${parentRole}` : '';
+        // Key on rule + selector + parent context
+        const key = `${violation.id}::${selKey}::${parentContext}`;
         const conditionKey = `${themeId}::${colorScheme}::${screenType}`;
 
         if (!patternMap.has(key)) {
@@ -645,17 +646,17 @@ function main() {
 
         patternMap.get(key).conditions.add(conditionKey);
 
-        // Deduplicate pages by path+screenType — conditions are already on the pattern.
-        // A page is the same page regardless of which theme/colorScheme surfaced the bug.
+        // Deduplicate pages by generalized route pattern + screenType
         const pat = patternMap.get(key);
-        const pageKey = `${pageResult.path}::${screenType}`;
+        const generalizedPath = generalizePath(pageResult.path);
+        const pageKey = `${generalizedPath}::${screenType}`;
         if (!pat.pages.some((pg) => pg._pageKey === pageKey)) {
-          const instanceId = generateInstanceId(pageResult.path, selKey, violation.id, screenType);
+          const instanceId = generateInstanceId(generalizedPath, selKey, violation.id, screenType);
           pat.pages.push({
             instanceId,
             name: pageResult.page,
-            path: pageResult.path,
-            url: `https://drupal-core.ddev.site${pageResult.path}`,
+            path: generalizedPath,
+            url: `https://drupal-core.ddev.site${generalizedPath}`,
             screen: screenType,
             viewport: pageResult.viewport ?? { width: 1280, height: 800 },
             _pageKey: pageKey,
@@ -674,9 +675,13 @@ function main() {
     }
   }
 
-  const patterns = Array.from(patternMap.values())
+
+  let patterns = Array.from(patternMap.values())
     .filter((p) => p.pages.length >= MIN_PAGES)
     .sort((a, b) => priorityScore(a) - priorityScore(b));
+
+  // Secondary fuzzy merge for similar selectors
+  patterns = mergeSimilarPatterns(patterns, FUZZY_SELECTOR_THRESHOLD);
 
   // ── Cross-condition analysis ──────────────────────────────────────────────
   // Since patterns are now keyed without theme/colorScheme, each pattern already
@@ -700,7 +705,8 @@ function main() {
       ruleId: p.ruleId,
       selectorKey: p.selectorKey,
       impact: p.impact,
-      summary: p.drupalFix?.summary ?? `${p.ruleId}: ${p.description.slice(0, 80)}`,
+      summary: p.drupalFix?.summary ??
+        `${p.ruleId}: ${p.description.slice(0, 80)}`,
       themes: baseThemes,
       conditions: p.conditions,
       themeCount: baseThemes.length,
@@ -889,20 +895,36 @@ function main() {
   for (const [cat, issues] of Object.entries(categoryMap)) {
     lines.push(`### ${cat}`);
     lines.push('');
-    lines.push(`- **Total patterns:** ${issues.length}`);
+    lines.push(`- **Total unique patterns:** ${issues.length}`);
     // List rules in this category
     const rules = [...new Set(issues.map(i => i.rule_id))];
     lines.push(`- **Rules:** ${rules.map(r => '`' + r + '`').join(', ')}`);
-    // List a few example summaries/selectors
+    // List a few example summaries/selectors and affected generalized routes
     lines.push('');
     for (const issue of issues.slice(0, 3)) {
       lines.push(`  - ${issue.summary} (e.g. selector: ${issue.selector})`);
+      if (issue.affected_pages && issue.affected_pages.length > 0) {
+        const routes = [...new Set(issue.affected_pages.map(pg => pg.path))];
+        lines.push(`    - Generalized routes: ${routes.join(', ')}`);
+      }
+      if (issue.mergedFrom && issue.mergedFrom.length > 0) {
+        lines.push(`    - Merged from selectors: ${issue.mergedFrom.map(sel => '`' + sel + '`').join(', ')}`);
+      }
     }
     if (issues.length > 3) {
       lines.push(`  - ...and ${issues.length - 3} more in this category.`);
     }
     lines.push('');
   }
+
+  // Add a deduplication summary section
+  lines.push('---');
+  lines.push('## Deduplication & Pattern Grouping');
+  lines.push('');
+  lines.push('- Patterns are merged by selector, parent context, and generalized route.');
+  lines.push('- Similar selectors are merged using fuzzy logic.');
+  lines.push('- Dynamic routes are collapsed (e.g., /node/1 → /node/[nid]).');
+  lines.push('');
 
   // Always write the daily and latest markdown reports, even if content is unchanged.
   fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
