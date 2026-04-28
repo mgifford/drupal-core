@@ -1,3 +1,36 @@
+// --- Advanced Deduplication: Merge by Rule + Fuzzy Summary ---
+function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
+  const merged = [];
+  const used = new Set();
+  for (let i = 0; i < patterns.length; i++) {
+    if (used.has(i)) continue;
+    const base = patterns[i];
+    base.mergedSummaries = [base.summary];
+    base.mergedSelectors = [base.selectorKey];
+    for (let j = i + 1; j < patterns.length; j++) {
+      if (used.has(j)) continue;
+      const candidate = patterns[j];
+      if (base.ruleId === candidate.ruleId) {
+        const dist = levenshtein((base.summary||'').toLowerCase(), (candidate.summary||'').toLowerCase());
+        if (dist <= summaryThreshold) {
+          // Merge candidate into base
+          base.pages.push(...candidate.pages);
+          base.conditions.push(...candidate.conditions);
+          base.mergedSummaries.push(candidate.summary);
+          base.mergedSelectors.push(candidate.selectorKey);
+          used.add(j);
+        }
+      }
+    }
+    // Deduplicate merged pages/conditions/selectors/summaries
+    base.pages = base.pages.filter((v,i,a) => a.findIndex(t => t.instanceId === v.instanceId) === i);
+    base.conditions = [...new Set(base.conditions)];
+    base.mergedSummaries = [...new Set(base.mergedSummaries)];
+    base.mergedSelectors = [...new Set(base.mergedSelectors)];
+    merged.push(base);
+  }
+  return merged;
+}
 
 'use strict';
 const fs = require('fs');
@@ -683,6 +716,9 @@ function main() {
   // Secondary fuzzy merge for similar selectors
   patterns = mergeSimilarPatterns(patterns, FUZZY_SELECTOR_THRESHOLD);
 
+  // Advanced deduplication: merge by rule + fuzzy summary
+  patterns = mergeByRuleAndSummary(patterns, 12); // threshold can be tuned
+
   // ── Cross-condition analysis ──────────────────────────────────────────────
   // Since patterns are now keyed without theme/colorScheme, each pattern already
   // has a `conditions` array listing which theme×colorScheme combos triggered it.
@@ -902,13 +938,22 @@ function main() {
     // List a few example summaries/selectors and affected generalized routes
     lines.push('');
     for (const issue of issues.slice(0, 3)) {
-      lines.push(`  - ${issue.summary} (e.g. selector: ${issue.selector})`);
+      lines.push(`  - ${issue.summary}`);
+      // Link to possibly related issues (same rule, fuzzy summary)
+      if (issue.mergedSummaries && issue.mergedSummaries.length > 1) {
+        lines.push(`    - Possibly related issues:`);
+        issue.mergedSummaries.forEach((s, idx) => {
+          if (s !== issue.summary) {
+            lines.push(`      - ${s}`);
+          }
+        });
+      }
+      if (issue.mergedSelectors && issue.mergedSelectors.length > 1) {
+        lines.push(`    - Merged selectors: ${issue.mergedSelectors.map(sel => '`' + sel + '`').join(', ')}`);
+      }
       if (issue.affected_pages && issue.affected_pages.length > 0) {
         const routes = [...new Set(issue.affected_pages.map(pg => pg.path))];
         lines.push(`    - Generalized routes: ${routes.join(', ')}`);
-      }
-      if (issue.mergedFrom && issue.mergedFrom.length > 0) {
-        lines.push(`    - Merged from selectors: ${issue.mergedFrom.map(sel => '`' + sel + '`').join(', ')}`);
       }
     }
     if (issues.length > 3) {
