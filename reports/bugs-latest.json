@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-04-29T13:13:42.097Z",
+    "generatedAt": "2026-04-29T13:16:42.566Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -428,8 +428,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label%20edit-imagefile-file-limited-N-display&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": {
         "repo": "https://github.com/GovTechSG/purple-ai",
         "ruleFile": "label.json",
@@ -716,8 +715,7 @@
       "actual_behaviour": "input[title=\"Select all rows in this table\"] — title is the sole label source",
       "suggested_fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label-title-only%20title%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -1064,8 +1062,7 @@
       "actual_behaviour": null,
       "suggested_fix": "Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for normal text, ≥ 3:1 for large text (18pt or 14pt bold). Update the relevant CSS file.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=color-contrast%20edit-submit&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -1276,8 +1273,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=tabindex%20edit-submit&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -1770,8 +1766,7 @@
       "actual_behaviour": null,
       "suggested_fix": "Ensure interactive elements have a minimum 24×24px clickable area via padding or min-height/min-width in CSS.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=target-size%20tabledrag-cell&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -3895,8 +3890,7 @@
       "actual_behaviour": null,
       "suggested_fix": "Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>, <header>, <footer>). Check page.html.twig and block placement.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=region%20form-element.html.twig%20themeswitcher-form__form-item&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -4222,8 +4216,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level%20messages--error&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -4370,8 +4363,7 @@
       "actual_behaviour": "<div role=\"contentinfo\" aria-labelledby=\"…\"> — conflicts with the page footer landmark",
       "suggested_fix": "Change the outer wrapper role based on message type:\n\n{# Before (broken) #}\n<div role=\"contentinfo\" aria-labelledby=\"{{ title_ids[type] }}\"…>\n\n{# After (fixed) #}\n{%- set msg_role = (type == 'error') ? 'alert' : 'status' -%}\n<div role=\"{{ msg_role }}\" aria-labelledby=\"{{ title_ids[type] }}\"…>",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20messages--error%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -4715,8 +4707,7 @@
       "actual_behaviour": null,
       "suggested_fix": "Heading levels must not skip. Audit the page heading hierarchy and adjust template markup.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=heading-order%20data-drupal-selector&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -4818,8 +4809,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-unique%20messages--info&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": {
         "repo": "https://github.com/GovTechSG/purple-ai",
         "ruleFile": "landmark-unique.json",
@@ -4920,8 +4910,7 @@
       "actual_behaviour": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
       "suggested_fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=page-has-heading-one%20html%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -5355,8 +5344,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-heading%20h3&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {
@@ -5919,8 +5907,7 @@
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
-      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
-      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-table-header%20th&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
       "trusted_resources": [
         {

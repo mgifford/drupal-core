@@ -709,8 +709,39 @@ function purpleAiReference(ruleId) {
   };
 }
 
-function drupalIssueSearchUrl(ruleId, summary) {
-  const searchText = encodeURIComponent(`${ruleId} ${summary ?? ''}`.trim());
+function selectorSearchHint(selectorKey) {
+  if (!selectorKey) return '';
+
+  const idMatch = selectorKey.match(/#([A-Za-z0-9_-]+)/);
+  if (idMatch) return idMatch[1];
+
+  const classMatch = selectorKey.match(/\.([A-Za-z0-9_-]+)/);
+  if (classMatch) return classMatch[1];
+
+  const attrMatch = selectorKey.match(/\[([A-Za-z0-9_-]+)/);
+  if (attrMatch) return attrMatch[1];
+
+  const tagMatch = selectorKey.match(/^([A-Za-z0-9_-]+)/);
+  return tagMatch ? tagMatch[1] : '';
+}
+
+function drupalIssueSearchUrl(ruleId, summary, selectorKey, likelyTemplate) {
+  const searchParts = [ruleId];
+
+  if (likelyTemplate && likelyTemplate !== 'unknown') {
+    searchParts.push(likelyTemplate);
+  }
+
+  const selectorHint = selectorSearchHint(selectorKey);
+  if (selectorHint) {
+    searchParts.push(selectorHint);
+  }
+
+  if (summary) {
+    searchParts.push(summary);
+  }
+
+  const searchText = encodeURIComponent(searchParts.join(' ').trim());
   return `https://www.drupal.org/project/issues/search?text=${searchText}&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility`;
 }
 
@@ -1047,8 +1078,12 @@ function main() {
       actual_behaviour: p.drupalFix?.actual ?? null,
       suggested_fix: p.drupalFix?.fix ?? RULE_FALLBACK_FIX[p.ruleId] ?? 'See axe documentation.',
       drupal_issue: p.drupalFix?.drupalIssue ?? null,
-      drupal_issue_search_url: drupalIssueSearchUrl(p.ruleId, p.drupalFix?.summary),
-      drupal_a11y_queue_url: DRUPAL_A11Y_QUEUE_URL,
+      drupal_issue_search_url: drupalIssueSearchUrl(
+        p.ruleId,
+        p.drupalFix?.summary,
+        p.selectorKey,
+        p.templateHint.template,
+      ),
       purple_ai_reference: purpleAiReference(p.ruleId),
       trusted_resources: trustedResourcesForRule(trustedResources, p.ruleId),
       impact_groups: p.impactGroups,
@@ -1135,6 +1170,8 @@ function main() {
   lines.push(`| Serious | ${summary.byImpact.serious} |`);
   lines.push(`| Moderate | ${summary.byImpact.moderate} |`);
   lines.push(`| Minor | ${summary.byImpact.minor} |`);
+  lines.push('');
+  lines.push(`Project queue: ${DRUPAL_A11Y_QUEUE_URL}`);
   lines.push('');
 
   // ── Aggregated by Accessibility Category ────────────────────────────────
@@ -1263,13 +1300,9 @@ function main() {
     if (issue.drupal_issue && isNewDrupalIssueLink(issue.drupal_issue)) {
       lines.push(`- Create new Drupal issue: ${issue.drupal_issue}`);
     }
-    lines.push(`- Search related Drupal accessibility issues: ${issue.drupal_issue_search_url}`);
-    lines.push(`- Drupal core accessibility queue: ${issue.drupal_a11y_queue_url}`);
+    lines.push(`- Search related Drupal accessibility issues (rule + selector/template): ${issue.drupal_issue_search_url}`);
     if (issue.purple_ai_reference?.ruleUrl) {
       lines.push(`- Purple AI mapped fix examples: ${issue.purple_ai_reference.ruleUrl}`);
-    }
-    else {
-      lines.push(`- Purple AI (repo): https://github.com/GovTechSG/purple-ai`);
     }
     lines.push('');
 
