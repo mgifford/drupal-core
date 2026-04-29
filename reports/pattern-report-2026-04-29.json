@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-04-29T13:00:34.624Z",
+    "generatedAt": "2026-04-29T13:08:11.684Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -14,7 +14,7 @@
     },
     "environment": {
       "browser": "Chromium (via Playwright)",
-      "os": "darwin",
+      "os": "macOS",
       "tool": "axe-core via @axe-core/playwright",
       "baseUrl": "https://drupal-core.ddev.site"
     }

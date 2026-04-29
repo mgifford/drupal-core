@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-04-29T13:00:34.624Z",
+    "generatedAt": "2026-04-29T13:08:11.684Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -15,7 +15,7 @@
     },
     "environment": {
       "browser": "Chromium (via Playwright)",
-      "os": "darwin",
+      "os": "macOS",
       "tool": "axe-core via @axe-core/playwright",
       "baseUrl": "https://drupal-core.ddev.site"
     }
@@ -435,6 +435,24 @@
         "ruleFile": "label.json",
         "ruleUrl": "https://github.com/GovTechSG/purple-ai/blob/main/results/label.json"
       },
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "DWP - Labels and form controls",
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision",
@@ -449,7 +467,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -709,6 +727,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "DWP - Forms and inputs guidance",
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision",
@@ -723,7 +759,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -1047,6 +1083,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "DWP - Colour and contrast",
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources"
+        }
+      ],
       "impact_groups": [
         "low-vision"
       ],
@@ -1059,7 +1113,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -1249,6 +1303,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "DWP - Keyboard accessibility",
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+        }
+      ],
       "impact_groups": [
         "users with disabilities"
       ],
@@ -1261,7 +1333,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -1733,6 +1805,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WCAG 2.2 - Target Size (Minimum)",
+          "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+        }
+      ],
       "impact_groups": [
         "motor",
         "low-vision"
@@ -1746,7 +1836,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -3848,6 +3938,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Page structure and landmarks",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/landmarks/"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision"
@@ -3861,7 +3969,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -4165,6 +4273,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Page structure and landmarks",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/landmarks/"
+        }
+      ],
       "impact_groups": [
         "users with disabilities"
       ],
@@ -4177,7 +4303,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -4303,6 +4429,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Page structure and landmarks",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/landmarks/"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision"
@@ -4316,7 +4460,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -4638,6 +4782,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Headings tutorial",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/headings/"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision"
@@ -4651,7 +4813,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -4735,6 +4897,24 @@
         "ruleFile": "landmark-unique.json",
         "ruleUrl": "https://github.com/GovTechSG/purple-ai/blob/main/results/landmark-unique.json"
       },
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Page structure and landmarks",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/landmarks/"
+        }
+      ],
       "impact_groups": [
         "users with disabilities"
       ],
@@ -4747,7 +4927,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -4823,6 +5003,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Headings tutorial",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/headings/"
+        }
+      ],
       "impact_groups": [
         "blind",
         "low-vision"
@@ -4836,7 +5034,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -5248,6 +5446,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Headings tutorial",
+          "url": "https://www.w3.org/WAI/tutorials/page-structure/headings/"
+        }
+      ],
       "impact_groups": [
         "users with disabilities"
       ],
@@ -5260,7 +5476,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }
@@ -5802,6 +6018,24 @@
       "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
       "purple_ai_reference": null,
+      "trusted_resources": [
+        {
+          "title": "DWP Accessibility Manual",
+          "url": "https://accessibility-manual.dwp.gov.uk/"
+        },
+        {
+          "title": "ACCESSIBILITY.md Trusted Sources",
+          "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
+        },
+        {
+          "title": "WCAG 2.2 Quick Reference",
+          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
+        },
+        {
+          "title": "WAI - Tables tutorial",
+          "url": "https://www.w3.org/WAI/tutorials/tables/"
+        }
+      ],
       "impact_groups": [
         "users with disabilities"
       ],
@@ -5814,7 +6048,7 @@
       ],
       "environment": {
         "browser": "Chromium (via Playwright)",
-        "os": "darwin",
+        "os": "macOS",
         "tool": "axe-core via @axe-core/playwright",
         "baseUrl": "https://drupal-core.ddev.site"
       }

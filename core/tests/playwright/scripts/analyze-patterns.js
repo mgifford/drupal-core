@@ -37,6 +37,7 @@ function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
 'use strict';
 const fs = require('fs');
 const crypto = require('crypto');
+const yaml = require('js-yaml');
 
 'use strict';
 
@@ -48,6 +49,7 @@ const path = require('path');
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
 const REPORT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
+const TRUSTED_RESOURCES_FILE = path.resolve(__dirname, '../config/trusted-resources.yaml');
 // Optional local submodule containing rule-specific remediation examples.
 const PURPLE_AI_RESULTS_DIR = path.resolve(__dirname, '../../../../tools/purple-ai/results');
 // Canonical Drupal core Accessibility queue search page.
@@ -74,6 +76,45 @@ const MIN_PAGES = minPagesArg >= 0 ? parseInt(args[minPagesArg + 1], 10) : 1;
 const FUZZY_SELECTOR_THRESHOLD = 6;
 
 const IMPACT_ORDER = { critical: 0, serious: 1, moderate: 2, minor: 3, null: 4 };
+
+function humanReadableOs(platform) {
+  switch (platform) {
+    case 'darwin':
+      return 'macOS';
+    case 'win32':
+      return 'Windows';
+    case 'linux':
+      return 'Linux';
+    default:
+      return platform || 'unknown';
+  }
+}
+
+function loadTrustedResources() {
+  if (!fs.existsSync(TRUSTED_RESOURCES_FILE)) {
+    return { default: [], rules: {} };
+  }
+
+  try {
+    const parsed = yaml.load(fs.readFileSync(TRUSTED_RESOURCES_FILE, 'utf8'));
+    return {
+      default: Array.isArray(parsed?.default) ? parsed.default : [],
+      rules: (parsed && typeof parsed.rules === 'object' && parsed.rules !== null) ? parsed.rules : {},
+    };
+  }
+  catch (error) {
+    console.warn(`⚠️ Could not parse trusted resources YAML: ${error.message}`);
+    return { default: [], rules: {} };
+  }
+}
+
+function trustedResourcesForRule(trustedResources, ruleId) {
+  const globalResources = Array.isArray(trustedResources?.default) ? trustedResources.default : [];
+  const ruleResources = Array.isArray(trustedResources?.rules?.[ruleId]) ? trustedResources.rules[ruleId] : [];
+  return [...globalResources, ...ruleResources]
+    .filter((entry) => entry && entry.title && entry.url)
+    .map((entry) => ({ title: String(entry.title), url: String(entry.url) }));
+}
 
 function levenshtein(a, b) {
   if (a === b) return 0;
@@ -665,6 +706,10 @@ function drupalIssueSearchUrl(ruleId, summary) {
   return `https://www.drupal.org/project/issues/search?text=${searchText}&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility`;
 }
 
+function isNewDrupalIssueLink(url) {
+  return typeof url === 'string' && /\/issues\/new\/?$/i.test(url);
+}
+
 function inferInteractionHint(selectorKey, routes) {
   const selector = String(selectorKey || '').toLowerCase();
   const routeText = Array.isArray(routes) ? routes.join(' ').toLowerCase() : '';
@@ -755,6 +800,8 @@ function priorityScore(pattern) {
 
 function main() {
   console.log('DEBUG: Entered main()');
+
+  const trustedResources = loadTrustedResources();
 
   if (!fs.existsSync(INPUT_FILE)) {
     console.error(`❌ ${INPUT_FILE} not found. Run 'yarn test:a11y:playwright' first.`);
@@ -932,7 +979,7 @@ function main() {
     },
     environment: {
       browser: 'Chromium (via Playwright)',
-      os: process.platform,
+      os: humanReadableOs(process.platform),
       tool: 'axe-core via @axe-core/playwright',
       baseUrl: REPORT_BASE_URL,
     },
@@ -995,6 +1042,7 @@ function main() {
       drupal_issue_search_url: drupalIssueSearchUrl(p.ruleId, p.drupalFix?.summary),
       drupal_a11y_queue_url: DRUPAL_A11Y_QUEUE_URL,
       purple_ai_reference: purpleAiReference(p.ruleId),
+      trusted_resources: trustedResourcesForRule(trustedResources, p.ruleId),
       impact_groups: p.impactGroups,
       interaction_hint: inferInteractionHint(p.selectorKey, p.concretePaths),
       steps_to_reproduce: [
@@ -1185,11 +1233,22 @@ function main() {
 
     lines.push('#### Additional References');
     lines.push(`- Deque Axe Rule: ${issue.axe_rule_url || issue.axe_url}`);
-    if (issue.drupal_issue) {
+    if (issue.wcag_url && issue.wcag_sc !== 'unknown') {
+      lines.push(`- WCAG Understanding: ${issue.wcag_url}`);
+    }
+    if (Array.isArray(issue.trusted_resources)) {
+      for (const resource of issue.trusted_resources) {
+        lines.push(`- ${resource.title}: ${resource.url}`);
+      }
+    }
+    if (issue.drupal_issue && !isNewDrupalIssueLink(issue.drupal_issue)) {
       lines.push(`- Known Drupal issue: ${issue.drupal_issue}`);
     }
+    if (issue.drupal_issue && isNewDrupalIssueLink(issue.drupal_issue)) {
+      lines.push(`- Create new Drupal issue: ${issue.drupal_issue}`);
+    }
+    lines.push(`- Search related Drupal accessibility issues: ${issue.drupal_issue_search_url}`);
     lines.push(`- Drupal core accessibility queue: ${issue.drupal_a11y_queue_url}`);
-    lines.push(`- Search related Drupal issues for this rule: ${issue.drupal_issue_search_url}`);
     if (issue.purple_ai_reference?.ruleUrl) {
       lines.push(`- Purple AI mapped fix examples: ${issue.purple_ai_reference.ruleUrl}`);
     }

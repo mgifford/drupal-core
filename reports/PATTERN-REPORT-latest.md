@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-04-29T13:00:34.624Z
+> **Generated:** 2026-04-29T13:08:11.684Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -137,13 +137,18 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- DWP - Labels and form controls: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI mapped fix examples: https://github.com/GovTechSG/purple-ai/blob/main/results/label.json
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -207,14 +212,19 @@ Replace the title-only label with aria-label:
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label-title-only
-- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- DWP - Forms and inputs guidance: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -271,13 +281,18 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/color-contrast
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/143.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- DWP - Colour and contrast: https://accessibility-manual.dwp.gov.uk/tools-and-resources
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -333,13 +348,18 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/tabindex
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/243.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- DWP - Keyboard accessibility: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -398,13 +418,18 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/target-size
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/258.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WCAG 2.2 - Target Size (Minimum): https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -516,13 +541,18 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/region
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -580,13 +610,18 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -649,14 +684,19 @@ Change the outer wrapper role based on message type:
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo
-- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+- Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -712,13 +752,18 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/heading-order
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -774,13 +819,18 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-unique
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI mapped fix examples: https://github.com/GovTechSG/purple-ai/blob/main/results/landmark-unique.json
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -844,14 +894,19 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one
-- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
+- Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -915,13 +970,17 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-heading
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
@@ -978,13 +1037,17 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-table-header
+- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
+- ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
+- WAI - Tables tutorial: https://www.w3.org/WAI/tutorials/tables/
+- Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
-- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
-- OS: darwin
+- OS: macOS
 - Tool: axe-core via @axe-core/playwright
 - Base URL: https://drupal-core.ddev.site
 
