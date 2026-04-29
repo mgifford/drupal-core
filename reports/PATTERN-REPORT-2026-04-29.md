@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-04-29T13:16:42.566Z
+> **Generated:** 2026-04-29T17:58:51.654Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -18,6 +18,28 @@
 | Minor | 2 |
 
 Project queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+
+## Validated Keyboard Promotion Findings
+
+- Keyboard promotion candidates (WCAG 2.5.3): 2
+- Label-in-name contract checks: 4
+- Contract passes: 3
+- Contract failures: 1
+- Contract results generated at: 2026-04-29T17:57:00.323Z
+
+| Candidate ID | Route | Promotion Finding | Validation | Evidence |
+| :--- | :--- | :--- | :--- | :--- |
+| PROMOTE-001 | /admin/form_style | 2 potential label-in-name mismatches in sampled focus steps. | passed | 2 contract check(s) passed |
+| PROMOTE-002 | /admin/structure/types/add | 1 potential label-in-name mismatches in sampled focus steps. | passed | 1 contract check(s) passed |
+
+### Label-in-Name Contract Detail
+
+| Contract ID | Route | Selector | Status | Expected Label | Observed aria-label |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| LABEL-IN-NAME-001 | /admin/form_style | #edit-test-datelist-month | pass | Month | N/A |
+| LABEL-IN-NAME-002 | /admin/form_style | #edit-test-datelist-day | pass | Day | N/A |
+| LABEL-IN-NAME-003 | /admin/structure/types/add | summary:has-text("Submission form settings") | pass | Submission form settings | N/A |
+| LABEL-IN-NAME-004 | /admin/config/content/formats | table tbody tr:has-text("Basic HTML") a:has-text("Configure") | fail | Configure | Edit Basic HTML |
 
 ## Aggregated Accessibility Issues by Category
 

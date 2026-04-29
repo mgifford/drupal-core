@@ -48,6 +48,8 @@ const path = require('path');
 // Resolves from: core/tests/playwright/scripts/ → ../../../../reports/
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
+const KEYBOARD_REVIEW_FILE = path.join(REPORTS_DIR, 'keyboard-review-latest.json');
+const LABEL_IN_NAME_CONTRACT_FILE = path.join(REPORTS_DIR, 'label-in-name-contract-latest.json');
 const REPORT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 const TRUSTED_RESOURCES_FILE = path.resolve(__dirname, '../config/trusted-resources.yaml');
 // Optional local submodule containing rule-specific remediation examples.
@@ -767,6 +769,47 @@ function inferInteractionHint(selectorKey, routes) {
   return null;
 }
 
+function loadKeyboardLabelInNameCandidates() {
+  if (!fs.existsSync(KEYBOARD_REVIEW_FILE)) {
+    return [];
+  }
+
+  try {
+    const keyboardReview = JSON.parse(fs.readFileSync(KEYBOARD_REVIEW_FILE, 'utf8'));
+    const promotedFindings = Array.isArray(keyboardReview.promotedFindings)
+      ? keyboardReview.promotedFindings
+      : [];
+
+    return promotedFindings.filter((finding) => (
+      finding
+      && (String(finding.wcag || '') === '2.5.3' || String(finding.recommendedTest || '') === 'label-in-name-contract')
+    ));
+  }
+  catch (error) {
+    console.warn(`⚠️ Could not parse keyboard review promotions: ${error.message}`);
+    return [];
+  }
+}
+
+function loadLabelInNameContractResults() {
+  if (!fs.existsSync(LABEL_IN_NAME_CONTRACT_FILE)) {
+    return { generatedAt: null, summary: { total: 0, passed: 0, failed: 0 }, results: [] };
+  }
+
+  try {
+    const contractData = JSON.parse(fs.readFileSync(LABEL_IN_NAME_CONTRACT_FILE, 'utf8'));
+    return {
+      generatedAt: contractData.generatedAt || null,
+      summary: contractData.summary || { total: 0, passed: 0, failed: 0 },
+      results: Array.isArray(contractData.results) ? contractData.results : [],
+    };
+  }
+  catch (error) {
+    console.warn(`⚠️ Could not parse label-in-name contract results: ${error.message}`);
+    return { generatedAt: null, summary: { total: 0, passed: 0, failed: 0 }, results: [] };
+  }
+}
+
 /**
  * Collapse dynamic URL segments so issue instances dedupe by template route.
  * Examples: /node/123 -> /node/[nid], /user/45/edit -> /user/[id]/edit
@@ -1150,6 +1193,9 @@ function main() {
   fs.writeFileSync(JSON_OUTPUT, JSON.stringify({ summary, patterns }, null, 2));
   console.log('DEBUG: Wrote legacy pattern-report JSON');
 
+  const keyboardLabelInNameCandidates = loadKeyboardLabelInNameCandidates();
+  const labelInNameContract = loadLabelInNameContractResults();
+
   // ── PATTERN-REPORT.md — rich human-readable report (by broad category) ──
   const lines = [];
   lines.push('# Drupal Core Accessibility Bug Report');
@@ -1173,6 +1219,50 @@ function main() {
   lines.push('');
   lines.push(`Project queue: ${DRUPAL_A11Y_QUEUE_URL}`);
   lines.push('');
+
+  lines.push('## Validated Keyboard Promotion Findings');
+  lines.push('');
+  lines.push(`- Keyboard promotion candidates (WCAG 2.5.3): ${keyboardLabelInNameCandidates.length}`);
+  lines.push(`- Label-in-name contract checks: ${labelInNameContract.summary.total}`);
+  lines.push(`- Contract passes: ${labelInNameContract.summary.passed}`);
+  lines.push(`- Contract failures: ${labelInNameContract.summary.failed}`);
+  if (labelInNameContract.generatedAt) {
+    lines.push(`- Contract results generated at: ${labelInNameContract.generatedAt}`);
+  }
+  lines.push('');
+
+  if (keyboardLabelInNameCandidates.length === 0) {
+    lines.push('- No keyboard promotion candidates for label-in-name were available.');
+    lines.push('');
+  }
+  else {
+    lines.push('| Candidate ID | Route | Promotion Finding | Validation | Evidence |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- |');
+    for (const candidate of keyboardLabelInNameCandidates) {
+      const route = String(candidate.route || 'unknown');
+      const matchingContracts = labelInNameContract.results.filter((result) => result.route === route);
+      const failingContract = matchingContracts.find((result) => result.status === 'fail');
+      const passedOnly = matchingContracts.length > 0 && matchingContracts.every((result) => result.status === 'pass');
+      const validation = failingContract ? 'failed' : (passedOnly ? 'passed' : 'not validated');
+      const evidence = failingContract
+        ? `Expected label "${escapeMarkdownInline(failingContract.expectedLabel || '')}"; aria-label "${escapeMarkdownInline(failingContract.observedAriaLabel || '')}"`
+        : (passedOnly ? `${matchingContracts.length} contract check(s) passed` : 'No matching contract result yet');
+
+      lines.push(`| ${candidate.id || 'N/A'} | ${route} | ${escapeMarkdownInline(candidate.message || 'N/A')} | ${validation} | ${evidence} |`);
+    }
+    lines.push('');
+  }
+
+  if (labelInNameContract.results.length > 0) {
+    lines.push('### Label-in-Name Contract Detail');
+    lines.push('');
+    lines.push('| Contract ID | Route | Selector | Status | Expected Label | Observed aria-label |');
+    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
+    for (const result of labelInNameContract.results) {
+      lines.push(`| ${result.id || 'N/A'} | ${result.route || 'N/A'} | ${escapeMarkdownInline(result.selector || 'N/A')} | ${result.status || 'N/A'} | ${escapeMarkdownInline(result.expectedLabel || 'N/A')} | ${escapeMarkdownInline(result.observedAriaLabel || 'N/A')} |`);
+    }
+    lines.push('');
+  }
 
   // ── Aggregated by Accessibility Category ────────────────────────────────
   lines.push('## Aggregated Accessibility Issues by Category');
