@@ -48,11 +48,16 @@ const path = require('path');
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
 const REPORT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
+// Optional local submodule containing rule-specific remediation examples.
+const PURPLE_AI_RESULTS_DIR = path.resolve(__dirname, '../../../../tools/purple-ai/results');
+// Canonical Drupal core Accessibility queue search page.
+const DRUPAL_A11Y_QUEUE_URL = 'https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility';
 
 // Date-stamped outputs so each scan is independently reviewable (LOCAL time).
 const pad = (n) => n.toString().padStart(2, '0');
 const now = new Date();
 const DATE_STAMP = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`; // YYYY-MM-DD
+const AXE_RULE_DOC_VERSION = '4.11';
 const JSON_OUTPUT         = path.join(REPORTS_DIR, `pattern-report-${DATE_STAMP}.json`);
 const BUGS_JSON_OUTPUT    = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.json`);
 const BUGS_CSV_OUTPUT     = path.join(REPORTS_DIR, `bugs-${DATE_STAMP}.csv`);
@@ -632,6 +637,52 @@ function toProjectSeverity(axeImpact) {
   }
 }
 
+function dequeRuleUrl(ruleId) {
+  return `https://dequeuniversity.com/rules/axe/${AXE_RULE_DOC_VERSION}/${ruleId}`;
+}
+
+/**
+ * Return rule-specific Purple-AI references when available.
+ * Falls back to a repo-level link when no rule JSON exists.
+ */
+function purpleAiReference(ruleId) {
+  const ruleFile = `${ruleId}.json`;
+  const localRulePath = path.join(PURPLE_AI_RESULTS_DIR, ruleFile);
+
+  if (!fs.existsSync(localRulePath)) {
+    return null;
+  }
+
+  return {
+    repo: 'https://github.com/GovTechSG/purple-ai',
+    ruleFile,
+    ruleUrl: `https://github.com/GovTechSG/purple-ai/blob/main/results/${ruleFile}`,
+  };
+}
+
+function drupalIssueSearchUrl(ruleId, summary) {
+  const searchText = encodeURIComponent(`${ruleId} ${summary ?? ''}`.trim());
+  return `https://www.drupal.org/project/issues/search?text=${searchText}&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility`;
+}
+
+function inferInteractionHint(selectorKey, routes) {
+  const selector = String(selectorKey || '').toLowerCase();
+  const routeText = Array.isArray(routes) ? routes.join(' ').toLowerCase() : '';
+  const haystack = `${selector} ${routeText}`;
+
+  if (/(dialog|modal|off-canvas|offcanvas)/.test(haystack)) {
+    return 'This issue may require opening a dialog/off-canvas panel before running axe.';
+  }
+  if (/(dropdown|dropbutton|accordion|popover|tooltip|menu|tabs)/.test(haystack)) {
+    return 'This issue may require expanding or activating interactive UI elements before running axe.';
+  }
+  if (/(autocomplete|typeahead|tabledrag)/.test(haystack)) {
+    return 'This issue may require interaction state (typing/dragging/focus) to expose the failing element.';
+  }
+
+  return null;
+}
+
 /**
  * Collapse dynamic URL segments so issue instances dedupe by template route.
  * Examples: /node/123 -> /node/[nid], /user/45/edit -> /user/[id]/edit
@@ -762,6 +813,7 @@ function main() {
             helpUrl: violation.helpUrl,
             selector: node.target,
             selectorKey: selKey,
+            parentContext,
             html: node.html,
             failureSummary: node.failureSummary,
             xpath,
@@ -917,6 +969,7 @@ function main() {
         ? 'https://www.w3.org/TR/WCAG22/#parsing' // SC 4.1.1 deprecated in WCAG 2.2; no Understanding doc
         : `https://www.w3.org/WAI/WCAG22/Understanding/${p.wcag.sc.replace(/\./g, '')}.html`,
       axe_url: p.helpUrl,
+      axe_rule_url: dequeRuleUrl(p.ruleId),
       frequency: {
         pages_affected: p.pages.length,
         total_pages_scanned: totalPages,
@@ -933,12 +986,17 @@ function main() {
       failure_summary: p.failureSummary,
       likely_template: p.templateHint.template,
       template_hint: p.templateHint.hint,
+      parent_context: p.parentContext || '',
       drupal_file: p.drupalFix?.drupalFile ?? 'See likely_template above',
       expected_behaviour: p.drupalFix?.expected ?? null,
       actual_behaviour: p.drupalFix?.actual ?? null,
       suggested_fix: p.drupalFix?.fix ?? RULE_FALLBACK_FIX[p.ruleId] ?? 'See axe documentation.',
       drupal_issue: p.drupalFix?.drupalIssue ?? null,
+      drupal_issue_search_url: drupalIssueSearchUrl(p.ruleId, p.drupalFix?.summary),
+      drupal_a11y_queue_url: DRUPAL_A11Y_QUEUE_URL,
+      purple_ai_reference: purpleAiReference(p.ruleId),
       impact_groups: p.impactGroups,
+      interaction_hint: inferInteractionHint(p.selectorKey, p.concretePaths),
       steps_to_reproduce: [
         `Go to ${REPORT_BASE_URL}${p.concretePaths[0] ?? '/'}`,
         `Use the matching context from Conditions: ${formatConditions(p.conditions)}`,
@@ -1059,11 +1117,18 @@ function main() {
     lines.push('');
     lines.push(`**Pattern ID:** ${issue.pattern_id}`);
     lines.push(`**Rule:** axe-core - ${issue.rule_id}`);
+    lines.push(`**Axe Rule URL:** ${issue.axe_rule_url || issue.axe_url}`);
     lines.push(`**Severity:** ${issue.severity} (axe impact: ${issue.impact})`);
     lines.push(`**WCAG SC:** ${issue.wcag_sc} - ${issue.wcag_name} (Level ${issue.wcag_level})`);
     lines.push(`**Frequency:** ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%)`);
     lines.push(`**Selector:** ${issue.selector}`);
     lines.push(`**XPath:** ${issue.xpath || 'N/A'}`);
+    lines.push(`**Parent Context:** ${issue.parent_context || 'N/A'}`);
+    if (issue.likely_template && issue.likely_template !== 'unknown') {
+      lines.push(`**Likely Template:** ${issue.likely_template}`);
+      lines.push(`**Template Hint:** ${issue.template_hint || 'N/A'}`);
+      lines.push(`**Drupal File:** ${issue.drupal_file || 'N/A'}`);
+    }
     lines.push('');
 
     lines.push('**Affected URLs (full list):**');
@@ -1087,9 +1152,17 @@ function main() {
     lines.push('');
 
     lines.push('#### Steps to Reproduce');
-    issue.steps_to_reproduce.forEach((step, idx) => {
-      lines.push(`${idx + 1}. ${step}`);
-    });
+    if (issue.interaction_hint) {
+      lines.push(`1. ${issue.interaction_hint}`);
+      issue.steps_to_reproduce.forEach((step, idx) => {
+        lines.push(`${idx + 2}. ${step}`);
+      });
+    }
+    else {
+      issue.steps_to_reproduce.forEach((step, idx) => {
+        lines.push(`${idx + 1}. ${step}`);
+      });
+    }
     lines.push('');
 
     lines.push('#### Expected Behaviour');
@@ -1108,6 +1181,21 @@ function main() {
 
     lines.push('#### Suggested Fix');
     lines.push(issue.suggested_fix || 'See axe rule guidance.');
+    lines.push('');
+
+    lines.push('#### Additional References');
+    lines.push(`- Deque Axe Rule: ${issue.axe_rule_url || issue.axe_url}`);
+    if (issue.drupal_issue) {
+      lines.push(`- Known Drupal issue: ${issue.drupal_issue}`);
+    }
+    lines.push(`- Drupal core accessibility queue: ${issue.drupal_a11y_queue_url}`);
+    lines.push(`- Search related Drupal issues for this rule: ${issue.drupal_issue_search_url}`);
+    if (issue.purple_ai_reference?.ruleUrl) {
+      lines.push(`- Purple AI mapped fix examples: ${issue.purple_ai_reference.ruleUrl}`);
+    }
+    else {
+      lines.push(`- Purple AI (repo): https://github.com/GovTechSG/purple-ai`);
+    }
     lines.push('');
 
     lines.push('#### Testing Environment');

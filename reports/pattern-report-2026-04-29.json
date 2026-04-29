@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-04-29T12:12:19.366Z",
+    "generatedAt": "2026-04-29T13:00:34.624Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -40,6 +40,7 @@
         "#edit-imagefile-file-limited-0-display"
       ],
       "selectorKey": "#edit-imagefile-file-limited-N-display",
+      "parentContext": "",
       "html": "<input class=\"file-display form-checkbox form-boolean form-boolean--type-checkbox\" data-drupal-selector=\"edit-imagefile-file-limited-0-display\" type=\"checkbox\" id=\"edit-imagefile-file-limited-0-display\" name=\"imagefile_file_limited[0][display]\" value=\"1\" checked=\"checked\">",
       "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",
       "xpath": "//*[@id=\"edit-imagefile-file-limited-0-display\"]",
@@ -134,6 +135,7 @@
         "input[title=\"Select all rows in this table\"]"
       ],
       "selectorKey": "input[title=\"Select all rows in this table\"]",
+      "parentContext": "",
       "html": "<input type=\"checkbox\" class=\"form-checkbox form-boolean form-boolean--type-checkbox\" title=\"Select all rows in this table\">",
       "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element",
       "xpath": "//input[@title=\"Select all rows in this table\"]",
@@ -398,6 +400,7 @@
         "#edit-submit"
       ],
       "selectorKey": "#edit-submit",
+      "parentContext": "",
       "html": "<input class=\"button--small button button--primary js-form-submit form-submit\" data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Apply to selected items\">",
       "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #ffffff, background color: #3371ff, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
       "xpath": "//*[@id=\"edit-submit\"]",
@@ -721,6 +724,7 @@
         "#edit-submit"
       ],
       "selectorKey": "#edit-submit",
+      "parentContext": "",
       "html": "<input class=\"button button--primary js-form-submit form-submit\" tabindex=\"1\" data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Primary\">",
       "failureSummary": "Fix any of the following:\n  Element has a tabindex greater than 0",
       "xpath": "//*[@id=\"edit-submit\"]",
@@ -898,6 +902,7 @@
         "tr[data-drupal-selector=\"edit-terms-tid10\"] > .tabledrag-cell > .tabledrag-cell-content.js-tabledrag-cell-content > .tabledrag-cell-content__item > .tabledrag-handle[href=\"#\"][title=\"Move in any direction\"]"
       ],
       "selectorKey": "tr[data-drupal-selector=\"edit-terms-tid10\"] > .tabledrag-cell > .tabledrag-cell-content.js-tabledrag-cell-content > .tabledrag-cell-content__item > .tabledrag-handle[href=\"#\"][title=\"Move in any direction\"]",
+      "parentContext": "",
       "html": "<a href=\"#\" title=\"Move in any direction\" class=\"tabledrag-handle\"><div class=\"handle\"></div></a>",
       "failureSummary": "Fix any of the following:\n  Target has insufficient size (33px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 6.4px instead of at least 24px.",
       "xpath": "//tr[@data-drupal-selector=\"edit-terms-tid10\"]",
@@ -1371,6 +1376,7 @@
         ".themeswitcher-form__form-item"
       ],
       "selectorKey": ".themeswitcher-form__form-item",
+      "parentContext": "",
       "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
       "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
       "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
@@ -3411,6 +3417,7 @@
         ".messages--error"
       ],
       "selectorKey": ".messages--error",
+      "parentContext": "",
       "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
       "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark.",
       "xpath": "//*[contains(@class,\"messages--error\")]",
@@ -3704,6 +3711,7 @@
         ".messages--error"
       ],
       "selectorKey": ".messages--error",
+      "parentContext": "",
       "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
       "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark",
       "xpath": "//*[contains(@class,\"messages--error\")]",
@@ -3829,6 +3837,7 @@
         "div[data-drupal-selector=\"edit-test-datelist\"] > h4"
       ],
       "selectorKey": "div[data-drupal-selector=\"edit-test-datelist\"] > h4",
+      "parentContext": "",
       "html": "<h4 class=\"form-item__label\">Datelist</h4>",
       "failureSummary": "Fix any of the following:\n  Heading order invalid",
       "xpath": "//div[@data-drupal-selector=\"edit-test-datelist\"]",
@@ -4152,6 +4161,7 @@
         ".messages--info"
       ],
       "selectorKey": ".messages--info",
+      "parentContext": "",
       "html": "<div role=\"contentinfo\" aria-labelledby=\"message-info-title\" class=\"messages-list__item messages messages--info\">",
       "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",
       "xpath": "//*[contains(@class,\"messages--info\")]",
@@ -4218,6 +4228,7 @@
         "html"
       ],
       "selectorKey": "html",
+      "parentContext": "",
       "html": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
       "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
       "xpath": "//html",
@@ -4298,6 +4309,7 @@
         "h3:nth-child(3)"
       ],
       "selectorKey": "h3:nth-child(3)",
+      "parentContext": "",
       "html": "<h3></h3>",
       "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
       "xpath": "//h3:nth-child(3)",
@@ -4704,6 +4716,7 @@
         "th:nth-child(2)"
       ],
       "selectorKey": "th:nth-child(2)",
+      "parentContext": "",
       "html": "<th></th>",
       "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers",
       "xpath": "//th:nth-child(2)",

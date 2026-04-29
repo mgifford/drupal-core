@@ -1,0 +1,3 @@
+[submodule "tools/purple-ai"]
+	path = tools/purple-ai
+	url = https://github.com/GovTechSG/purple-ai.git

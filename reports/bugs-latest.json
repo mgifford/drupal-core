@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-04-29T12:12:19.366Z",
+    "generatedAt": "2026-04-29T13:00:34.624Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -357,6 +357,7 @@
       "wcag_name": "Info and Relationships",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/label?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/label",
       "frequency": {
         "pages_affected": 4,
         "total_pages_scanned": 452,
@@ -421,16 +422,25 @@
       "failure_summary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": {
+        "repo": "https://github.com/GovTechSG/purple-ai",
+        "ruleFile": "label.json",
+        "ruleUrl": "https://github.com/GovTechSG/purple-ai/blob/main/results/label.json"
+      },
       "impact_groups": [
         "blind",
         "low-vision",
         "voice-control"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/contact/imagefile_file",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -467,6 +477,7 @@
       "wcag_name": "Info and Relationships",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/label-title-only?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/label-title-only",
       "frequency": {
         "pages_affected": 18,
         "total_pages_scanned": 452,
@@ -689,16 +700,21 @@
       "failure_summary": "Fix all of the following:\n  Only title used to generate label for form element",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "core/themes/claro/templates/classy/dataset/table.html.twig\n    core/themes/admin/templates/dataset/table.html.twig",
       "expected_behaviour": "Checkbox has a visible or visually-hidden <label>, or aria-label",
       "actual_behaviour": "input[title=\"Select all rows in this table\"] — title is the sole label source",
       "suggested_fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "blind",
         "low-vision",
         "voice-control"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/admin/content",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -735,6 +751,7 @@
       "wcag_name": "Contrast (Minimum)",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/143.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/color-contrast",
       "frequency": {
         "pages_affected": 24,
         "total_pages_scanned": 452,
@@ -1021,14 +1038,19 @@
       "failure_summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #ffffff, background color: #3371ff, font size: 9.5pt (12.64px), font weight: bold). Expected contrast ratio of 4.5:1",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for normal text, ≥ 3:1 for large text (18pt or 14pt bold). Update the relevant CSS file.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "low-vision"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/admin/content",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -1065,6 +1087,7 @@
       "wcag_name": "Focus Order",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/243.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/tabindex?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/tabindex",
       "frequency": {
         "pages_affected": 12,
         "total_pages_scanned": 452,
@@ -1217,14 +1240,19 @@
       "failure_summary": "Fix any of the following:\n  Element has a tabindex greater than 0",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "users with disabilities"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/buttons",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -1257,6 +1285,7 @@
       "wcag_name": "Target Size (Minimum)",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/258.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/target-size",
       "frequency": {
         "pages_affected": 38,
         "total_pages_scanned": 452,
@@ -1695,15 +1724,20 @@
       "failure_summary": "Fix any of the following:\n  Target has insufficient size (33px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 6.4px instead of at least 24px.",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "Ensure interactive elements have a minimum 24×24px clickable area via padding or min-height/min-width in CSS.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "motor",
         "low-vision"
       ],
+      "interaction_hint": "This issue may require interaction state (typing/dragging/focus) to expose the failing element.",
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/tabledrag",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -1744,6 +1778,7 @@
       "wcag_name": "Identify Purpose",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/region",
       "frequency": {
         "pages_affected": 176,
         "total_pages_scanned": 452,
@@ -3804,15 +3839,20 @@
       "failure_summary": "Fix any of the following:\n  Some page content is not contained by landmarks",
       "likely_template": "form-element.html.twig",
       "template_hint": "Form element template",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>, <header>, <footer>). Check page.html.twig and block placement.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "blind",
         "low-vision"
       ],
+      "interaction_hint": "This issue may require opening a dialog/off-canvas panel before running axe.",
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile), `olivero` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -3849,6 +3889,7 @@
       "wcag_name": "Identify Purpose",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level",
       "frequency": {
         "pages_affected": 22,
         "total_pages_scanned": 452,
@@ -4115,14 +4156,19 @@
       "failure_summary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark.",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "users with disabilities"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/admin/appearance",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -4159,6 +4205,7 @@
       "wcag_name": "Identify Purpose",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo",
       "frequency": {
         "pages_affected": 6,
         "total_pages_scanned": 452,
@@ -4247,15 +4294,20 @@
       "failure_summary": "Fix any of the following:\n  Document has more than one contentinfo landmark",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "core/themes/claro/templates/misc/status-messages.html.twig\n    core/modules/system/templates/status-messages.html.twig",
       "expected_behaviour": "Status messages use role=\"status\" (non-error) or role=\"alert\" (errors)",
       "actual_behaviour": "<div role=\"contentinfo\" aria-labelledby=\"…\"> — conflicts with the page footer landmark",
       "suggested_fix": "Change the outer wrapper role based on message type:\n\n{# Before (broken) #}\n<div role=\"contentinfo\" aria-labelledby=\"{{ title_ids[type] }}\"…>\n\n{# After (fixed) #}\n{%- set msg_role = (type == 'error') ? 'alert' : 'status' -%}\n<div role=\"{{ msg_role }}\" aria-labelledby=\"{{ title_ids[type] }}\"…>",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "blind",
         "low-vision"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/admin/appearance",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -4292,6 +4344,7 @@
       "wcag_name": "Info and Relationships",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/heading-order",
       "frequency": {
         "pages_affected": 24,
         "total_pages_scanned": 452,
@@ -4576,15 +4629,20 @@
       "failure_summary": "Fix any of the following:\n  Heading order invalid",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "Heading levels must not skip. Audit the page heading hierarchy and adjust template markup.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "blind",
         "low-vision"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/admin/form_style",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -4621,6 +4679,7 @@
       "wcag_name": "Identify Purpose",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/136.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-unique?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/landmark-unique",
       "frequency": {
         "pages_affected": 2,
         "total_pages_scanned": 452,
@@ -4663,14 +4722,23 @@
       "failure_summary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": {
+        "repo": "https://github.com/GovTechSG/purple-ai",
+        "ruleFile": "landmark-unique.json",
+        "ruleUrl": "https://github.com/GovTechSG/purple-ai/blob/main/results/landmark-unique.json"
+      },
       "impact_groups": [
         "users with disabilities"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/message",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -4703,6 +4771,7 @@
       "wcag_name": "Info and Relationships",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/131.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one",
       "frequency": {
         "pages_affected": 2,
         "total_pages_scanned": 452,
@@ -4745,15 +4814,20 @@
       "failure_summary": "Fix all of the following:\n  Page must have a level-one heading",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
       "expected_behaviour": "Every page contains exactly one <h1> that identifies the page",
       "actual_behaviour": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
       "suggested_fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
       "drupal_issue": "https://www.drupal.org/project/drupal/issues/new",
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "blind",
         "low-vision"
       ],
+      "interaction_hint": null,
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/",
         "Use the matching context from Conditions: `olivero` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -4790,6 +4864,7 @@
       "wcag_name": "See axe docs",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/unknown.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/empty-heading?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/empty-heading",
       "frequency": {
         "pages_affected": 32,
         "total_pages_scanned": 452,
@@ -5164,14 +5239,19 @@
       "failure_summary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "users with disabilities"
       ],
+      "interaction_hint": "This issue may require opening a dialog/off-canvas panel before running axe.",
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/dialog",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",
@@ -5208,6 +5288,7 @@
       "wcag_name": "See axe docs",
       "wcag_url": "https://www.w3.org/WAI/WCAG22/Understanding/unknown.html",
       "axe_url": "https://dequeuniversity.com/rules/axe/4.11/empty-table-header?application=playwright",
+      "axe_rule_url": "https://dequeuniversity.com/rules/axe/4.11/empty-table-header",
       "frequency": {
         "pages_affected": 44,
         "total_pages_scanned": 452,
@@ -5712,14 +5793,19 @@
       "failure_summary": "Fix any of the following:\n  Element does not have text that is visible to screen readers",
       "likely_template": "unknown",
       "template_hint": "Could not infer template from selector",
+      "parent_context": "",
       "drupal_file": "See likely_template above",
       "expected_behaviour": null,
       "actual_behaviour": null,
       "suggested_fix": "See axe documentation.",
       "drupal_issue": null,
+      "drupal_issue_search_url": "https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "drupal_a11y_queue_url": "https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility",
+      "purple_ai_reference": null,
       "impact_groups": [
         "users with disabilities"
       ],
+      "interaction_hint": "This issue may require interaction state (typing/dragging/focus) to expose the failing element.",
       "steps_to_reproduce": [
         "Go to https://drupal-core.ddev.site/autocomplete",
         "Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)",

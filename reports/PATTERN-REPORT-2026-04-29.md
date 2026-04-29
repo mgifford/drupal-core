@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-04-29T12:12:19.366Z
+> **Generated:** 2026-04-29T13:00:34.624Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -81,11 +81,13 @@
 
 **Pattern ID:** DRU-6CA3D5EB
 **Rule:** axe-core - label
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/label
 **Severity:** Critical (axe impact: critical)
 **WCAG SC:** 1.3.1 - Info and Relationships (Level A)
 **Frequency:** 4 of 452 pages (1%)
 **Selector:** #edit-imagefile-file-limited-N-display
 **XPath:** //*[@id="edit-imagefile-file-limited-0-display"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/contact/imagefile_file
@@ -133,6 +135,12 @@ blind, low-vision, voice-control
 #### Suggested Fix
 See axe documentation.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI mapped fix examples: https://github.com/GovTechSG/purple-ai/blob/main/results/label.json
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -147,11 +155,13 @@ See axe documentation.
 
 **Pattern ID:** DRU-987EB788
 **Rule:** axe-core - label-title-only
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/label-title-only
 **Severity:** High (axe impact: serious)
 **WCAG SC:** 1.3.1 - Info and Relationships (Level A)
 **Frequency:** 18 of 452 pages (4%)
 **Selector:** input[title="Select all rows in this table"]
 **XPath:** //input[@title="Select all rows in this table"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/content
@@ -195,6 +205,13 @@ Replace the title-only label with aria-label:
 <input type="checkbox"
   aria-label="{{ 'Select all rows in this table'|t }}">
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label-title-only
+- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -209,11 +226,13 @@ Replace the title-only label with aria-label:
 
 **Pattern ID:** DRU-44C01FEA
 **Rule:** axe-core - color-contrast
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/color-contrast
 **Severity:** High (axe impact: serious)
 **WCAG SC:** 1.4.3 - Contrast (Minimum) (Level AA)
 **Frequency:** 24 of 452 pages (5%)
 **Selector:** #edit-submit
 **XPath:** //*[@id="edit-submit"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/content
@@ -250,6 +269,12 @@ low-vision
 #### Suggested Fix
 Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for normal text, ≥ 3:1 for large text (18pt or 14pt bold). Update the relevant CSS file.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/color-contrast
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -264,11 +289,13 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 
 **Pattern ID:** DRU-CC36FB25
 **Rule:** axe-core - tabindex
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/tabindex
 **Severity:** High (axe impact: serious)
 **WCAG SC:** 2.4.3 - Focus Order (Level A)
 **Frequency:** 12 of 452 pages (3%)
 **Selector:** #edit-submit
 **XPath:** //*[@id="edit-submit"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/buttons
@@ -304,6 +331,12 @@ users with disabilities
 #### Suggested Fix
 See axe documentation.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/tabindex
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -318,11 +351,13 @@ See axe documentation.
 
 **Pattern ID:** DRU-697B741E
 **Rule:** axe-core - target-size
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/target-size
 **Severity:** High (axe impact: serious)
 **WCAG SC:** 2.5.8 - Target Size (Minimum) (Level AA)
 **Frequency:** 38 of 452 pages (8%)
 **Selector:** tr[data-drupal-selector="edit-terms-tid10"] > .tabledrag-cell > .tabledrag-cell-content.js-tabledrag-cell-content > .tabledrag-cell-content__item > .tabledrag-handle[href="#"][title="Move in any direction"]
 **XPath:** //tr[@data-drupal-selector="edit-terms-tid10"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/tabledrag
@@ -341,10 +376,11 @@ Fix any of the following:
   Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 6.4px instead of at least 24px.
 
 #### Steps to Reproduce
-1. Go to https://drupal-core.ddev.site/tabledrag
-2. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile)
-3. Open browser DevTools and run axe.run() in the Console.
-4. Confirm rule target-size on selector tr[data-drupal-selector="edit-terms-tid10"] > .tabledrag-cell > .tabledrag-cell-content.js-tabledrag-cell-content > .tabledrag-cell-content__item > .tabledrag-handle[href="#"][title="Move in any direction"].
+1. This issue may require interaction state (typing/dragging/focus) to expose the failing element.
+2. Go to https://drupal-core.ddev.site/tabledrag
+3. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile)
+4. Open browser DevTools and run axe.run() in the Console.
+5. Confirm rule target-size on selector tr[data-drupal-selector="edit-terms-tid10"] > .tabledrag-cell > .tabledrag-cell-content.js-tabledrag-cell-content > .tabledrag-cell-content__item > .tabledrag-handle[href="#"][title="Move in any direction"].
 
 #### Expected Behaviour
 Element and interaction meet the mapped WCAG success criterion.
@@ -360,6 +396,12 @@ motor, low-vision
 #### Suggested Fix
 Ensure interactive elements have a minimum 24×24px clickable area via padding or min-height/min-width in CSS.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/target-size
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -374,11 +416,16 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 
 **Pattern ID:** DRU-6BA9E02D
 **Rule:** axe-core - region
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/region
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.6 - Identify Purpose (Level A)
 **Frequency:** 176 of 452 pages (39%)
 **Selector:** .themeswitcher-form__form-item
 **XPath:** //*[contains(@class,"themeswitcher-form__form-item")]
+**Parent Context:** N/A
+**Likely Template:** form-element.html.twig
+**Template Hint:** Form element template
+**Drupal File:** See likely_template above
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/
@@ -448,10 +495,11 @@ Fix any of the following:
   Some page content is not contained by landmarks
 
 #### Steps to Reproduce
-1. Go to https://drupal-core.ddev.site/
-2. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile), `olivero` (dark desktop, dark mobile, light desktop, light mobile)
-3. Open browser DevTools and run axe.run() in the Console.
-4. Confirm rule region on selector .themeswitcher-form__form-item.
+1. This issue may require opening a dialog/off-canvas panel before running axe.
+2. Go to https://drupal-core.ddev.site/
+3. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile), `olivero` (dark desktop, dark mobile, light desktop, light mobile)
+4. Open browser DevTools and run axe.run() in the Console.
+5. Confirm rule region on selector .themeswitcher-form__form-item.
 
 #### Expected Behaviour
 Element and interaction meet the mapped WCAG success criterion.
@@ -465,6 +513,12 @@ blind, low-vision
 
 #### Suggested Fix
 Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>, <header>, <footer>). Check page.html.twig and block placement.
+
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/region
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
@@ -480,11 +534,13 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 
 **Pattern ID:** DRU-2E022F2F
 **Rule:** axe-core - landmark-contentinfo-is-top-level
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.6 - Identify Purpose (Level A)
 **Frequency:** 22 of 452 pages (5%)
 **Selector:** .messages--error
 **XPath:** //*[contains(@class,"messages--error")]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/appearance
@@ -522,6 +578,12 @@ users with disabilities
 #### Suggested Fix
 See axe documentation.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -536,11 +598,13 @@ See axe documentation.
 
 **Pattern ID:** DRU-1260AB7D
 **Rule:** axe-core - landmark-no-duplicate-contentinfo
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.6 - Identify Purpose (Level A)
 **Frequency:** 6 of 452 pages (1%)
 **Selector:** .messages--error
 **XPath:** //*[contains(@class,"messages--error")]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/appearance
@@ -583,6 +647,13 @@ Change the outer wrapper role based on message type:
 {%- set msg_role = (type == 'error') ? 'alert' : 'status' -%}
 <div role="{{ msg_role }}" aria-labelledby="{{ title_ids[type] }}"…>
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo
+- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -597,11 +668,13 @@ Change the outer wrapper role based on message type:
 
 **Pattern ID:** DRU-20662ED4
 **Rule:** axe-core - heading-order
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/heading-order
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.1 - Info and Relationships (Level A)
 **Frequency:** 24 of 452 pages (5%)
 **Selector:** div[data-drupal-selector="edit-test-datelist"] > h4
 **XPath:** //div[@data-drupal-selector="edit-test-datelist"]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/form_style
@@ -637,6 +710,12 @@ blind, low-vision
 #### Suggested Fix
 Heading levels must not skip. Audit the page heading hierarchy and adjust template markup.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/heading-order
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -651,11 +730,13 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 
 **Pattern ID:** DRU-338C31F8
 **Rule:** axe-core - landmark-unique
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/landmark-unique
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.6 - Identify Purpose (Level A)
 **Frequency:** 2 of 452 pages (0%)
 **Selector:** .messages--info
 **XPath:** //*[contains(@class,"messages--info")]
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/message
@@ -691,6 +772,12 @@ users with disabilities
 #### Suggested Fix
 See axe documentation.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-unique
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI mapped fix examples: https://github.com/GovTechSG/purple-ai/blob/main/results/landmark-unique.json
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -705,11 +792,13 @@ See axe documentation.
 
 **Pattern ID:** DRU-ADD15A4D
 **Rule:** axe-core - page-has-heading-one
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one
 **Severity:** Medium (axe impact: moderate)
 **WCAG SC:** 1.3.1 - Info and Relationships (Level A)
 **Frequency:** 2 of 452 pages (0%)
 **Selector:** html
 **XPath:** //html
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/
@@ -753,6 +842,13 @@ Option A — Make site name an h1 on the front page only:
 
 Option B — Ensure the promoted front page node has an h1 title rendered.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one
+- Known Drupal issue: https://www.drupal.org/project/drupal/issues/new
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -767,11 +863,13 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 
 **Pattern ID:** DRU-23F4C000
 **Rule:** axe-core - empty-heading
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/empty-heading
 **Severity:** Low (axe impact: minor)
 **WCAG SC:** unknown - See axe docs (Level ?)
 **Frequency:** 32 of 452 pages (7%)
 **Selector:** h3:nth-child(3)
 **XPath:** //h3:nth-child(3)
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/dialog
@@ -793,10 +891,11 @@ Fix any of the following:
   Element has no title attribute
 
 #### Steps to Reproduce
-1. Go to https://drupal-core.ddev.site/dialog
-2. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
-3. Open browser DevTools and run axe.run() in the Console.
-4. Confirm rule empty-heading on selector h3:nth-child(3).
+1. This issue may require opening a dialog/off-canvas panel before running axe.
+2. Go to https://drupal-core.ddev.site/dialog
+3. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
+4. Open browser DevTools and run axe.run() in the Console.
+5. Confirm rule empty-heading on selector h3:nth-child(3).
 
 #### Expected Behaviour
 Element and interaction meet the mapped WCAG success criterion.
@@ -814,6 +913,12 @@ users with disabilities
 #### Suggested Fix
 See axe documentation.
 
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-heading
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
+
 #### Testing Environment
 - Browser: Chromium (via Playwright)
 - OS: darwin
@@ -828,11 +933,13 @@ See axe documentation.
 
 **Pattern ID:** DRU-EDB3860D
 **Rule:** axe-core - empty-table-header
+**Axe Rule URL:** https://dequeuniversity.com/rules/axe/4.11/empty-table-header
 **Severity:** Low (axe impact: minor)
 **WCAG SC:** unknown - See axe docs (Level ?)
 **Frequency:** 44 of 452 pages (10%)
 **Selector:** th:nth-child(2)
 **XPath:** //th:nth-child(2)
+**Parent Context:** N/A
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/autocomplete
@@ -850,10 +957,11 @@ Fix any of the following:
   Element does not have text that is visible to screen readers
 
 #### Steps to Reproduce
-1. Go to https://drupal-core.ddev.site/autocomplete
-2. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
-3. Open browser DevTools and run axe.run() in the Console.
-4. Confirm rule empty-table-header on selector th:nth-child(2).
+1. This issue may require interaction state (typing/dragging/focus) to expose the failing element.
+2. Go to https://drupal-core.ddev.site/autocomplete
+3. Use the matching context from Conditions: `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
+4. Open browser DevTools and run axe.run() in the Console.
+5. Confirm rule empty-table-header on selector th:nth-child(2).
 
 #### Expected Behaviour
 Element and interaction meet the mapped WCAG success criterion.
@@ -867,6 +975,12 @@ users with disabilities
 
 #### Suggested Fix
 See axe documentation.
+
+#### Additional References
+- Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-table-header
+- Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Search related Drupal issues for this rule: https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
+- Purple AI (repo): https://github.com/GovTechSG/purple-ai
 
 #### Testing Environment
 - Browser: Chromium (via Playwright)
