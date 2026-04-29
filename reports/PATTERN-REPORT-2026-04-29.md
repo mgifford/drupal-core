@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-04-29T13:08:11.684Z
+> **Generated:** 2026-04-29T13:13:42.097Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -138,10 +138,8 @@ See axe documentation.
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
-- DWP - Labels and form controls: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- GOV.UK Design System - Labels: https://design-system.service.gov.uk/components/text-input/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=label&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI mapped fix examples: https://github.com/GovTechSG/purple-ai/blob/main/results/label.json
@@ -170,8 +168,8 @@ See axe documentation.
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/content
-- https://drupal-core.ddev.site/admin/people
-- https://drupal-core.ddev.site/table
+- /admin/people
+- /table
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
@@ -213,10 +211,8 @@ Replace the title-only label with aria-label:
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/label-title-only
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
-- DWP - Forms and inputs guidance: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- GOV.UK Design System - Checkboxes: https://design-system.service.gov.uk/components/checkboxes/
 - Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=label-title-only%20%22Select%20all%20rows%22%20checkbox%20is%20labeled%20only%20by%20its%20title%20attribute&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -246,7 +242,7 @@ Replace the title-only label with aria-label:
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/content
-- https://drupal-core.ddev.site/admin/people
+- /admin/people
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
@@ -282,10 +278,8 @@ Check foreground/background color combinations. Ensure ratio ≥ 4.5:1 for norma
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/color-contrast
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/143.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
-- DWP - Colour and contrast: https://accessibility-manual.dwp.gov.uk/tools-and-resources
+- DWP - Colour and contrast: https://accessibility-manual.dwp.gov.uk/tools-and-resources/colour-and-contrast
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=color-contrast&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
@@ -349,10 +343,8 @@ See axe documentation.
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/tabindex
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/243.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
-- DWP - Keyboard accessibility: https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices
+- DWP - Keyboard-only usage: https://accessibility-manual.dwp.gov.uk/tools-and-resources/keyboard-only-usage
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=tabindex&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Purple AI (repo): https://github.com/GovTechSG/purple-ai
@@ -419,9 +411,7 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/target-size
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/258.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WCAG 2.2 - Target Size (Minimum): https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=target-size&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -454,58 +444,58 @@ Ensure interactive elements have a minimum 24×24px clickable area via padding o
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/
-- https://drupal-core.ddev.site/action-link
-- https://drupal-core.ddev.site/admin
-- https://drupal-core.ddev.site/admin/appearance
-- https://drupal-core.ddev.site/admin/config
-- https://drupal-core.ddev.site/admin/config/content/formats
-- https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html
-- https://drupal-core.ddev.site/admin/config/system/site-information
-- https://drupal-core.ddev.site/admin/content
-- https://drupal-core.ddev.site/admin/form_style
-- https://drupal-core.ddev.site/admin/modules
-- https://drupal-core.ddev.site/admin/people
-- https://drupal-core.ddev.site/admin/reports
-- https://drupal-core.ddev.site/admin/structure
-- https://drupal-core.ddev.site/admin/structure/block
-- https://drupal-core.ddev.site/admin/structure/display-modes/form/add/contact_message
-- https://drupal-core.ddev.site/admin/structure/taxonomy
-- https://drupal-core.ddev.site/admin/structure/taxonomy/add
-- https://drupal-core.ddev.site/admin/structure/types
-- https://drupal-core.ddev.site/admin/structure/types/add
-- https://drupal-core.ddev.site/admin/structure/types/manage/test_type/display/default
-- https://drupal-core.ddev.site/autocomplete
-- https://drupal-core.ddev.site/buttons
-- https://drupal-core.ddev.site/cd-navigation/config
-- https://drupal-core.ddev.site/contact/checkbox_radio
-- https://drupal-core.ddev.site/contact/field_cardinality_test
-- https://drupal-core.ddev.site/contact/imagefile_file
-- https://drupal-core.ddev.site/contact/imagefile_image
-- https://drupal-core.ddev.site/contact/presuf_formatted
-- https://drupal-core.ddev.site/contact/presuf_number
-- https://drupal-core.ddev.site/contact/presuf_text
-- https://drupal-core.ddev.site/contact/select
-- https://drupal-core.ddev.site/contact/textarea
-- https://drupal-core.ddev.site/contact/textform
-- https://drupal-core.ddev.site/dialog
-- https://drupal-core.ddev.site/dropbutton
-- https://drupal-core.ddev.site/fieldset
-- https://drupal-core.ddev.site/message
-- https://drupal-core.ddev.site/node/add/article
-- https://drupal-core.ddev.site/node/add/cd
-- https://drupal-core.ddev.site/node/add/page
-- https://drupal-core.ddev.site/password
-- https://drupal-core.ddev.site/progress
-- https://drupal-core.ddev.site/search/node
-- https://drupal-core.ddev.site/table
-- https://drupal-core.ddev.site/tabledrag
-- https://drupal-core.ddev.site/tabs
-- https://drupal-core.ddev.site/tabs/format/plain_text
-- https://drupal-core.ddev.site/this-page-does-not-exist
-- https://drupal-core.ddev.site/user/1/edit
-- https://drupal-core.ddev.site/user/login
-- https://drupal-core.ddev.site/user/password
-- https://drupal-core.ddev.site/user/register
+- /action-link
+- /admin
+- /admin/appearance
+- /admin/config
+- /admin/config/content/formats
+- /admin/config/content/formats/manage/restricted_html
+- /admin/config/system/site-information
+- /admin/content
+- /admin/form_style
+- /admin/modules
+- /admin/people
+- /admin/reports
+- /admin/structure
+- /admin/structure/block
+- /admin/structure/display-modes/form/add/contact_message
+- /admin/structure/taxonomy
+- /admin/structure/taxonomy/add
+- /admin/structure/types
+- /admin/structure/types/add
+- /admin/structure/types/manage/test_type/display/default
+- /autocomplete
+- /buttons
+- /cd-navigation/config
+- /contact/checkbox_radio
+- /contact/field_cardinality_test
+- /contact/imagefile_file
+- /contact/imagefile_image
+- /contact/presuf_formatted
+- /contact/presuf_number
+- /contact/presuf_text
+- /contact/select
+- /contact/textarea
+- /contact/textform
+- /dialog
+- /dropbutton
+- /fieldset
+- /message
+- /node/add/article
+- /node/add/cd
+- /node/add/page
+- /password
+- /progress
+- /search/node
+- /table
+- /tabledrag
+- /tabs
+- /tabs/format/plain_text
+- /this-page-does-not-exist
+- /user/1/edit
+- /user/login
+- /user/password
+- /user/register
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile), `olivero` (dark desktop, dark mobile, light desktop, light mobile)
@@ -542,9 +532,7 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/region
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=region&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -574,8 +562,8 @@ Ensure all visible content is inside a landmark element (<main>, <nav>, <aside>,
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/appearance
-- https://drupal-core.ddev.site/admin/modules
-- https://drupal-core.ddev.site/message
+- /admin/modules
+- /message
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
@@ -611,9 +599,7 @@ See axe documentation.
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-contentinfo-is-top-level&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -643,7 +629,7 @@ See axe documentation.
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/admin/appearance
-- https://drupal-core.ddev.site/admin/modules
+- /admin/modules
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
@@ -685,9 +671,7 @@ Change the outer wrapper role based on message type:
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
 - Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-no-duplicate-contentinfo%20Status%20messages%20block%20uses%20role%3D%22contentinfo%22%2C%20duplicating%20the%20page%20%3Cfooter%3E&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -753,9 +737,7 @@ Heading levels must not skip. Audit the page heading hierarchy and adjust templa
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/heading-order
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=heading-order&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -820,9 +802,7 @@ See axe documentation.
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/landmark-unique
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/136.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Page structure and landmarks: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=landmark-unique&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -895,9 +875,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one
 - WCAG Understanding: https://www.w3.org/WAI/WCAG22/Understanding/131.html
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
 - Create new Drupal issue: https://www.drupal.org/project/drupal/issues/new
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=page-has-heading-one%20Homepage%20has%20no%20%3Ch1%3E%20heading%20%E2%80%94%20screen%20reader%20users%20cannot%20identify%20page%20topic&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -928,7 +906,7 @@ Option B — Ensure the promoted front page node has an h1 title rendered.
 
 **Affected URLs (full list):**
 - https://drupal-core.ddev.site/dialog
-- https://drupal-core.ddev.site/tabs
+- /tabs
 
 **Conditions:**
 - `admin` (dark desktop, dark mobile, light desktop, light mobile), `claro` (dark desktop, dark mobile, light desktop, light mobile)
@@ -970,9 +948,7 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-heading
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Headings tutorial: https://www.w3.org/WAI/tutorials/page-structure/headings/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=empty-heading&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
@@ -1037,9 +1013,7 @@ See axe documentation.
 
 #### Additional References
 - Deque Axe Rule: https://dequeuniversity.com/rules/axe/4.11/empty-table-header
-- DWP Accessibility Manual: https://accessibility-manual.dwp.gov.uk/
 - ACCESSIBILITY.md Trusted Sources: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
-- WCAG 2.2 Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
 - WAI - Tables tutorial: https://www.w3.org/WAI/tutorials/tables/
 - Search related Drupal accessibility issues: https://www.drupal.org/project/issues/search?text=empty-table-header&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 - Drupal core accessibility queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility

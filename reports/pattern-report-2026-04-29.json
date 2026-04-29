@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-04-29T13:08:11.684Z",
+    "generatedAt": "2026-04-29T13:13:42.097Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,

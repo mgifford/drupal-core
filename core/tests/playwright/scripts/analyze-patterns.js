@@ -111,9 +111,17 @@ function loadTrustedResources() {
 function trustedResourcesForRule(trustedResources, ruleId) {
   const globalResources = Array.isArray(trustedResources?.default) ? trustedResources.default : [];
   const ruleResources = Array.isArray(trustedResources?.rules?.[ruleId]) ? trustedResources.rules[ruleId] : [];
+  const seen = new Set();
   return [...globalResources, ...ruleResources]
     .filter((entry) => entry && entry.title && entry.url)
-    .map((entry) => ({ title: String(entry.title), url: String(entry.url) }));
+    .map((entry) => ({ title: String(entry.title), url: String(entry.url) }))
+    .filter((entry) => {
+      if (seen.has(entry.url)) {
+        return false;
+      }
+      seen.add(entry.url);
+      return true;
+    });
 }
 
 function levenshtein(a, b) {
@@ -1180,8 +1188,16 @@ function main() {
     lines.push('');
 
     lines.push('**Affected URLs (full list):**');
-    for (const affectedUrl of issue.affected_urls) {
-      lines.push(`- ${affectedUrl}`);
+    if (Array.isArray(issue.affected_urls) && issue.affected_urls.length > 0) {
+      lines.push(`- ${issue.affected_urls[0]}`);
+      if (Array.isArray(issue.affected_routes)) {
+        for (let idx = 1; idx < issue.affected_routes.length; idx++) {
+          lines.push(`- ${issue.affected_routes[idx]}`);
+        }
+      }
+    }
+    else {
+      lines.push(`- ${issue.environment.baseUrl}/`);
     }
     lines.push('');
 

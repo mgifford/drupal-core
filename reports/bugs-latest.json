@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-04-29T13:08:11.684Z",
+    "generatedAt": "2026-04-29T13:13:42.097Z",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 452,
     "totalViolationInstances": 1328,
@@ -437,20 +437,12 @@
       },
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
         },
         {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
-        },
-        {
-          "title": "DWP - Labels and form controls",
-          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+          "title": "GOV.UK Design System - Labels",
+          "url": "https://design-system.service.gov.uk/components/text-input/"
         }
       ],
       "impact_groups": [
@@ -729,20 +721,12 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
         },
         {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
-        },
-        {
-          "title": "DWP - Forms and inputs guidance",
-          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+          "title": "GOV.UK Design System - Checkboxes",
+          "url": "https://design-system.service.gov.uk/components/checkboxes/"
         }
       ],
       "impact_groups": [
@@ -1085,20 +1069,12 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
         },
         {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
-        },
-        {
           "title": "DWP - Colour and contrast",
-          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources"
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/colour-and-contrast"
         }
       ],
       "impact_groups": [
@@ -1305,20 +1281,12 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
         },
         {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
-        },
-        {
-          "title": "DWP - Keyboard accessibility",
-          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/assistive-technology-and-devices"
+          "title": "DWP - Keyboard-only usage",
+          "url": "https://accessibility-manual.dwp.gov.uk/tools-and-resources/keyboard-only-usage"
         }
       ],
       "impact_groups": [
@@ -1807,16 +1775,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WCAG 2.2 - Target Size (Minimum)",
@@ -3940,16 +3900,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Page structure and landmarks",
@@ -4275,16 +4227,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Page structure and landmarks",
@@ -4431,16 +4375,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Page structure and landmarks",
@@ -4784,16 +4720,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Headings tutorial",
@@ -4899,16 +4827,8 @@
       },
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Page structure and landmarks",
@@ -5005,16 +4925,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Headings tutorial",
@@ -5448,16 +5360,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Headings tutorial",
@@ -6020,16 +5924,8 @@
       "purple_ai_reference": null,
       "trusted_resources": [
         {
-          "title": "DWP Accessibility Manual",
-          "url": "https://accessibility-manual.dwp.gov.uk/"
-        },
-        {
           "title": "ACCESSIBILITY.md Trusted Sources",
           "url": "https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml"
-        },
-        {
-          "title": "WCAG 2.2 Quick Reference",
-          "url": "https://www.w3.org/WAI/WCAG22/quickref/"
         },
         {
           "title": "WAI - Tables tutorial",
