@@ -1206,7 +1206,7 @@ function main() {
   lines.push('');
 
   for (const issue of bugsJson.issues) {
-    lines.push(`### ${issue.id}: ${issue.summary}`);
+    lines.push(`### ${issue.id}—${DATE_STAMP}: ${issue.summary}`);
     lines.push('');
     lines.push(`**Pattern ID:** ${issue.pattern_id}`);
     lines.push(`**Rule:** axe-core - ${issue.rule_id}`);
