@@ -47,6 +47,7 @@ const path = require('path');
 // Resolves from: core/tests/playwright/scripts/ → ../../../../reports/
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
+const REPORT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 
 // Date-stamped outputs so each scan is independently reviewable (LOCAL time).
 const pad = (n) => n.toString().padStart(2, '0');
@@ -616,6 +617,21 @@ function escapeMarkdownInline(val) {
     .replace(/>/g, '&gt;');
 }
 
+function toProjectSeverity(axeImpact) {
+  switch (axeImpact) {
+    case 'critical':
+      return 'Critical';
+    case 'serious':
+      return 'High';
+    case 'moderate':
+      return 'Medium';
+    case 'minor':
+      return 'Low';
+    default:
+      return 'Medium';
+  }
+}
+
 /**
  * Collapse dynamic URL segments so issue instances dedupe by template route.
  * Examples: /node/123 -> /node/[nid], /user/45/edit -> /user/[id]/edit
@@ -754,10 +770,12 @@ function main() {
             drupalFix,
             templateHint: inferTemplate(node.target),
             pages: [],
+            concretePaths: new Set(),
           });
         }
 
         patternMap.get(key).conditions.add(conditionKey);
+        patternMap.get(key).concretePaths.add(pageResult.path);
 
         // Deduplicate pages by generalized route pattern + screenType
         const pat = patternMap.get(key);
@@ -769,7 +787,7 @@ function main() {
             instanceId,
             name: pageResult.page,
             path: generalizedPath,
-            url: `https://drupal-core.ddev.site${generalizedPath}`,
+            url: `${REPORT_BASE_URL}${generalizedPath}`,
             screen: screenType,
             viewport: pageResult.viewport ?? { width: 1280, height: 800 },
             _pageKey: pageKey,
@@ -783,6 +801,7 @@ function main() {
   // Convert conditions Sets to sorted arrays and strip internal _pageKey field.
   for (const p of patternMap.values()) {
     p.conditions = [...p.conditions].sort();
+    p.concretePaths = [...p.concretePaths].sort();
     for (const pg of p.pages) {
       delete pg._pageKey;
     }
@@ -863,7 +882,7 @@ function main() {
       browser: 'Chromium (via Playwright)',
       os: process.platform,
       tool: 'axe-core via @axe-core/playwright',
-      baseUrl: 'YOUR_LOCAL_BASE_URL',
+      baseUrl: REPORT_BASE_URL,
     },
   };
 
@@ -903,8 +922,11 @@ function main() {
         total_pages_scanned: totalPages,
         percentage: Math.round((p.pages.length / totalPages) * 100),
       },
+      severity: toProjectSeverity(p.impact),
       // Each page instance has its own stable instance_id for regression tracking.
       affected_pages: p.pages,
+      affected_urls: p.concretePaths.map((routePath) => `${REPORT_BASE_URL}${routePath}`),
+      affected_routes: p.concretePaths,
       selector: p.selectorKey,
       xpath: p.xpath,
       html_snippet: p.html,
@@ -918,10 +940,10 @@ function main() {
       drupal_issue: p.drupalFix?.drupalIssue ?? null,
       impact_groups: p.impactGroups,
       steps_to_reproduce: [
-        `Navigate to this route on your local Drupal install: ${p.pages[0]?.path ?? '/'}`,
-        'Open browser DevTools and run: axe.run()',
-        `Look for rule "${p.ruleId}" on selector: ${p.selectorKey}`,
-        'Or run: cd core && yarn test:a11y:playwright && node tests/playwright/scripts/analyze-patterns.js',
+        `Go to ${REPORT_BASE_URL}${p.concretePaths[0] ?? '/'}`,
+        `Use the matching context from Conditions: ${formatConditions(p.conditions)}`,
+        'Open browser DevTools and run axe.run() in the Console.',
+        `Confirm rule ${p.ruleId} on selector ${p.selectorKey}.`,
       ],
       environment: summary.environment,
     })),
@@ -1018,30 +1040,86 @@ function main() {
     // List rules in this category
     const rules = [...new Set(issues.map(i => i.rule_id))];
     lines.push(`- **Rules:** ${rules.map(r => '`' + r + '`').join(', ')}`);
-    // List a few example summaries/selectors and affected generalized routes
+    // List all issue summaries with complete affected routes.
     lines.push('');
-    for (const issue of issues.slice(0, 3)) {
+    for (const issue of issues) {
       lines.push(`  - ${issue.summary}`);
-      // Link to possibly related issues (same rule, fuzzy summary)
-      if (issue.mergedSummaries && issue.mergedSummaries.length > 1) {
-        lines.push(`    - Possibly related issues:`);
-        issue.mergedSummaries.forEach((s, idx) => {
-          if (s !== issue.summary) {
-            lines.push(`      - ${s}`);
-          }
-        });
-      }
-      if (issue.mergedSelectors && issue.mergedSelectors.length > 1) {
-        lines.push(`    - Merged selectors: ${issue.mergedSelectors.map(sel => '`' + sel + '`').join(', ')}`);
-      }
-      if (issue.affected_pages && issue.affected_pages.length > 0) {
-        const routes = [...new Set(issue.affected_pages.map(pg => pg.path))];
-        lines.push(`    - Generalized routes: ${routes.join(', ')}`);
+      if (issue.affected_routes && issue.affected_routes.length > 0) {
+        lines.push(`    - Affected routes (full list): ${issue.affected_routes.join(', ')}`);
       }
     }
-    if (issues.length > 3) {
-      lines.push(`  - ...and ${issues.length - 3} more in this category.`);
+    lines.push('');
+  }
+
+  lines.push('## Reproducible Issue Details');
+  lines.push('');
+
+  for (const issue of bugsJson.issues) {
+    lines.push(`### ${issue.id}: ${issue.summary}`);
+    lines.push('');
+    lines.push(`**Pattern ID:** ${issue.pattern_id}`);
+    lines.push(`**Rule:** axe-core - ${issue.rule_id}`);
+    lines.push(`**Severity:** ${issue.severity} (axe impact: ${issue.impact})`);
+    lines.push(`**WCAG SC:** ${issue.wcag_sc} - ${issue.wcag_name} (Level ${issue.wcag_level})`);
+    lines.push(`**Frequency:** ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%)`);
+    lines.push(`**Selector:** ${issue.selector}`);
+    lines.push(`**XPath:** ${issue.xpath || 'N/A'}`);
+    lines.push('');
+
+    lines.push('**Affected URLs (full list):**');
+    for (const affectedUrl of issue.affected_urls) {
+      lines.push(`- ${affectedUrl}`);
     }
+    lines.push('');
+
+    lines.push('**Conditions:**');
+    lines.push(`- ${formatConditions(issue.conditions)}`);
+    lines.push('');
+
+    lines.push('#### HTML Snippet');
+    lines.push('```html');
+    lines.push((issue.html_snippet || '').trim() || '<!-- N/A -->');
+    lines.push('```');
+    lines.push('');
+
+    lines.push('#### Description');
+    lines.push(issue.failure_summary || issue.summary);
+    lines.push('');
+
+    lines.push('#### Steps to Reproduce');
+    issue.steps_to_reproduce.forEach((step, idx) => {
+      lines.push(`${idx + 1}. ${step}`);
+    });
+    lines.push('');
+
+    lines.push('#### Expected Behaviour');
+    lines.push(issue.expected_behaviour || 'Element and interaction meet the mapped WCAG success criterion.');
+    lines.push('');
+
+    lines.push('#### Actual Behaviour');
+    lines.push(issue.actual_behaviour || issue.failure_summary || issue.summary);
+    lines.push('');
+
+    lines.push('#### Impact');
+    lines.push((issue.impact_groups && issue.impact_groups.length > 0)
+      ? issue.impact_groups.join(', ')
+      : 'Users impacted by this WCAG failure.');
+    lines.push('');
+
+    lines.push('#### Suggested Fix');
+    lines.push(issue.suggested_fix || 'See axe rule guidance.');
+    lines.push('');
+
+    lines.push('#### Testing Environment');
+    lines.push(`- Browser: ${issue.environment.browser}`);
+    lines.push(`- OS: ${issue.environment.os}`);
+    lines.push(`- Tool: ${issue.environment.tool}`);
+    lines.push(`- Base URL: ${issue.environment.baseUrl}`);
+    lines.push('');
+
+    lines.push('#### Tracking IDs');
+    lines.push(`- Pattern ID: ${issue.pattern_id}`);
+    lines.push(`- Instance IDs: ${issue.affected_pages.map((pg) => pg.instanceId).join(', ')}`);
     lines.push('');
   }
 
