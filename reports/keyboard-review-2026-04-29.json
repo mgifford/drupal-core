@@ -1,0 +1,1693 @@
+{
+  "generatedAt": "2026-04-29T13:45:21.245Z",
+  "baseUrl": "https://drupal-core.ddev.site",
+  "totalPages": 20,
+  "totalFailures": 2,
+  "totalWarnings": 0,
+  "pages": [
+    {
+      "name": "Homepage",
+      "path": "/",
+      "url": "https://drupal-core.ddev.site/",
+      "requiresAuth": false,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a [testing now]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "a [testing now]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a [Log in]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.feed-icon [Subscribe to]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.language-link.is-active [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 11,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a [testing now]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 9,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Action link demo",
+      "path": "/action-link",
+      "url": "https://drupal-core.ddev.site/action-link",
+      "requiresAuth": false,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a#action-link-no-icon.action-link [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a#action-link-no-icon--2.action-link.action-link--danger [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "a#action-link-no-icon--3.action-link.action-link--small [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a#action-link-no-icon--4.action-link.action-link--small [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a#action-link-no-icon--5.action-link.action-link--extrasmall [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a#action-link-no-icon--6.action-link.action-link--extrasmall [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a#action-link-plus.action-link.action-link--icon-plus [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a#action-link-plus--2.action-link.action-link--icon-plus [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a#action-link-plus--3.action-link.action-link--icon-plus [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "a#action-link-plus--4.action-link.action-link--icon-plus [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a#action-link-plus--5.action-link.action-link--icon-plus [Action link]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "User login",
+      "path": "/user/login",
+      "url": "https://drupal-core.ddev.site/user/login",
+      "requiresAuth": false,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "input#edit-pass.form-text.required",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a.language-link.is-active [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 7,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a.tabs__link.js-tabs-link [Log in]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.tabs__link.js-tabs-link [Reset your password]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "input#edit-name.form-text.required",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "input#edit-pass.form-text.required",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 10,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "User register",
+      "path": "/user/register",
+      "url": "https://drupal-core.ddev.site/user/register",
+      "requiresAuth": false,
+      "status": 403,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 6,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 11,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 5,
+      "issues": [
+        "Page returned unexpected status: 403"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "User password reset",
+      "path": "/user/password",
+      "url": "https://drupal-core.ddev.site/user/password",
+      "requiresAuth": false,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.language-link.is-active [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 6,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.tabs__link.js-tabs-link [Log in]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a.tabs__link.js-tabs-link [Reset your password]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "input#edit-name.form-text.required",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "a.language-link.is-active [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 9,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Search results",
+      "path": "/search/node",
+      "url": "https://drupal-core.ddev.site/search/node",
+      "requiresAuth": false,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "input#edit-keys.form-search.form-element",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "a#edit-help-link.search-help-link [About searching]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.language-link.is-active [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 9,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "input#edit-keys.form-search.form-element",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "input#edit-submit.button.js-form-submit",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a#edit-help-link.search-help-link [About searching]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 8,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "404 page",
+      "path": "/this-page-does-not-exist",
+      "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+      "requiresAuth": false,
+      "status": 404,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 3,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 6,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "a.language-link [Hebrew]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "select#edit-preferred-theme.form-select.form-element [Use default\n                Olivero\n                Claro\n  ]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "body",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 11,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.language-link [English]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 5,
+      "issues": [
+        "Page returned unexpected status: 404"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Admin dashboard",
+      "path": "/admin",
+      "url": "https://drupal-core.ddev.site/admin",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Form style demo",
+      "path": "/admin/form_style",
+      "url": "https://drupal-core.ddev.site/admin/form_style",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Content list",
+      "path": "/admin/content",
+      "url": "https://drupal-core.ddev.site/admin/content",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Create article",
+      "path": "/node/add/article",
+      "url": "https://drupal-core.ddev.site/node/add/article",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Collapse\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Create basic page",
+      "path": "/node/add/page",
+      "url": "https://drupal-core.ddev.site/node/add/page",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Collapse\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Structure",
+      "path": "/admin/structure",
+      "url": "https://drupal-core.ddev.site/admin/structure",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Content types",
+      "path": "/admin/structure/types",
+      "url": "https://drupal-core.ddev.site/admin/structure/types",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Add content type",
+      "path": "/admin/structure/types/add",
+      "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Taxonomy",
+      "path": "/admin/structure/taxonomy",
+      "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Add vocabulary",
+      "path": "/admin/structure/taxonomy/add",
+      "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Block layout",
+      "path": "/admin/structure/block",
+      "url": "https://drupal-core.ddev.site/admin/structure/block",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Appearance",
+      "path": "/admin/appearance",
+      "url": "https://drupal-core.ddev.site/admin/appearance",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "name": "Modules",
+      "path": "/admin/modules",
+      "url": "https://drupal-core.ddev.site/admin/modules",
+      "requiresAuth": true,
+      "status": 200,
+      "focusSteps": [
+        {
+          "step": 1,
+          "descriptor": "a.visually-hidden.focusable [Skip to main content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 2,
+          "descriptor": "a.admin-toolbar__logo [Home page]",
+          "role": "",
+          "visibleFocusEvidence": false
+        },
+        {
+          "step": 3,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--shortcuts [Extend\n              Shortcuts]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 4,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--navigation-create [Extend\n              Create]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 5,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-blocks [Blocks]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 6,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-content [Content]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 7,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--navigation-files [Files]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 8,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-structure [Extend\n              Structure]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 9,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-themes-page [Select and configure themes.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 10,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--system-modules-list [Add and install modules to extend site functionality.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 11,
+          "descriptor": "button.toolbar-button.toolbar-button--icon--system-admin-config [Extend\n              Configuration]",
+          "role": "",
+          "visibleFocusEvidence": true
+        },
+        {
+          "step": 12,
+          "descriptor": "a.toolbar-button.toolbar-button--icon--entity-user-collection [Manage user accounts, roles, and permissions.]",
+          "role": "",
+          "visibleFocusEvidence": true
+        }
+      ],
+      "uniqueFocusTargets": 12,
+      "issues": [],
+      "warnings": []
+    }
+  ]
+}
