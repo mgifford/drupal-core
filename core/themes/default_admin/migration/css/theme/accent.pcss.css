@@ -37,6 +37,7 @@
 
 [data-gin-accent="yellow"] {
   --gin-color-sticky-rgb: 249, 244, 235;
+  --gin-color-button-text: #111;
 }
 
 [data-gin-accent="pink"] {
