@@ -1119,15 +1119,10 @@ function buildRecommendationStats(accentGrid, apcaFns) {
       && (proposedMin.buttonApca === Number.POSITIVE_INFINITY || proposedMin.buttonApca >= APCA_TARGET_LC)
       && (proposedMin.primaryApca === Number.POSITIVE_INFINITY || proposedMin.primaryApca >= APCA_TARGET_LC);
 
+    // Always display the proposed value, even if it doesn't pass evaluation
+    // in snapshots taken with current colors. The proposal hasn't been applied yet,
+    // so failures are expected. Keep initialProposed as resolvedProposed.
     let fallbackToCurrent = false;
-    if (!proposalPasses) {
-      fallbackToCurrent = true;
-      resolvedProposed = (ACCENT_COLORS[key]?.hex || initialProposed).toUpperCase();
-      proposedMin.buttonWcag = currentMin.buttonWcag;
-      proposedMin.primaryWcag = currentMin.primaryWcag;
-      proposedMin.buttonApca = currentMin.buttonApca;
-      proposedMin.primaryApca = currentMin.primaryApca;
-    }
 
     stats.set(key, {
       resolvedProposed,
