@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Default Admin Accessibility Reports</title>
+  <style>
+    :root {
+      --page-bg: #f4f6fa;
+      --card-bg: #ffffff;
+      --text: #1e2430;
+      --muted: #556070;
+      --border: #d7dde7;
+      --link: #0e4fb5;
+      --link-bg: #dce9ff;
+      --shadow: 0 4px 16px rgba(20, 35, 60, 0.08);
+      --badge-bg: #e9f7ee;
+      --badge-text: #0a6b3f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #12161f;
+        --card-bg: #1d2330;
+        --text: #e8edf5;
+        --muted: #8b95aa;
+        --border: #2e3750;
+        --link: #6aa3ff;
+        --link-bg: #1a2d50;
+        --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        --badge-bg: #0e2d1a;
+        --badge-text: #5de59a;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; color-scheme: light dark; }
+    body {
+      font: 16px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--page-bg);
+      padding: 2rem 1rem 4rem;
+    }
+    main { max-width: 900px; margin: 0 auto; }
+    header { margin-bottom: 2.5rem; }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 60ch; }
+    h2 {
+      font-size: 1.15rem;
+      margin: 2rem 0 0.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      padding: 1rem 1.1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .card-title:hover, .card-title:focus-visible {
+      color: var(--link);
+      text-decoration: underline;
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+      border-radius: 0.2rem;
+    }
+    .card-desc { font-size: 0.9rem; color: var(--muted); flex: 1; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      align-self: flex-start;
+    }
+    .link-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .link-list a {
+      color: var(--link);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.25rem 0.5rem;
+      background: var(--link-bg);
+      border-radius: 0.35rem;
+      display: inline-block;
+    }
+    .link-list a:hover, .link-list a:focus-visible {
+      text-decoration: underline;
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Default Admin Accessibility Reports</h1>
+      <p class="subtitle">
+        Generated reports for the Drupal <a href="https://www.drupal.org/project/gin" target="_blank" rel="noopener">Default Admin</a> theme's color system and keyboard accessibility.
+        Source: <a href="https://github.com/mgifford/drupal-core" target="_blank" rel="noopener">github.com/mgifford/drupal-core</a>
+      </p>
+    </header>
+
+    <h2>Color contrast reports</h2>
+    <div class="card-grid">
+      <div class="card">
+        <a class="card-title" href="DEFAULT-ADMIN-COLOR-REPORT-FG-BG-latest.html">Foreground / Background Report</a>
+        <p class="card-desc">Text, primary, and button contrast across all accent presets and theme states. WCAG 4.5:1 (AA) and 7:1 (AAA) thresholds.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="DEFAULT-ADMIN-COLOR-REPORT-FOCUS-latest.html">Focus Indicator Report</a>
+        <p class="card-desc">Focus ring visibility across all focus presets and theme states. WCAG 2.2 SC 2.4.11 — 3:1 minimum threshold.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="DEFAULT-ADMIN-COLOR-REPORT-latest.html">Full Combined Report</a>
+        <p class="card-desc">All accent grids, focus grids, token matrices, WCAG/APCA recommendations, and token usage in one page.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="DEFAULT-ADMIN-COLOR-MODE-GUIDE-latest.html">Mode &amp; Token Guide</a>
+        <p class="card-desc">Explains contrast mode vs forced-colors mode, token derivation math, and APCA polarity. Companion to the color reports.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="CONTRAST-COLOR-CSS-INTEGRATION.html">CSS contrast-color() Integration</a>
+        <p class="card-desc">Where the experimental CSS <code>contrast-color()</code> function could be used in Default Admin to automate foreground selection.</p>
+        <span class="badge">Reference</span>
+      </div>
+    </div>
+
+    <h2>Keyboard and pattern reports</h2>
+    <div class="card-grid">
+      <div class="card">
+        <a class="card-title" href="KEYBOARD-REVIEW-latest.md">Keyboard Review</a>
+        <p class="card-desc">Summary of keyboard accessibility issues by page, generated from Playwright keyboard test suite results.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="PATTERN-REPORT-latest.md">Pattern Report</a>
+        <p class="card-desc">Clustered axe-core issue patterns grouped by rule and selector similarity across all crawled pages.</p>
+        <span class="badge">Latest</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="plain-language-report.md">Plain Language Analysis</a>
+        <p class="card-desc">Flesch reading ease and grade-level scores for Drupal admin UI strings; flags passive voice, jargon, and long sentences.</p>
+        <span class="badge">Latest</span>
+      </div>
+    </div>
+
+    <h2>Proposal patches</h2>
+    <div class="card-grid">
+      <div class="card">
+        <a class="card-title" href="https://github.com/mgifford/drupal-core/blob/main/patches/default-admin-accent-aa-defaults.patch" target="_blank" rel="noopener">Accent AA defaults patch</a>
+        <p class="card-desc">Proposed hex value changes to accent presets to improve WCAG AA compliance in light mode.</p>
+        <span class="badge">Proposal</span>
+      </div>
+      <div class="card">
+        <a class="card-title" href="https://github.com/mgifford/drupal-core/blob/main/patches/default-admin-focus-aa-proposals.patch" target="_blank" rel="noopener">Focus AA proposals patch</a>
+        <p class="card-desc">Proposed focus color changes and dark-mode overrides to meet WCAG 2.2 SC 2.4.11 (3:1 minimum).</p>
+        <span class="badge">Proposal</span>
+      </div>
+    </div>
+
+    <h2>How to regenerate</h2>
+    <ul class="link-list">
+      <li><a href="https://github.com/mgifford/drupal-core/blob/main/reports/README.md" target="_blank" rel="noopener">Full instructions in reports/README.md</a></li>
+      <li><a href="https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/generate-default-admin-color-report.js" target="_blank" rel="noopener">Color report generator script</a></li>
+      <li><a href="https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/run-default-admin-color-report.sh" target="_blank" rel="noopener">Shell wrapper with auth options</a></li>
+    </ul>
+
+    <footer>
+      <p>
+        Reports generated using <a href="https://playwright.dev" target="_blank" rel="noopener">Playwright</a> and <a href="https://github.com/Myndex/apca-w3" target="_blank" rel="noopener">apca-w3</a>.
+        Accessibility standards: <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">WCAG 2.2</a>.
+        Published via <a href="https://github.com/mgifford/drupal-core/actions/workflows/pages.yml" target="_blank" rel="noopener">GitHub Pages workflow</a>.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
