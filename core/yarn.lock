@@ -3110,6 +3110,7 @@ __metadata:
     "@floating-ui/dom": "npm:^1.7.4"
     "@gitlab-formatters/stylelint-formatter-gitlab": "npm:^1.0.2"
     "@playwright/test": "npm:^1.46.0"
+    apca-w3: "npm:^0.1.9"
     backbone: "npm:^1.6.1"
     chokidar: "npm:^4.0.3"
     ckeditor5: "npm:~47.6.0"
@@ -3307,6 +3308,15 @@ __metadata:
     normalize-path: "npm:^3.0.0"
     picomatch: "npm:^2.0.4"
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
+  languageName: node
+  linkType: hard
+
+"apca-w3@npm:^0.1.9":
+  version: 0.1.9
+  resolution: "apca-w3@npm:0.1.9"
+  dependencies:
+    colorparsley: "npm:^0.1.8"
+  checksum: 10c0/cc5525412226875469c9720d56e42f6ae9f007d4db135a12802141cf268316ca523bfdf52725affc95e300c58e194b425571d48ea87aef0aca54a41a571bdec8
   languageName: node
   linkType: hard
 
@@ -4113,6 +4123,13 @@ __metadata:
   version: 2.0.20
   resolution: "colorette@npm:2.0.20"
   checksum: 10c0/e94116ff33b0ff56f3b83b9ace895e5bf87c2a7a47b3401b8c3f3226e050d5ef76cf4072fb3325f9dc24d1698f9b730baf4e05eeaf861d74a1883073f4c98a40
+  languageName: node
+  linkType: hard
+
+"colorparsley@npm:^0.1.8":
+  version: 0.1.8
+  resolution: "colorparsley@npm:0.1.8"
+  checksum: 10c0/8135f61042f2775994b1d88fbb3383a49f968986420466e28e68548fc134b549776a058c4882b71ae39cb54bba5f0f74104820571081e88e05f11d388626aff8
   languageName: node
   linkType: hard
 

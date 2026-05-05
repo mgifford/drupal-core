@@ -43,6 +43,8 @@
     "a11y:add-regression": "node tests/playwright/scripts/add-regression.js",
     "a11y:setup": "playwright install chromium && playwright test --config=tests/playwright/playwright.config.ts --global-setup tests/playwright/lib/auth-setup.ts",
     "a11y:crawl-and-report": "yarn test:a11y:playwright && yarn a11y:analyze",
+    "a11y:default-admin-colors": "node tests/playwright/scripts/generate-default-admin-color-report.js",
+    "a11y:default-admin-colors:run": "bash tests/playwright/scripts/run-default-admin-color-report.sh",
     "a11y:extract-content": "node tests/playwright/scripts/extract-content-patterns.js",
     "a11y:plain-language": "node tests/playwright/scripts/plain-language-analysis.js"
   },
@@ -76,6 +78,7 @@
     "@floating-ui/dom": "^1.7.4",
     "@gitlab-formatters/stylelint-formatter-gitlab": "^1.0.2",
     "@playwright/test": "^1.46.0",
+    "apca-w3": "^0.1.9",
     "backbone": "^1.6.1",
     "chokidar": "^4.0.3",
     "ckeditor5": "~47.6.0",

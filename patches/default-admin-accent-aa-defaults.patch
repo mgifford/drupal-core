@@ -1,0 +1,59 @@
+diff --git a/core/themes/default_admin/src/Helper.php b/core/themes/default_admin/src/Helper.php
+index 7a0b2f3..c12d9a9 100644
+--- a/core/themes/default_admin/src/Helper.php
++++ b/core/themes/default_admin/src/Helper.php
+@@ -24,11 +24,11 @@ final class Helper {
+     return [
+       'blue' => [
+         'label' => t('Blue (Default)'),
+-        'hex' => '#015efe',
++        'hex' => '#0050d8',
+       ],
+       'light_blue' => [
+         'label' => t('Light Blue'),
+-        'hex' => '#2f6dd0',
++        'hex' => '#1f5bb8',
+       ],
+       'dark_purple' => [
+         'label' => t('Dark Purple'),
+@@ -36,31 +36,31 @@ final class Helper {
+       ],
+       'purple' => [
+         'label' => t('Purple'),
+-        'hex' => '#5b00ff',
++        'hex' => '#4a00d0',
+       ],
+       'teal' => [
+         'label' => t('Teal'),
+-        'hex' => '#0e7772',
++        'hex' => '#0b645f',
+       ],
+       'green' => [
+         'label' => t('Green'),
+-        'hex' => '#02742d',
++        'hex' => '#026127',
+       ],
+       'pink' => [
+         'label' => t('Pink'),
+-        'hex' => '#d12f70',
++        'hex' => '#b3205d',
+       ],
+       'red' => [
+         'label' => t('Red'),
+-        'hex' => '#d8002f',
++        'hex' => '#b00025',
+       ],
+       'orange' => [
+         'label' => t('Orange'),
+-        'hex' => '#c55228',
++        'hex' => '#a8431f',
+       ],
+       'yellow' => [
+         'label' => t('Yellow'),
+-        'hex' => '#966705',
++        'hex' => '#7a5400',
+       ],
+       'neutral' => [
+         'label' => t('Neutral'),
+         'hex' => '#111111',
+       ],

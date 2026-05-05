@@ -54,3 +54,6 @@ sites/simpletest
 # OS files
 .DS_Store
 
+# Manual analysis artifacts
+reports/Gin-issues.xlsx
+

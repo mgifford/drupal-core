@@ -28,6 +28,7 @@
         "behat/mink-browserkit-driver": "^2.2",
         "colinodell/psr-testlogger": "^1.2",
         "composer/composer": "^2.8.1",
+        "cweagans/composer-patches": "^1.7",
         "drupal/coder": "^8.3.30",
         "lullabot/mink-selenium2-driver": "^1.7.3",
         "lullabot/php-webdriver": "^2.0.7",
@@ -71,6 +72,7 @@
             "php": "8.5.0"
         },
         "allow-plugins": {
+            "cweagans/composer-patches": true,
             "composer/installers": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": false,
@@ -103,6 +105,12 @@
             "drush/Commands/contrib/{$name}": ["type:drupal-drush"],
             "modules/custom/{$name}": ["type:drupal-custom-module"],
             "themes/custom/{$name}": ["type:drupal-custom-theme"]
+        },
+        "patches": {
+            "drupal/core": {
+                "Default Admin accent AA proposals": "patches/default-admin-accent-aa-defaults.patch",
+                "Default Admin focus AA proposals": "patches/default-admin-focus-aa-proposals.patch"
+            }
         },
         "drupal-recipe-unpack": {
             "on-require": false
