@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-05T20:45:43.997Z",
+  "generatedAt": "2026-05-05T20:53:02.453Z",
   "baseUrl": "https://drupal-core.ddev.site",
   "settingsPath": "/admin/appearance/settings/default_admin",
   "cssFilesScanned": 320,
@@ -20548,13 +20548,17 @@
         "buttonWcag": 3.63,
         "buttonApca": 28.8,
         "primaryWcag": 2.75,
-        "primaryApca": 23.2
+        "primaryApca": 23.2,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23015EFE",
+        "primaryUrl": "https://contrast.report/?fg=%23015EFE&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.82,
         "buttonApca": 21.5,
         "primaryWcag": 2.14,
-        "primaryApca": 16.1
+        "primaryApca": 16.1,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%230050D8",
+        "primaryUrl": "https://contrast.report/?fg=%230050D8&bg=%232A2A2D"
       }
     },
     "light_blue": {
@@ -20564,13 +20568,17 @@
         "buttonWcag": 3.79,
         "buttonApca": 29.4,
         "primaryWcag": 2.87,
-        "primaryApca": 23.8
+        "primaryApca": 23.8,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%232F6DD0",
+        "primaryUrl": "https://contrast.report/?fg=%232F6DD0&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.92,
         "buttonApca": 21.8,
         "primaryWcag": 2.21,
-        "primaryApca": 16.4
+        "primaryApca": 16.4,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%231F5BB8",
+        "primaryUrl": "https://contrast.report/?fg=%231F5BB8&bg=%232A2A2D"
       }
     },
     "dark_purple": {
@@ -20580,13 +20588,17 @@
         "buttonWcag": 1.79,
         "buttonApca": 11.4,
         "primaryWcag": 1.36,
-        "primaryApca": 0
+        "primaryApca": 0,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%234300BF",
+        "primaryUrl": "https://contrast.report/?fg=%234300BF&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 1.79,
         "buttonApca": 11.4,
         "primaryWcag": 1.36,
-        "primaryApca": 0
+        "primaryApca": 0,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%234300BF",
+        "primaryUrl": "https://contrast.report/?fg=%234300BF&bg=%232A2A2D"
       }
     },
     "purple": {
@@ -20596,13 +20608,17 @@
         "buttonWcag": 2.6,
         "buttonApca": 21,
         "primaryWcag": 1.97,
-        "primaryApca": 15.6
+        "primaryApca": 15.6,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%235B00FF",
+        "primaryUrl": "https://contrast.report/?fg=%235B00FF&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 1.98,
         "buttonApca": 13.9,
         "primaryWcag": 1.5,
-        "primaryApca": 8.9
+        "primaryApca": 8.9,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%234A00D0",
+        "primaryUrl": "https://contrast.report/?fg=%234A00D0&bg=%232A2A2D"
       }
     },
     "teal": {
@@ -20612,13 +20628,17 @@
         "buttonWcag": 3.51,
         "buttonApca": 27,
         "primaryWcag": 2.66,
-        "primaryApca": 21.5
+        "primaryApca": 21.5,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%230E7772",
+        "primaryUrl": "https://contrast.report/?fg=%230E7772&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.7,
         "buttonApca": 19.6,
         "primaryWcag": 2.05,
-        "primaryApca": 14.3
+        "primaryApca": 14.3,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%230B645F",
+        "primaryUrl": "https://contrast.report/?fg=%230B645F&bg=%232A2A2D"
       }
     },
     "green": {
@@ -20628,13 +20648,17 @@
         "buttonWcag": 3.18,
         "buttonApca": 24.3,
         "primaryWcag": 2.41,
-        "primaryApca": 18.9
+        "primaryApca": 18.9,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%2302742D",
+        "primaryUrl": "https://contrast.report/?fg=%2302742D&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.47,
         "buttonApca": 17.3,
         "primaryWcag": 1.87,
-        "primaryApca": 12.1
+        "primaryApca": 12.1,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23026127",
+        "primaryUrl": "https://contrast.report/?fg=%23026127&bg=%232A2A2D"
       }
     },
     "pink": {
@@ -20644,13 +20668,17 @@
         "buttonWcag": 3.91,
         "buttonApca": 31.4,
         "primaryWcag": 2.97,
-        "primaryApca": 25.8
+        "primaryApca": 25.8,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23D12F70",
+        "primaryUrl": "https://contrast.report/?fg=%23D12F70&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.95,
         "buttonApca": 23.2,
         "primaryWcag": 2.24,
-        "primaryApca": 17.7
+        "primaryApca": 17.7,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23B3205D",
+        "primaryUrl": "https://contrast.report/?fg=%23B3205D&bg=%232A2A2D"
       }
     },
     "red": {
@@ -20660,13 +20688,17 @@
         "buttonWcag": 3.56,
         "buttonApca": 29.9,
         "primaryWcag": 2.7,
-        "primaryApca": 24.3
+        "primaryApca": 24.3,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23D8002F",
+        "primaryUrl": "https://contrast.report/?fg=%23D8002F&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.58,
         "buttonApca": 20.6,
         "primaryWcag": 1.96,
-        "primaryApca": 15.3
+        "primaryApca": 15.3,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23B00025",
+        "primaryUrl": "https://contrast.report/?fg=%23B00025&bg=%232A2A2D"
       }
     },
     "orange": {
@@ -20676,13 +20708,17 @@
         "buttonWcag": 4.15,
         "buttonApca": 32.5,
         "primaryWcag": 3.14,
-        "primaryApca": 26.9
+        "primaryApca": 26.9,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23C55228",
+        "primaryUrl": "https://contrast.report/?fg=%23C55228&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 3.14,
         "buttonApca": 24.1,
         "primaryWcag": 2.38,
-        "primaryApca": 18.6
+        "primaryApca": 18.6,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23A8431F",
+        "primaryUrl": "https://contrast.report/?fg=%23A8431F&bg=%232A2A2D"
       }
     },
     "yellow": {
@@ -20692,13 +20728,17 @@
         "buttonWcag": 3.81,
         "buttonApca": 29.4,
         "primaryWcag": 2.89,
-        "primaryApca": 23.8
+        "primaryApca": 23.8,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23966705",
+        "primaryUrl": "https://contrast.report/?fg=%23966705&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 2.78,
         "buttonApca": 20.2,
         "primaryWcag": 2.11,
-        "primaryApca": 14.9
+        "primaryApca": 14.9,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%237A5400",
+        "primaryUrl": "https://contrast.report/?fg=%237A5400&bg=%232A2A2D"
       }
     },
     "neutral": {
@@ -20708,13 +20748,17 @@
         "buttonWcag": 1,
         "buttonApca": 0,
         "primaryWcag": 1.32,
-        "primaryApca": 0
+        "primaryApca": 0,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23111111",
+        "primaryUrl": "https://contrast.report/?fg=%23111111&bg=%232A2A2D"
       },
       "proposedMin": {
         "buttonWcag": 1,
         "buttonApca": 0,
         "primaryWcag": 1.32,
-        "primaryApca": 0
+        "primaryApca": 0,
+        "buttonUrl": "https://contrast.report/?fg=%23111111&bg=%23111111",
+        "primaryUrl": "https://contrast.report/?fg=%23111111&bg=%232A2A2D"
       }
     }
   }

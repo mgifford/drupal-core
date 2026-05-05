@@ -721,7 +721,40 @@ function renderMetricCell(entry, metric, foreground, background) {
 
 function renderSwatch(label, color) {
   const hexColor = color.startsWith('#') ? color : (rgbToHex(color) || color);
-  return `<div class="swatch-row"><span class="swatch" style="background:${escapeHtml(color)}"></span><code>${escapeHtml(label)}</code><span>${escapeHtml(hexColor)}</span></div>`;
+  return `<div class="swatch-row"><span class="swatch" style="background:${escapeHtml(color)}"></span><code>${escapeHtml(label)}</code>${renderColorChip(hexColor, hexColor)}</div>`;
+}
+
+function preferredTextColor(background) {
+  const parsed = typeof background === 'string' ? parseColor(background) : background;
+  if (!parsed) {
+    return '#111111';
+  }
+  const whiteContrast = contrastFromRgb({ r: 255, g: 255, b: 255, a: 1 }, parsed);
+  const blackContrast = contrastFromRgb({ r: 17, g: 17, b: 17, a: 1 }, parsed);
+  return whiteContrast >= blackContrast ? '#FFFFFF' : '#111111';
+}
+
+function renderColorChip(color, label = null) {
+  const parsed = typeof color === 'string' ? parseColor(color) : color;
+  if (!parsed) {
+    const fallback = label || color || 'n/a';
+    return `<code>${escapeHtml(String(fallback))}</code>`;
+  }
+  const hex = rgbToHex(parsed);
+  const fg = preferredTextColor(parsed);
+  const chipLabel = label || hex;
+  return `<span class="color-chip" style="background:${escapeHtml(hex)}; color:${escapeHtml(fg)};" title="${escapeHtml(hex)}">${escapeHtml(chipLabel)}</span>`;
+}
+
+function renderRatioCell(value, url, decimals = 2) {
+  if (!Number.isFinite(value)) {
+    return 'n/a';
+  }
+  const ratioText = `${value.toFixed(decimals)}:1`;
+  if (!url) {
+    return escapeHtml(ratioText);
+  }
+  return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" title="Validate on contrast.report">${escapeHtml(ratioText)}</a>`;
 }
 
 function renderAccentPresetQuickReference(recommendationStats) {
@@ -736,13 +769,13 @@ function renderAccentPresetQuickReference(recommendationStats) {
         <td>
           <div class="color-comparison-cell">
             <div class="color-display-box" style="background:${escapeHtml(color.hex)}; border: 2px solid #ccc;" title="Current: ${escapeHtml(color.hex)}"></div>
-            <code>${escapeHtml(color.hex)}</code>
+            ${renderColorChip(color.hex, color.hex)}
           </div>
         </td>
         <td>
           <div class="color-comparison-cell" ${isChanged ? 'style="background:#fffaf0; border: 2px solid #f0ad4e;"' : ''}>
             <div class="color-display-box" style="background:${escapeHtml(proposedHex)}; border: 2px solid #ccc;" title="Proposed: ${escapeHtml(proposedHex)}"></div>
-            <code>${escapeHtml(proposedHex)}</code>
+            ${renderColorChip(proposedHex, proposedHex)}
             ${isChanged ? '<span class="badge aa">Darker</span>' : ''}
           </div>
         </td>
@@ -1085,8 +1118,22 @@ function buildRecommendationStats(accentGrid, apcaFns) {
   const stats = new Map();
 
   [...byPreset.entries()].forEach(([key, entries]) => {
-    const currentMin = { buttonWcag: Number.POSITIVE_INFINITY, buttonApca: Number.POSITIVE_INFINITY, primaryWcag: Number.POSITIVE_INFINITY, primaryApca: Number.POSITIVE_INFINITY };
-    const proposedMin = { buttonWcag: Number.POSITIVE_INFINITY, buttonApca: Number.POSITIVE_INFINITY, primaryWcag: Number.POSITIVE_INFINITY, primaryApca: Number.POSITIVE_INFINITY };
+    const currentMin = {
+      buttonWcag: Number.POSITIVE_INFINITY,
+      buttonApca: Number.POSITIVE_INFINITY,
+      primaryWcag: Number.POSITIVE_INFINITY,
+      primaryApca: Number.POSITIVE_INFINITY,
+      buttonUrl: null,
+      primaryUrl: null,
+    };
+    const proposedMin = {
+      buttonWcag: Number.POSITIVE_INFINITY,
+      buttonApca: Number.POSITIVE_INFINITY,
+      primaryWcag: Number.POSITIVE_INFINITY,
+      primaryApca: Number.POSITIVE_INFINITY,
+      buttonUrl: null,
+      primaryUrl: null,
+    };
 
     const initialProposed = (PROPOSED_ACCENT_COLORS[key]?.hex || ACCENT_COLORS[key]?.hex || '#000000').toUpperCase();
     let resolvedProposed = initialProposed;
@@ -1096,14 +1143,22 @@ function buildRecommendationStats(accentGrid, apcaFns) {
         const vars = entry.snapshot.vars;
         const buttonPair = evaluatePair(vars.buttonText, hexColor, apcaFns);
         const primaryPair = evaluatePair(hexColor, vars.bgLayer, apcaFns);
+        const buttonUrl = generateContrastReportUrl(vars.buttonText, hexColor);
+        const primaryUrl = generateContrastReportUrl(hexColor, vars.bgLayer);
         if (buttonPair) {
-          accumulator.buttonWcag = Math.min(accumulator.buttonWcag, buttonPair.wcag);
+          if (buttonPair.wcag <= accumulator.buttonWcag) {
+            accumulator.buttonWcag = buttonPair.wcag;
+            accumulator.buttonUrl = buttonUrl;
+          }
           if (buttonPair.apca != null) {
             accumulator.buttonApca = Math.min(accumulator.buttonApca, buttonPair.apca);
           }
         }
         if (primaryPair) {
-          accumulator.primaryWcag = Math.min(accumulator.primaryWcag, primaryPair.wcag);
+          if (primaryPair.wcag <= accumulator.primaryWcag) {
+            accumulator.primaryWcag = primaryPair.wcag;
+            accumulator.primaryUrl = primaryUrl;
+          }
           if (primaryPair.apca != null) {
             accumulator.primaryApca = Math.min(accumulator.primaryApca, primaryPair.apca);
           }
@@ -1150,13 +1205,22 @@ function renderRecommendations(accentGrid, recommendationStats) {
         label: entry.accent.label || presetLabelFromKey(key),
         minButtonRatio: Number.POSITIVE_INFINITY,
         minPrimaryRatio: Number.POSITIVE_INFINITY,
+        minButtonUrl: null,
+        minPrimaryUrl: null,
         failingStates: [],
       });
     }
 
     const aggregate = byPreset.get(key);
-    aggregate.minButtonRatio = Math.min(aggregate.minButtonRatio, buttonRatio);
-    aggregate.minPrimaryRatio = Math.min(aggregate.minPrimaryRatio, primaryRatio);
+    const vars = entry.snapshot.vars;
+    if (buttonRatio <= aggregate.minButtonRatio) {
+      aggregate.minButtonRatio = buttonRatio;
+      aggregate.minButtonUrl = generateContrastReportUrl(vars.buttonText, vars.buttonBg || vars.primary);
+    }
+    if (primaryRatio <= aggregate.minPrimaryRatio) {
+      aggregate.minPrimaryRatio = primaryRatio;
+      aggregate.minPrimaryUrl = generateContrastReportUrl(vars.primary, vars.bgLayer);
+    }
 
     if (buttonRatio < 4.5 || primaryRatio < 4.5) {
       aggregate.failingStates.push({
@@ -1173,13 +1237,17 @@ function renderRecommendations(accentGrid, recommendationStats) {
       const aggregate = byPreset.get(key);
       const stats = recommendationStats?.get(key);
       const proposedHex = stats?.resolvedProposed || (PROPOSED_ACCENT_COLORS[key]?.hex || color.hex);
-      const minButton = aggregate ? aggregate.minButtonRatio.toFixed(2) : 'n/a';
-      const minPrimary = aggregate ? aggregate.minPrimaryRatio.toFixed(2) : 'n/a';
+      const minButton = aggregate ? renderRatioCell(aggregate.minButtonRatio, aggregate.minButtonUrl, 2) : 'n/a';
+      const minPrimary = aggregate ? renderRatioCell(aggregate.minPrimaryRatio, aggregate.minPrimaryUrl, 2) : 'n/a';
       const presetLabel = aggregate?.label || color.label || presetLabelFromKey(key);
       const sameColor = color.hex.toLowerCase() === proposedHex.toLowerCase();
       const sameClass = sameColor ? 'same-color' : '';
-      const currentWcag = stats ? `${formatMetric(stats.currentMin.buttonWcag, 2)} / ${formatMetric(stats.currentMin.primaryWcag, 2)}` : 'n/a';
-      const proposedWcag = stats ? `${formatMetric(stats.proposedMin.buttonWcag, 2)} / ${formatMetric(stats.proposedMin.primaryWcag, 2)}` : 'n/a';
+      const currentWcag = stats
+        ? `${renderRatioCell(stats.currentMin.buttonWcag, stats.currentMin.buttonUrl, 2)} / ${renderRatioCell(stats.currentMin.primaryWcag, stats.currentMin.primaryUrl, 2)}`
+        : 'n/a';
+      const proposedWcag = stats
+        ? `${renderRatioCell(stats.proposedMin.buttonWcag, stats.proposedMin.buttonUrl, 2)} / ${renderRatioCell(stats.proposedMin.primaryWcag, stats.proposedMin.primaryUrl, 2)}`
+        : 'n/a';
       const currentApca = stats ? `${formatMetric(stats.currentMin.buttonApca, 1)} / ${formatMetric(stats.currentMin.primaryApca, 1)}` : 'n/a';
       const proposedApca = stats ? `${formatMetric(stats.proposedMin.buttonApca, 1)} / ${formatMetric(stats.proposedMin.primaryApca, 1)}` : 'n/a';
       const complianceBadge = stats && stats.proposedMin.buttonWcag >= 4.5 && stats.proposedMin.primaryWcag >= 4.5
@@ -1189,12 +1257,12 @@ function renderRecommendations(accentGrid, recommendationStats) {
 
       return `<tr>
         <th scope="row">${escapeHtml(presetLabel)}</th>
-        <td class="${sameClass}"><div class="swatch-row"><span class="swatch" style="background:${escapeHtml(color.hex)}"></span><code>${escapeHtml(color.hex)}</code></div></td>
-        <td class="${sameClass}"><div class="swatch-row"><span class="swatch" style="background:${escapeHtml(proposedHex)}"></span><code>${escapeHtml(proposedHex)}</code></div></td>
-        <td>${escapeHtml(minButton)}:1</td>
-        <td>${escapeHtml(minPrimary)}:1</td>
-        <td>${escapeHtml(currentWcag)}</td>
-        <td>${escapeHtml(proposedWcag)}</td>
+        <td class="${sameClass}"><div class="swatch-row"><span class="swatch" style="background:${escapeHtml(color.hex)}"></span>${renderColorChip(color.hex, color.hex)}</div></td>
+        <td class="${sameClass}"><div class="swatch-row"><span class="swatch" style="background:${escapeHtml(proposedHex)}"></span>${renderColorChip(proposedHex, proposedHex)}</div></td>
+        <td>${minButton}</td>
+        <td>${minPrimary}</td>
+        <td>${currentWcag}</td>
+        <td>${proposedWcag}</td>
         <td>${escapeHtml(currentApca)}</td>
         <td>${escapeHtml(proposedApca)}</td>
         <td>${complianceBadge}${stats?.fallbackToCurrent ? ' <span class="hint">(fallback to current)</span>' : ''}</td>
@@ -2145,12 +2213,30 @@ function renderHtml(report) {
       border: 1px solid rgba(0, 0, 0, 0.2);
       cursor: help;
     }
+    .swatch-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
     .swatch {
       width: 1.25rem;
       height: 1.25rem;
       border-radius: 0.25rem;
       border: 1px solid rgba(0, 0, 0, 0.2);
       display: inline-block;
+    }
+    .color-chip {
+      display: inline-block;
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.35rem;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      text-shadow: none;
     }
     .color-code {
       font-size: 0.75rem;
@@ -2573,6 +2659,20 @@ function renderFgBgReport(report) {
     th, td { padding: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; }
     th { background: #f8faff; }
     tr:last-child td, tr:last-child th { border-bottom: 0; }
+    .swatch-row { display: inline-flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+    .swatch { width: 1.25rem; height: 1.25rem; border-radius: 0.25rem; border: 1px solid rgba(0, 0, 0, 0.2); display: inline-block; }
+    .color-chip {
+      display: inline-block;
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.35rem;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      text-shadow: none;
+    }
   </style>
 </head>
 <body>
