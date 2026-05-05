@@ -1857,6 +1857,7 @@ function renderStandaloneModeGuide(report) {
       <ul>
         <li><a href="#mode-explainer">Mode explainer</a></li>
         <li><a href="#apca-polarity">APCA polarity</a></li>
+        <li><a href="#accessibility-best-practices">A11y best practices</a></li>
         <li><a href="#token-derivation">Token derivation mathematics</a></li>
         <li><a href="#token-math-dark">Dark mode derivation</a></li>
         <li><a href="#token-math-why">Why this matters for accessibility</a></li>
@@ -1868,6 +1869,9 @@ function renderStandaloneModeGuide(report) {
     </section>
     <section id="mode-explainer" class="card">
       ${renderModeExplainerContent()}
+    </section>
+    <section id="accessibility-best-practices" class="card">
+      ${renderAccessibilityBestPracticesReference()}
     </section>
     <section id="token-derivation" class="card">
       ${renderTokenDerivationMath()}
@@ -2913,9 +2917,6 @@ function renderFocusReport(report) {
       <h2>Focus Token Grids</h2>
       ${tokenFocusMatrix}
       ${tokenFocusGrid}
-    </section>
-    <section id="a11y">
-      ${renderAccessibilityBestPracticesReference()}
     </section>
   </main>
 </body>
