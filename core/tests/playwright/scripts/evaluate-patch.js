@@ -25,9 +25,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync, exec } = require('child_process');
 const { chromium } = require('playwright');
-const { injectAxe, checkAxe } = require('axe-playwright');
+const { injectAxe, getViolations } = require('axe-playwright');
 const config = require('./lib/patch-evaluator-config');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
 
@@ -56,6 +57,75 @@ const PATCH_FILE = path.join(PATCHES_DIR, `${patchName}.patch`);
 
 function log(msg) {
   console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
+}
+
+function detectScreenType(viewport) {
+  if (!viewport || typeof viewport.width !== 'number') {
+    return 'desktop';
+  }
+  return viewport.width < 768 ? 'mobile' : 'desktop';
+}
+
+function normalizeSelector(target) {
+  if (Array.isArray(target)) {
+    return target.join(' > ');
+  }
+  return String(target || '');
+}
+
+function shortHash(input) {
+  return crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
+}
+
+function generateInstanceId(pagePath, selector, ruleId, screenType, prefix = 'DRU') {
+  return `${prefix}-${shortHash(`${pagePath}|${selector}|${ruleId}|${screenType}`)}`;
+}
+
+function generatePatternId(selector, ruleId, screenType, prefix = 'DRU') {
+  return `${prefix}-${shortHash(`${selector}|${ruleId}|${screenType}`)}`;
+}
+
+function annotateViolations(violations, pagePath, screenType, colorMode = 'light', prefix = 'DRU') {
+  if (!Array.isArray(violations)) {
+    return [];
+  }
+
+  return violations.flatMap((violation) => {
+    const ruleId = violation.id;
+    const nodes = Array.isArray(violation.nodes) ? violation.nodes : [];
+    return nodes.map((node) => {
+      const selector = normalizeSelector(node.target);
+      return {
+        instance_id: generateInstanceId(pagePath, selector, ruleId, screenType, prefix),
+        pattern_id: generatePatternId(selector, ruleId, screenType, prefix),
+        screen_type: screenType,
+        color_mode: colorMode,
+        page_path: pagePath,
+        selector,
+        rule_id: ruleId,
+        impact: node.impact || violation.impact || 'unknown',
+        html_snippet: node.html || '',
+      };
+    });
+  });
+}
+
+function buildExpectedTargets(pagePath, selectors, rules, screenType, colorMode = 'light', prefix = 'DRU') {
+  const targets = [];
+  for (const selector of selectors || []) {
+    for (const ruleId of rules || []) {
+      targets.push({
+        instance_id: generateInstanceId(pagePath, selector, ruleId, screenType, prefix),
+        pattern_id: generatePatternId(selector, ruleId, screenType, prefix),
+        screen_type: screenType,
+        color_mode: colorMode,
+        page_path: pagePath,
+        selector,
+        rule_id: ruleId,
+      });
+    }
+  }
+  return targets;
 }
 
 async function takeScreenshot(page, selector, description) {
@@ -104,8 +174,8 @@ async function captureHtml(page, selector) {
 async function runAxeScan(page) {
   try {
     await injectAxe(page);
-    const results = await checkAxe(page);
-    return { success: true, results };
+    const violations = await getViolations(page);
+    return { success: true, results: { violations } };
   } catch (err) {
     return { success: false, error: err.message };
   }
@@ -184,9 +254,25 @@ function formatAxeResults(results) {
       const testResult = {
         url: testCase.url,
         selectors: testCase.selectors,
+        expected_targets: [],
         before: { screenshots: [], html: [], axe: {} },
         after: { screenshots: [], html: [], axe: {} },
       };
+
+      if (testCase.viewport) {
+        await page.setViewportSize(testCase.viewport);
+      }
+
+      const screenType = detectScreenType(testCase.viewport);
+      const pagePath = testCase.url;
+      const colorMode = 'light';
+      testResult.expected_targets = buildExpectedTargets(
+        pagePath,
+        testCase.selectors,
+        patchConfig.rules,
+        screenType,
+        colorMode,
+      );
 
       // ── BEFORE: Take screenshots, capture HTML, run axe ──────────────────
       log(`Navigating to ${testCase.url}`);
@@ -208,6 +294,12 @@ function formatAxeResults(results) {
       log(`  Running axe scan (before)`);
       const axeBefore = await runAxeScan(page);
       testResult.before.axe = formatAxeResults(axeBefore.results);
+      testResult.before.annotated_violations = annotateViolations(
+        testResult.before.axe.violations,
+        pagePath,
+        screenType,
+        colorMode,
+      );
       evaluation.summary.before.total += testResult.before.axe.total;
       for (const [rule, count] of Object.entries(testResult.before.axe.byRule)) {
         evaluation.summary.before.byRule[rule] = (evaluation.summary.before.byRule[rule] || 0) + count;
@@ -252,6 +344,12 @@ function formatAxeResults(results) {
       log(`  Running axe scan (after)`);
       const axeAfter = await runAxeScan(page);
       testResult.after.axe = formatAxeResults(axeAfter.results);
+      testResult.after.annotated_violations = annotateViolations(
+        testResult.after.axe.violations,
+        pagePath,
+        screenType,
+        colorMode,
+      );
       evaluation.summary.after.total += testResult.after.axe.total;
       for (const [rule, count] of Object.entries(testResult.after.axe.byRule)) {
         evaluation.summary.after.byRule[rule] = (evaluation.summary.after.byRule[rule] || 0) + count;
