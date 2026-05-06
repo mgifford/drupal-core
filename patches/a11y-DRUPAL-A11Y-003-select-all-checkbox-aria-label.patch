@@ -1,0 +1,12 @@
+diff --git a/core/themes/default_admin/templates/dataset/table.html.twig b/core/themes/default_admin/templates/dataset/table.html.twig
+index 9bc07c5d41c..52117427abb 100644
+--- a/core/themes/default_admin/templates/dataset/table.html.twig
++++ b/core/themes/default_admin/templates/dataset/table.html.twig
+@@ -69,6 +69,7 @@
+               type="checkbox"
+               class="form-checkbox form-boolean form-boolean--type-checkbox"
+               title="{{ 'Select all rows in this table'|t }}"
++              aria-label="{{ 'Select all rows in this table'|t }}"
+             />
+           {% endif %}
+         </{{ cell.tag }}>
