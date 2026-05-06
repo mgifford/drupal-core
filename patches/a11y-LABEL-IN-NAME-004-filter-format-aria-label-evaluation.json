@@ -22,12 +22,23 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T18:04:17.365Z",
+  "timestamp": "2026-05-06T18:17:57.823Z",
   "testCases": [
     {
       "url": "/admin/config/content/formats",
       "selectors": [
         "[aria-label*=\"Edit\"]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-e5c34df3",
+          "pattern_id": "DRU-ebbf3d45",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin/config/content/formats",
+          "selector": "[aria-label*=\"Edit\"]",
+          "rule_id": "label-title-only"
+        }
       ],
       "before": {
         "screenshots": [
@@ -45,8 +56,10 @@
         ],
         "axe": {
           "total": 0,
-          "byRule": {}
-        }
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
       },
       "after": {
         "screenshots": [],

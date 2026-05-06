@@ -23,13 +23,33 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T18:04:16.431Z",
+  "timestamp": "2026-05-06T18:17:56.799Z",
   "testCases": [
     {
       "url": "/admin/modules",
       "selectors": [
         "summary",
         "details summary"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-7eb7c1d4",
+          "pattern_id": "DRU-a3fead3b",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin/modules",
+          "selector": "summary",
+          "rule_id": "summary-name"
+        },
+        {
+          "instance_id": "DRU-aac96276",
+          "pattern_id": "DRU-0adc5ec2",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin/modules",
+          "selector": "details summary",
+          "rule_id": "summary-name"
+        }
       ],
       "before": {
         "screenshots": [
@@ -56,8 +76,10 @@
         ],
         "axe": {
           "total": 0,
-          "byRule": {}
-        }
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
       },
       "after": {
         "screenshots": [],

@@ -22,12 +22,23 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T18:04:10.350Z",
+  "timestamp": "2026-05-06T18:17:51.147Z",
   "testCases": [
     {
       "url": "/buttons",
       "selectors": [
         "button[tabindex]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-6077ce52",
+          "pattern_id": "DRU-38edcd36",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/buttons",
+          "selector": "button[tabindex]",
+          "rule_id": "tabindex"
+        }
       ],
       "before": {
         "screenshots": [
@@ -45,8 +56,10 @@
         ],
         "axe": {
           "total": 0,
-          "byRule": {}
-        }
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
       },
       "after": {
         "screenshots": [
@@ -64,8 +77,10 @@
         ],
         "axe": {
           "total": 0,
-          "byRule": {}
-        }
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
       }
     }
   ],
