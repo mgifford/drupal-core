@@ -343,30 +343,105 @@
     </section>
 
     <section aria-labelledby="proposal-patches">
-      <h2 id="proposal-patches">Proposal Patches</h2>
+      <h2 id="proposal-patches">Accessibility Patch Suite (9 Patches)</h2>
+      <p>Comprehensive accessibility improvements targeting 1,200+ violations identified through axe-core scanning and RTL/theme-specific analysis. <a href="https://github.com/mgifford/drupal-core/blob/main/patches/PROPOSED-PATCHES.md" target="_blank" rel="noopener"><strong>See deployment guide</strong></a> for testing and application instructions.</p>
+      
+      <h3>Priority 1: Critical & High-Frequency (88+ violations)</h3>
       <div class="card-grid">
         <article class="card">
+          <h3>DRUPAL-A11Y-002: Submit Button Contrast</h3>
+          <p><strong>WCAG 1.4.3 (AA)</strong> — Darkens primary button background to fix 88 contrast violations across all admin forms.</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>DRUPAL-A11Y-001: File Widget Labels</h3>
+          <p><strong>WCAG 1.3.1 (Critical)</strong> — Adds aria-label to image file display checkboxes with completely missing accessible names.</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-001-file-widget-display-labels.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>DRUPAL-A11Y-005: Language Switcher Contrast</h3>
+          <p><strong>WCAG 1.4.3 (AA)</strong> — Fixes contrast on language switcher links appearing on every admin page (254 violations).</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+        <article class="card">
           <h3>LABEL-IN-NAME-004: Configure Link</h3>
-          <p><strong>WCAG 2.5.3 (Label in Name)</strong> — Fixes aria-label mismatch on "Configure" link in text format list. Improves speech-input usability.</p>
+          <p><strong>WCAG 2.5.3 (A)</strong> — Fixes aria-label mismatch on "Configure" link for speech-input usability.</p>
           <ul class="family-links">
             <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch" target="_blank" rel="noopener">View patch</a></li>
           </ul>
         </article>
+      </div>
+      
+      <h3>Priority 2: High-Frequency Moderate (424+ violations)</h3>
+      <div class="card-grid">
+        <article class="card">
+          <h3>DRUPAL-A11Y-006: Theme Switcher Landmark</h3>
+          <p><strong>WCAG 1.3.6 (AAA)</strong> — Wraps theme switcher in landmark; affects every Claro page (424 violations).</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>DRUPAL-A11Y-007: Message Landmark Role</h3>
+          <p><strong>WCAG 1.3.6 (AAA)</strong> — Changes message landmarks to proper roles and adds aria-live for error announcements (306 violations).</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
         <article class="card">
           <h3>DRUPAL-A11Y-003: Select-All Checkbox</h3>
-          <p><strong>WCAG 1.3.1 (Info and Relationships)</strong> — Adds aria-label to "select all rows" checkboxes in table headers for proper accessible names.</p>
+          <p><strong>WCAG 1.3.1 (A)</strong> — Adds aria-label to "select all rows" checkboxes in table headers (24 violations).</p>
           <ul class="family-links">
             <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-003-select-all-checkbox-label.patch" target="_blank" rel="noopener">Table template</a></li>
             <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-003-views-select-all-checkbox-label.patch" target="_blank" rel="noopener">Views template</a></li>
           </ul>
         </article>
+      </div>
+      
+      <h3>Priority 3: Test & Form Specific</h3>
+      <div class="card-grid">
         <article class="card">
-          <h3>Accessibility Patch Index</h3>
-          <p>Complete documentation of identified violations, their status, and implementation guidance for review and testing.</p>
+          <h3>DRUPAL-A11Y-004: Tabindex Buttons</h3>
+          <p><strong>WCAG 2.1.1 (A)</strong> — Removes tabindex="1" from test form buttons to restore natural tab order.</p>
           <ul class="family-links">
-            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/PROPOSED-PATCHES.md" target="_blank" rel="noopener">Read documentation</a></li>
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch" target="_blank" rel="noopener">View patch</a></li>
           </ul>
         </article>
+        <article class="card">
+          <h3>DRUPAL-A11Y-008: Empty Table Headers</h3>
+          <p><strong>WCAG 1.3.1 (A)</strong> — Adds scope and labels to empty multifield table header cells (176 violations).</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>DRUPAL-A11Y-009: Module Summary Names</h3>
+          <p><strong>WCAG 4.1.2 (A)</strong> — Adds aria-label to module details elements on /admin/modules (24 violations).</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch" target="_blank" rel="noopener">View patch</a></li>
+          </ul>
+        </article>
+      </div>
+      
+      <h3>Documentation & Resources</h3>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Patch Deployment Guide</h3>
+          <p>Complete documentation with deployment procedures, testing recommendations, and integration with composer-patches.</p>
+          <ul class="family-links">
+            <li><a href="https://github.com/mgifford/drupal-core/blob/main/patches/PROPOSED-PATCHES.md" target="_blank" rel="noopener">Read full guide</a></li>
+          </ul>
+        </article>
+      </div>
+      
+      <h2 id="legacy-patches">Other Proposed Patches</h2>
+      <div class="card-grid">
         <article class="card">
           <h3>Accent AA Defaults</h3>
           <p>Proposed darker accent hex values intended to bring more presets into WCAG AA range in light mode.</p>
