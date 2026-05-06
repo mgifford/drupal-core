@@ -1,0 +1,5814 @@
+{
+  "summary": {
+    "generatedAt": "2026-05-06T13:52:34.395Z",
+    "tool": "axe-core (via @axe-core/playwright)",
+    "totalPagesCrawled": 2193,
+    "totalViolationInstances": 5550,
+    "uniquePatterns": 13,
+    "templateLevelPatterns": 10,
+    "byImpact": {
+      "critical": 1,
+      "serious": 4,
+      "moderate": 6,
+      "minor": 2
+    },
+    "environment": {
+      "browser": "Chromium (via Playwright)",
+      "os": "macOS",
+      "tool": "axe-core via @axe-core/playwright",
+      "baseUrl": "https://drupal-core.ddev.site"
+    }
+  },
+  "patterns": [
+    {
+      "patternId": "DRU-6CA3D5EB",
+      "ruleId": "label",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "critical",
+      "description": "Ensure every form element has a label",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label?application=playwright",
+      "selector": [
+        "#edit-imagefile-file-limited-0-display"
+      ],
+      "selectorKey": "#edit-imagefile-file-limited-N-display",
+      "parentContext": "",
+      "html": "<input class=\"file-display form-checkbox form-boolean form-boolean--type-checkbox\" data-drupal-selector=\"edit-imagefile-file-limited-0-display\" type=\"checkbox\" id=\"edit-imagefile-file-limited-0-display\" name=\"imagefile_file_limited[0][display]\" value=\"1\" checked=\"checked\">",
+      "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",
+      "xpath": "//*[@id=\"edit-imagefile-file-limited-0-display\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision",
+        "voice-control"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-94BD37A1",
+          "name": "File [desktop]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B2D7B1D7",
+          "name": "File [tablet]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7B9BD2A8",
+          "name": "File [desktop]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F76BAB53",
+          "name": "File [tablet]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/contact/imagefile_file"
+      ],
+      "mergedSelectors": [
+        "#edit-imagefile-file-limited-N-display"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-F75A07EF",
+      "ruleId": "color-contrast",
+      "conditions": [
+        "admin::light::desktop",
+        "admin::light::mobile",
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+      "selector": [
+        "a[hreflang=\"he\"]"
+      ],
+      "selectorKey": "a[hreflang=\"he\"]",
+      "parentContext": "",
+      "html": "<a href=\"/he/admin\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"admin\">Hebrew</a>",
+      "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.38 (foreground color: #c55228, background color: #fefaf8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+      "xpath": "//a[@hreflang=\"he\"]",
+      "wcag": {
+        "sc": "1.4.3",
+        "level": "AA",
+        "name": "Contrast (Minimum)"
+      },
+      "impactGroups": [
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-ADF181A8",
+          "name": "Admin dashboard [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A7A50CC3",
+          "name": "Admin dashboard [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B6D6E5FD",
+          "name": "Form style demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D8E038B2",
+          "name": "Form style demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E925138B",
+          "name": "Content list [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F3148027",
+          "name": "Content list [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-02A89CF4",
+          "name": "Create article [desktop] [en-ltr] [accent:orange]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C8DC340C",
+          "name": "Create article [tablet] [en-ltr] [accent:orange]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A8B34B7A",
+          "name": "Create basic page [desktop] [en-ltr] [accent:orange]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-80DD6DF5",
+          "name": "Create basic page [tablet] [en-ltr] [accent:orange]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-1D9EF825",
+          "name": "Structure [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-690A394F",
+          "name": "Structure [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D1ECA5AA",
+          "name": "Content types [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C9A48EB0",
+          "name": "Content types [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3136A1CF",
+          "name": "Add content type [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F8FAB302",
+          "name": "Add content type [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-4EDE360C",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-41D152FA",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-96F36782",
+          "name": "Add vocabulary [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6070AB73",
+          "name": "Add vocabulary [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C97C5AC6",
+          "name": "Block layout [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E0554554",
+          "name": "Block layout [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-03A6B2E8",
+          "name": "Appearance [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2CF13380",
+          "name": "Appearance [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0FA30158",
+          "name": "Modules [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E0123C22",
+          "name": "Modules [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-29E2F53F",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4AA931A8",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9B4D547C",
+          "name": "User login [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8776467D",
+          "name": "User login [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F5FC6697",
+          "name": "User password reset [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-35D28DF6",
+          "name": "User password reset [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D0F8880E",
+          "name": "Search results [desktop] [en-ltr] [accent:orange]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-26B55805",
+          "name": "Search results [tablet] [en-ltr] [accent:orange]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-032E4A9B",
+          "name": "Admin dashboard [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-83FCB300",
+          "name": "Admin dashboard [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-921582DE",
+          "name": "Form style demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-713E8717",
+          "name": "Form style demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-06C9F677",
+          "name": "Create article [desktop] [en-ltr] [accent:orange]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BD086751",
+          "name": "Create article [tablet] [en-ltr] [accent:orange]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A3A87168",
+          "name": "Create basic page [desktop] [en-ltr] [accent:orange]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-92B5D341",
+          "name": "Create basic page [tablet] [en-ltr] [accent:orange]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-29F9CE92",
+          "name": "Structure [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-20634D44",
+          "name": "Structure [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D0D22455",
+          "name": "Content types [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B10AB0D3",
+          "name": "Content types [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D89BA286",
+          "name": "Add content type [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E1388273",
+          "name": "Add content type [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-04EA3C0B",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-30F2F1D2",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-5DFB8765",
+          "name": "Add vocabulary [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-74DBB51F",
+          "name": "Add vocabulary [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3929AE17",
+          "name": "Block layout [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2D21799A",
+          "name": "Block layout [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-60EC1C25",
+          "name": "Appearance [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3933FA66",
+          "name": "Appearance [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E5F0A65A",
+          "name": "Modules [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-353C4DCE",
+          "name": "Modules [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FE0E292A",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8D8B3032",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-91CB71DF",
+          "name": "User login [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F6420247",
+          "name": "User login [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-40D8516F",
+          "name": "User password reset [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CABC793C",
+          "name": "User password reset [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A804B62B",
+          "name": "Search results [desktop] [en-ltr] [accent:orange]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7897A719",
+          "name": "Search results [tablet] [en-ltr] [accent:orange]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C2424E0D",
+          "name": "Homepage [desktop] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C9B08842",
+          "name": "Homepage [tablet] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-55688F77",
+          "name": "Homepage [desktop] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-95C9D918",
+          "name": "Homepage [tablet] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9F6B9FBA",
+          "name": "Form style demo [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D68C319E",
+          "name": "Form style demo [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FF0DA1EB",
+          "name": "Content list [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2484DC91",
+          "name": "Content list [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0C5D645C",
+          "name": "Create article [desktop] [en-ltr] [accent:yellow]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B02E4CB5",
+          "name": "Create article [tablet] [en-ltr] [accent:yellow]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FE28ED00",
+          "name": "Create basic page [desktop] [en-ltr] [accent:yellow]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-77B142DD",
+          "name": "Create basic page [tablet] [en-ltr] [accent:yellow]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D8E7D195",
+          "name": "Add content type [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DA189E5D",
+          "name": "Add content type [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7E8C0640",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-43704011",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-DDFA493D",
+          "name": "Add vocabulary [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A2BCF4DC",
+          "name": "Add vocabulary [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FB949FA8",
+          "name": "Block layout [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CFE2846E",
+          "name": "Block layout [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9264C5AA",
+          "name": "Appearance [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0963AA36",
+          "name": "Appearance [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-90B1B878",
+          "name": "Modules [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0D02890F",
+          "name": "Modules [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C1A3581E",
+          "name": "People [desktop]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4A227943",
+          "name": "People [tablet]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A3388C0D",
+          "name": "Content list [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FFD0CAF4",
+          "name": "Content list [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3DB3E042",
+          "name": "Content types [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-69FE894A",
+          "name": "Content types [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-4B7DC049",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E8E0BF63",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-8649CAF6",
+          "name": "Appearance [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-953B728A",
+          "name": "Appearance [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-64D58C92",
+          "name": "Modules [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1E99EC03",
+          "name": "Modules [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BD52BCB7",
+          "name": "Block layout [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A335A1C2",
+          "name": "Block layout [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F5A5CA2D",
+          "name": "Admin dashboard [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-282FDB74",
+          "name": "Admin dashboard [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-67649F98",
+          "name": "Content list [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E6ACA364",
+          "name": "Content list [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E471FE7E",
+          "name": "Add content type [desktop] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E278710D",
+          "name": "Add content type [tablet] [en-ltr] [accent:yellow]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-85F2724D",
+          "name": "Block layout [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C645B25F",
+          "name": "Block layout [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F393A65E",
+          "name": "Appearance [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-79EDA871",
+          "name": "Appearance [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B5FDEBE5",
+          "name": "Modules [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F59FF3FE",
+          "name": "Modules [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-804AE08E",
+          "name": "Modules [desktop] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7E14A151",
+          "name": "Modules [tablet] [en-ltr] [accent:orange]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A61F8F30",
+          "name": "Homepage [desktop] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4F6D7DE4",
+          "name": "Homepage [tablet] [en-ltr] [accent:orange]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-6E755773",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7BCD623B",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-69A32E17",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A1E20A6A",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D74EA267",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-60B202C2",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B7DB2019",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6A799FA3",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9420EF8E",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-15E330C3",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B2CCBE9D",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0071637C",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A62E76A6",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5F86E242",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FCA6A753",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A50881B3",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2050E688",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-549FF1BD",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-AE1C8171",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-25EB4AC3",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F2051F47",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-45841B52",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0455C23A",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4E299580",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F983153C",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B2B49D6C",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2DFFAA02",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CF471900",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-EB86F88D",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-95D40A24",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0A92AD32",
+          "name": "Action link demo [desktop] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D40BE41F",
+          "name": "Action link demo [tablet] [en-ltr] [accent:orange]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-EFBCBB92",
+          "name": "User login [desktop] [en-ltr] [accent:yellow]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-701590D6",
+          "name": "User login [tablet] [en-ltr] [accent:yellow]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E4898A9D",
+          "name": "User password reset [desktop] [en-ltr] [accent:yellow]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-72C1BCC2",
+          "name": "User password reset [tablet] [en-ltr] [accent:yellow]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-996DA672",
+          "name": "Search results [desktop] [en-ltr] [accent:yellow]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C4F40ED3",
+          "name": "Search results [tablet] [en-ltr] [accent:yellow]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-018E006A",
+          "name": "User register [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A0871F17",
+          "name": "User register [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-19470142",
+          "name": "User register [desktop] [en-ltr] [accent:orange]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C4C2D3AE",
+          "name": "User register [tablet] [en-ltr] [accent:orange]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-CAE3FDE3",
+          "name": "404 page [desktop] [en-ltr] [accent:orange]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3AA340AD",
+          "name": "404 page [tablet] [en-ltr] [accent:orange]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-10697389",
+          "name": "404 page [desktop] [en-ltr] [accent:orange]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E61D3FEB",
+          "name": "404 page [tablet] [en-ltr] [accent:orange]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BE832DAC",
+          "name": "Block layout [desktop]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-32A7C8C3",
+          "name": "Block layout [tablet]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-CC4E5B84",
+          "name": "Block layout [desktop]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4F001513",
+          "name": "Block layout [tablet]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-57557F7B",
+          "name": "Field UI [desktop]",
+          "path": "/admin/structure/types/manage/test_type/display/default",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/manage/test_type/display/default",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1E91D181",
+          "name": "Field UI [tablet]",
+          "path": "/admin/structure/types/manage/test_type/display/default",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/manage/test_type/display/default",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E4C3D7C6",
+          "name": "Add content type [mobile-portrait] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-C6066AD3",
+          "name": "Add content type [mobile-portrait] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-B74E58E8",
+          "name": "Add content type [mobile-portrait] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        },
+        {
+          "instanceId": "INS-1763A2E3",
+          "name": "Add content type [mobile-portrait] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          }
+        }
+      ],
+      "concretePaths": [
+        "/action-link",
+        "/admin",
+        "/admin/appearance",
+        "/admin/content",
+        "/admin/form_style",
+        "/admin/modules",
+        "/admin/structure",
+        "/admin/structure/block",
+        "/admin/structure/taxonomy",
+        "/admin/structure/taxonomy/add",
+        "/admin/structure/types",
+        "/admin/structure/types/add",
+        "/node/add/article",
+        "/node/add/page",
+        "/search/node",
+        "/user/login",
+        "/user/password"
+      ],
+      "mergedSelectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".compact-link > a",
+        ".language-link[aria-current=\"page\"][href$=\"content\"]",
+        "#edit-save-continue",
+        ".tabs__link.js-tabs-link[aria-current=\"page\"]",
+        "p:nth-child(2) > a[href$=\"block\"]",
+        "p:nth-child(2) > a[href$=\"updates\"]",
+        "a[href$=\"update.php\"]",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N",
+        "#action-link-checkmark",
+        "input[value=\"Log in\"]",
+        "a[href=\"/system/403\"]",
+        "tr[data-drupal-selector=\"edit-blocks-claro-help\"] > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+        ".block-disabled.draggable[data-once=\"claroTabledrag\"]:nth-child(23) > td:nth-child(5) > .dropbutton-wrapper.dropbutton-multiple[data-drupal-ajax-container=\"\"] > .dropbutton-widget > .dropbutton.dropbutton--extrasmall.dropbutton--multiple > .enable.dropbutton__item.dropbutton-action > a",
+        ".region-hidden-message > td[colspan=\"9\"]",
+        "summary[aria-controls=\"edit-submission\"] > .gin-details__summary-summary",
+        "summary[aria-controls=\"edit-workflow\"] > .gin-details__summary-summary",
+        "summary[aria-controls=\"edit-language\"] > .gin-details__summary-summary",
+        "summary[aria-controls=\"edit-display\"] > .gin-details__summary-summary"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-987EB788",
+      "ruleId": "label-title-only",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile",
+        "admin::light::desktop",
+        "admin::light::mobile"
+      ],
+      "impact": "serious",
+      "description": "Ensure that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label-title-only?application=playwright",
+      "selector": [
+        "input[title=\"Select all rows in this table\"]"
+      ],
+      "selectorKey": "input[title=\"Select all rows in this table\"]",
+      "parentContext": "",
+      "html": "<input type=\"checkbox\" class=\"form-checkbox form-boolean form-boolean--type-checkbox\" title=\"Select all rows in this table\">",
+      "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element",
+      "xpath": "//input[@title=\"Select all rows in this table\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision",
+        "voice-control"
+      ],
+      "drupalFix": {
+        "rule": "label-title-only",
+        "selectorContains": "Select all rows",
+        "drupalFile": "core/themes/claro/templates/classy/dataset/table.html.twig\n    core/themes/admin/templates/dataset/table.html.twig",
+        "summary": "\"Select all rows\" checkbox is labeled only by its title attribute",
+        "expected": "Checkbox has a visible or visually-hidden <label>, or aria-label",
+        "actual": "input[title=\"Select all rows in this table\"] — title is the sole label source",
+        "fix": "Replace the title-only label with aria-label:\n\n<!-- Before (broken) -->\n<input type=\"checkbox\" title=\"{{ 'Select all rows in this table'|t }}\">\n\n<!-- After (fixed) -->\n<input type=\"checkbox\"\n  aria-label=\"{{ 'Select all rows in this table'|t }}\">",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-D6A47BCB",
+          "name": "Content list [desktop]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D9AD9720",
+          "name": "Content list [tablet]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-631CA206",
+          "name": "People [desktop]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5F43B594",
+          "name": "People [tablet]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-AFFA444F",
+          "name": "Table [desktop]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-41328F01",
+          "name": "Table [tablet]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-311ACB28",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-70DF180C",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F4DA69C2",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-098B09CD",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9D772808",
+          "name": "Checkboxes and Radios [desktop]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2C5FBD36",
+          "name": "Checkboxes and Radios [tablet]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-CB68FC02",
+          "name": "Checkboxes and Radios [desktop]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-50910191",
+          "name": "Checkboxes and Radios [tablet]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/admin/content",
+        "/admin/people",
+        "/table"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        "input[title=\"Select all rows in this table\"]",
+        ".gin--sticky-table-header > thead > tr > .select-all.gin--sticky-bulk-select > .form-checkbox.form-boolean[title=\"Select all rows in this table\"]",
+        ".views-table > thead > tr > .select-all.gin--sticky-bulk-select > .form-checkbox.form-boolean[title=\"Select all rows in this table\"]",
+        "#edit-checkbox-hidden-label-value",
+        "#edit-checkbox-hidden-label-disabled-value"
+      ]
+    },
+    {
+      "patternId": "DRU-CC36FB25",
+      "ruleId": "tabindex",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "serious",
+      "description": "Ensure tabindex attribute values are not greater than 0",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/tabindex?application=playwright",
+      "selector": [
+        "#edit-submit"
+      ],
+      "selectorKey": "#edit-submit",
+      "parentContext": "",
+      "html": "<input class=\"button button--primary js-form-submit form-submit\" tabindex=\"1\" data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Primary\">",
+      "failureSummary": "Fix any of the following:\n  Element has a tabindex greater than 0",
+      "xpath": "//*[@id=\"edit-submit\"]",
+      "wcag": {
+        "sc": "2.4.3",
+        "level": "A",
+        "name": "Focus Order"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-8D919E9F",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CAB80BF0",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A357FA62",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1A8E3C8A",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-4881B6B1",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-156540A8",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-00588EC7",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3F6254E0",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2C9CAF62",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C767C3EA",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-4C49F093",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E7E947B6",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/buttons"
+      ],
+      "mergedSelectors": [
+        "#edit-submit",
+        "#edit-danger--N"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-4422E904",
+      "ruleId": "summary-name",
+      "conditions": [
+        "admin::light::desktop",
+        "claro-dark::dark::desktop",
+        "claro::light::desktop"
+      ],
+      "impact": "serious",
+      "description": "Ensure summary elements have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/summary-name?application=playwright",
+      "selector": [
+        "#edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+      ],
+      "selectorKey": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+      "parentContext": "",
+      "html": "<summary aria-controls=\"edit-modules-nyan-cat-enable-description\" role=\"button\" aria-expanded=\"false\" class=\"gin-details__summary module-list__module-summary\"><span class=\"text module-description\"></span><span class=\"gin-details__summary-summary\"></span></summary>",
+      "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+      "xpath": "//*[@id=\"edit-modules-nyan-cat-enable-description > .module-list__module-summary\"]",
+      "wcag": {
+        "sc": "unknown",
+        "level": "?",
+        "name": "See axe docs"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-DFE4E5BD",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        }
+      ],
+      "concretePaths": [
+        "/admin/modules"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        "#edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+      ]
+    },
+    {
+      "patternId": "DRU-6BA9E02D",
+      "ruleId": "region",
+      "conditions": [
+        "admin::light::desktop",
+        "admin::light::mobile",
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile",
+        "olivero-dark::dark::desktop",
+        "olivero-dark::dark::mobile",
+        "olivero::light::desktop",
+        "olivero::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=playwright",
+      "selector": [
+        ".themeswitcher-form__form-item"
+      ],
+      "selectorKey": ".themeswitcher-form__form-item",
+      "parentContext": "",
+      "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+      "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks",
+      "xpath": "//*[contains(@class,\"themeswitcher-form__form-item\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "form-element.html.twig",
+        "hint": "Form element template"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-D8DE6AC1",
+          "name": "Admin dashboard [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F0C4F2C1",
+          "name": "Admin dashboard [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-83E2F270",
+          "name": "Form style demo [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A3BAFC54",
+          "name": "Form style demo [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-565D5E04",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E66D392C",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-34D3B6E6",
+          "name": "Create article [desktop] [en-ltr] [accent:blue]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3AE334AB",
+          "name": "Create article [tablet] [en-ltr] [accent:blue]",
+          "path": "/node/add/article",
+          "url": "https://drupal-core.ddev.site/node/add/article",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D89718F7",
+          "name": "Create basic page [desktop] [en-ltr] [accent:blue]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C8AC947D",
+          "name": "Create basic page [tablet] [en-ltr] [accent:blue]",
+          "path": "/node/add/page",
+          "url": "https://drupal-core.ddev.site/node/add/page",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-089837C7",
+          "name": "Structure [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-AD065F7B",
+          "name": "Structure [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure",
+          "url": "https://drupal-core.ddev.site/admin/structure",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-1F0E5C7A",
+          "name": "Content types [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0420759A",
+          "name": "Content types [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FBDFDDE1",
+          "name": "Add content type [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F6222FEA",
+          "name": "Add content type [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-51A7195E",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-866D8A1F",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-26112C87",
+          "name": "Add vocabulary [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-37EFF8DC",
+          "name": "Add vocabulary [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy/add",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy/add",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-001C27FA",
+          "name": "Block layout [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-38000B83",
+          "name": "Block layout [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C74D84C8",
+          "name": "Appearance [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FF2DB6B1",
+          "name": "Appearance [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-EB461FD0",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DEB0E01D",
+          "name": "Modules [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BB8DE047",
+          "name": "Homepage [desktop] [en-ltr] [accent:blue]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DC077153",
+          "name": "Homepage [tablet] [en-ltr] [accent:blue]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-343FB881",
+          "name": "Action link demo [desktop] [en-ltr] [accent:blue]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6788C962",
+          "name": "Action link demo [tablet] [en-ltr] [accent:blue]",
+          "path": "/action-link",
+          "url": "https://drupal-core.ddev.site/action-link",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0EF67DB9",
+          "name": "User login [desktop] [en-ltr] [accent:blue]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-74810756",
+          "name": "User login [tablet] [en-ltr] [accent:blue]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-63D59683",
+          "name": "User register [desktop] [en-ltr] [accent:blue]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-20AC4120",
+          "name": "User register [tablet] [en-ltr] [accent:blue]",
+          "path": "/user/register",
+          "url": "https://drupal-core.ddev.site/user/register",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F21125DF",
+          "name": "User password reset [desktop] [en-ltr] [accent:blue]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-636E78C8",
+          "name": "User password reset [tablet] [en-ltr] [accent:blue]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-44C022F1",
+          "name": "Search results [desktop] [en-ltr] [accent:blue]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B724274A",
+          "name": "Search results [tablet] [en-ltr] [accent:blue]",
+          "path": "/search/node",
+          "url": "https://drupal-core.ddev.site/search/node",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0C9A0403",
+          "name": "404 page [desktop] [en-ltr] [accent:blue]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9BDAC1ED",
+          "name": "404 page [tablet] [en-ltr] [accent:blue]",
+          "path": "/this-page-does-not-exist",
+          "url": "https://drupal-core.ddev.site/this-page-does-not-exist",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-203E1CD2",
+          "name": "People [desktop]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FA09BF07",
+          "name": "People [tablet]",
+          "path": "/admin/people",
+          "url": "https://drupal-core.ddev.site/admin/people",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-35D2713C",
+          "name": "User edit (uid 1) [desktop]",
+          "path": "/user/[id]/edit",
+          "url": "https://drupal-core.ddev.site/user/[id]/edit",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7DC312DB",
+          "name": "User edit (uid 1) [tablet]",
+          "path": "/user/[id]/edit",
+          "url": "https://drupal-core.ddev.site/user/[id]/edit",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E427825B",
+          "name": "Configuration [desktop]",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6F951C47",
+          "name": "Configuration [tablet]",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-22C5B103",
+          "name": "Text formats [desktop]",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-88F5EE60",
+          "name": "Text formats [tablet]",
+          "path": "/admin/config/content/formats",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2AE13BCB",
+          "name": "Text format (restricted) [desktop]",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3AE351E7",
+          "name": "Text format (restricted) [tablet]",
+          "path": "/admin/config/content/formats/manage/restricted_html",
+          "url": "https://drupal-core.ddev.site/admin/config/content/formats/manage/restricted_html",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C15EEB54",
+          "name": "Site information [desktop]",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BCB4F132",
+          "name": "Site information [tablet]",
+          "path": "/admin/config/system/site-information",
+          "url": "https://drupal-core.ddev.site/admin/config/system/site-information",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-760F267C",
+          "name": "Reports [desktop]",
+          "path": "/admin/reports",
+          "url": "https://drupal-core.ddev.site/admin/reports",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2E5FC9E0",
+          "name": "Reports [tablet]",
+          "path": "/admin/reports",
+          "url": "https://drupal-core.ddev.site/admin/reports",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-814B6CFE",
+          "name": "Autocomplete [desktop]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5882C95B",
+          "name": "Autocomplete [tablet]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FA2A20D1",
+          "name": "Buttons [desktop]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E20671AE",
+          "name": "Buttons [tablet]",
+          "path": "/buttons",
+          "url": "https://drupal-core.ddev.site/buttons",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-924D863B",
+          "name": "Checkboxes and Radios [desktop]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B73E1074",
+          "name": "Checkboxes and Radios [tablet]",
+          "path": "/contact/checkbox_radio",
+          "url": "https://drupal-core.ddev.site/contact/checkbox_radio",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D059761D",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-077300B7",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-6671D464",
+          "name": "Dropbuttons [desktop]",
+          "path": "/dropbutton",
+          "url": "https://drupal-core.ddev.site/dropbutton",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-EE92CDEF",
+          "name": "Dropbuttons [tablet]",
+          "path": "/dropbutton",
+          "url": "https://drupal-core.ddev.site/dropbutton",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-26CD137D",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-494B15C6",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-206E1DCE",
+          "name": "Field UI [desktop]",
+          "path": "/admin/structure/types/manage/test_type/display/default",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/manage/test_type/display/default",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CCBE2A0F",
+          "name": "Field UI [tablet]",
+          "path": "/admin/structure/types/manage/test_type/display/default",
+          "url": "https://drupal-core.ddev.site/admin/structure/types/manage/test_type/display/default",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-18ECCC55",
+          "name": "Fieldset [desktop]",
+          "path": "/fieldset",
+          "url": "https://drupal-core.ddev.site/fieldset",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B8AF800F",
+          "name": "Fieldset [tablet]",
+          "path": "/fieldset",
+          "url": "https://drupal-core.ddev.site/fieldset",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-115ABFF8",
+          "name": "File [desktop]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-BAEE3A35",
+          "name": "File [tablet]",
+          "path": "/contact/imagefile_file",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_file",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B5A36498",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C4CE338B",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F8D1D7E6",
+          "name": "Image [desktop]",
+          "path": "/contact/imagefile_image",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_image",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F5AEF57A",
+          "name": "Image [tablet]",
+          "path": "/contact/imagefile_image",
+          "url": "https://drupal-core.ddev.site/contact/imagefile_image",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-38B49EEF",
+          "name": "Machine name [desktop]",
+          "path": "/admin/structure/display-modes/form/add/contact_message",
+          "url": "https://drupal-core.ddev.site/admin/structure/display-modes/form/add/contact_message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-0769D6CD",
+          "name": "Machine name [tablet]",
+          "path": "/admin/structure/display-modes/form/add/contact_message",
+          "url": "https://drupal-core.ddev.site/admin/structure/display-modes/form/add/contact_message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-62B880CE",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-71DFB250",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-CE3E0BFE",
+          "name": "Nav config [desktop]",
+          "path": "/cd-navigation/config",
+          "url": "https://drupal-core.ddev.site/cd-navigation/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-613A665F",
+          "name": "Nav config [tablet]",
+          "path": "/cd-navigation/config",
+          "url": "https://drupal-core.ddev.site/cd-navigation/config",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C0A71F89",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DF4DA25A",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-CF919880",
+          "name": "Page title [desktop]",
+          "path": "/tabs/format/plain_text",
+          "url": "https://drupal-core.ddev.site/tabs/format/plain_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-17F11137",
+          "name": "Page title [tablet]",
+          "path": "/tabs/format/plain_text",
+          "url": "https://drupal-core.ddev.site/tabs/format/plain_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F7B8F881",
+          "name": "Password [desktop]",
+          "path": "/password",
+          "url": "https://drupal-core.ddev.site/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-76E12963",
+          "name": "Password [tablet]",
+          "path": "/password",
+          "url": "https://drupal-core.ddev.site/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3B1ECF24",
+          "name": "Progress [desktop]",
+          "path": "/progress",
+          "url": "https://drupal-core.ddev.site/progress",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-762B0C83",
+          "name": "Progress [tablet]",
+          "path": "/progress",
+          "url": "https://drupal-core.ddev.site/progress",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-548386BA",
+          "name": "Select [desktop]",
+          "path": "/contact/select",
+          "url": "https://drupal-core.ddev.site/contact/select",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-922195A3",
+          "name": "Select [tablet]",
+          "path": "/contact/select",
+          "url": "https://drupal-core.ddev.site/contact/select",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7CFE618D",
+          "name": "Sidebar [desktop]",
+          "path": "/node/add/cd",
+          "url": "https://drupal-core.ddev.site/node/add/cd",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E6B1F764",
+          "name": "Sidebar [tablet]",
+          "path": "/node/add/cd",
+          "url": "https://drupal-core.ddev.site/node/add/cd",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-30B71F0D",
+          "name": "Table [desktop]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-57B6553C",
+          "name": "Table [tablet]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E4AA2E02",
+          "name": "Tabledrag [desktop]",
+          "path": "/tabledrag",
+          "url": "https://drupal-core.ddev.site/tabledrag",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-DF13AB5A",
+          "name": "Tabledrag [tablet]",
+          "path": "/tabledrag",
+          "url": "https://drupal-core.ddev.site/tabledrag",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0D3ED81E",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F83D856B",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-868C8A7E",
+          "name": "Text [desktop]",
+          "path": "/contact/textform",
+          "url": "https://drupal-core.ddev.site/contact/textform",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3D2920D2",
+          "name": "Text [tablet]",
+          "path": "/contact/textform",
+          "url": "https://drupal-core.ddev.site/contact/textform",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-81C44978",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-270738CF",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-9118E488",
+          "name": "Textarea [desktop]",
+          "path": "/contact/textarea",
+          "url": "https://drupal-core.ddev.site/contact/textarea",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2E5F28D5",
+          "name": "Textarea [tablet]",
+          "path": "/contact/textarea",
+          "url": "https://drupal-core.ddev.site/contact/textarea",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-ED5789D1",
+          "name": "Admin dashboard [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CA3F486A",
+          "name": "Admin dashboard [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin",
+          "url": "https://drupal-core.ddev.site/admin",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-6261BD8B",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-AD498A59",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7BFD0B73",
+          "name": "Content types [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6F860D5F",
+          "name": "Content types [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-66F0411F",
+          "name": "Appearance [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-95DE8A2C",
+          "name": "Appearance [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-5D29050A",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-3E19E7EC",
+          "name": "Modules [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BC3B17C9",
+          "name": "User login [desktop] [en-ltr] [accent:blue]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4AA1B1B9",
+          "name": "User login [tablet] [en-ltr] [accent:blue]",
+          "path": "/user/login",
+          "url": "https://drupal-core.ddev.site/user/login",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-94EA0EA1",
+          "name": "User password reset [desktop] [en-ltr] [accent:blue]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-806AF88F",
+          "name": "User password reset [tablet] [en-ltr] [accent:blue]",
+          "path": "/user/password",
+          "url": "https://drupal-core.ddev.site/user/password",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F6796033",
+          "name": "Block layout [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8E336E32",
+          "name": "Block layout [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/block",
+          "url": "https://drupal-core.ddev.site/admin/structure/block",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-164962E7",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4D0090DA",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F517503C",
+          "name": "Content types [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CFCBB8DB",
+          "name": "Content types [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/types",
+          "url": "https://drupal-core.ddev.site/admin/structure/types",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-08C28518",
+          "name": "Taxonomy [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A833DA67",
+          "name": "Taxonomy [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/structure/taxonomy",
+          "url": "https://drupal-core.ddev.site/admin/structure/taxonomy",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/",
+        "/action-link",
+        "/admin",
+        "/admin/appearance",
+        "/admin/config",
+        "/admin/config/content/formats",
+        "/admin/config/content/formats/manage/restricted_html",
+        "/admin/config/system/site-information",
+        "/admin/content",
+        "/admin/form_style",
+        "/admin/modules",
+        "/admin/people",
+        "/admin/reports",
+        "/admin/structure",
+        "/admin/structure/block",
+        "/admin/structure/display-modes/form/add/contact_message",
+        "/admin/structure/taxonomy",
+        "/admin/structure/taxonomy/add",
+        "/admin/structure/types",
+        "/admin/structure/types/add",
+        "/admin/structure/types/manage/test_type/display/default",
+        "/autocomplete",
+        "/buttons",
+        "/cd-navigation/config",
+        "/contact/checkbox_radio",
+        "/contact/field_cardinality_test",
+        "/contact/imagefile_file",
+        "/contact/imagefile_image",
+        "/contact/presuf_formatted",
+        "/contact/presuf_number",
+        "/contact/presuf_text",
+        "/contact/select",
+        "/contact/textarea",
+        "/contact/textform",
+        "/dialog",
+        "/dropbutton",
+        "/fieldset",
+        "/message",
+        "/node/add/article",
+        "/node/add/cd",
+        "/node/add/page",
+        "/password",
+        "/progress",
+        "/search/node",
+        "/table",
+        "/tabledrag",
+        "/tabs",
+        "/tabs/format/plain_text",
+        "/this-page-does-not-exist",
+        "/user/1/edit",
+        "/user/login",
+        "/user/password",
+        "/user/register"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        ".themeswitcher-form__form-item",
+        "#primary-tabs-title",
+        ".top-bar__actions"
+      ]
+    },
+    {
+      "patternId": "DRU-2E022F2F",
+      "ruleId": "landmark-contentinfo-is-top-level",
+      "conditions": [
+        "admin::light::desktop",
+        "admin::light::mobile",
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure the contentinfo landmark is at top level",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=playwright",
+      "selector": [
+        ".messages--error"
+      ],
+      "selectorKey": ".messages--error",
+      "parentContext": "",
+      "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+      "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark.",
+      "xpath": "//*[contains(@class,\"messages--error\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-176AF555",
+          "name": "Appearance [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1E1F5949",
+          "name": "Appearance [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F35573C5",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-90DB76B9",
+          "name": "Modules [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C77800EB",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E1083638",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-33B07066",
+          "name": "Appearance [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8F094E37",
+          "name": "Appearance [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-35544EB1",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-83F42AFC",
+          "name": "Modules [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-54574906",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-20150FA9",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-32AE2346",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-6340BB49",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-8EA427CF",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-44531B14",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-B015FF40",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-91297A72",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-EBE0F49A",
+          "name": "Configuration [desktop]",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FF71DDFC",
+          "name": "Configuration [tablet]",
+          "path": "/admin/config",
+          "url": "https://drupal-core.ddev.site/admin/config",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/admin/appearance",
+        "/admin/modules",
+        "/message"
+      ],
+      "mergedSelectors": [
+        ".messages--error",
+        ".messages-list__item"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-1260AB7D",
+      "ruleId": "landmark-no-duplicate-contentinfo",
+      "conditions": [
+        "admin::light::desktop",
+        "admin::light::mobile",
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure the document has at most one contentinfo landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=playwright",
+      "selector": [
+        ".messages--error"
+      ],
+      "selectorKey": ".messages--error",
+      "parentContext": "",
+      "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+      "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark",
+      "xpath": "//*[contains(@class,\"messages--error\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "landmark-no-duplicate-contentinfo",
+        "selectorContains": "messages",
+        "drupalFile": "core/themes/claro/templates/misc/status-messages.html.twig\n    core/modules/system/templates/status-messages.html.twig",
+        "summary": "Status messages block uses role=\"contentinfo\", duplicating the page <footer>",
+        "expected": "Status messages use role=\"status\" (non-error) or role=\"alert\" (errors)",
+        "actual": "<div role=\"contentinfo\" aria-labelledby=\"…\"> — conflicts with the page footer landmark",
+        "fix": "Change the outer wrapper role based on message type:\n\n{# Before (broken) #}\n<div role=\"contentinfo\" aria-labelledby=\"{{ title_ids[type] }}\"…>\n\n{# After (fixed) #}\n{%- set msg_role = (type == 'error') ? 'alert' : 'status' -%}\n<div role=\"{{ msg_role }}\" aria-labelledby=\"{{ title_ids[type] }}\"…>",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-0F387792",
+          "name": "Appearance [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-594DA129",
+          "name": "Appearance [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/appearance",
+          "url": "https://drupal-core.ddev.site/admin/appearance",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-D74E025B",
+          "name": "Modules [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CD2D6DED",
+          "name": "Modules [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/modules",
+          "url": "https://drupal-core.ddev.site/admin/modules",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-217D3820",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1358DBF4",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/admin/appearance",
+        "/admin/modules"
+      ],
+      "mergedSelectors": [
+        ".messages--error"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-20662ED4",
+      "ruleId": "heading-order",
+      "conditions": [
+        "admin::light::desktop",
+        "admin::light::mobile",
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+      "selector": [
+        "div[data-drupal-selector=\"edit-test-datelist\"] > h4"
+      ],
+      "selectorKey": "div[data-drupal-selector=\"edit-test-datelist\"] > h4",
+      "parentContext": "",
+      "html": "<h4 class=\"form-item__label\">Datelist</h4>",
+      "failureSummary": "Fix any of the following:\n  Heading order invalid",
+      "xpath": "//div[@data-drupal-selector=\"edit-test-datelist\"]",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-F67227FA",
+          "name": "Form style demo [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A876FF70",
+          "name": "Form style demo [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FD2C0F28",
+          "name": "Content list [desktop] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-622EF2AF",
+          "name": "Content list [tablet] [en-ltr] [accent:blue]",
+          "path": "/admin/content",
+          "url": "https://drupal-core.ddev.site/admin/content",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F8772D3C",
+          "name": "Form style demo [desktop]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B696306F",
+          "name": "Form style demo [tablet]",
+          "path": "/admin/form_style",
+          "url": "https://drupal-core.ddev.site/admin/form_style",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-6C963C7F",
+          "name": "Autocomplete [desktop]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B0239B5D",
+          "name": "Autocomplete [tablet]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E6A19988",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-568F7E0B",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-AB298E5F",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-166D9CDA",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-79516607",
+          "name": "Nav config [desktop]",
+          "path": "/cd-navigation/config",
+          "url": "https://drupal-core.ddev.site/cd-navigation/config",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5A88424C",
+          "name": "Nav config [tablet]",
+          "path": "/cd-navigation/config",
+          "url": "https://drupal-core.ddev.site/cd-navigation/config",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-62CA3978",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2B45D5B7",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-49F53FC9",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B2A30286",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-1940F8CC",
+          "name": "Text [desktop]",
+          "path": "/contact/textform",
+          "url": "https://drupal-core.ddev.site/contact/textform",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9676EF18",
+          "name": "Text [tablet]",
+          "path": "/contact/textform",
+          "url": "https://drupal-core.ddev.site/contact/textform",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/admin/form_style"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        "div[data-drupal-selector=\"edit-test-datelist\"] > h4",
+        "#pagination-heading",
+        ".form-datetime-wrapper.form-item:nth-child(4) > h4",
+        "h4",
+        "#multitext-unlimited-values > thead > tr > .field-label[colspan=\"2\"] > h4",
+        "#presuf-formatted-m-values > thead > tr > .field-label[colspan=\"2\"] > .form-item__label--multiple-value-form.form-item__label",
+        ".layout-column.layout-column--half:nth-child(1) > .panel:nth-child(1) > .panel__title",
+        "#presuf-number-m-values > thead > tr > .field-label[colspan=\"2\"] > h4",
+        "#edit-timestamp-wrapper > .form-datetime-wrapper.form-item > h4"
+      ]
+    },
+    {
+      "patternId": "DRU-338C31F8",
+      "ruleId": "landmark-unique",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-unique?application=playwright",
+      "selector": [
+        ".messages--info"
+      ],
+      "selectorKey": ".messages--info",
+      "parentContext": "",
+      "html": "<div role=\"contentinfo\" aria-labelledby=\"message-info-title\" class=\"messages-list__item messages messages--info\">\n                            <div class=\"messages__content\">\n                          An info message\n                      </div>\n              </div>",
+      "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",
+      "xpath": "//*[contains(@class,\"messages--info\")]",
+      "wcag": {
+        "sc": "1.3.6",
+        "level": "A",
+        "name": "Identify Purpose"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-72820C3E",
+          "name": "Messages [desktop]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C1AF88AE",
+          "name": "Messages [tablet]",
+          "path": "/message",
+          "url": "https://drupal-core.ddev.site/message",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/message"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        ".messages--info"
+      ]
+    },
+    {
+      "patternId": "DRU-ADD15A4D",
+      "ruleId": "page-has-heading-one",
+      "conditions": [
+        "olivero-dark::dark::desktop",
+        "olivero-dark::dark::mobile",
+        "olivero::light::desktop",
+        "olivero::light::mobile"
+      ],
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=playwright",
+      "selector": [
+        "html"
+      ],
+      "selectorKey": "html",
+      "parentContext": "",
+      "html": "<html lang=\"en\" dir=\"ltr\" style=\"--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50\" class=\" js\">",
+      "failureSummary": "Fix all of the following:\n  Page must have a level-one heading",
+      "xpath": "//html",
+      "wcag": {
+        "sc": "1.3.1",
+        "level": "A",
+        "name": "Info and Relationships"
+      },
+      "impactGroups": [
+        "blind",
+        "low-vision"
+      ],
+      "drupalFix": {
+        "rule": "page-has-heading-one",
+        "selectorContains": "html",
+        "drupalFile": "core/themes/olivero/templates/layout/page--front.html.twig\n    Site configuration (site name / front page node)",
+        "summary": "Homepage has no <h1> heading — screen reader users cannot identify page topic",
+        "expected": "Every page contains exactly one <h1> that identifies the page",
+        "actual": "Olivero front page renders no <h1>; the site name in the header is not an <h1>",
+        "fix": "Option A — Make site name an h1 on the front page only:\n\n{# page--front.html.twig #}\n{% if is_front %}\n  <h1 class=\"site-name\">{{ site_name }}</h1>\n{% else %}\n  <div class=\"site-name\">{{ site_name }}</div>\n{% endif %}\n\nOption B — Ensure the promoted front page node has an h1 title rendered.",
+        "drupalIssue": "https://www.drupal.org/project/drupal/issues/new"
+      },
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-C56E21D1",
+          "name": "Homepage [desktop]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-13EEEC14",
+          "name": "Homepage [tablet]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        "html"
+      ]
+    },
+    {
+      "patternId": "DRU-23F4C000",
+      "ruleId": "empty-heading",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile",
+        "admin::light::desktop",
+        "admin::light::mobile"
+      ],
+      "impact": "minor",
+      "description": "Ensure headings have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/empty-heading?application=playwright",
+      "selector": [
+        "h3:nth-child(3)"
+      ],
+      "selectorKey": "h3:nth-child(3)",
+      "parentContext": "",
+      "html": "<h3></h3>",
+      "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+      "xpath": "//h3:nth-child(3)",
+      "wcag": {
+        "sc": "unknown",
+        "level": "?",
+        "name": "See axe docs"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-EBD6D1DE",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-FF513257",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7B033AB7",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-77B617FF",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-FD01376B",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-5E2BEBF0",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-5577EA5A",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-C7957CDF",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-DE731FB7",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-CC6C10C4",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3C95FFB2",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A8CCBEE6",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7E1BB7BA",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2B805866",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BD7097D8",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1DD9AA40",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C4C1AE18",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-8B44A1E8",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F632ECFD",
+          "name": "Dialogs [desktop]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B71E15EB",
+          "name": "Dialogs [tablet]",
+          "path": "/dialog",
+          "url": "https://drupal-core.ddev.site/dialog",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E71175CB",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-F4F655E7",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-423F682C",
+          "name": "Homepage [desktop] [en-ltr] [accent:blue]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E27B1D6C",
+          "name": "Homepage [tablet] [en-ltr] [accent:blue]",
+          "path": "/",
+          "url": "https://drupal-core.ddev.site/",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-BFB35709",
+          "name": "Page title [desktop]",
+          "path": "/tabs/format/plain_text",
+          "url": "https://drupal-core.ddev.site/tabs/format/plain_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-A3011FB8",
+          "name": "Page title [tablet]",
+          "path": "/tabs/format/plain_text",
+          "url": "https://drupal-core.ddev.site/tabs/format/plain_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-A4B2A699",
+          "name": "Tabs [desktop]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-33DF35E6",
+          "name": "Tabs [tablet]",
+          "path": "/tabs",
+          "url": "https://drupal-core.ddev.site/tabs",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/dialog",
+        "/tabs"
+      ],
+      "mergedSelectors": [
+        "h3:nth-child(3)",
+        "h1",
+        "#block-claro-content > h3",
+        "#block-claro-content > h3:nth-child(1)"
+      ],
+      "mergedSummaries": [
+        null
+      ]
+    },
+    {
+      "patternId": "DRU-EDB3860D",
+      "ruleId": "empty-table-header",
+      "conditions": [
+        "claro-dark::dark::desktop",
+        "claro-dark::dark::mobile",
+        "claro::light::desktop",
+        "claro::light::mobile"
+      ],
+      "impact": "minor",
+      "description": "Ensure table headers have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/empty-table-header?application=playwright",
+      "selector": [
+        "th:nth-child(2)"
+      ],
+      "selectorKey": "th:nth-child(2)",
+      "parentContext": "",
+      "html": "<th></th>",
+      "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers",
+      "xpath": "//th:nth-child(2)",
+      "wcag": {
+        "sc": "unknown",
+        "level": "?",
+        "name": "See axe docs"
+      },
+      "impactGroups": [
+        "users with disabilities"
+      ],
+      "drupalFix": null,
+      "templateHint": {
+        "template": "unknown",
+        "hint": "Could not infer template from selector"
+      },
+      "pages": [
+        {
+          "instanceId": "INS-1C9FFF43",
+          "name": "Autocomplete [desktop]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-23848B56",
+          "name": "Autocomplete [tablet]",
+          "path": "/autocomplete",
+          "url": "https://drupal-core.ddev.site/autocomplete",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-721FFF91",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D0076929",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-AF571ABF",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1617D470",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-E6BDA351",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-9D803FB2",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2FD4B698",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-D76EB858",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2E3E0791",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-238DF668",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3C7BA57A",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-7872DF86",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-03CA59E4",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-53F8D1A9",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-7B45D9CE",
+          "name": "Field Cardinality [desktop]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-2CFB581E",
+          "name": "Field Cardinality [tablet]",
+          "path": "/contact/field_cardinality_test",
+          "url": "https://drupal-core.ddev.site/contact/field_cardinality_test",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-0CF998D8",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-755D74AA",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-DB5550DA",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-207C4875",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-2A171D89",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1B6C288A",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-06AE9FC8",
+          "name": "Formatted text prefix suffix [desktop]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-706CE780",
+          "name": "Formatted text prefix suffix [tablet]",
+          "path": "/contact/presuf_formatted",
+          "url": "https://drupal-core.ddev.site/contact/presuf_formatted",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-3615154C",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-57BF05B0",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-813BA53C",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-476DADF5",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-4D3CAB8C",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4274A02B",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-69EC7EF3",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4DF72B52",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-66AD5BE9",
+          "name": "Number prefix suffix [desktop]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-4E9A279F",
+          "name": "Number prefix suffix [tablet]",
+          "path": "/contact/presuf_number",
+          "url": "https://drupal-core.ddev.site/contact/presuf_number",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-C1FF2EA8",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-24D788EB",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-75B73110",
+          "name": "Table [desktop]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-B21395D6",
+          "name": "Table [tablet]",
+          "path": "/table",
+          "url": "https://drupal-core.ddev.site/table",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-F6B7667A",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-E8E2410F",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        {
+          "instanceId": "INS-28589058",
+          "name": "Text prefix suffix [desktop]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "desktop",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "instanceId": "INS-1A2C59B9",
+          "name": "Text prefix suffix [tablet]",
+          "path": "/contact/presuf_text",
+          "url": "https://drupal-core.ddev.site/contact/presuf_text",
+          "screen": "mobile",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        }
+      ],
+      "concretePaths": [
+        "/autocomplete"
+      ],
+      "mergedSummaries": [
+        null
+      ],
+      "mergedSelectors": [
+        "th:nth-child(2)",
+        "#multitext-unlimited-values > thead > tr > th:nth-child(2)",
+        "#multitext-unlimited-disabled-values > thead > tr > th:nth-child(2)",
+        "#multitext-unlimited-required-dis-values > thead > tr > th:nth-child(2)",
+        "#presuf-formatted-m-values > thead > tr > th:nth-child(2)",
+        "#presuf-formatted-pre-suf-m-values > thead > tr > th:nth-child(2)",
+        "#presuf-number-m-values > thead > tr > th:nth-child(2)",
+        "#presuf-number-pre-suf-m-values > thead > tr > th:nth-child(2)",
+        "#edit-table-empty > thead > tr > .select-all",
+        "#presuf-text-pre-m-values > thead > tr > th:nth-child(2)"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { renderMarkdownReport } = require('./lib/render-markdown-report');
 
 const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'keyboard-review-latest.json');
@@ -11,6 +12,8 @@ const now = new Date();
 const DATE_STAMP = now.toISOString().slice(0, 10);
 const MD_OUTPUT = path.join(REPORTS_DIR, `KEYBOARD-REVIEW-${DATE_STAMP}.md`);
 const MD_LATEST = path.join(REPORTS_DIR, 'KEYBOARD-REVIEW-latest.md');
+const HTML_OUTPUT = path.join(REPORTS_DIR, `KEYBOARD-REVIEW-${DATE_STAMP}.html`);
+const HTML_LATEST = path.join(REPORTS_DIR, 'KEYBOARD-REVIEW-latest.html');
 const INTENTIONAL_404_PATH = '/this-page-does-not-exist';
 
 function summarize(results) {
@@ -445,11 +448,23 @@ function main() {
   lines.push('- Recommended follow-up: add hard-gate keyboard specs for recurring failures.');
   lines.push('');
 
-  fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
-  fs.writeFileSync(MD_LATEST, lines.join('\n'));
+  const markdown = lines.join('\n');
+  const html = renderMarkdownReport({
+    title: 'Drupal Core Keyboard Navigation Review',
+    description: 'Keyboard accessibility findings by page, generated from Playwright keyboard-only navigation sampling.',
+    markdown,
+    sourceLabel: path.basename(MD_LATEST),
+  });
+
+  fs.writeFileSync(MD_OUTPUT, markdown);
+  fs.writeFileSync(MD_LATEST, markdown);
+  fs.writeFileSync(HTML_OUTPUT, html);
+  fs.writeFileSync(HTML_LATEST, html);
 
   console.log(`✅ Keyboard review markdown written to ${MD_OUTPUT}`);
   console.log(`✅ Keyboard review markdown written to ${MD_LATEST} (latest)`);
+  console.log(`✅ Keyboard review HTML written to ${HTML_OUTPUT}`);
+  console.log(`✅ Keyboard review HTML written to ${HTML_LATEST} (latest)`);
 }
 
 main();

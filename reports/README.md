@@ -91,7 +91,9 @@ cd core && yarn a11y:default-admin-colors
 
 | File | Description |
 |---|---|
+| `KEYBOARD-REVIEW-latest.html` | Browser-friendly rendered summary of keyboard accessibility issues by page |
 | `KEYBOARD-REVIEW-latest.md` | Summary of keyboard accessibility issues by page |
+| `KEYBOARD-REVIEW-YYYY-MM-DD.html` | Date-stamped HTML snapshot |
 | `KEYBOARD-REVIEW-YYYY-MM-DD.md` | Date-stamped snapshot |
 
 **Run:**
@@ -122,6 +124,7 @@ yarn a11y:crawl-and-report
 |---|---|
 | `pattern-report-latest.html` | Clustered issue patterns with counts and selectors |
 | `PATTERN-REPORT-latest.md` | Markdown summary |
+| `pattern-report-YYYY-MM-DD.html` | Date-stamped HTML snapshot |
 | `bugs-latest.json` | Structured bug export |
 | `bugs-latest.csv` | CSV export for issue tracking |
 
@@ -152,6 +155,7 @@ yarn a11y:extract-content
 | File | Description |
 |---|---|
 | `plain-language-report.json` | Detailed per-string readability scores |
+| `plain-language-report.html` | Browser-friendly summary with flagged strings |
 | `plain-language-report.md` | Human-readable summary with flagged strings |
 
 **Run:**

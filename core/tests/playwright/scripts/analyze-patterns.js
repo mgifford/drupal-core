@@ -38,6 +38,7 @@ function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
 const fs = require('fs');
 const crypto = require('crypto');
 const yaml = require('js-yaml');
+const { renderMarkdownReport } = require('./lib/render-markdown-report');
 
 'use strict';
 
@@ -71,6 +72,8 @@ const MD_OUTPUT           = path.join(REPORTS_DIR, `PATTERN-REPORT-${DATE_STAMP}
 const BUGS_JSON_LATEST    = path.join(REPORTS_DIR, 'bugs-latest.json');
 const BUGS_CSV_LATEST     = path.join(REPORTS_DIR, 'bugs-latest.csv');
 const MD_LATEST           = path.join(REPORTS_DIR, 'PATTERN-REPORT-latest.md');
+const HTML_OUTPUT         = path.join(REPORTS_DIR, `pattern-report-${DATE_STAMP}.html`);
+const HTML_LATEST         = path.join(REPORTS_DIR, 'pattern-report-latest.html');
 
 const args = process.argv.slice(2);
 const minPagesArg = args.indexOf('--min-pages');
@@ -1419,9 +1422,20 @@ function main() {
   lines.push('');
 
   // Always write the daily and latest markdown reports, even if content is unchanged.
-  fs.writeFileSync(MD_OUTPUT, lines.join('\n'));
-  fs.writeFileSync(MD_LATEST, lines.join('\n'));
+  const markdown = lines.join('\n');
+  const html = renderMarkdownReport({
+    title: 'Accessibility Pattern Report',
+    description: 'Clustered axe-core issue patterns grouped by rule, selector similarity, and affected routes.',
+    markdown,
+    sourceLabel: path.basename(MD_LATEST),
+  });
+
+  fs.writeFileSync(MD_OUTPUT, markdown);
+  fs.writeFileSync(MD_LATEST, markdown);
+  fs.writeFileSync(HTML_OUTPUT, html);
+  fs.writeFileSync(HTML_LATEST, html);
   console.log(`✅ Markdown report written to ${MD_OUTPUT}`);
+  console.log(`✅ HTML report written to ${HTML_OUTPUT}`);
   console.log('DEBUG: Wrote markdown outputs');
   console.log('');
   console.log('📊 Summary:');
@@ -1437,6 +1451,8 @@ function main() {
   console.log(`   ${BUGS_CSV_LATEST} (latest)`);
   console.log(`   ${MD_OUTPUT}`);
   console.log(`   ${MD_LATEST} (latest)`);
+  console.log(`   ${HTML_OUTPUT}`);
+  console.log(`   ${HTML_LATEST} (latest)`);
 }
 
 main();

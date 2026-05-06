@@ -31,12 +31,14 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { renderMarkdownReport } = require('./lib/render-markdown-report');
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
 
 const INPUT  = path.resolve(__dirname, '../../../../reports/content-patterns.json');
 const OUT_JSON = path.resolve(__dirname, '../../../../reports/plain-language-report.json');
 const OUT_MD   = path.resolve(__dirname, '../../../../reports/plain-language-report.md');
+const OUT_HTML = path.resolve(__dirname, '../../../../reports/plain-language-report.html');
 
 // ── Syllable counter (English approximation) ──────────────────────────────────
 
@@ -350,7 +352,16 @@ function main() {
     lines.push('');
   }
 
-  fs.writeFileSync(OUT_MD, lines.join('\n'));
+  const markdown = lines.join('\n');
+  const html = renderMarkdownReport({
+    title: 'Plain Language Analysis — Drupal Core UI Strings',
+    description: 'Readability and plain-language diagnostics for collected Drupal admin UI strings.',
+    markdown,
+    sourceLabel: path.basename(OUT_MD),
+  });
+
+  fs.writeFileSync(OUT_MD, markdown);
+  fs.writeFileSync(OUT_HTML, html);
 
   // ── Console summary ─────────────────────────────────────────────────────────
   console.log('\n📊 Plain Language Analysis — Drupal Core UI Strings');
@@ -374,6 +385,7 @@ function main() {
   console.log(`✅ Reports written to:`);
   console.log(`   ${OUT_JSON}`);
   console.log(`   ${OUT_MD}`);
+  console.log(`   ${OUT_HTML}`);
 }
 
 main();

@@ -1,6 +1,6 @@
 # Drupal Core Keyboard Navigation Review
 
-> **Generated:** 2026-04-29T15:42:55.829Z
+> **Generated:** 2026-04-29T15:57:30.704Z
 > **Method:** Playwright keyboard-only tab sampling with real key presses
 > **Base URL:** https://drupal-core.ddev.site
 > **Admin Auth:** admin/admin (local default)
@@ -19,7 +19,7 @@
 | HTTP 403 pages | 3 |
 | HTTP 404 pages | 3 |
 | Admin routes with 403 | 0 |
-| Promoted findings (candidates) | 3 |
+| Promoted findings (candidates) | 2 |
 
 ## Evaluated Pages
 
@@ -89,7 +89,7 @@
 
 ## Voice Control / Label-in-Name Risks
 
-- Total potential label-in-name mismatches: 4
+- Total potential label-in-name mismatches: 3
 - /admin/form_style [mobile] step 11
   - selector: #edit-test-datelist-month
   - xpath: //*[@id="edit-test-datelist-month"]
@@ -149,11 +149,6 @@ Dec
   - visible label: Submission form settings
 Title
   - accessible name: Submission form settingsTitle
-- /admin/config/content/formats [mobile] step 12
-  - selector: div:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)
-  - xpath: /html/body[1]/div[4]/div[2]/main[1]/div[4]/div[1]/form[1]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[6]/div[1]/div[1]/ul[1]/li[1]/a[1]
-  - visible label: Configure
-  - accessible name: Edit Basic HTML
 
 ## Dynamic Interaction Checks
 
@@ -291,7 +286,7 @@ Title
 
 ## Promoted Findings for PATTERN-REPORT
 
-- Promotion candidates: 3
+- Promotion candidates: 2
 - PROMOTE-001: /admin/form_style [mobile]
   - severity: Medium
   - type: dynamic-check
@@ -300,13 +295,6 @@ Title
   - recommended contract: label-in-name-contract
   - rationale: Potential speech-command mismatch can block voice-control workflows and deserves contract coverage.
 - PROMOTE-002: /admin/structure/types/add [mobile]
-  - severity: Medium
-  - type: dynamic-check
-  - message: 1 potential label-in-name mismatches in sampled focus steps.
-  - WCAG: 2.5.3
-  - recommended contract: label-in-name-contract
-  - rationale: Potential speech-command mismatch can block voice-control workflows and deserves contract coverage.
-- PROMOTE-003: /admin/config/content/formats [mobile]
   - severity: Medium
   - type: dynamic-check
   - message: 1 potential label-in-name mismatches in sampled focus steps.

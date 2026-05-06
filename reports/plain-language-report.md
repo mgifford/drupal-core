@@ -1,6 +1,6 @@
 # Plain Language Analysis — Drupal Core UI Strings
 
-*Generated: 2026-04-05*
+*Generated: 2026-05-06*
 
 ## Corpus summary
 
