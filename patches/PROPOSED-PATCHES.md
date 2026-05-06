@@ -25,18 +25,27 @@ This document maps identified accessibility issues to proposed patches and statu
 
 ### DRUPAL-A11Y-003 — "Select all rows" checkbox labeled only by title
 - **WCAG:** 1.3.1 Info and Relationships (Level A) — **SERIOUS**
-- **Status:** 🔍 Needs investigation
+- **Status:** ✅ **Patch ready**
+- **Files:**
+  - `patches/a11y-DRUPAL-A11Y-003-select-all-checkbox-label.patch` → `core/themes/default_admin/templates/dataset/table.html.twig`
+  - `patches/a11y-DRUPAL-A11Y-003-views-select-all-checkbox-label.patch` → `core/themes/default_admin/templates/views/views-view-table.html.twig`
 - **Affected:** `table > thead > tr > .select-all > input[title="Select all rows in this table"]`
 - **Routes:** `/admin/content` (both Gin and Claro)
-- **Issue:** Input uses `title=` attribute for label instead of visible `<label>` or `aria-label`
-- **Source:** Likely in `TableSelect` form element or Views table display template
+- **Root cause:** Checkboxes use `title=` attribute for accessibility text but provide no explicit `<label>` or `aria-label`
+- **Fix:** Add `aria-label="{{ 'Select all rows in this table'|t }}"` to both checkboxes so they have proper accessible names
 
 ### DRUPAL-A11Y-004 — Tabindex > 0 on form submit buttons
 - **WCAG:** 2.1.1 Keyboard (Level A) — **SERIOUS**
-- **Status:** 🔍 Needs investigation
-- **Affected:** `#edit-submit`, `#edit-danger`, `#edit-cancel` on `/buttons` page (Claro only)
-- **Issue:** Submit buttons have `tabindex="1"` which breaks natural keyboard tab order
-- **Note:** This is a test form; verify if it's intentional or a demo artifact
+- **Status:** ⚠️ Source unclear — requires investigation
+- **Affected:** `#edit-submit`, `#edit-danger`, `#edit-cancel` on `/buttons` page
+- **Selector:** `input[type="submit"][tabindex="1"]`
+- **Issue:** Submit buttons have explicit `tabindex="1"` which breaks natural keyboard tab order by making buttons appear first in the tab sequence
+- **Theme scope:** Claro theme only
+- **Investigation needed:**
+  - Verify if this is intentional test fixture behavior or an unintended side effect
+  - Determine whether tabindex is set by default_admin theme preprocessing, form API, or JavaScript
+  - Check if removing tabindex or using tabindex="0" would be appropriate
+- **Severity:** 6 instances on 1 test page; low business impact but important for keyboard accessibility standards
 
 ### DRUPAL-A11Y-006 — Missing region landmarks
 - **WCAG:** 1.3.6 Identify Purpose (Level AAA) — **MODERATE**
