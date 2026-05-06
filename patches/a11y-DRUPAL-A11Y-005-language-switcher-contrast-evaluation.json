@@ -1,0 +1,183 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-005-language-switcher-contrast",
+  "config": {
+    "description": "Ensure language switcher links maintain WCAG AA contrast",
+    "wcag": [
+      "1.4.3 (AA)"
+    ],
+    "rules": [
+      "color-contrast"
+    ],
+    "patternIds": [
+      "DRU-F75A07EF"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/action-link",
+        "selectors": [
+          "a",
+          "[role=\"link\"]"
+        ],
+        "expectedFix": "Language switcher links should meet WCAG AA contrast",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T21:27:25.860Z",
+  "testCases": [
+    {
+      "url": "/action-link",
+      "selectors": [
+        "a[hreflang=\"he\"]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-f8b5da02",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/action-link",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:85\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    },
+    {
+      "url": "/admin",
+      "selectors": [
+        "a[hreflang=\"he\"]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-350f6c18",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:85\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-F75A07EF",
+        "ruleId": "color-contrast",
+        "selectorKey": "a[hreflang=\"he\"]",
+        "concretePaths": [
+          "/action-link",
+          "/admin",
+          "/admin/appearance",
+          "/admin/content",
+          "/admin/form_style",
+          "/admin/modules",
+          "/admin/structure",
+          "/admin/structure/block",
+          "/admin/structure/taxonomy",
+          "/admin/structure/taxonomy/add",
+          "/admin/structure/types",
+          "/admin/structure/types/add",
+          "/node/add/article",
+          "/node/add/page",
+          "/search/node",
+          "/user/login",
+          "/user/password"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  }
+}

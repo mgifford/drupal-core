@@ -1,0 +1,106 @@
+{
+  "patch": "a11y-LABEL-IN-NAME-004-filter-format-aria-label",
+  "config": {
+    "description": "Fix label-in-name violation for filter format configure link",
+    "wcag": [
+      "2.5.3 (A)"
+    ],
+    "rules": [
+      "label-in-name"
+    ],
+    "testCases": [
+      {
+        "url": "/admin/config/content/formats",
+        "selectors": [
+          "table a:has-text(\"Configure\")"
+        ],
+        "expectedFix": "aria-label must contain visible text \"Configure\"",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T21:27:33.974Z",
+  "testCases": [
+    {
+      "url": "/admin/config/content/formats",
+      "selectors": [
+        "table a:has-text(\"Configure\")"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-f5c9f0da",
+          "pattern_id": "DRU-83cdf7d5",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin/config/content/formats",
+          "selector": "table a:has-text(\"Configure\")",
+          "rule_id": "label-in-name"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: table a:has-text(\"Configure\")"
+          }
+        ],
+        "html": [
+          {
+            "selector": "table a:has-text(\"Configure\")",
+            "success": false,
+            "error": "Element not found: table a:has-text(\"Configure\")"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [],
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 0
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  }
+}

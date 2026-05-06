@@ -1,0 +1,123 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-009-module-summary-names",
+  "config": {
+    "description": "Add aria-label to module details on /admin/modules",
+    "wcag": [
+      "4.1.2 (A)"
+    ],
+    "rules": [
+      "summary-name"
+    ],
+    "patternIds": [
+      "DRU-4422E904"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/admin/modules",
+        "selectors": [
+          "summary",
+          "details summary"
+        ],
+        "expectedFix": "Module summary elements should have discernible text",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T21:27:32.997Z",
+  "testCases": [
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        "#edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-3968de95",
+          "pattern_id": "DRU-4422E904",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/admin/modules",
+          "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+          "rule_id": "summary-name"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+            "success": false,
+            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch:22\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-4422E904",
+        "ruleId": "summary-name",
+        "selectorKey": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+        "concretePaths": [
+          "/admin/modules"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  }
+}

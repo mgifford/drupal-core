@@ -1,0 +1,152 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form",
+  "config": {
+    "description": "Remove explicit tabindex from buttons on test form",
+    "wcag": [
+      "2.1.1 (A)"
+    ],
+    "rules": [
+      "tabindex"
+    ],
+    "patternIds": [
+      "DRU-CC36FB25"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/buttons",
+        "selectors": [
+          "button[tabindex]"
+        ],
+        "expectedFix": "Buttons should not have tabindex > 0",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T21:27:21.075Z",
+  "testCases": [
+    {
+      "url": "/buttons",
+      "selectors": [
+        "#edit-submit"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-cebf10f5",
+          "pattern_id": "DRU-CC36FB25",
+          "screen_type": "desktop",
+          "color_mode": "light",
+          "page_path": "/buttons",
+          "selector": "#edit-submit",
+          "rule_id": "tabindex"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-CC36FB25",
+        "ruleId": "tabindex",
+        "selectorKey": "#edit-submit",
+        "concretePaths": [
+          "/buttons"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 1
+    },
+    "entries": [
+      {
+        "instanceId": "DRU-cebf10f5",
+        "patternId": "DRU-CC36FB25",
+        "ruleId": "tabindex",
+        "pagePath": "/buttons",
+        "selector": "#edit-submit",
+        "status": "not-observed",
+        "seenBefore": false,
+        "seenAfter": false,
+        "beforeCount": 0,
+        "afterCount": 0,
+        "beforeInstanceIds": [],
+        "afterInstanceIds": []
+      }
+    ]
+  }
+}

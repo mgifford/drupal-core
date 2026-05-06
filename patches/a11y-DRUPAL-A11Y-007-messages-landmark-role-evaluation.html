@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch Evaluation: a11y-DRUPAL-A11Y-007-messages-landmark-role</title>
+  <style>
+    :root {
+      --page-bg: #eef2f8;
+      --card-bg: #ffffff;
+      --surface-bg: #f7f9fc;
+      --text: #1c2431;
+      --muted: #546173;
+      --border: #d5dce7;
+      --link: #0e4fb5;
+      --accent: #b7ccf6;
+      --table-stripe: #f5f8ff;
+      --shadow: 0 12px 34px rgba(20, 35, 60, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #111722;
+        --card-bg: #1a2331;
+        --surface-bg: #131b27;
+        --text: #e8edf5;
+        --muted: #93a0b5;
+        --border: #2b3950;
+        --link: #8cb8ff;
+        --accent: #23395f;
+        --table-stripe: #162032;
+        --shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { color-scheme: light dark; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 2rem 1rem 4rem;
+      font: 16px/1.7 Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      background:
+        radial-gradient(circle at top left, rgba(14, 79, 181, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 16%),
+        var(--page-bg);
+      color: var(--text);
+    }
+    a { color: var(--link); }
+    a:hover, a:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.25rem;
+    }
+    .hero,
+    .toc,
+    .content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 1.5rem;
+    }
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      line-height: 1.15;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+    .lede,
+    .meta {
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .toc {
+      padding: 1rem 1.25rem;
+    }
+    .toc h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .toc ol {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      gap: 0.4rem;
+    }
+    .toc li.level-3 {
+      margin-left: 1rem;
+      color: var(--muted);
+    }
+    .content {
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.25;
+      scroll-margin-top: 1rem;
+    }
+    h2, h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 {
+      margin-top: 2.4rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      margin-top: 1.8rem;
+    }
+    .heading-anchor {
+      text-decoration: none;
+      opacity: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    h2:hover .heading-anchor,
+    h2:focus-within .heading-anchor,
+    h3:hover .heading-anchor,
+    h3:focus-within .heading-anchor {
+      opacity: 1;
+    }
+    p, ul, ol, blockquote, pre, .table-wrap, hr {
+      margin: 1rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+    li + li {
+      margin-top: 0.35rem;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    code {
+      background: rgba(127, 127, 127, 0.14);
+      padding: 0.1rem 0.35rem;
+      border-radius: 0.3rem;
+      font-size: 0.95em;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--surface-bg);
+    }
+    blockquote {
+      border-left: 4px solid var(--link);
+      padding: 0.25rem 0 0.25rem 1rem;
+      color: var(--muted);
+      margin-left: 0;
+      background: linear-gradient(90deg, rgba(14, 79, 181, 0.08), transparent 60%);
+    }
+    details {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 0.75rem 0;
+      background: var(--surface-bg);
+    }
+    details[open] {
+      padding-bottom: 0.75rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.25rem 0;
+      list-style: none;
+      color: var(--text);
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before {
+      content: '▶ ';
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+    details[open] summary::before { content: '▼ '; }
+    details table {
+      margin-top: 0.75rem;
+      min-width: 0;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--surface-bg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 0.7rem 0.85rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--accent);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.92rem;
+    }
+    tbody tr:nth-child(even) td {
+      background: var(--table-stripe);
+    }
+    @media (min-width: 900px) {
+      .page {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        align-items: start;
+      }
+      .hero,
+      .content {
+        grid-column: 1;
+      }
+      .toc {
+        grid-column: 2;
+        position: sticky;
+        top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>Patch Evaluation: a11y-DRUPAL-A11Y-007-messages-landmark-role</h1>
+      <p class="lede">undefined</p>
+      <p class="meta">Source markdown: <code>evaluate-patch.js</code></p>
+    </header>
+    
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li class="level-2"><a href="#summary">Summary</a></li><li class="level-3"><a href="#pattern-coverage-from-scan-report">Pattern Coverage (From Scan Report)</a></li><li class="level-3"><a href="#violation-counts">Violation Counts</a></li><li class="level-2"><a href="#test-cases">Test Cases</a></li><li class="level-3"><a href="#test-1-admin-appearance">Test 1: /admin/appearance</a></li><li class="level-3"><a href="#test-2-admin-modules">Test 2: /admin/modules</a></li><li class="level-3"><a href="#test-3-admin-appearance">Test 3: /admin/appearance</a></li><li class="level-3"><a href="#test-4-admin-modules">Test 4: /admin/modules</a></li><li class="level-2"><a href="#screenshots">Screenshots</a></li><li class="level-2"><a href="#html-snapshots">HTML Snapshots</a></li>
+      </ol>
+    </nav>
+    <main class="content">
+      <h1 id="patch-evaluation-report-a11y-drupal-a11y-007-messages-landmark-role">Patch Evaluation Report: a11y-DRUPAL-A11Y-007-messages-landmark-role</h1>
+<p><strong>Generated:</strong> 2026-05-06 at 5:27:31 p.m.</p>
+<h2 id="summary">Summary<a class="heading-anchor" href="#summary" aria-label="Link to Summary section">#</a></h2>
+<ul><li><strong>Description:</strong> Wrap status messages in proper landmark with role</li><li><strong>WCAG Criteria:</strong> 1.3.6 (AAA)</li><li><strong>Affected Rules:</strong> landmark-contentinfo-is-top-level, landmark-no-duplicate-contentinfo</li><li><strong>Pattern Source:</strong> reports/pattern-report-2026-05-06.json</li><li><strong>Status:</strong> ❌ <strong>FAIL</strong> — Patch introduces new violations or does not resolve all issues</li></ul>
+<h3 id="pattern-coverage-from-scan-report">Pattern Coverage (From Scan Report)<a class="heading-anchor" href="#pattern-coverage-from-scan-report" aria-label="Link to Pattern Coverage (From Scan Report) section">#</a></h3>
+<ul><li><strong>Targeted patterns:</strong> 2</li><li><strong>Patterns seen before patch:</strong> 0</li><li><strong>Fully fixed patterns:</strong> 0</li><li><strong>Partially fixed patterns:</strong> 0</li><li><strong>Unchanged patterns:</strong> 2</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Pattern ID</th><th scope="col">Rule</th><th scope="col">Paths (sample)</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Status</th></tr></thead><tbody><tr><td>DRU-2E022F2F</td><td>landmark-contentinfo-is-top-level</td><td>/admin/appearance, /admin/modules, /message</td><td>0</td><td>0</td><td>unchanged</td></tr><tr><td>DRU-1260AB7D</td><td>landmark-no-duplicate-contentinfo</td><td>/admin/appearance, /admin/modules</td><td>0</td><td>0</td><td>unchanged</td></tr></tbody></table></div>
+<h3 id="violation-counts">Violation Counts<a class="heading-anchor" href="#violation-counts" aria-label="Link to Violation Counts section">#</a></h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Change</th></tr></thead><tbody><tr><td><strong>Total violations</strong></td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
+<hr>
+<h2 id="test-cases">Test Cases<a class="heading-anchor" href="#test-cases" aria-label="Link to Test Cases section">#</a></h2>
+<h3 id="test-1-admin-appearance">Test 1: /admin/appearance<a class="heading-anchor" href="#test-1-admin-appearance" aria-label="Link to Test 1: /admin/appearance section">#</a></h3>
+<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch&quot; error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22</p>
+<h3 id="test-2-admin-modules">Test 2: /admin/modules<a class="heading-anchor" href="#test-2-admin-modules" aria-label="Link to Test 2: /admin/modules section">#</a></h3>
+<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch&quot; error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22</p>
+<h3 id="test-3-admin-appearance">Test 3: /admin/appearance<a class="heading-anchor" href="#test-3-admin-appearance" aria-label="Link to Test 3: /admin/appearance section">#</a></h3>
+<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch&quot; error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22</p>
+<h3 id="test-4-admin-modules">Test 4: /admin/modules<a class="heading-anchor" href="#test-4-admin-modules" aria-label="Link to Test 4: /admin/modules section">#</a></h3>
+<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch&quot; error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22</p>
+<hr>
+<h2 id="screenshots">Screenshots<a class="heading-anchor" href="#screenshots" aria-label="Link to Screenshots section">#</a></h2>
+<p>Before and after screenshots have been captured and are available in the reports directory.</p>
+<h2 id="html-snapshots">HTML Snapshots<a class="heading-anchor" href="#html-snapshots" aria-label="Link to HTML Snapshots section">#</a></h2>
+<p>HTML snapshots of failing elements (before and after) are included in this report for code review.</p>
+    </main>
+  </div>
+</body>
+</html>
