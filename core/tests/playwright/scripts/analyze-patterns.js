@@ -1217,46 +1217,110 @@ function main() {
 
   lines.push('## Validated Keyboard Promotion Findings');
   lines.push('');
-  lines.push(`- Keyboard promotion candidates (WCAG 2.5.3): ${keyboardLabelInNameCandidates.length}`);
-  lines.push(`- Label-in-name contract checks: ${labelInNameContract.summary.total}`);
-  lines.push(`- Contract passes: ${labelInNameContract.summary.passed}`);
-  lines.push(`- Contract failures: ${labelInNameContract.summary.failed}`);
+
+  const failingContracts = labelInNameContract.results.filter((r) => r.status === 'fail');
+  const passingContracts = labelInNameContract.results.filter((r) => r.status === 'pass');
+
+  // Summary counts
+  lines.push('| Metric | Value |');
+  lines.push('| :--- | :--- |');
+  lines.push(`| Promotion candidates (WCAG 2.5.3) | ${keyboardLabelInNameCandidates.length} |`);
+  lines.push(`| Contract checks | ${labelInNameContract.summary.total} |`);
+  lines.push(`| ❌ Failures | ${labelInNameContract.summary.failed} |`);
+  lines.push(`| ✅ Passes | ${labelInNameContract.summary.passed} |`);
   if (labelInNameContract.generatedAt) {
-    lines.push(`- Contract results generated at: ${labelInNameContract.generatedAt}`);
+    lines.push(`| Results generated | ${labelInNameContract.generatedAt} |`);
   }
   lines.push('');
 
-  if (keyboardLabelInNameCandidates.length === 0) {
-    lines.push('- No keyboard promotion candidates for label-in-name were available.');
+  // ── FAILURES — shown prominently ──────────────────────────────────────────
+  if (failingContracts.length > 0) {
+    lines.push('### ❌ Label-in-Name Failures (Action Required)');
+    lines.push('');
+    lines.push('> **WCAG 2.5.3** — The accessible name of a control must contain the visible label text. Speech-input users who activate controls by speaking what they see will fail if these differ.');
+    lines.push('');
+    for (const result of failingContracts) {
+      lines.push(`#### ${result.id}: ${result.title || result.route}`);
+      lines.push('');
+      lines.push(`- **Route:** \`${result.route}\``);
+      lines.push(`- **Selector:** \`${escapeMarkdownInline(result.selector || '')}\``);
+      lines.push(`- **Visible label (expected in accessible name):** \`${escapeMarkdownInline(result.expectedLabel || '')}\``);
+      lines.push(`- **Actual accessible name (aria-label):** \`${escapeMarkdownInline(result.observedAriaLabel || '')}\``);
+      lines.push(`- **WCAG SC:** 2.5.3 Label in Name (Level A)`);
+      lines.push('');
+      lines.push('**How to reproduce:**');
+      lines.push('');
+      lines.push(`1. Log into Drupal and navigate to \`${result.route}\``);
+      lines.push(`2. Locate the element matching \`${escapeMarkdownInline(result.selector || '')}\``);
+      lines.push(`3. Inspect the element — the visible text reads **"${escapeMarkdownInline(result.expectedLabel || '')}"**`);
+      lines.push(`4. Check \`aria-label\` — it reads **"${escapeMarkdownInline(result.observedAriaLabel || '')}"** which does not contain the visible text`);
+      lines.push(`5. A speech-input user saying *"click ${escapeMarkdownInline(result.expectedLabel || '')}"* cannot activate this control`);
+      lines.push('');
+      lines.push('**Fix:** Update the `aria-label` to include the visible label text, or remove it if the visible text already provides a sufficient accessible name.');
+      lines.push('');
+    }
+  } else {
+    lines.push('### ✅ No Label-in-Name Failures Found');
+    lines.push('');
+    lines.push('All contract checks passed.');
     lines.push('');
   }
-  else {
-    lines.push('| Candidate ID | Route | Promotion Finding | Validation | Evidence |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- |');
-    for (const candidate of keyboardLabelInNameCandidates) {
+
+  // ── PASSES — collapsed accordion ─────────────────────────────────────────
+  if (passingContracts.length > 0) {
+    lines.push('<details>');
+    lines.push(`<summary>✅ Passing label-in-name checks (${passingContracts.length}) — click to expand</summary>`);
+    lines.push('<table><thead><tr><th>Contract ID</th><th>Route</th><th>Selector</th><th>Expected Label</th></tr></thead><tbody>');
+    for (const result of passingContracts) {
+      lines.push(`<tr><td>${result.id || 'N/A'}</td><td><code>${escapeMarkdownInline(result.route || 'N/A')}</code></td><td><code>${escapeMarkdownInline(result.selector || 'N/A')}</code></td><td>${escapeMarkdownInline(result.expectedLabel || 'N/A')}</td></tr>`);
+    }
+    lines.push('</tbody></table>');
+    lines.push('</details>');
+    lines.push('');
+  }
+
+  // ── Candidate promotion table — failures only, passes collapsed ──────────
+  if (keyboardLabelInNameCandidates.length > 0) {
+    const failedCandidates = keyboardLabelInNameCandidates.filter((candidate) => {
       const route = String(candidate.route || 'unknown');
-      const matchingContracts = labelInNameContract.results.filter((result) => result.route === route);
-      const failingContract = matchingContracts.find((result) => result.status === 'fail');
-      const passedOnly = matchingContracts.length > 0 && matchingContracts.every((result) => result.status === 'pass');
-      const validation = failingContract ? 'failed' : (passedOnly ? 'passed' : 'not validated');
-      const evidence = failingContract
-        ? `Expected label "${escapeMarkdownInline(failingContract.expectedLabel || '')}"; aria-label "${escapeMarkdownInline(failingContract.observedAriaLabel || '')}"`
-        : (passedOnly ? `${matchingContracts.length} contract check(s) passed` : 'No matching contract result yet');
+      return labelInNameContract.results.some((r) => r.route === route && r.status === 'fail');
+    });
+    const passedCandidates = keyboardLabelInNameCandidates.filter((candidate) => {
+      const route = String(candidate.route || 'unknown');
+      const matching = labelInNameContract.results.filter((r) => r.route === route);
+      return matching.length > 0 && matching.every((r) => r.status === 'pass');
+    });
+    const unvalidatedCandidates = keyboardLabelInNameCandidates.filter((candidate) => {
+      const route = String(candidate.route || 'unknown');
+      return !labelInNameContract.results.some((r) => r.route === route);
+    });
 
-      lines.push(`| ${candidate.id || 'N/A'} | ${route} | ${escapeMarkdownInline(candidate.message || 'N/A')} | ${validation} | ${evidence} |`);
+    if (failedCandidates.length > 0 || unvalidatedCandidates.length > 0) {
+      lines.push('### Promotion Candidates Needing Attention');
+      lines.push('');
+      lines.push('| Candidate ID | Route | Finding | Status |');
+      lines.push('| :--- | :--- | :--- | :--- |');
+      for (const candidate of [...failedCandidates, ...unvalidatedCandidates]) {
+        const route = String(candidate.route || 'unknown');
+        const matching = labelInNameContract.results.filter((r) => r.route === route);
+        const failing = matching.find((r) => r.status === 'fail');
+        const status = failing ? '❌ failed' : 'not validated';
+        lines.push(`| ${candidate.id || 'N/A'} | \`${route}\` | ${escapeMarkdownInline(candidate.message || 'N/A')} | ${status} |`);
+      }
+      lines.push('');
     }
-    lines.push('');
-  }
 
-  if (labelInNameContract.results.length > 0) {
-    lines.push('### Label-in-Name Contract Detail');
-    lines.push('');
-    lines.push('| Contract ID | Route | Selector | Status | Expected Label | Observed aria-label |');
-    lines.push('| :--- | :--- | :--- | :--- | :--- | :--- |');
-    for (const result of labelInNameContract.results) {
-      lines.push(`| ${result.id || 'N/A'} | ${result.route || 'N/A'} | ${escapeMarkdownInline(result.selector || 'N/A')} | ${result.status || 'N/A'} | ${escapeMarkdownInline(result.expectedLabel || 'N/A')} | ${escapeMarkdownInline(result.observedAriaLabel || 'N/A')} |`);
+    if (passedCandidates.length > 0) {
+      lines.push('<details>');
+      lines.push(`<summary>✅ Promotion candidates that passed validation (${passedCandidates.length}) — click to expand</summary>`);
+      lines.push('<table><thead><tr><th>Candidate ID</th><th>Route</th><th>Finding</th></tr></thead><tbody>');
+      for (const candidate of passedCandidates) {
+        lines.push(`<tr><td>${candidate.id || 'N/A'}</td><td><code>${escapeMarkdownInline(String(candidate.route || ''))}</code></td><td>${escapeMarkdownInline(candidate.message || 'N/A')}</td></tr>`);
+      }
+      lines.push('</tbody></table>');
+      lines.push('</details>');
+      lines.push('');
     }
-    lines.push('');
   }
 
   // ── Aggregated by Accessibility Category ────────────────────────────────

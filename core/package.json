@@ -47,7 +47,8 @@
     "a11y:default-admin-colors:run": "bash tests/playwright/scripts/run-default-admin-color-report.sh",
     "a11y:extract-content": "node tests/playwright/scripts/extract-content-patterns.js",
     "a11y:plain-language": "node tests/playwright/scripts/plain-language-analysis.js",
-    "a11y:rtl-theme": "node tests/playwright/scripts/rtl-theme-analysis.js"
+    "a11y:rtl-theme": "node tests/playwright/scripts/rtl-theme-analysis.js",
+    "a11y:theme-reports": "node tests/playwright/scripts/generate-theme-reports.js"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",

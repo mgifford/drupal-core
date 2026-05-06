@@ -1,6 +1,6 @@
 # Drupal Core Accessibility Bug Report
 
-> **Generated:** 2026-05-06T14:41:24.466Z
+> **Generated:** 2026-05-06T16:22:36.086Z
 > **Tool:** axe-core via @axe-core/playwright | **Browser:** Chromium
 > **Standard:** [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 
@@ -21,25 +21,52 @@ Project queue: https://www.drupal.org/project/issues/search?text=&projects=Drupa
 
 ## Validated Keyboard Promotion Findings
 
-- Keyboard promotion candidates (WCAG 2.5.3): 2
-- Label-in-name contract checks: 4
-- Contract passes: 3
-- Contract failures: 1
-- Contract results generated at: 2026-04-29T18:00:08.808Z
+| Metric | Value |
+| :--- | :--- |
+| Promotion candidates (WCAG 2.5.3) | 2 |
+| Contract checks | 4 |
+| ❌ Failures | 1 |
+| ✅ Passes | 3 |
+| Results generated | 2026-04-29T18:00:08.808Z |
 
-| Candidate ID | Route | Promotion Finding | Validation | Evidence |
-| :--- | :--- | :--- | :--- | :--- |
-| PROMOTE-001 | /admin/form_style | 2 potential label-in-name mismatches in sampled focus steps. | passed | 2 contract check(s) passed |
-| PROMOTE-002 | /admin/structure/types/add | 1 potential label-in-name mismatches in sampled focus steps. | passed | 1 contract check(s) passed |
+### ❌ Label-in-Name Failures (Action Required)
 
-### Label-in-Name Contract Detail
+> **WCAG 2.5.3** — The accessible name of a control must contain the visible label text. Speech-input users who activate controls by speaking what they see will fail if these differ.
 
-| Contract ID | Route | Selector | Status | Expected Label | Observed aria-label |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| LABEL-IN-NAME-001 | /admin/form_style | #edit-test-datelist-month | pass | Month | N/A |
-| LABEL-IN-NAME-002 | /admin/form_style | #edit-test-datelist-day | pass | Day | N/A |
-| LABEL-IN-NAME-003 | /admin/structure/types/add | summary:has-text("Submission form settings") | pass | Submission form settings | N/A |
-| LABEL-IN-NAME-004 | /admin/config/content/formats | table tbody tr:has-text("Basic HTML") a:has-text("Configure") | fail | Configure | Edit Basic HTML |
+#### LABEL-IN-NAME-004: Configure action visible text appears in accessible name
+
+- **Route:** `/admin/config/content/formats`
+- **Selector:** `table tbody tr:has-text("Basic HTML") a:has-text("Configure")`
+- **Visible label (expected in accessible name):** `Configure`
+- **Actual accessible name (aria-label):** `Edit Basic HTML`
+- **WCAG SC:** 2.5.3 Label in Name (Level A)
+
+**How to reproduce:**
+
+1. Log into Drupal and navigate to `/admin/config/content/formats`
+2. Locate the element matching `table tbody tr:has-text("Basic HTML") a:has-text("Configure")`
+3. Inspect the element — the visible text reads **"Configure"**
+4. Check `aria-label` — it reads **"Edit Basic HTML"** which does not contain the visible text
+5. A speech-input user saying *"click Configure"* cannot activate this control
+
+**Fix:** Update the `aria-label` to include the visible label text, or remove it if the visible text already provides a sufficient accessible name.
+
+<details>
+<summary>✅ Passing label-in-name checks (3) — click to expand</summary>
+<table><thead><tr><th>Contract ID</th><th>Route</th><th>Selector</th><th>Expected Label</th></tr></thead><tbody>
+<tr><td>LABEL-IN-NAME-001</td><td><code>/admin/form_style</code></td><td><code>#edit-test-datelist-month</code></td><td>Month</td></tr>
+<tr><td>LABEL-IN-NAME-002</td><td><code>/admin/form_style</code></td><td><code>#edit-test-datelist-day</code></td><td>Day</td></tr>
+<tr><td>LABEL-IN-NAME-003</td><td><code>/admin/structure/types/add</code></td><td><code>summary:has-text("Submission form settings")</code></td><td>Submission form settings</td></tr>
+</tbody></table>
+</details>
+
+<details>
+<summary>✅ Promotion candidates that passed validation (2) — click to expand</summary>
+<table><thead><tr><th>Candidate ID</th><th>Route</th><th>Finding</th></tr></thead><tbody>
+<tr><td>PROMOTE-001</td><td><code>/admin/form_style</code></td><td>2 potential label-in-name mismatches in sampled focus steps.</td></tr>
+<tr><td>PROMOTE-002</td><td><code>/admin/structure/types/add</code></td><td>1 potential label-in-name mismatches in sampled focus steps.</td></tr>
+</tbody></table>
+</details>
 
 ## Aggregated Accessibility Issues by Category
 

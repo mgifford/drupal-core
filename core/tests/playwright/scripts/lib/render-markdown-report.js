@@ -68,6 +68,21 @@ function renderMarkdownBody(markdown) {
       continue;
     }
 
+    // Raw HTML block pass-through: <details> blocks are collected in full
+    // (including blank lines and nested content) until the closing </details>.
+    if (/^<details[\s>]/.test(line.trim())) {
+      const rawLines = [line];
+      index += 1;
+      while (index < lines.length) {
+        rawLines.push(lines[index]);
+        const done = /^<\/details>\s*$/.test(lines[index].trim());
+        index += 1;
+        if (done) break;
+      }
+      blocks.push(rawLines.join('\n'));
+      continue;
+    }
+
     if (line.startsWith('```')) {
       const codeLines = [];
       const language = line.slice(3).trim();
@@ -342,6 +357,34 @@ function renderMarkdownReport({ title, description, markdown, sourceLabel }) {
       color: var(--muted);
       margin-left: 0;
       background: linear-gradient(90deg, rgba(14, 79, 181, 0.08), transparent 60%);
+    }
+    details {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 0.75rem 0;
+      background: var(--surface-bg);
+    }
+    details[open] {
+      padding-bottom: 0.75rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.25rem 0;
+      list-style: none;
+      color: var(--text);
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before {
+      content: '▶ ';
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+    details[open] summary::before { content: '▼ '; }
+    details table {
+      margin-top: 0.75rem;
+      min-width: 0;
     }
     hr {
       border: 0;
