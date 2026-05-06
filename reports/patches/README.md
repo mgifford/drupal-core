@@ -2,6 +2,11 @@
 
 This directory contains accessibility patch evaluation reports. Each report tests a proposed fix against the current Drupal codebase to verify the patch applies correctly and resolves accessibility violations.
 
+**🔗 Bidirectional Linking:**
+- **Pattern Report** → Links to specific accessibility violations found across Drupal
+- **This Directory** → Links from violations to patches that fix them
+- **Index.md** → Maps issues ↔ patches (start here to understand the full picture)
+
 ## Patch Evaluation Format
 
 Each patch evaluation includes:
@@ -12,17 +17,26 @@ Each patch evaluation includes:
 
 ## Patches and Evaluations
 
-| Patch | Issue | WCAG | Status | Report |
-|-------|-------|------|--------|--------|
-| a11y-DRUPAL-A11Y-001 | File Widget Display Labels | 1.3.1 (A) | ✅ | [Evaluation](a11y-DRUPAL-A11Y-001-file-widget-display-labels-evaluation.html) |
-| a11y-DRUPAL-A11Y-002 | Submit Button Contrast | 1.4.3 (AA) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-002-submit-button-contrast-evaluation.html) |
-| a11y-DRUPAL-A11Y-003 | Select All Checkbox Label | 1.3.1 (A) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-003-select-all-checkbox-label-evaluation.html) |
-| a11y-DRUPAL-A11Y-004 | Tabindex Buttons Test Form | 2.1.1 (A) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-evaluation.html) |
-| a11y-DRUPAL-A11Y-005 | Language Switcher Contrast | 1.4.3 (AA) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-005-language-switcher-contrast-evaluation.html) |
-| a11y-DRUPAL-A11Y-006 | Theme Switcher Landmark | 1.3.6 (AAA) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-006-theme-switcher-landmark-evaluation.html) |
-| a11y-DRUPAL-A11Y-007 | Messages Landmark Role | 1.3.6 (AAA) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation.html) |
-| a11y-DRUPAL-A11Y-008 | Empty Table Headers | 1.3.1 (A) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-008-empty-table-headers-evaluation.html) |
-| a11y-DRUPAL-A11Y-009 | Module Summary Names | 4.1.2 (A) | ❌ | [Evaluation](a11y-DRUPAL-A11Y-009-module-summary-names-evaluation.html) |
+**⚠️ Status Key:**
+- ✅ **Real Code** — Patch contains actual fix implementation
+- ⏳ **Placeholder** — Patch is template; needs real implementation
+- ❌ **FAIL** — Patch does not apply (corrupt or outdated)
+
+**Links:**
+- 📋 [Full Issue → Patch Index](INDEX.md) — Bidirectional mapping between accessibility issues and patches
+- 📊 [Pattern Report](../PATTERN-REPORT-latest.md) — Detailed accessibility violations found
+
+| Patch | Issue | WCAG | Type | Status | Report |
+|-------|-------|------|------|--------|--------|
+| a11y-DRUPAL-A11Y-003 | Select All Checkbox Label | 1.3.1 (A) | ✅ Real Code | Applies ✓ | [Evaluation](a11y-DRUPAL-A11Y-003-select-all-checkbox-aria-label-evaluation.html) |
+| a11y-DRUPAL-A11Y-001 | File Widget Display Labels | 1.3.1 (A) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-001-file-widget-display-labels-evaluation.html) |
+| a11y-DRUPAL-A11Y-002 | Submit Button Contrast | 1.4.3 (AA) | ⏳ Placeholder | Fails ✗ | [Evaluation](a11y-DRUPAL-A11Y-002-submit-button-contrast-evaluation.html) |
+| a11y-DRUPAL-A11Y-004 | Tabindex Buttons Test Form | 2.1.1 (A) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-evaluation.html) |
+| a11y-DRUPAL-A11Y-005 | Language Switcher Contrast | 1.4.3 (AA) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-005-language-switcher-contrast-evaluation.html) |
+| a11y-DRUPAL-A11Y-006 | Theme Switcher Landmark | 1.3.6 (AAA) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-006-theme-switcher-landmark-evaluation.html) |
+| a11y-DRUPAL-A11Y-007 | Messages Landmark Role | 1.3.6 (AAA) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation.html) |
+| a11y-DRUPAL-A11Y-008 | Empty Table Headers | 1.3.1 (A) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-008-empty-table-headers-evaluation.html) |
+| a11y-DRUPAL-A11Y-009 | Module Summary Names | 4.1.2 (A) | ⏳ Placeholder | N/A | [Evaluation](a11y-DRUPAL-A11Y-009-module-summary-names-evaluation.html) |
 
 ## Status Legend
 
