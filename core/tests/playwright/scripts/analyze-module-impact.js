@@ -32,7 +32,7 @@ const { execSync } = require('child_process');
 const testAll = process.argv.includes('--all');
 const verbose = process.argv.includes('--verbose');
 
-const DRUPAL_ROOT = path.join(__dirname, '../../..');
+const DRUPAL_ROOT = path.join(__dirname, '../../../..');
 const CONFIG_FILE = path.join(DRUPAL_ROOT, '.drupal-a11y-module-config.json');
 const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports');
 

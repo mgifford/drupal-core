@@ -28,7 +28,7 @@ const path = require('path');
 // ── Config ────────────────────────────────────────────────────────────────────
 const fileOnly = process.argv.includes('--file');
 
-const DRUPAL_ROOT = path.join(__dirname, '../../..');
+const DRUPAL_ROOT = path.join(__dirname, '../../../..');
 const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports');
 const ISSUES_DIR = path.join(REPORTS_DIR, 'issues');
 

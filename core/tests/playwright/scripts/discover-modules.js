@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 
-const DRUPAL_ROOT = path.join(__dirname, '../../..');
+const DRUPAL_ROOT = path.join(__dirname, '../../../..');
 const MODULES_DIR = path.join(DRUPAL_ROOT, 'core/modules');
 const CONFIG_FILE = path.join(DRUPAL_ROOT, '.drupal-a11y-module-config.json');
 
@@ -173,7 +173,7 @@ async function discoverModules() {
       pages_to_test: pages,
       test_enabled: category !== 'test_only',
       test_disabled: category !== 'core' && category !== 'test_only',
-      priority: categor category === 'experimental' ? 'critical' : 
+      priority: category === 'experimental' ? 'critical' : 
                category === 'core' ? 'low' :
                'medium'
     };

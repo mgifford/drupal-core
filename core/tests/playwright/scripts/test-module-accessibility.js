@@ -43,7 +43,7 @@ if (!moduleName) {
   process.exit(1);
 }
 
-const DRUPAL_ROOT = path.join(__dirname, '../../..');
+const DRUPAL_ROOT = path.join(__dirname, '../../../..');
 const CONFIG_FILE = path.join(DRUPAL_ROOT, '.drupal-a11y-module-config.json');
 const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports/module-impact', moduleName);
 const BASE_URL = 'http://drupal-core.ddev.site';
@@ -219,7 +219,7 @@ function analyzeImpact(baselineViolations, moduleViolations) {
 
     // Launch browser
     browser = await chromium.launch({ headless: !headedMode });
-    const context = await browser.createBrowserContext();
+    const context = await browser.newContext();
     const page = await context.newPage();
 
     // Set viewport for desktop testing
