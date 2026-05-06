@@ -111,14 +111,25 @@ yarn a11y:keyboard-report
 
 **What it does:** Reads `axe-results.json` (collected by the Playwright axe crawl) and clusters the issues by rule and selector similarity to produce a pattern-level view rather than a page-level view.
 
-**Prerequisite:** `reports/axe-results.json` must exist. Run the axe crawl first:
+**Prerequisite:** `reports/axe-results.json` must exist. It is now a small manifest that points to dated/latest shard directories and summary indexes. Run the axe crawl first:
 
 ```bash
 cd core
 yarn a11y:crawl-and-report
 ```
 
-**Outputs:**
+**Raw crawl bundle produced by the axe crawl:**
+
+| File | Description |
+|---|---|
+| `axe-results.json` | Latest manifest for the sharded crawl bundle |
+| `axe-results/latest/shards/chunk-*.json` | Raw crawl records split into smaller files |
+| `axe-results/latest/by-rule.json` | Summary index grouped by axe rule |
+| `axe-results/latest/by-path.json` | Summary index grouped by route/path |
+| `axe-results/latest/by-context.json` | Summary index grouped by theme, scheme, viewport, language, and accent |
+| `axe-results-YYYY-MM-DD.json` | Date-stamped manifest snapshot |
+
+**Pattern report outputs:**
 
 | File | Description |
 |---|---|

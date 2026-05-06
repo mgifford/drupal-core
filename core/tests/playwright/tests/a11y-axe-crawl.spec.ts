@@ -16,7 +16,9 @@
  *
  * Result accumulation strategy:
  *   Each inner describe writes a partial JSON shard to .tmp-crawl/ in its
- *   own afterAll. The outer afterAll merges all shards into axe-results.json.
+ *   own afterAll. The outer afterAll merges those temporary shards into a
+ *   small manifest at reports/axe-results.json plus dated/latest shard
+ *   directories and summary indexes.
  *   This avoids a Playwright timing issue where the outer afterAll can fire
  *   before inner describe tests push their results when test.use() is present.
  *
@@ -33,6 +35,7 @@ import { execSync } from 'child_process';
 import { anonymousPages, adminPages } from '../lib/pages';
 import { THEME_CONFIGS, ThemeConfig } from '../lib/theme-configs';
 import { AUTH_STATE_FILE } from '../lib/auth-setup';
+const { writeShardedResults } = require('../scripts/lib/axe-results-store');
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -48,7 +51,7 @@ interface AxeViolation {
   }>;
 }
 
-/** Per-page findings record written to axe-results.json. */
+/** Per-page findings record written into the sharded axe results bundle. */
 interface AxeResultRecord {
   /** Theme config id (e.g. 'olivero', 'claro-dark', 'admin'). */
   theme: string;
@@ -57,6 +60,12 @@ interface AxeResultRecord {
   viewport: { width: number; height: number };
   /** Browser color scheme preference used during this scan. */
   colorScheme: 'light' | 'dark';
+  /** Accent preset used for this scan (Default Admin theme only). */
+  accentPreset?: string;
+  /** HTML lang for this scan (Default Admin theme matrix uses en + he). */
+  language?: string;
+  /** HTML dir for this scan (Default Admin theme matrix uses ltr + rtl). */
+  direction?: 'ltr' | 'rtl';
   timestamp: string;
   violations: AxeViolation[];
   incomplete: AxeViolation[];
@@ -76,11 +85,32 @@ const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.dde
 
 /**
  * Standard viewports for every page scan.
- * All pages are tested at both sizes; no separate "(mobile)" page entries needed.
+ * Includes desktop, tablet, and smartphone in portrait + landscape.
  */
 const STANDARD_VIEWPORTS = [
-  { label: '',          width: 1280, height: 800  }, // desktop
-  { label: ' (mobile)', width: 375,  height: 812  }, // mobile
+  { label: ' [desktop]', width: 1280, height: 800  },
+  { label: ' [tablet]', width: 768, height: 1024 },
+  { label: ' [mobile-portrait]', width: 375,  height: 812  },
+  { label: ' [mobile-landscape]', width: 812,  height: 375  },
+] as const;
+
+const LANGUAGE_VARIANTS = [
+  { label: 'en-ltr', lang: 'en', dir: 'ltr' as const },
+  { label: 'he-rtl', lang: 'he', dir: 'rtl' as const },
+] as const;
+
+const DEFAULT_ADMIN_ACCENTS = [
+  'blue',
+  'light_blue',
+  'dark_purple',
+  'purple',
+  'teal',
+  'green',
+  'pink',
+  'red',
+  'orange',
+  'yellow',
+  'neutral',
 ] as const;
 
 /** Temp directory for per-describe partial result shards. */
@@ -121,6 +151,30 @@ function buildAxeBuilder(page: any): AxeBuilder {
 function resolveRoute(page: Page, route: string): string {
   const configuredBaseUrl = page.context()._options.baseURL ?? DEFAULT_BASE_URL;
   return new URL(route, configuredBaseUrl).toString();
+}
+
+function isDefaultAdminTheme(config: ThemeConfig): boolean {
+  return config.defaultTheme === 'default_admin' || config.adminTheme === 'default_admin';
+}
+
+async function applyLanguageAndAccent(
+  page: Page,
+  langConfig: { lang: string; dir: 'ltr' | 'rtl' },
+  accentPreset: string | null,
+): Promise<void> {
+  await page.evaluate(({ lang, dir, accent }) => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = dir;
+
+    if (accent) {
+      const accentColors = (window as any).drupalSettings?.gin?.accent_colors ?? {};
+      const accentHex = accentColors[accent]?.hex;
+      document.documentElement.setAttribute('data-gin-accent', accent);
+      if (accentHex) {
+        document.documentElement.style.setProperty('--accent-base', accentHex);
+      }
+    }
+  }, { lang: langConfig.lang, dir: langConfig.dir, accent: accentPreset });
 }
 
 /**
@@ -184,7 +238,7 @@ function writeResultShard(shardId: string, records: AxeResultRecord[]): void {
 }
 
 /**
- * Merge all shard files written by inner describes into the final output files.
+ * Merge all shard files written by inner describes into the final sharded bundle.
  */
 function mergeAndWriteResults(originalDefault: string, originalAdmin: string): void {
   fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -205,16 +259,17 @@ function mergeAndWriteResults(originalDefault: string, originalAdmin: string): v
   }
 
   const date = new Date().toISOString().slice(0, 10);
-  const datedFile = path.join(OUT_DIR, `axe-results-${date}.json`);
-  const latestFile = path.join(OUT_DIR, 'axe-results.json');
-  const json = JSON.stringify(allResults, null, 2);
-
-  fs.writeFileSync(datedFile, json);
-  fs.writeFileSync(latestFile, json);
+  const output = writeShardedResults({
+    records: allResults,
+    reportsDir: OUT_DIR,
+    dateStamp: date,
+  });
 
   console.log(`\n📊 Axe results written to:`);
-  console.log(`   ${datedFile}`);
-  console.log(`   ${latestFile} (latest)`);
+  console.log(`   ${output.datedManifestPath}`);
+  console.log(`   ${output.latestManifestPath} (latest)`);
+  console.log(`   ${path.join(OUT_DIR, 'axe-results', date, 'shards')} (dated shards)`);
+  console.log(`   ${path.join(OUT_DIR, 'axe-results', 'latest', 'shards')} (latest shards)`);
   console.log(`   Total records: ${allResults.length}`);
   console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
 
@@ -271,34 +326,48 @@ test.describe('Axe crawl — multi-theme', () => {
           writeResultShard(`${themeConfig.id}-anon`, shardRecords);
         });
 
+        const accentVariants = isDefaultAdminTheme(themeConfig) ? [...DEFAULT_ADMIN_ACCENTS] : [null];
+        const languageVariants = isDefaultAdminTheme(themeConfig) ? [...LANGUAGE_VARIANTS] : [LANGUAGE_VARIANTS[0]];
+
         for (const entry of anonymousPages) {
           for (const vp of STANDARD_VIEWPORTS) {
-            const testName = `${entry.name}${vp.label}`;
-            test(testName, async ({ page }) => {
-		      await page.setViewportSize({ width: vp.width, height: vp.height });
-		      await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-		      await ensurePageReadyForScan(page, entry.path);
+            for (const langVariant of languageVariants) {
+              for (const accentPreset of accentVariants) {
+                const matrixLabel = isDefaultAdminTheme(themeConfig)
+                  ? ` [${langVariant.label}] [accent:${accentPreset}]`
+                  : '';
+                const testName = `${entry.name}${vp.label}${matrixLabel}`;
+                test(testName, async ({ page }) => {
+                  await page.setViewportSize({ width: vp.width, height: vp.height });
+                  await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+                  await ensurePageReadyForScan(page, entry.path);
+                  await applyLanguageAndAccent(page, langVariant, accentPreset);
 
-              const axeResults = await buildAxeBuilder(page).analyze();
+                  const axeResults = await buildAxeBuilder(page).analyze();
 
-              shardRecords.push({
-                theme: themeConfig.id,
-                page: testName,
-                path: entry.path,
-                viewport: { width: vp.width, height: vp.height },
-                colorScheme: themeConfig.colorScheme,
-                timestamp: new Date().toISOString(),
-                violations: axeResults.violations as AxeViolation[],
-                incomplete: axeResults.incomplete as AxeViolation[],
-              });
+                  shardRecords.push({
+                    theme: themeConfig.id,
+                    page: testName,
+                    path: entry.path,
+                    viewport: { width: vp.width, height: vp.height },
+                    colorScheme: themeConfig.colorScheme,
+                    accentPreset: accentPreset ?? undefined,
+                    language: langVariant.lang,
+                    direction: langVariant.dir,
+                    timestamp: new Date().toISOString(),
+                    violations: axeResults.violations as AxeViolation[],
+                    incomplete: axeResults.incomplete as AxeViolation[],
+                  });
 
-              if (axeResults.violations.length > 0) {
-                console.log(
-                  `  ⚠️  [${themeConfig.id}/${vp.width}px] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                  axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-                );
+                  if (axeResults.violations.length > 0) {
+                    console.log(
+                      `  ⚠️  [${themeConfig.id}/${vp.width}px/${langVariant.label}${accentPreset ? `/${accentPreset}` : ''}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
+                      axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
+                    );
+                  }
+                });
               }
-            });
+            }
           }
         }
       });
@@ -321,34 +390,48 @@ test.describe('Axe crawl — multi-theme', () => {
           writeResultShard(`${themeConfig.id}-admin`, shardRecords);
         });
 
+        const accentVariants = isDefaultAdminTheme(themeConfig) ? [...DEFAULT_ADMIN_ACCENTS] : [null];
+        const languageVariants = isDefaultAdminTheme(themeConfig) ? [...LANGUAGE_VARIANTS] : [LANGUAGE_VARIANTS[0]];
+
         for (const entry of adminPages) {
           for (const vp of STANDARD_VIEWPORTS) {
-            const testName = `${entry.name}${vp.label}`;
-            test(testName, async ({ page }) => {
-              await page.setViewportSize({ width: vp.width, height: vp.height });
-              await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-              await ensurePageReadyForScan(page, entry.path);
+            for (const langVariant of languageVariants) {
+              for (const accentPreset of accentVariants) {
+                const matrixLabel = isDefaultAdminTheme(themeConfig)
+                  ? ` [${langVariant.label}] [accent:${accentPreset}]`
+                  : '';
+                const testName = `${entry.name}${vp.label}${matrixLabel}`;
+                test(testName, async ({ page }) => {
+                  await page.setViewportSize({ width: vp.width, height: vp.height });
+                  await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
+                  await ensurePageReadyForScan(page, entry.path);
+                  await applyLanguageAndAccent(page, langVariant, accentPreset);
 
-              const axeResults = await buildAxeBuilder(page).analyze();
+                  const axeResults = await buildAxeBuilder(page).analyze();
 
-              shardRecords.push({
-                theme: themeConfig.id,
-                page: testName,
-                path: entry.path,
-                viewport: { width: vp.width, height: vp.height },
-                colorScheme: themeConfig.colorScheme,
-                timestamp: new Date().toISOString(),
-                violations: axeResults.violations as AxeViolation[],
-                incomplete: axeResults.incomplete as AxeViolation[],
-              });
+                  shardRecords.push({
+                    theme: themeConfig.id,
+                    page: testName,
+                    path: entry.path,
+                    viewport: { width: vp.width, height: vp.height },
+                    colorScheme: themeConfig.colorScheme,
+                    accentPreset: accentPreset ?? undefined,
+                    language: langVariant.lang,
+                    direction: langVariant.dir,
+                    timestamp: new Date().toISOString(),
+                    violations: axeResults.violations as AxeViolation[],
+                    incomplete: axeResults.incomplete as AxeViolation[],
+                  });
 
-              if (axeResults.violations.length > 0) {
-                console.log(
-                  `  ⚠️  [${themeConfig.id}/${vp.width}px] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                  axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-                );
+                  if (axeResults.violations.length > 0) {
+                    console.log(
+                      `  ⚠️  [${themeConfig.id}/${vp.width}px/${langVariant.label}${accentPreset ? `/${accentPreset}` : ''}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
+                      axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
+                    );
+                  }
+                });
               }
-            });
+            }
           }
         }
       });

@@ -2,8 +2,10 @@
 /**
  * Scaffold a new regression test from an axe violation.
  *
- * Reads a violation from reports/axe-results.json by rule + page,
- * then appends a ready-to-use test block to a11y-regressions.spec.ts.
+ * Reads a violation from reports/axe-results.json by rule + page.
+ * That file may be either the legacy monolith array or the new sharded
+ * manifest produced by the Playwright crawl.
+ * Then appends a ready-to-use test block to a11y-regressions.spec.ts.
  *
  * Usage:
  *   node scripts/add-regression.js \
@@ -24,6 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadAxeResults } = require('./lib/axe-results-store');
 
 const REGRESSION_FILE = path.join(__dirname, '../tests/a11y-regressions.spec.ts');
 const RESULTS_FILE = path.join(__dirname, '../reports/axe-results.json');
@@ -105,7 +108,7 @@ function main() {
 
   // Verify the violation exists in current results, if available.
   if (fs.existsSync(RESULTS_FILE)) {
-    const results = JSON.parse(fs.readFileSync(RESULTS_FILE, 'utf8'));
+    const results = loadAxeResults(RESULTS_FILE);
     const pageResult = results.find((r) => r.path === pagePath);
     if (!pageResult) {
       console.warn(`⚠️  No crawl results found for path '${pagePath}'. Run yarn test:a11y:playwright first.`);

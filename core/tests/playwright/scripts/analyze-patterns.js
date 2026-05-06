@@ -1,5 +1,3 @@
-console.log('DEBUG: analyze-patterns.js script starting...');
-console.log('DEBUG: About to call main()');
 // --- Advanced Deduplication: Merge by Rule + Fuzzy Summary ---
 function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
   const merged = [];
@@ -39,6 +37,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const yaml = require('js-yaml');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
+const { loadAxeResults } = require('./lib/axe-results-store');
 
 'use strict';
 
@@ -884,17 +883,13 @@ function priorityScore(pattern) {
 }
 
 function main() {
-  console.log('DEBUG: Entered main()');
-
   const trustedResources = loadTrustedResources();
 
   if (!fs.existsSync(INPUT_FILE)) {
     console.error(`❌ ${INPUT_FILE} not found. Run 'yarn test:a11y:playwright' first.`);
     process.exit(1);
   }
-  console.log('DEBUG: INPUT_FILE exists:', INPUT_FILE);
-  const rawResults = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf8'));
-  console.log('DEBUG: Read rawResults, count:', rawResults.length);
+  const rawResults = loadAxeResults(INPUT_FILE);
   const totalPages = rawResults.length;
   const scanDate = new Date().toISOString();
   const axeVersion = rawResults[0]?.violations?.[0] ? 'axe-core (via @axe-core/playwright)' : 'axe-core';
@@ -1147,7 +1142,6 @@ function main() {
   fs.writeFileSync(BUGS_JSON_OUTPUT, JSON.stringify(bugsJson, null, 2));
   fs.writeFileSync(BUGS_JSON_LATEST, JSON.stringify(bugsJson, null, 2));
   console.log(`✅ Bug report written to ${BUGS_JSON_OUTPUT}`);
-  console.log('DEBUG: Wrote bugsJson outputs');
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
@@ -1190,11 +1184,9 @@ function main() {
   fs.writeFileSync(BUGS_CSV_OUTPUT, csvRows.join('\n'));
   fs.writeFileSync(BUGS_CSV_LATEST, csvRows.join('\n'));
   console.log(`✅ CSV report written to ${BUGS_CSV_OUTPUT}`);
-  console.log('DEBUG: Wrote CSV outputs');
 
   // ── Legacy pattern-report.json ────────────────────────────────────────────
   fs.writeFileSync(JSON_OUTPUT, JSON.stringify({ summary, patterns }, null, 2));
-  console.log('DEBUG: Wrote legacy pattern-report JSON');
 
   const keyboardLabelInNameCandidates = loadKeyboardLabelInNameCandidates();
   const labelInNameContract = loadLabelInNameContractResults();
@@ -1436,7 +1428,6 @@ function main() {
   fs.writeFileSync(HTML_LATEST, html);
   console.log(`✅ Markdown report written to ${MD_OUTPUT}`);
   console.log(`✅ HTML report written to ${HTML_OUTPUT}`);
-  console.log('DEBUG: Wrote markdown outputs');
   console.log('');
   console.log('📊 Summary:');
   console.log(`   ${summary.totalPagesCrawled} pages crawled`);
@@ -1456,4 +1447,3 @@ function main() {
 }
 
 main();
-console.log('DEBUG: main() has finished');
