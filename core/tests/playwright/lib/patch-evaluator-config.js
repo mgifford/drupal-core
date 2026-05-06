@@ -16,6 +16,8 @@ module.exports = {
     description: 'Add aria-label to file widget display checkboxes',
     wcag: ['1.3.1 (A)'],
     rules: ['label'],
+    patternIds: ['DRU-6CA3D5EB'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/contact/imagefile_file',
@@ -30,6 +32,8 @@ module.exports = {
     description: 'Fix primary button color contrast on admin yellow accent',
     wcag: ['1.4.3 (AA)'],
     rules: ['color-contrast'],
+    patternIds: ['DRU-F75A07EF'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/action-link',
@@ -44,6 +48,8 @@ module.exports = {
     description: 'Add aria-label to select-all checkboxes in tables',
     wcag: ['1.3.1 (A)'],
     rules: ['label', 'label-title-only'],
+    patternIds: ['DRU-987EB788'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/admin/content',
@@ -58,6 +64,8 @@ module.exports = {
     description: 'Remove explicit tabindex from buttons on test form',
     wcag: ['2.1.1 (A)'],
     rules: ['tabindex'],
+    patternIds: ['DRU-CC36FB25'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/buttons',
@@ -72,6 +80,8 @@ module.exports = {
     description: 'Ensure language switcher links maintain WCAG AA contrast',
     wcag: ['1.4.3 (AA)'],
     rules: ['color-contrast'],
+    patternIds: ['DRU-F75A07EF'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/action-link',
@@ -86,6 +96,8 @@ module.exports = {
     description: 'Wrap theme switcher form in nav landmark',
     wcag: ['1.3.6 (AAA)'],
     rules: ['region'],
+    patternIds: ['DRU-6BA9E02D'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/',
@@ -99,7 +111,9 @@ module.exports = {
   'a11y-DRUPAL-A11Y-007-messages-landmark-role': {
     description: 'Wrap status messages in proper landmark with role',
     wcag: ['1.3.6 (AAA)'],
-    rules: ['landmark-contentinfo-is-top-level'],
+    rules: ['landmark-contentinfo-is-top-level', 'landmark-no-duplicate-contentinfo'],
+    patternIds: ['DRU-2E022F2F', 'DRU-1260AB7D'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/admin/appearance',
@@ -114,6 +128,8 @@ module.exports = {
     description: 'Ensure all table headers have discernible text',
     wcag: ['1.3.1 (A)'],
     rules: ['empty-table-header'],
+    patternIds: ['DRU-EDB3860D'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/admin/content',
@@ -128,6 +144,8 @@ module.exports = {
     description: 'Add aria-label to module details on /admin/modules',
     wcag: ['4.1.2 (A)'],
     rules: ['summary-name'],
+    patternIds: ['DRU-4422E904'],
+    maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/admin/modules',
