@@ -1,0 +1,72 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-008-empty-table-headers",
+  "config": {
+    "description": "Add scope and labels to empty multifield table headers",
+    "wcag": [
+      "1.3.1 (A)"
+    ],
+    "rules": [
+      "empty-table-header"
+    ],
+    "testCases": [
+      {
+        "url": "/node/add/page",
+        "selectors": [
+          "table thead th"
+        ],
+        "expectedFix": "Table headers should have scope attribute",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T18:04:15.481Z",
+  "testCases": [
+    {
+      "url": "/node/add/page",
+      "selectors": [
+        "table thead th"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: table thead th"
+          }
+        ],
+        "html": [
+          {
+            "selector": "table thead th",
+            "success": false,
+            "error": "Element not found: table thead th"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"\nerror: core/modules/field/templates/field-multiple-value-form.html.twig: No such file or directory\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  }
+}

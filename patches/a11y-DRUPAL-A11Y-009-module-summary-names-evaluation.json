@@ -1,0 +1,83 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-009-module-summary-names",
+  "config": {
+    "description": "Add aria-label to module details on /admin/modules",
+    "wcag": [
+      "4.1.2 (A)"
+    ],
+    "rules": [
+      "summary-name"
+    ],
+    "testCases": [
+      {
+        "url": "/admin/modules",
+        "selectors": [
+          "summary",
+          "details summary"
+        ],
+        "expectedFix": "Module summaries should have accessible names",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T18:04:16.431Z",
+  "testCases": [
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        "summary",
+        "details summary"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: summary"
+          },
+          {
+            "success": false,
+            "error": "Element not found: details summary"
+          }
+        ],
+        "html": [
+          {
+            "selector": "summary",
+            "success": false,
+            "error": "Element not found: summary"
+          },
+          {
+            "selector": "details summary",
+            "success": false,
+            "error": "Element not found: details summary"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch:22\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  }
+}

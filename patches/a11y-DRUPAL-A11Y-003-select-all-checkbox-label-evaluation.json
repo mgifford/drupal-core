@@ -1,0 +1,86 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-003-select-all-checkbox-label",
+  "config": {
+    "description": "Add aria-label to select-all checkboxes in tables",
+    "wcag": [
+      "1.3.1 (A)"
+    ],
+    "rules": [
+      "label",
+      "label-title-only"
+    ],
+    "testCases": [
+      {
+        "url": "/admin/content",
+        "selectors": [
+          "thead input[type=\"checkbox\"]"
+        ],
+        "expectedFix": "Select-all checkbox should have aria-label",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T18:04:04.487Z",
+  "testCases": [
+    {
+      "url": "/admin/content",
+      "selectors": [
+        "thead input[type=\"checkbox\"]"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: thead input[type=\"checkbox\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "thead input[type=\"checkbox\"]",
+            "success": false,
+            "error": "Element not found: thead input[type=\"checkbox\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: thead input[type=\"checkbox\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "thead input[type=\"checkbox\"]",
+            "success": false,
+            "error": "Element not found: thead input[type=\"checkbox\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  }
+}

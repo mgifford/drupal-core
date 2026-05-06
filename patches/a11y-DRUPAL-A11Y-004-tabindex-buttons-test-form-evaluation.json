@@ -1,0 +1,85 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form",
+  "config": {
+    "description": "Remove explicit tabindex from buttons on test form",
+    "wcag": [
+      "2.1.1 (A)"
+    ],
+    "rules": [
+      "tabindex"
+    ],
+    "testCases": [
+      {
+        "url": "/buttons",
+        "selectors": [
+          "button[tabindex]"
+        ],
+        "expectedFix": "Buttons should not have explicit tabindex",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T18:04:10.350Z",
+  "testCases": [
+    {
+      "url": "/buttons",
+      "selectors": [
+        "button[tabindex]"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: button[tabindex]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "button[tabindex]",
+            "success": false,
+            "error": "Element not found: button[tabindex]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: button[tabindex]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "button[tabindex]",
+            "success": false,
+            "error": "Element not found: button[tabindex]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  }
+}

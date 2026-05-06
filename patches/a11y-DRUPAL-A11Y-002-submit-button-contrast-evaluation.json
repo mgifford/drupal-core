@@ -1,0 +1,136 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-002-submit-button-contrast",
+  "config": {
+    "description": "Fix primary button color contrast on admin yellow accent",
+    "wcag": [
+      "1.4.3 (AA)"
+    ],
+    "rules": [
+      "color-contrast"
+    ],
+    "testCases": [
+      {
+        "url": "/admin/structure/types/add",
+        "selectors": [
+          "#edit-save-continue",
+          "#edit-submit"
+        ],
+        "expectedFix": "color-contrast should pass after patch",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      },
+      {
+        "url": "/admin/structure/taxonomy",
+        "selectors": [
+          ".button--action",
+          "#edit-submit"
+        ],
+        "expectedFix": "color-contrast should pass after patch",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-06T18:03:58.856Z",
+  "testCases": [
+    {
+      "url": "/admin/structure/types/add",
+      "selectors": [
+        "#edit-save-continue",
+        "#edit-submit"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-save-continue"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-save-continue",
+            "success": false,
+            "error": "Element not found: #edit-save-continue"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    },
+    {
+      "url": "/admin/structure/taxonomy",
+      "selectors": [
+        ".button--action",
+        "#edit-submit"
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".button--action",
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {}
+        }
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false
+  }
+}
