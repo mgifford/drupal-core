@@ -400,10 +400,7 @@ class FileWidget extends WidgetBase {
       $element['display'] = [
         '#type' => empty($item['fids']) ? 'hidden' : 'checkbox',
         '#title' => new TranslatableMarkup('Include file in display'),
-          '#attributes' => [
-            'class' => ['file-display'],
-            'aria-label' => (string) new TranslatableMarkup('Include file in display'),
-          ],
+        '#attributes' => ['class' => ['file-display']],
       ];
       if (isset($item['display'])) {
         $element['display']['#value'] = $item['display'] ? '1' : '';
