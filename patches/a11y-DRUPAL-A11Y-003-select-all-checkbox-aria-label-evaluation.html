@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Patch Evaluation: a11y-DRUPAL-A11Y-002-submit-button-contrast</title>
+  <title>Patch Evaluation: a11y-DRUPAL-A11Y-003-select-all-checkbox-aria-label</title>
   <style>
     :root {
       --page-bg: #eef2f8;
@@ -239,7 +239,7 @@
 <body>
   <div class="page">
     <header class="hero">
-      <h1>Patch Evaluation: a11y-DRUPAL-A11Y-002-submit-button-contrast</h1>
+      <h1>Patch Evaluation: a11y-DRUPAL-A11Y-003-select-all-checkbox-aria-label</h1>
       <p class="lede">undefined</p>
       <p class="meta">Source markdown: <code>evaluate-patch.js</code></p>
     </header>
@@ -247,22 +247,25 @@
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
       <ol>
-        <li class="level-2"><a href="#summary">Summary</a></li><li class="level-3"><a href="#violation-counts">Violation Counts</a></li><li class="level-2"><a href="#test-cases">Test Cases</a></li><li class="level-3"><a href="#test-1-admin-structure-types-add">Test 1: /admin/structure/types/add</a></li><li class="level-3"><a href="#test-2-admin-structure-taxonomy">Test 2: /admin/structure/taxonomy</a></li><li class="level-2"><a href="#screenshots">Screenshots</a></li><li class="level-2"><a href="#html-snapshots">HTML Snapshots</a></li>
+        <li class="level-2"><a href="#summary">Summary</a></li><li class="level-3"><a href="#violation-counts">Violation Counts</a></li><li class="level-2"><a href="#test-cases">Test Cases</a></li><li class="level-3"><a href="#test-1-admin-content">Test 1: /admin/content</a></li><li class="level-2"><a href="#screenshots">Screenshots</a></li><li class="level-2"><a href="#html-snapshots">HTML Snapshots</a></li>
       </ol>
     </nav>
     <main class="content">
-      <h1 id="patch-evaluation-report-a11y-drupal-a11y-002-submit-button-contrast">Patch Evaluation Report: a11y-DRUPAL-A11Y-002-submit-button-contrast</h1>
-<p><strong>Generated:</strong> 2026-05-06 at 2:04:00 p.m.</p>
+      <h1 id="patch-evaluation-report-a11y-drupal-a11y-003-select-all-checkbox-aria-label">Patch Evaluation Report: a11y-DRUPAL-A11Y-003-select-all-checkbox-aria-label</h1>
+<p><strong>Generated:</strong> 2026-05-06 at 4:57:16 p.m.</p>
 <h2 id="summary">Summary<a class="heading-anchor" href="#summary" aria-label="Link to Summary section">#</a></h2>
-<ul><li><strong>Description:</strong> Fix primary button color contrast on admin yellow accent</li><li><strong>WCAG Criteria:</strong> 1.4.3 (AA)</li><li><strong>Affected Rules:</strong> color-contrast</li><li><strong>Status:</strong> ❌ <strong>FAIL</strong> — Patch introduces new violations or does not resolve all issues</li></ul>
+<ul><li><strong>Description:</strong> Add aria-label to select-all checkboxes in tables for label-title-only violations</li><li><strong>WCAG Criteria:</strong> 1.3.1 (A)</li><li><strong>Affected Rules:</strong> label-title-only</li><li><strong>Status:</strong> ❌ <strong>FAIL</strong> — Patch introduces new violations or does not resolve all issues</li></ul>
 <h3 id="violation-counts">Violation Counts<a class="heading-anchor" href="#violation-counts" aria-label="Link to Violation Counts section">#</a></h3>
 <div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Change</th></tr></thead><tbody><tr><td><strong>Total violations</strong></td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
 <hr>
 <h2 id="test-cases">Test Cases<a class="heading-anchor" href="#test-cases" aria-label="Link to Test Cases section">#</a></h2>
-<h3 id="test-1-admin-structure-types-add">Test 1: /admin/structure/types/add<a class="heading-anchor" href="#test-1-admin-structure-types-add" aria-label="Link to Test 1: /admin/structure/types/add section">#</a></h3>
-<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch&quot; error: patch failed: core/themes/default_admin/css/components/button.pcss.css:50 error: core/themes/default_admin/css/components/button.pcss.css: patch does not apply</p>
-<h3 id="test-2-admin-structure-taxonomy">Test 2: /admin/structure/taxonomy<a class="heading-anchor" href="#test-2-admin-structure-taxonomy" aria-label="Link to Test 2: /admin/structure/taxonomy section">#</a></h3>
-<p><strong>Error:</strong> Patch application failed: Command failed: git apply &quot;/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch&quot; error: patch failed: core/themes/default_admin/css/components/button.pcss.css:50 error: core/themes/default_admin/css/components/button.pcss.css: patch does not apply</p>
+<h3 id="test-1-admin-content">Test 1: /admin/content<a class="heading-anchor" href="#test-1-admin-content" aria-label="Link to Test 1: /admin/content section">#</a></h3>
+<p><strong>URL:</strong> <code>http://drupal-core.ddev.site/admin/content</code></p>
+<p><strong>Elements tested:</strong> thead input[type=&quot;checkbox&quot;][title]</p>
+<h4 id="before-patch">Before Patch<a class="heading-anchor" href="#before-patch" aria-label="Link to Before Patch section">#</a></h4>
+<ul><li><strong>Total violations:</strong> 0</li></ul>
+<h4 id="after-patch">After Patch<a class="heading-anchor" href="#after-patch" aria-label="Link to After Patch section">#</a></h4>
+<ul><li><strong>Total violations:</strong> 0</li></ul>
 <hr>
 <h2 id="screenshots">Screenshots<a class="heading-anchor" href="#screenshots" aria-label="Link to Screenshots section">#</a></h2>
 <p>Before and after screenshots have been captured and are available in the reports directory.</p>
