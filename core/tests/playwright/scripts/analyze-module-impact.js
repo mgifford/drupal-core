@@ -1,282 +1,269 @@
+#!/usr/bin/env node
 /**
  * @file
- * Analyze module accessibility impact.
- * 
- * Compares axe-core results from disabled vs enabled states.
- * Identifies regressions, improvements, and net impact.
- * Generates detailed impact reports.
- * 
+ * Analyze accessibility impact across all Drupal Core modules.
+ *
+ * Workflow:
+ * 1. Load module config from .drupal-a11y-module-config.json
+ * 2. For each high-priority module (experimental + optional):
+ *    a. Call test-module-accessibility.js
+ *    b. Capture impact analysis results
+ * 3. Aggregate all module impact data
+ * 4. Generate summary report with rankings
+ * 5. Output: module-impact-summary.md + module-impact-summary.json
+ *
  * Usage:
- *   npm run a11y:analyze-module-impact
+ *   node analyze-module-impact.js
+ *   node analyze-module-impact.js --all (test all 100+ modules, slow!)
+ *   node analyze-module-impact.js --verbose
+ *
+ * Output:
+ *   reports/module-impact-summary.md
+ *   reports/module-impact-summary.json
  */
+
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const testAll = process.argv.includes('--all');
+const verbose = process.argv.includes('--verbose');
 
 const DRUPAL_ROOT = path.join(__dirname, '../../..');
-const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports/module-tests');
-const OUTPUT_FILE = path.join(DRUPAL_ROOT, `reports/MODULE-IMPACT-${new Date().toISOString().split('T')[0]}.md`);
+const CONFIG_FILE = path.join(DRUPAL_ROOT, '.drupal-a11y-module-config.json');
+const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports');
 
-/**
- * Load test results from files
- */
-function loadTestResults() {
-  if (!fs.existsSync(REPORTS_DIR)) {
-    console.error(`Reports directory not found: ${REPORTS_DIR}`);
-    return [];
+// High-priority modules to test by default
+const HIGH_PRIORITY_MODULES = [
+  'layout_builder',
+  'workspaces',
+  'views_ui',
+  'contextual_links',
+  'big_pipe',
+  'comment',
+  'taxonomy',
+  'media',
+  'search',
+  'field_ui'
+];
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+function log(msg) {
+  console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
+}
+
+function logVerbose(msg) {
+  if (verbose) {
+    console.log(`  ${msg}`);
   }
-
-  const files = fs.readdirSync(REPORTS_DIR).filter(f => f.endsWith('.json') && !f.includes('SUMMARY'));
-  return files.map(f => {
-    try {
-      return JSON.parse(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf-8'));
-    } catch (e) {
-      console.warn(`Failed to parse ${f}: ${e.message}`);
-      return null;
-    }
-  }).filter(r => r !== null);
 }
 
 /**
- * Extract violations from scan results
+ * Load module config
  */
-function getViolationsFromScans(scans) {
-  if (!scans) return [];
-  return scans.reduce((all, scan) => {
-    return all.concat(scan.violations || []);
-  }, []);
-}
-
-/**
- * Group violations by rule ID
- */
-function groupByRule(violations) {
-  const grouped = {};
-  for (const v of violations) {
-    if (!grouped[v.id]) {
-      grouped[v.id] = {
-        id: v.id,
-        impact: v.impact,
-        wcagTags: v.tags.filter(t => t.startsWith('wcag')),
-        instances: []
-      };
-    }
-    grouped[v.id].instances.push(v);
-  }
-  return grouped;
-}
-
-/**
- * Compare violations between disabled and enabled states
- */
-function compareStates(disabledViolations, enabledViolations) {
-  const disabledRules = groupByRule(disabledViolations);
-  const enabledRules = groupByRule(enabledViolations);
-
-  const regressions = []; // New violations with module enabled
-  const improvements = []; // Violations fixed with module enabled
-  const unchanged = [];    // Violations that persist
-
-  // Find regressions (in enabled but not in disabled)
-  for (const [ruleId, enabledRule] of Object.entries(enabledRules)) {
-    if (!disabledRules[ruleId]) {
-      regressions.push({
-        ruleId: ruleId,
-        impact: enabledRule.impact,
-        wcagTags: enabledRule.wcagTags,
-        instances: enabledRule.instances.length,
-        rule: enabledRule
-      });
-    } else if (enabledRule.instances.length > disabledRules[ruleId].instances.length) {
-      regressions.push({
-        ruleId: ruleId,
-        impact: enabledRule.impact,
-        wcagTags: enabledRule.wcagTags,
-        instances: enabledRule.instances.length - disabledRules[ruleId].instances.length,
-        rule: enabledRule
-      });
-    }
-  }
-
-  // Find improvements (in disabled but not in enabled)
-  for (const [ruleId, disabledRule] of Object.entries(disabledRules)) {
-    if (!enabledRules[ruleId]) {
-      improvements.push({
-        ruleId: ruleId,
-        impact: disabledRule.impact,
-        wcagTags: disabledRule.wcagTags,
-        instances: disabledRule.instances.length,
-        rule: disabledRule
-      });
-    } else if (disabledRule.instances.length > enabledRules[ruleId].instances.length) {
-      improvements.push({
-        ruleId: ruleId,
-        impact: disabledRule.impact,
-        wcagTags: disabledRule.wcagTags,
-        instances: disabledRule.instances.length - enabledRules[ruleId].instances.length,
-        rule: disabledRule
-      });
-    }
-  }
-
-  // Find unchanged
-  for (const [ruleId, disabledRule] of Object.entries(disabledRules)) {
-    if (enabledRules[ruleId] && enabledRules[ruleId].instances.length === disabledRule.instances.length) {
-      unchanged.push({
-        ruleId: ruleId,
-        impact: disabledRule.impact,
-        instances: disabledRule.instances.length
-      });
-    }
-  }
-
-  return {
-    regressions,
-    improvements,
-    unchanged,
-    netChange: improvements.length - regressions.length
-  };
-}
-
-/**
- * Generate markdown report
- */
-function generateMarkdownReport(analyses) {
-  let md = `# Module Accessibility Impact Report\n\n`;
-  md += `Generated: ${new Date().toISOString()}\n\n`;
-
-  // Summary statistics
-  const modulesWithRegressions = analyses.filter(a => a.comparison.regressions.length > 0).length;
-  const modulesWithImprovements = analyses.filter(a => a.comparison.improvements.length > 0).length;
-  const totalRegressions = analyses.reduce((sum, a) => sum + a.comparison.regressions.length, 0);
-  const totalImprovements = analyses.reduce((sum, a) => sum + a.comparison.improvements.length, 0);
-
-  md += `## Summary\n\n`;
-  md += `- **Modules tested:** ${analyses.length}\n`;
-  md += `- **Modules with regressions:** ${modulesWithRegressions}\n`;
-  md += `- **Modules with improvements:** ${modulesWithImprovements}\n`;
-  md += `- **Total new violations:** ${totalRegressions}\n`;
-  md += `- **Total fixed violations:** ${totalImprovements}\n`;
-  md += `- **Net impact:** ${totalImprovements - totalRegressions > 0 ? '✅ +' : '⚠️  '}${totalImprovements - totalRegressions}\n\n`;
-
-  // Module details
-  md += `## Module Results\n\n`;
-
-  for (const analysis of analyses) {
-    const { module, comparison } = analysis;
-    const status = comparison.regressions.length > 0 
-      ? '⚠️  REGRESSION' 
-      : comparison.improvements.length > 0 
-        ? '✅ IMPROVEMENT' 
-        : '➖ NEUTRAL';
-
-    md += `### ${module.metadata.name}\n\n`;
-    md += `- **Status:** ${status}\n`;
-    md += `- **Category:** ${module.metadata.category}\n`;
-    md += `- **Violations without module:** ${module.disabled_state?.total_violations || 0}\n`;
-    md += `- **Violations with module:** ${module.enabled_state?.total_violations || 0}\n`;
-    md += `- **Net change:** ${comparison.improvements.length - comparison.regressions.length > 0 ? '+' : ''}${comparison.improvements.length - comparison.regressions.length}\n\n`;
-
-    // Regressions
-    if (comparison.regressions.length > 0) {
-      md += `#### ⚠️  New Violations\n\n`;
-      for (const reg of comparison.regressions.slice(0, 5)) { // Top 5
-        md += `- **${reg.ruleId}** (${reg.impact}, ${reg.instances} instances)\n`;
-        md += `  - WCAG: ${reg.wcagTags.join(', ')}\n`;
-      }
-      if (comparison.regressions.length > 5) {
-        md += `- ... and ${comparison.regressions.length - 5} more\n`;
-      }
-      md += `\n`;
-    }
-
-    // Improvements
-    if (comparison.improvements.length > 0) {
-      md += `#### ✅ Fixed Violations\n\n`;
-      for (const imp of comparison.improvements.slice(0, 5)) { // Top 5
-        md += `- **${imp.ruleId}** (${imp.impact}, ${imp.instances} instances fixed)\n`;
-        md += `  - WCAG: ${imp.wcagTags.join(', ')}\n`;
-      }
-      if (comparison.improvements.length > 5) {
-        md += `- ... and ${comparison.improvements.length - 5} more fixed\n`;
-      }
-      md += `\n`;
-    }
-
-    // Recommendation
-    if (comparison.regressions.length > 0) {
-      md += `#### Recommendation\n\n`;
-      md += `⚠️  **Module introduces accessibility regressions.** Requires fixes before public release.\n\n`;
-    } else if (comparison.improvements.length > 0) {
-      md += `#### Recommendation\n\n`;
-      md += `✅ **Module improves accessibility.** Safe to enable or recommended for users needing these fixes.\n\n`;
-    }
-
-    md += `---\n\n`;
-  }
-
-  // Detailed findings
-  md += `## Detailed Findings\n\n`;
-  md += `### Experimental Modules\n\n`;
-  const experimental = analyses.filter(a => a.module.metadata.experimental);
-  for (const exp of experimental) {
-    md += `- **${exp.module.metadata.name}**: ${exp.comparison.netChange > 0 ? '✅' : '⚠️ '} (${exp.comparison.netChange > 0 ? '+' : ''}${exp.comparison.netChange})\n`;
-  }
-
-  md += `\n### Optional Modules\n\n`;
-  const optional = analyses.filter(a => a.module.metadata.category === 'optional');
-  for (const opt of optional) {
-    md += `- **${opt.module.metadata.name}**: ${opt.comparison.netChange > 0 ? '✅' : '⚠️ '} (${opt.comparison.netChange > 0 ? '+' : ''}${opt.comparison.netChange})\n`;
-  }
-
-  return md;
-}
-
-/**
- * Main analysis function
- */
-function analyzeModuleImpact() {
-  console.log(`\n📊 Analyzing module accessibility impact...\n`);
-
-  // Load results
-  const results = loadTestResults();
-  if (results.length === 0) {
-    console.error(`❌ No test results found. Run: npm run a11y:test-modules`);
+function loadModuleConfig() {
+  try {
+    const configData = fs.readFileSync(CONFIG_FILE, 'utf-8');
+    return JSON.parse(configData);
+  } catch (e) {
+    log(`❌ Error: Failed to load module config`);
+    log(`   Run: npm run a11y:discover-modules`);
     process.exit(1);
   }
+}
 
-  console.log(`Found ${results.length} module test results\n`);
-
-  // Analyze each module
-  const analyses = [];
-  for (const result of results) {
-    const disabledViolations = getViolationsFromScans(result.disabled_state?.scans);
-    const enabledViolations = getViolationsFromScans(result.enabled_state?.scans);
-
-    const comparison = compareStates(disabledViolations, enabledViolations);
-
-    analyses.push({
-      module: result,
-      comparison: comparison
+/**
+ * Test single module
+ */
+function testModule(moduleName) {
+  try {
+    logVerbose(`Testing module: ${moduleName}`);
+    execSync(`node ${path.join(__dirname, 'test-module-accessibility.js')} ${moduleName}`, {
+      stdio: 'pipe'
     });
-
-    const status = comparison.regressions.length > 0 ? '⚠️ ' : comparison.improvements.length > 0 ? '✅' : '➖';
-    console.log(`${status} ${result.module}`);
+    return true;
+  } catch (e) {
+    logVerbose(`  ⚠ Failed to test module: ${moduleName}`);
+    return false;
   }
-
-  // Generate markdown report
-  const report = generateMarkdownReport(analyses);
-
-  // Save report
-  fs.writeFileSync(OUTPUT_FILE, report);
-  console.log(`\n✅ Report generated: ${OUTPUT_FILE}\n`);
-
-  return analyses;
 }
 
-// Run analysis
-if (require.main === module) {
-  analyzeModuleImpact();
+/**
+ * Load impact analysis for a module
+ */
+function loadModuleImpact(moduleName) {
+  const analysisFile = path.join(REPORTS_DIR, 'module-impact', moduleName, 'impact-analysis.json');
+  if (fs.existsSync(analysisFile)) {
+    try {
+      return JSON.parse(fs.readFileSync(analysisFile, 'utf-8'));
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 }
 
-module.exports = { analyzeModuleImpact, compareStates, groupByRule };
+/**
+ * Generate summary report
+ */
+function generateSummaryReport(results, moduleConfig) {
+  // Sort by impact score
+  const sorted = results.sort((a, b) => b.impact_score - a.impact_score);
+
+  // Categorize by status
+  const byStatus = {
+    'PASS': results.filter(r => r.status === 'PASS'),
+    'FAIL': results.filter(r => r.status === 'FAIL'),
+    'MIXED': results.filter(r => r.status === 'MIXED'),
+    'NO_IMPACT': results.filter(r => r.status === 'NO_IMPACT')
+  };
+
+  const report = `# Module Accessibility Impact Summary
+
+**Generated:** ${new Date().toISOString()}
+
+## Overview
+
+- Modules tested: ${results.length}
+- Modules with regressions: ${byStatus.FAIL.length}
+- Modules with improvements: ${byStatus.PASS.length}
+- Mixed impact: ${byStatus.MIXED.length}
+- No impact: ${byStatus.NO_IMPACT.length}
+
+## Critical Regressions ❌ (${byStatus.FAIL.length})
+
+${byStatus.FAIL.length > 0 ? `
+| Module | Category | Violations Added | Status |
+|---|---|---|---|
+${byStatus.FAIL.map(r => `| **${r.module}** | ${r.config.category} | +${r.metrics.violations_added} | FAIL |`).join('\n')}
+
+**Action:** Do not enable these modules. File issues for accessibility fixes.
+` : 'None detected.'}
+
+## High Regressions ⚠️ (${byStatus.MIXED.filter(r => r.metrics.violations_added > 5).length})
+
+${byStatus.MIXED.filter(r => r.metrics.violations_added > 5).length > 0 ? `
+| Module | Category | Added | Fixed | Impact |
+|---|---|---|---|---|
+${byStatus.MIXED.filter(r => r.metrics.violations_added > 5).map(r => `| **${r.module}** | ${r.config.category} | +${r.metrics.violations_added} | -${r.metrics.violations_fixed} | ${r.impact_score > 0 ? '+' : ''}${r.impact_score} |`).join('\n')}
+
+**Action:** Review carefully. Consider feature-gating or disabling until fixes available.
+` : 'None detected.'}
+
+## Positive Impact ✅ (${byStatus.PASS.length})
+
+${byStatus.PASS.length > 0 ? `
+| Module | Category | Violations Fixed |
+|---|---|---|
+${byStatus.PASS.map(r => `| **${r.module}** | ${r.config.category} | -${r.metrics.violations_fixed} |`).join('\n')}
+
+**Action:** Safe to enable. These modules improve accessibility.
+` : 'None detected.'}
+
+## No Impact ◎ (${byStatus.NO_IMPACT.length})
+
+${byStatus.NO_IMPACT.length > 0 ? `
+| Module | Category |
+|---|---|
+${byStatus.NO_IMPACT.map(r => `| **${r.module}** | ${r.config.category} |`).join('\n')}
+
+**Action:** Safe to enable. No accessibility impact detected.
+` : 'None detected.'}
+
+## Ranked by Impact Score
+
+${sorted.map((r, i) => `${i + 1}. **${r.module}** (${r.config.category}): ${r.impact_score > 0 ? '+' : ''}${r.impact_score} | ${r.status}`).join('\n')}
+
+---
+
+**Next Steps:**
+
+1. **File issues** for modules with critical regressions (FAIL)
+2. **Feature-gate** modules with high regressions (MIXED with >5 added)
+3. **Enable by default** modules with positive impact (PASS)
+4. **Monitor** modules with no impact for future compatibility changes
+
+---
+
+Generated by: npm run a11y:analyze-modules
+`;
+
+  return report;
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+(async () => {
+  try {
+    log('\n📊 Analyzing module accessibility impact across Drupal Core');
+
+    // Load module config
+    const config = loadModuleConfig();
+    const allModules = Object.keys(config.modules);
+
+    // Determine which modules to test
+    let modulesToTest;
+    if (testAll) {
+      log(`Testing ALL ${allModules.length} modules (this will take a while...)`);
+      modulesToTest = allModules.filter(m => config.modules[m].category !== 'test_only');
+    } else {
+      log(`Testing ${HIGH_PRIORITY_MODULES.length} high-priority modules`);
+      modulesToTest = HIGH_PRIORITY_MODULES.filter(m => allModules.includes(m));
+    }
+
+    log(`Modules to test: ${modulesToTest.join(', ')}\n`);
+
+    // Test each module
+    const results = [];
+    for (let i = 0; i < modulesToTest.length; i++) {
+      const moduleName = modulesToTest[i];
+      log(`[${i + 1}/${modulesToTest.length}] Testing ${moduleName}...`);
+
+      testModule(moduleName);
+      const impact = loadModuleImpact(moduleName);
+
+      if (impact) {
+        results.push(impact);
+        log(`  ✓ ${impact.status} (Impact: ${impact.impact_score > 0 ? '+' : ''}${impact.impact_score})`);
+      } else {
+        log(`  ⚠ No analysis available`);
+      }
+    }
+
+    // Generate summary report
+    log(`\n📋 Generating summary report...`);
+    const summary = generateSummaryReport(results, config);
+
+    // Save summary
+    fs.writeFileSync(path.join(REPORTS_DIR, 'module-impact-summary.md'), summary);
+    fs.writeFileSync(
+      path.join(REPORTS_DIR, 'module-impact-summary.json'),
+      JSON.stringify(
+        {
+          generated: new Date().toISOString(),
+          modules_tested: modulesToTest.length,
+          modules_passed: results.filter(r => r.status === 'PASS').length,
+          modules_failed: results.filter(r => r.status === 'FAIL').length,
+          modules_mixed: results.filter(r => r.status === 'MIXED').length,
+          modules_no_impact: results.filter(r => r.status === 'NO_IMPACT').length,
+          results
+        },
+        null,
+        2
+      )
+    );
+
+    log(`\n✓ Summary saved to: reports/module-impact-summary.md`);
+    log(`✓ Summary JSON saved to: reports/module-impact-summary.json`);
+
+    process.exit(0);
+
+  } catch (error) {
+    log(`\n❌ Error: ${error.message}`);
+    process.exit(1);
+  }
+})();

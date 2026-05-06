@@ -1,0 +1,282 @@
+#!/usr/bin/env node
+/**
+ * @file
+ * Triage module accessibility regressions and file issues.
+ *
+ * Workflow:
+ * 1. Load module impact summary from analyze-module-impact.js
+ * 2. For each module with regressions (FAIL or MIXED):
+ *    a. Extract new violations
+ *    b. Group by WCAG criterion and rule
+ *    c. Generate issue title + description
+ *    d. Save as issue template (manual file on drupal.org)
+ * 3. Output: issues/*.md files ready for drupal.org
+ *
+ * Usage:
+ *   node triage-module-impact.js
+ *   node triage-module-impact.js --file (save as templates only, don't create issues)
+ *
+ * Output:
+ *   reports/issues/module-<name>-regression-*.md (issue templates)
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const fileOnly = process.argv.includes('--file');
+
+const DRUPAL_ROOT = path.join(__dirname, '../../..');
+const REPORTS_DIR = path.join(DRUPAL_ROOT, 'reports');
+const ISSUES_DIR = path.join(REPORTS_DIR, 'issues');
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+function log(msg) {
+  console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
+}
+
+/**
+ * Load module impact summary
+ */
+function loadImpactSummary() {
+  const summaryFile = path.join(REPORTS_DIR, 'module-impact-summary.json');
+  if (!fs.existsSync(summaryFile)) {
+    log(`❌ Error: Module impact summary not found`);
+    log(`   Run: npm run a11y:analyze-modules`);
+    process.exit(1);
+  }
+
+  try {
+    return JSON.parse(fs.readFileSync(summaryFile, 'utf-8'));
+  } catch (e) {
+    log(`❌ Error: Failed to parse module impact summary`);
+    process.exit(1);
+  }
+}
+
+/**
+ * Group violations by WCAG criterion
+ */
+function groupViolationsByWCAG(violations) {
+  const grouped = {};
+
+  for (const violation of violations) {
+    const wcag = violation.wcag_criterion || 'unknown';
+    if (!grouped[wcag]) {
+      grouped[wcag] = [];
+    }
+    grouped[wcag].push(violation);
+  }
+
+  return grouped;
+}
+
+/**
+ * Generate issue template
+ */
+function generateIssueTemplate(moduleName, moduleConfig, violations) {
+  const wcagGrouped = groupViolationsByWCAG(violations);
+  const wcagCriteria = Object.keys(wcagGrouped).sort();
+  const primaryWCAG = wcagCriteria[0] || 'unknown';
+
+  const violationsByRule = {};
+  for (const violation of violations) {
+    const rule = violation.rule_id;
+    if (!violationsByRule[rule]) {
+      violationsByRule[rule] = [];
+    }
+    violationsByRule[rule].push(violation);
+  }
+
+  const template = `# [WCAG ${primaryWCAG}] Accessibility regression in ${moduleName} module
+
+## Issue Summary
+
+The **${moduleName}** module introduces ${violations.length} accessibility violation(s) when enabled.
+
+### Affected WCAG Criteria
+${wcagCriteria.map(w => `- ${w}`).join('\n')}
+
+### Affected Rules
+${Object.keys(violationsByRule).map(rule => `- ${rule} (${violationsByRule[rule].length} violation${violationsByRule[rule].length > 1 ? 's' : ''})`).join('\n')}
+
+## Module Information
+
+- **Module:** ${moduleName}
+- **Category:** ${moduleConfig.category}
+- **Status:** ${moduleConfig.status || 'enabled'}
+
+## Violations Detected
+
+${violations.slice(0, 20).map((v, i) => `
+### ${i + 1}. ${v.rule_id} on ${v.page_url}
+
+**WCAG Criterion:** ${v.wcag_criterion}  
+**Severity:** ${v.severity}  
+**Selector:** \`${v.selector}\`  
+**Page:** ${v.page_title} (\`${v.page_url}\`)
+
+**Issue Description:** ${v.issue_description}
+
+**HTML Context:**
+\`\`\`html
+${v.selector}
+\`\`\`
+`).join('\n')}
+
+${violations.length > 20 ? `
+### ... and ${violations.length - 20} more violations
+
+See: \`reports/module-impact/${moduleName}/module-violations.json\` for complete list.
+` : ''}
+
+## Steps to Reproduce
+
+1. Enable the \`${moduleName}\` module
+2. Visit affected pages: ${violations.map(v => v.page_url).filter((v, i, a) => a.indexOf(v) === i).join(', ')}
+3. Run accessibility scan: \`npm run test:accessibility-workflows\`
+4. Observe violations matching the issues above
+
+## Expected Behavior
+
+Module should not introduce new accessibility violations.
+
+## Actual Behavior
+
+Module introduces ${violations.length} accessibility violation(s).
+
+## Proposed Solution
+
+- Fix CSS selectors to meet WCAG standards
+- Add missing ARIA attributes
+- Ensure keyboard navigation works
+- See WCAG 2.2 AA criteria for specific requirements
+
+## Labels
+
+\`accessibility\` \`wcag-22-aa\` \`${moduleName}\` \`module-regression\`
+
+## Related
+
+- Module: ${moduleName}
+- Impact Report: \`reports/module-impact/${moduleName}/impact-analysis.md\`
+- All Violations: \`reports/module-impact/${moduleName}/module-violations.json\`
+
+---
+**Note:** This issue was auto-generated by the accessibility testing framework.  
+See: \`core/tests/playwright/scripts/triage-module-impact.js\`
+`;
+
+  return template;
+}
+
+/**
+ * Sanitize filename
+ */
+function sanitizeFilename(name) {
+  return name.toLowerCase().replace(/[^a-z0-9_-]/g, '_');
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+(async () => {
+  try {
+    log('\n🔍 Triaging module accessibility regressions');
+
+    // Create issues directory
+    if (!fs.existsSync(ISSUES_DIR)) {
+      fs.mkdirSync(ISSUES_DIR, { recursive: true });
+    }
+
+    // Load impact summary
+    const summary = loadImpactSummary();
+
+    // Find modules with regressions
+    const regressions = summary.results.filter(r => r.status === 'FAIL' || (r.status === 'MIXED' && r.metrics.violations_added > 0));
+
+    if (regressions.length === 0) {
+      log(`\n✓ No module accessibility regressions detected!`);
+      process.exit(0);
+    }
+
+    log(`\nFound ${regressions.length} module(s) with regressions:\n`);
+
+    // Generate issue templates
+    for (const regression of regressions) {
+      const moduleName = regression.module;
+      const issueCount = regression.new_violations.length;
+
+      log(`📋 ${moduleName}: ${issueCount} violation(s)`);
+
+      // Group violations by severity
+      const critical = regression.new_violations.filter(v => v.severity === 'critical').length;
+      const serious = regression.new_violations.filter(v => v.severity === 'serious').length;
+
+      if (critical > 0) log(`   ⚠️ ${critical} critical`);
+      if (serious > 0) log(`   ⚠️ ${serious} serious`);
+
+      // Generate template
+      const template = generateIssueTemplate(
+        moduleName,
+        regression.config,
+        regression.new_violations
+      );
+
+      // Save template
+      const filename = `module-${sanitizeFilename(moduleName)}-regression.md`;
+      const filepath = path.join(ISSUES_DIR, filename);
+      fs.writeFileSync(filepath, template);
+
+      log(`   ✓ Saved: issues/${filename}`);
+    }
+
+    // Generate summary of all regressions
+    const summaryIssues = `# Module Accessibility Regressions Summary
+
+**Generated:** ${new Date().toISOString()}
+
+## Overview
+
+Found ${regressions.length} module(s) with accessibility regressions.
+
+## Regressions by Severity
+
+### Critical Failures ❌
+${regressions.filter(r => r.status === 'FAIL').map(r => `- **${r.module}**: +${r.metrics.violations_added} violations`).join('\n')}
+
+### Mixed Impact ⚠️
+${regressions.filter(r => r.status === 'MIXED').map(r => `- **${r.module}**: +${r.metrics.violations_added} violations, -${r.metrics.violations_fixed} fixed`).join('\n')}
+
+## Next Steps
+
+1. Review each issue template in \`issues/\`
+2. For each issue, create a Drupal issue on drupal.org
+3. Assign to module maintainer
+4. Track fixes in module patch evaluations
+5. Verify fixes with \`npm run a11y:test-module <module>\`
+
+## Issue Templates
+
+${regressions.map(r => `- \`issues/module-${sanitizeFilename(r.module)}-regression.md\``).join('\n')}
+
+---
+Generated by: npm run a11y:triage-modules
+`;
+
+    fs.writeFileSync(path.join(ISSUES_DIR, '_SUMMARY.md'), summaryIssues);
+
+    log(`\n✓ Summary saved to: issues/_SUMMARY.md`);
+    log(`\n📝 Issue templates ready for drupal.org`);
+    log(`   Next: Review issues/ directory and create drupal.org issues manually`);
+
+    process.exit(0);
+
+  } catch (error) {
+    log(`\n❌ Error: ${error.message}`);
+    console.error(error.stack);
+    process.exit(1);
+  }
+})();
