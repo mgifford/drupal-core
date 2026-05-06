@@ -266,6 +266,82 @@
       </div>
     </section>
 
+    <section aria-labelledby="per-theme-reports">
+      <h2 id="per-theme-reports">Theme-Specific Accessibility Reports</h2>
+      <p>Accessibility findings scoped by theme, with composite priority scoring and targeted Drupal issue queue links for each theme's maintainers.</p>
+      <div class="card-grid">
+        <article class="card">
+          <span class="badge">Admin/Gin</span>
+          <h3>Gin Administration Theme</h3>
+          <p>Issues specific to or most prevalent in the Gin administration theme. File these against the <a href="https://www.drupal.org/project/gin" target="_blank" rel="noopener">Gin project</a>.</p>
+          <div class="meta-row">
+            <span class="meta-chip">8 rules</span>
+            <span class="meta-chip">1,713 records</span>
+          </div>
+          <ul class="family-links">
+            <li><a href="themes/admin-latest.html">HTML</a></li>
+            <li><a href="themes/admin-latest.md">Markdown</a></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="badge">Claro</span>
+          <h3>Claro Administration Theme</h3>
+          <p>Issues in Drupal core's Claro and Claro-Dark themes. File these against the <a href="https://www.drupal.org/project/issues/search?projects=drupal&issue_tags=Accessibility" target="_blank" rel="noopener">Drupal core accessibility queue</a>.</p>
+          <div class="meta-row">
+            <span class="meta-chip">12 rules</span>
+            <span class="meta-chip">424 records</span>
+          </div>
+          <ul class="family-links">
+            <li><a href="themes/claro-latest.html">HTML</a></li>
+            <li><a href="themes/claro-latest.md">Markdown</a></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="badge">Olivero</span>
+          <h3>Olivero Front-End Theme</h3>
+          <p>Issues in Drupal core's Olivero and Olivero-Dark front-end themes. The public-facing theme; file issues in the core queue.</p>
+          <div class="meta-row">
+            <span class="meta-chip">2 rules</span>
+            <span class="meta-chip">56 records</span>
+          </div>
+          <ul class="family-links">
+            <li><a href="themes/olivero-latest.html">HTML</a></li>
+            <li><a href="themes/olivero-latest.md">Markdown</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="rtl-theme-analysis">
+      <h2 id="rtl-theme-analysis">RTL & Theme-Specific Deep Analysis</h2>
+      <p>
+        Cross-dimensional accessibility analysis: identifies violations exclusive to Hebrew/RTL contexts,
+        violations that are worse in RTL than LTR, issues tied to specific themes, and a composite priority score combining axe severity with violation frequency.
+      </p>
+      <div class="card-grid">
+        <article class="card">
+          <span class="badge">Analysis</span>
+          <h3>RTL & Theme Deep Dive</h3>
+          <p>
+            Finds RTL-exclusive violations (Hebrew language, not in English), RTL-amplified issues (worse in Hebrew), 
+            Admin/Gin-only vs Claro-only vs Admin+Claro (not Olivero) categorization, and composite priority scoring 
+            that weights both axe severity and page spread.
+          </p>
+          <div class="meta-row">
+            <span class="meta-chip">JSON export</span>
+            <span class="meta-chip">HTML + Markdown</span>
+          </div>
+          <ul class="family-links">
+            <li><a href="RTL-THEME-ANALYSIS-latest.html">HTML</a></li>
+            <li><a href="RTL-THEME-ANALYSIS-latest.md">Markdown</a></li>
+            <li><a href="rtl-theme-analysis-latest.json">JSON</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
     <section aria-labelledby="proposal-patches">
       <h2 id="proposal-patches">Proposal Patches</h2>
       <div class="card-grid">
