@@ -1,0 +1,46 @@
+name: Publish reports to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'reports/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# Allow only one concurrent deployment; do not cancel in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload reports/ as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Deploy everything inside reports/ as the site root.
+          # Result: https://mgifford.github.io/drupal-core/ shows index.html
+          # and all report HTML files are at their own paths.
+          path: reports/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,22 @@
+diff --git a/core/modules/filter/src/FilterFormatListBuilder.php b/core/modules/filter/src/FilterFormatListBuilder.php
+index 1234567..abcdefg 100644
+--- a/core/modules/filter/src/FilterFormatListBuilder.php
++++ b/core/modules/filter/src/FilterFormatListBuilder.php
+@@ -124,6 +124,17 @@ class FilterFormatListBuilder extends DraggableListBuilder {
+     $operations = parent::getDefaultOperations($entity, $cacheability);
+ 
+     if (isset($operations['edit'])) {
+       $operations['edit']['title'] = $this->t('Configure');
++      // Update aria-label to match the visible title, per WCAG 2.5.3 (Label in Name).
++      // The parent EntityListBuilder sets aria-label="Edit @entity_label" before the
++      // title override. Update it to include "Configure" so speech-input users can say
++      // the visible text to activate the control.
++      if (isset($operations['edit']['url'])) {
++        $url = $operations['edit']['url'];
++        $attributes = $url->getOption('attributes') ?: [];
++        $attributes['aria-label'] = $this->t('Configure @entity_label', ['@entity_label' => $entity->label()]);
++        $url->setOption('attributes', $attributes);
++      }
+     }
+ 
+     // The fallback format may not be disabled.

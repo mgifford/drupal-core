@@ -1,0 +1,80 @@
+diff --git a/core/themes/default_admin/migration/css/theme/accent.css b/core/themes/default_admin/migration/css/theme/accent.css
+index 40c7a4e..abf1d2c 100644
+--- a/core/themes/default_admin/migration/css/theme/accent.css
++++ b/core/themes/default_admin/migration/css/theme/accent.css
+@@ -91,17 +91,32 @@
+ }
+ 
+ [data-gin-focus="green"] {
+-  --gin-color-focus: rgb(8, 163, 144, 0.6);
++  --gin-color-focus: rgb(0, 120, 105, 0.8);
+ }
+ 
+ [data-gin-focus="claro"] {
+-  --gin-color-focus: rgb(38, 167, 105, 0.6);
++  --gin-color-focus: rgb(20, 125, 75, 0.8);
+ }
+ 
+ [data-gin-focus="orange"] {
+-  --gin-color-focus: rgb(236, 124, 87, 0.6);
++  --gin-color-focus: rgb(175, 88, 55, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="green"],
++.gin--dark-mode [data-gin-focus="green"] {
++  --gin-color-focus: rgb(88, 220, 197, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="claro"],
++.gin--dark-mode [data-gin-focus="claro"] {
++  --gin-color-focus: rgb(102, 226, 170, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="orange"],
++.gin--dark-mode [data-gin-focus="orange"] {
++  --gin-color-focus: rgb(244, 170, 130, 0.8);
+ }
+ 
+ [data-gin-focus="dark"] {
+   --gin-color-focus: var(--gin-color-focus-neutral-rgb);
+ }
+diff --git a/core/themes/default_admin/migration/css/theme/accent.pcss.css b/core/themes/default_admin/migration/css/theme/accent.pcss.css
+index 5d5d8f1..86d1b4d 100644
+--- a/core/themes/default_admin/migration/css/theme/accent.pcss.css
++++ b/core/themes/default_admin/migration/css/theme/accent.pcss.css
+@@ -84,17 +84,32 @@
+ }
+ 
+ [data-gin-focus="green"] {
+-  --gin-color-focus: rgb(8, 163, 144, 0.6);
++  --gin-color-focus: rgb(0, 120, 105, 0.8);
+ }
+ 
+ [data-gin-focus="claro"] {
+-  --gin-color-focus: rgb(38, 167, 105, 0.6);
++  --gin-color-focus: rgb(20, 125, 75, 0.8);
+ }
+ 
+ [data-gin-focus="orange"] {
+-  --gin-color-focus: rgb(236, 124, 87, 0.6);
++  --gin-color-focus: rgb(175, 88, 55, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="green"],
++.gin--dark-mode [data-gin-focus="green"] {
++  --gin-color-focus: rgb(88, 220, 197, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="claro"],
++.gin--dark-mode [data-gin-focus="claro"] {
++  --gin-color-focus: rgb(102, 226, 170, 0.8);
++}
++
++.gin--dark-mode[data-gin-focus="orange"],
++.gin--dark-mode [data-gin-focus="orange"] {
++  --gin-color-focus: rgb(244, 170, 130, 0.8);
+ }
+ 
+ [data-gin-focus="dark"] {
+   --gin-color-focus: var(--gin-color-focus-neutral-rgb);
+ }

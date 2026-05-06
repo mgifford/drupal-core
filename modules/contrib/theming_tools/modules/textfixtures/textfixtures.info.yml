@@ -1,0 +1,12 @@
+name: Textfixtures
+type: module
+description: 'Defines a field types for color, password and search.'
+package: 'Theming tools'
+dependencies:
+  - drupal:field
+core_version_requirement: ^10.3 || ^11 || ^12
+
+# Information added by Drupal.org packaging script on 2026-04-09
+version: '1.0.0'
+project: 'theming_tools'
+datestamp: 1775754224

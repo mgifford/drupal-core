@@ -1,0 +1,10 @@
+name: 'Incompatible theme'
+type: theme
+base theme: classy
+description: 'Test theme which has an incompatible core version.'
+core_version_requirement: ^7
+
+# Information added by Drupal.org packaging script on 2026-04-09
+version: '1.0.0'
+project: 'theming_tools'
+datestamp: 1775754224

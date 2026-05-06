@@ -1,0 +1,21 @@
+diff --git a/core/modules/system/templates/status-messages.html.twig b/core/modules/system/templates/status-messages.html.twig
+index 1234567..abcdefg 100644
+--- a/core/modules/system/templates/status-messages.html.twig
++++ b/core/modules/system/templates/status-messages.html.twig
+@@ -26,7 +26,16 @@
+       {%- for message in messages -%}
+         <div
+           role="{% if message_types[type] %}{{ message_types[type] }}{% endif %}"
+-          aria-labelledby="{{ message_id }}"
++          aria-labelledby="{{ message_id }}"
++          {#- Determine message type for aria-live politeness -#}
++          {%- if type == 'status' -%}
++            aria-live="polite"
++          {%- elseif type == 'warning' -%}
++            aria-live="assertive"
++          {%- elseif type == 'error' -%}
++            aria-live="assertive"
++          {%- endif -%}
+           class="messages-list__item messages messages--{{ type }}"
+         >
+           <div class="messages__content">

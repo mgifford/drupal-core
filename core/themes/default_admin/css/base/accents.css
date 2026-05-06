@@ -76,3 +76,9 @@
   --app-bg-color: #1b1b1d;
   --layer-background: #2a2a2d;
 }
+
+@supports (color: contrast-color(white)) {
+  [data-gin-accent] {
+    --gin-color-button-text: contrast-color(var(--accent-color-500) vs #fff, #111);
+  }
+}

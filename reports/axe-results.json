@@ -1,0 +1,68 @@
+{
+  "format": "axe-results-sharded-v1",
+  "generatedAt": "2026-05-06T14:34:43.080Z",
+  "totalRecords": 2193,
+  "chunkSize": 250,
+  "storagePath": "axe-results/latest",
+  "shards": [
+    {
+      "file": "axe-results/latest/shards/chunk-001.json",
+      "recordCount": 250,
+      "firstPath": "/",
+      "lastPath": "/admin/appearance"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-002.json",
+      "recordCount": 250,
+      "firstPath": "/admin/appearance",
+      "lastPath": "/admin/form_style"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-003.json",
+      "recordCount": 250,
+      "firstPath": "/admin/form_style",
+      "lastPath": "/admin/structure/taxonomy/add"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-004.json",
+      "recordCount": 250,
+      "firstPath": "/admin/structure/taxonomy/add",
+      "lastPath": "/admin/structure/types"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-005.json",
+      "recordCount": 250,
+      "firstPath": "/admin/structure/types",
+      "lastPath": "/admin"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-006.json",
+      "recordCount": 250,
+      "firstPath": "/admin",
+      "lastPath": "/node/add/article"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-007.json",
+      "recordCount": 250,
+      "firstPath": "/node/add/article",
+      "lastPath": "/tabledrag"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-008.json",
+      "recordCount": 250,
+      "firstPath": "/tabledrag",
+      "lastPath": "/user/password"
+    },
+    {
+      "file": "axe-results/latest/shards/chunk-009.json",
+      "recordCount": 193,
+      "firstPath": "/user/password",
+      "lastPath": "/user/register"
+    }
+  ],
+  "indexes": {
+    "byRule": "axe-results/latest/by-rule.json",
+    "byPath": "axe-results/latest/by-path.json",
+    "byContext": "axe-results/latest/by-context.json"
+  }
+}

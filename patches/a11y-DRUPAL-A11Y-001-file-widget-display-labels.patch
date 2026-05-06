@@ -1,0 +1,16 @@
+diff --git a/core/modules/field/src/Plugin/Field/FieldWidget/OptionsSelectWidget.php b/core/modules/field/src/Plugin/Field/FieldWidget/OptionsSelectWidget.php
+index 1234567..abcdefg 100644
+--- a/core/modules/field/src/Plugin/Field/FieldWidget/OptionsSelectWidget.php
++++ b/core/modules/field/src/Plugin/Field/FieldWidget/OptionsSelectWidget.php
+@@ -130,7 +130,10 @@ class OptionsSelectWidget extends WidgetBase {
+         'delta' => [
+           '#type' => 'checkbox',
+           '#default_value' => $value,
+-          '#attributes' => ['title' => $this->t('Move @label', ['@label' => $option_label])],
++          '#attributes' => [
++            'title' => $this->t('Move @label', ['@label' => $option_label]),
++            'aria-label' => $this->t('Move @label', ['@label' => $option_label]),
++          ],
+         ],
+       ];
+     }

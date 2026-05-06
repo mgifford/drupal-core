@@ -1,0 +1,32 @@
+{
+    "name": "drupal/form_style",
+    "description": "This module gives an overview of all form elements and helps testing usability and accessibility.",
+    "type": "drupal-module",
+    "homepage": "https://drupal.org/project/form_style",
+    "authors": [
+        {
+            "name": "Daniël Smidt",
+            "homepage": "https://www.drupal.org/u/dmsmidt",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Andrew Macpherson",
+            "homepage": "https://www.drupal.org/u/andrewmacpherson",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Vijay Mani",
+            "homepage": "https://www.drupal.org/u/vijaycs85",
+            "role": "Original author"
+        }
+    ],
+    "homepage": "https://www.drupal.org/project/form_style",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/form_style",
+        "source": "https://git.drupalcode.org/project/form_style"
+    },
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=8.3"
+    }
+}

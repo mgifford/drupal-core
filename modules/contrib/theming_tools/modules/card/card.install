@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions for Card module.
+ */
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ */
+function card_install() {
+  $perms = _card_permissions();
+
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, $perms);
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $perms);
+
+  $themes_available = \Drupal::service('extension.list.theme')->reset()->getList();
+
+  if (!empty($themes_available['noscreenshot_theme'])) {
+    \Drupal::service('theme_installer')->install(['noscreenshot_theme']);
+  }
+}
+
+/**
+ * Implements hook_install().
+ */
+function card_uninstall() {
+  $perms = _card_permissions();
+
+  user_role_revoke_permissions(RoleInterface::ANONYMOUS_ID, $perms);
+  user_role_revoke_permissions(RoleInterface::AUTHENTICATED_ID, $perms);
+
+  if (\Drupal::service('theme_handler')->themeExists('noscreenshot_theme')) {
+    \Drupal::service('theme_installer')->uninstall(['noscreenshot_theme']);
+  }
+}
+
+/**
+ * Provides list of permissions that makes toolbar testable without login.
+ */
+function _card_permissions() {
+  return [
+    'access card test routes',
+  ];
+}

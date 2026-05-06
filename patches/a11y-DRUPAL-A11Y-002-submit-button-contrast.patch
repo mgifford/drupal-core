@@ -1,0 +1,13 @@
+diff --git a/core/themes/default_admin/css/components/button.pcss.css b/core/themes/default_admin/css/components/button.pcss.css
+index 1234567..abcdefg 100644
+--- a/core/themes/default_admin/css/components/button.pcss.css
++++ b/core/themes/default_admin/css/components/button.pcss.css
+@@ -50,7 +50,7 @@
+   --button-bg-hover: color-mix(in srgb, var(--button-bg) 90%, black);
+   --button-bg-active: color-mix(in srgb, var(--button-bg) 75%, black);
+   --button-text-color: #131313;
+-  --button-primary-bg: #956707;
++  --button-primary-bg: #7a5a00;
+   --button-primary-bg-hover: color-mix(in srgb, var(--button-primary-bg) 90%, black);
+   --button-primary-bg-active: color-mix(in srgb, var(--button-primary-bg) 75%, black);
+   --button-primary-text: #ffffff;

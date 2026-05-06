@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Contains code for the Theming Tools module.
+ */
+
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Auto-collects every menu link provided by a module tagged with
+ * `theming_test: true` in its info.yml and reparents it under the existing
+ * theming_tools dashboard link. This turns the Theming Tools menu entry into an
+ * expandable drawer in the core Navigation sidebar that lists every
+ * enabled test module's page, without any per-submodule maintenance: a
+ * submodule just needs `theming_test: true` and its own `*.links.menu.yml`
+ * entry and it will show up automatically.
+ */
+function theming_tools_menu_links_discovered_alter(array &$links): void {
+  $parent_id = 'theming_tools.dashboard';
+
+  // If the dashboard link isn't present (e.g. during early bootstrap before
+  // this module's own link has been discovered), nothing to collect.
+  if (!isset($links[$parent_id])) {
+    return;
+  }
+
+  $module_list = \Drupal::service('extension.list.module')->getList();
+  $collected_keys = [];
+  foreach ($links as $key => &$link) {
+    if ($key === $parent_id) {
+      continue;
+    }
+    $provider = $link['provider'] ?? NULL;
+    if (!$provider || !isset($module_list[$provider])) {
+      continue;
+    }
+    // Only adopt links from modules explicitly flagged as theming test modules.
+    if (empty($module_list[$provider]->info['theming_test'])) {
+      continue;
+    }
+    $link['menu_name'] = 'admin';
+    $link['parent'] = $parent_id;
+    $collected_keys[] = $key;
+  }
+  unset($link);
+
+  // Sort the collected children alphabetically by title (case-insensitive)
+  // and assign sequential weights so they render in that order under the
+  // drawer.
+  usort($collected_keys, static function ($a, $b) use ($links) {
+    return strcasecmp((string) $links[$a]['title'], (string) $links[$b]['title']);
+  });
+  foreach ($collected_keys as $index => $key) {
+    $links[$key]['weight'] = $index;
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function theming_tools_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  if (isset($entity_types['contact_form'])) {
+    $entity_types['contact_form']->setHandlerClass('access', '\Drupal\theming_tools\ContactFormAccessControlHandler');
+  }
+}
+

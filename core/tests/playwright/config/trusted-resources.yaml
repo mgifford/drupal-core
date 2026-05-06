@@ -1,0 +1,46 @@
+version: 1
+
+default:
+  - title: ACCESSIBILITY.md Trusted Sources
+    url: https://mgifford.github.io/ACCESSIBILITY.md/examples/TRUSTED_SOURCES.yaml
+
+rules:
+  label:
+    - title: GOV.UK Design System - Labels
+      url: https://design-system.service.gov.uk/components/text-input/
+  label-title-only:
+    - title: GOV.UK Design System - Checkboxes
+      url: https://design-system.service.gov.uk/components/checkboxes/
+  color-contrast:
+    - title: DWP - Colour and contrast
+      url: https://accessibility-manual.dwp.gov.uk/tools-and-resources/colour-and-contrast
+  tabindex:
+    - title: DWP - Keyboard-only usage
+      url: https://accessibility-manual.dwp.gov.uk/tools-and-resources/keyboard-only-usage
+  target-size:
+    - title: WCAG 2.2 - Target Size (Minimum)
+      url: https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+  region:
+    - title: WAI - Page structure and landmarks
+      url: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+  landmark-contentinfo-is-top-level:
+    - title: WAI - Page structure and landmarks
+      url: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+  landmark-no-duplicate-contentinfo:
+    - title: WAI - Page structure and landmarks
+      url: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+  landmark-unique:
+    - title: WAI - Page structure and landmarks
+      url: https://www.w3.org/WAI/tutorials/page-structure/landmarks/
+  heading-order:
+    - title: WAI - Headings tutorial
+      url: https://www.w3.org/WAI/tutorials/page-structure/headings/
+  page-has-heading-one:
+    - title: WAI - Headings tutorial
+      url: https://www.w3.org/WAI/tutorials/page-structure/headings/
+  empty-heading:
+    - title: WAI - Headings tutorial
+      url: https://www.w3.org/WAI/tutorials/page-structure/headings/
+  empty-table-header:
+    - title: WAI - Tables tutorial
+      url: https://www.w3.org/WAI/tutorials/tables/

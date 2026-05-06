@@ -1,0 +1,6 @@
+[submodule "tools/purple-ai"]
+	path = tools/purple-ai
+	url = https://github.com/GovTechSG/purple-ai.git
+[submodule "tools/a11y-meta-skills"]
+	path = tools/a11y-meta-skills
+	url = https://github.com/mgifford/a11y-meta-skills.git
