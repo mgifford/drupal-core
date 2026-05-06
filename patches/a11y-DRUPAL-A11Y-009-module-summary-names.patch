@@ -1,0 +1,21 @@
+diff --git a/core/modules/system/src/Form/ModulesListForm.php b/core/modules/system/src/Form/ModulesListForm.php
+index 1234567..abcdefg 100644
+--- a/core/modules/system/src/Form/ModulesListForm.php
++++ b/core/modules/system/src/Form/ModulesListForm.php
+@@ -175,8 +175,12 @@ class ModulesListForm extends FormBase {
+         '#type' => 'details',
+         '#summary_attributes' => ['role' => 'button', 'aria-expanded' => 'false'],
+         '#title' => new TranslatableMarkup('@module: @description', [
+           '@module' => $module_name,
+           '@description' => $description,
+         ]),
+         '#description' => $module->info['package'] ?? '',
++        '#attributes' => [
++          'aria-label' => new TranslatableMarkup('@module: @description', [
++            '@module' => $module_name,
++            '@description' => $description,
++          ]),
++        ],
+       ];
+     }
+ 
