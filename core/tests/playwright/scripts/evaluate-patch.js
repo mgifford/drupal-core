@@ -110,13 +110,21 @@ function annotateViolations(violations, pagePath, screenType, colorMode = 'light
   });
 }
 
-function buildExpectedTargets(pagePath, selectors, rules, screenType, colorMode = 'light', prefix = 'DRU') {
+function buildExpectedTargets(
+  pagePath,
+  selectors,
+  rules,
+  screenType,
+  colorMode = 'light',
+  prefix = 'DRU',
+  explicitPatternId = null,
+) {
   const targets = [];
   for (const selector of selectors || []) {
     for (const ruleId of rules || []) {
       targets.push({
         instance_id: generateInstanceId(pagePath, selector, ruleId, screenType, prefix),
-        pattern_id: generatePatternId(selector, ruleId, screenType, prefix),
+        pattern_id: explicitPatternId || generatePatternId(selector, ruleId, screenType, prefix),
         screen_type: screenType,
         color_mode: colorMode,
         page_path: pagePath,
@@ -229,6 +237,100 @@ function formatAxeResults(results) {
   };
 }
 
+function normalizeDynamicSelector(selector) {
+  return String(selector || '')
+    .replace(/\d+/g, 'N')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function selectorMatches(targetSelector, selectorKey) {
+  const a = normalizeDynamicSelector(targetSelector);
+  const b = normalizeDynamicSelector(selectorKey);
+  if (!a || !b) {
+    return false;
+  }
+  return a === b || a.includes(b) || b.includes(a);
+}
+
+function findLatestPatternReport() {
+  const latestPath = path.join(REPORTS_DIR, 'pattern-report-latest.json');
+  if (fs.existsSync(latestPath)) {
+    return latestPath;
+  }
+  const dated = fs
+    .readdirSync(REPORTS_DIR)
+    .filter((name) => /^pattern-report-\d{4}-\d{2}-\d{2}\.json$/.test(name))
+    .sort()
+    .reverse();
+  return dated.length ? path.join(REPORTS_DIR, dated[0]) : null;
+}
+
+function loadPatternReport() {
+  const reportPath = findLatestPatternReport();
+  if (!reportPath) {
+    return { path: null, patterns: [] };
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    return {
+      path: reportPath,
+      patterns: Array.isArray(data.patterns) ? data.patterns : [],
+    };
+  } catch (err) {
+    log(`Warning: unable to parse pattern report ${reportPath}: ${err.message}`);
+    return { path: reportPath, patterns: [] };
+  }
+}
+
+function deriveTestCasesFromPatterns(patchCfg, reportPatterns) {
+  if (!Array.isArray(patchCfg.patternIds) || patchCfg.patternIds.length === 0) {
+    return Array.isArray(patchCfg.testCases) ? patchCfg.testCases : [];
+  }
+  const maxPaths = Number.isInteger(patchCfg.maxPathsPerPattern) ? patchCfg.maxPathsPerPattern : 3;
+  const byId = new Map((reportPatterns || []).map((p) => [p.patternId, p]));
+  const testCases = [];
+  const seen = new Set();
+
+  for (const patternId of patchCfg.patternIds) {
+    const pattern = byId.get(patternId);
+    if (!pattern) {
+      continue;
+    }
+    const concretePaths = Array.isArray(pattern.concretePaths) ? pattern.concretePaths : [];
+    for (const pagePath of concretePaths.slice(0, maxPaths)) {
+      const key = `${patternId}|${pagePath}`;
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      testCases.push({
+        url: pagePath,
+        selectors: [pattern.selectorKey],
+        expectedFix: `Pattern ${pattern.patternId} (${pattern.ruleId}) should improve`,
+        viewport: { width: 1280, height: 1024 },
+        sourcePatternId: pattern.patternId,
+        sourceRuleId: pattern.ruleId,
+      });
+    }
+  }
+
+  return testCases.length ? testCases : (Array.isArray(patchCfg.testCases) ? patchCfg.testCases : []);
+}
+
+function findTargetMatches(annotatedViolations, target) {
+  const list = Array.isArray(annotatedViolations) ? annotatedViolations : [];
+  return list.filter((v) => {
+    if (v.rule_id !== target.rule_id) {
+      return false;
+    }
+    if (v.page_path !== target.page_path) {
+      return false;
+    }
+    return selectorMatches(v.selector, target.selector);
+  });
+}
+
 // ── Main evaluation flow ──────────────────────────────────────────────────────
 (async () => {
   const browser = await chromium.launch();
@@ -246,10 +348,40 @@ function formatAxeResults(results) {
       new: [],
       resolved: false,
     },
+    patternReport: {
+      source: null,
+      matchedPatterns: [],
+      summary: {
+        targeted: 0,
+        observedBefore: 0,
+        fullyFixed: 0,
+        partiallyFixed: 0,
+        unchanged: 0,
+      },
+    },
+    instanceReport: {
+      summary: {
+        targeted: 0,
+        observedBefore: 0,
+        fixed: 0,
+        remaining: 0,
+        notObserved: 0,
+      },
+      entries: [],
+    },
   };
 
+  const patternReport = loadPatternReport();
+  evaluation.patternReport.source = patternReport.path;
+  const testCases = deriveTestCasesFromPatterns(patchConfig, patternReport.patterns);
+  const targetedPatterns = Array.isArray(patchConfig.patternIds)
+    ? patchConfig.patternIds
+        .map((patternId) => patternReport.patterns.find((p) => p.patternId === patternId))
+        .filter(Boolean)
+    : [];
+
   try {
-    for (const testCase of patchConfig.testCases) {
+    for (const testCase of testCases) {
       log(`\n=== Test case: ${testCase.url} ===`);
       const testResult = {
         url: testCase.url,
@@ -266,12 +398,15 @@ function formatAxeResults(results) {
       const screenType = detectScreenType(testCase.viewport);
       const pagePath = testCase.url;
       const colorMode = 'light';
+      const caseRules = testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules;
       testResult.expected_targets = buildExpectedTargets(
         pagePath,
         testCase.selectors,
-        patchConfig.rules,
+        caseRules,
         screenType,
         colorMode,
+        'DRU',
+        testCase.sourcePatternId || null,
       );
 
       // ── BEFORE: Take screenshots, capture HTML, run axe ──────────────────
@@ -381,6 +516,38 @@ function formatAxeResults(results) {
         }
       }
 
+      // Track expected instance IDs by matching rule/path/selector instead of hash-only equality.
+      for (const target of testResult.expected_targets) {
+        const beforeMatches = findTargetMatches(testResult.before.annotated_violations, target);
+        const afterMatches = findTargetMatches(testResult.after.annotated_violations, target);
+        const beforeIds = [...new Set(beforeMatches.map((m) => m.instance_id))];
+        const afterIds = [...new Set(afterMatches.map((m) => m.instance_id))];
+
+        let status = 'not-observed';
+        if (beforeIds.length > 0 && afterIds.length === 0) {
+          status = 'fixed';
+        } else if (afterIds.length > 0 && afterIds.length < beforeIds.length) {
+          status = 'partially-fixed';
+        } else if (beforeIds.length > 0 && afterIds.length > 0) {
+          status = 'remaining';
+        }
+
+        evaluation.instanceReport.entries.push({
+          instanceId: beforeIds[0] || target.instance_id,
+          patternId: target.pattern_id,
+          ruleId: target.rule_id,
+          pagePath: target.page_path,
+          selector: target.selector,
+          status,
+          seenBefore: beforeIds.length > 0,
+          seenAfter: afterIds.length > 0,
+          beforeCount: beforeIds.length,
+          afterCount: afterIds.length,
+          beforeInstanceIds: beforeIds,
+          afterInstanceIds: afterIds,
+        });
+      }
+
       // ── RESET CODE ───────────────────────────────────────────────────────
       const resetResult = resetPatch();
       if (!resetResult.success) {
@@ -389,6 +556,60 @@ function formatAxeResults(results) {
 
       evaluation.testCases.push(testResult);
     }
+
+    if (targetedPatterns.length > 0) {
+      for (const pattern of targetedPatterns) {
+        const relatedEntries = evaluation.instanceReport.entries.filter(
+          (entry) => entry.patternId === pattern.patternId,
+        );
+        const beforeCount = relatedEntries.reduce((sum, entry) => sum + (entry.beforeCount || 0), 0);
+        const afterCount = relatedEntries.reduce((sum, entry) => sum + (entry.afterCount || 0), 0);
+        let status = 'unchanged';
+        if (beforeCount > 0 && afterCount === 0) {
+          status = 'fully-fixed';
+        } else if (afterCount < beforeCount) {
+          status = 'partially-fixed';
+        }
+
+        evaluation.patternReport.matchedPatterns.push({
+          patternId: pattern.patternId,
+          ruleId: pattern.ruleId,
+          selectorKey: pattern.selectorKey,
+          concretePaths: pattern.concretePaths || [],
+          beforeCount,
+          afterCount,
+          status,
+        });
+      }
+
+      evaluation.patternReport.summary.targeted = evaluation.patternReport.matchedPatterns.length;
+      evaluation.patternReport.summary.observedBefore = evaluation.patternReport.matchedPatterns.filter(
+        (p) => p.beforeCount > 0,
+      ).length;
+      evaluation.patternReport.summary.fullyFixed = evaluation.patternReport.matchedPatterns.filter(
+        (p) => p.status === 'fully-fixed',
+      ).length;
+      evaluation.patternReport.summary.partiallyFixed = evaluation.patternReport.matchedPatterns.filter(
+        (p) => p.status === 'partially-fixed',
+      ).length;
+      evaluation.patternReport.summary.unchanged = evaluation.patternReport.matchedPatterns.filter(
+        (p) => p.status === 'unchanged',
+      ).length;
+    }
+
+    evaluation.instanceReport.summary.targeted = evaluation.instanceReport.entries.length;
+    evaluation.instanceReport.summary.observedBefore = evaluation.instanceReport.entries.filter(
+      (entry) => entry.seenBefore,
+    ).length;
+    evaluation.instanceReport.summary.fixed = evaluation.instanceReport.entries.filter(
+      (entry) => entry.status === 'fixed',
+    ).length;
+    evaluation.instanceReport.summary.remaining = evaluation.instanceReport.entries.filter(
+      (entry) => entry.status === 'remaining' || entry.status === 'partially-fixed',
+    ).length;
+    evaluation.instanceReport.summary.notObserved = evaluation.instanceReport.entries.filter(
+      (entry) => entry.status === 'not-observed',
+    ).length;
 
     // ── Generate report ──────────────────────────────────────────────────────
     evaluation.summary.resolved = evaluation.summary.new.length === 0 && evaluation.summary.fixed.length > 0;
@@ -403,8 +624,50 @@ function formatAxeResults(results) {
     lines.push(`- **Description:** ${patchConfig.description}`);
     lines.push(`- **WCAG Criteria:** ${patchConfig.wcag.join(', ')}`);
     lines.push(`- **Affected Rules:** ${patchConfig.rules.join(', ')}`);
+    if (evaluation.patternReport.source) {
+      lines.push(`- **Pattern Source:** ${evaluation.patternReport.source.replace(`${REPO_ROOT}/`, '')}`);
+    }
     lines.push(`- **Status:** ${evaluation.summary.resolved ? '✅ **PASS** — Patch resolves the issues without introducing new violations' : '❌ **FAIL** — Patch introduces new violations or does not resolve all issues'}`);
     lines.push('');
+    if (evaluation.patternReport.matchedPatterns.length > 0) {
+      lines.push('### Pattern Coverage (From Scan Report)');
+      lines.push('');
+      lines.push(`- **Targeted patterns:** ${evaluation.patternReport.summary.targeted}`);
+      lines.push(`- **Patterns seen before patch:** ${evaluation.patternReport.summary.observedBefore}`);
+      lines.push(`- **Fully fixed patterns:** ${evaluation.patternReport.summary.fullyFixed}`);
+      lines.push(`- **Partially fixed patterns:** ${evaluation.patternReport.summary.partiallyFixed}`);
+      lines.push(`- **Unchanged patterns:** ${evaluation.patternReport.summary.unchanged}`);
+      lines.push('');
+      lines.push('| Pattern ID | Rule | Paths (sample) | Before | After | Status |');
+      lines.push('|---|---|---|---:|---:|---|');
+      for (const pattern of evaluation.patternReport.matchedPatterns) {
+        const samplePaths = (pattern.concretePaths || []).slice(0, 3).join(', ');
+        lines.push(
+          `| ${pattern.patternId} | ${pattern.ruleId} | ${samplePaths || '-'} | ${pattern.beforeCount} | ${pattern.afterCount} | ${pattern.status} |`,
+        );
+      }
+      lines.push('');
+    }
+    if (evaluation.instanceReport.entries.length > 0) {
+      lines.push('### Instance ID Coverage');
+      lines.push('');
+      lines.push(`- **Targeted instance IDs:** ${evaluation.instanceReport.summary.targeted}`);
+      lines.push(`- **Seen before patch:** ${evaluation.instanceReport.summary.observedBefore}`);
+      lines.push(`- **Fixed instances:** ${evaluation.instanceReport.summary.fixed}`);
+      lines.push(`- **Remaining instances:** ${evaluation.instanceReport.summary.remaining}`);
+      lines.push(`- **Not observed in baseline:** ${evaluation.instanceReport.summary.notObserved}`);
+      lines.push('');
+      lines.push('| Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |');
+      lines.push('|---|---|---|---|---|---|---|');
+      for (const entry of evaluation.instanceReport.entries) {
+        const beforeIds = (entry.beforeInstanceIds || []).join(', ') || '-';
+        const afterIds = (entry.afterInstanceIds || []).join(', ') || '-';
+        lines.push(
+          `| ${entry.instanceId} | ${entry.patternId} | ${entry.ruleId} | ${entry.pagePath} | ${entry.status} | ${beforeIds} | ${afterIds} |`,
+        );
+      }
+      lines.push('');
+    }
     lines.push('### Violation Counts');
     lines.push('');
     lines.push(`| Metric | Before | After | Change |`);
