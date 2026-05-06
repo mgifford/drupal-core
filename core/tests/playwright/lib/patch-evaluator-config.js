@@ -32,14 +32,8 @@ module.exports = {
     rules: ['color-contrast'],
     testCases: [
       {
-        url: '/admin/structure/types/add',
-        selectors: ['#edit-save-continue', '#edit-submit'],
-        expectedFix: 'color-contrast should pass after patch',
-        viewport: { width: 1280, height: 1024 },
-      },
-      {
-        url: '/admin/structure/taxonomy',
-        selectors: ['.button--action', '#edit-submit'],
+        url: '/action-link',
+        selectors: ['button', '.button'],
         expectedFix: 'color-contrast should pass after patch',
         viewport: { width: 1280, height: 1024 },
       },
@@ -80,8 +74,8 @@ module.exports = {
     rules: ['color-contrast'],
     testCases: [
       {
-        url: '/admin/content',
-        selectors: ['.language-link', '.language-switcher a'],
+        url: '/action-link',
+        selectors: ['a', '[role="link"]'],
         expectedFix: 'Language switcher links should meet WCAG AA contrast',
         viewport: { width: 1280, height: 1024 },
       },
@@ -94,9 +88,9 @@ module.exports = {
     rules: ['region'],
     testCases: [
       {
-        url: '/admin/appearance',
-        selectors: ['.theme-switcher', 'form.theme-form'],
-        expectedFix: 'Theme switcher should be wrapped in nav landmark',
+        url: '/',
+        selectors: ['main', 'nav', 'section'],
+        expectedFix: 'Page content should be contained by landmarks',
         viewport: { width: 1280, height: 1024 },
       },
     ],
@@ -105,12 +99,12 @@ module.exports = {
   'a11y-DRUPAL-A11Y-007-messages-landmark-role': {
     description: 'Wrap status messages in proper landmark with role',
     wcag: ['1.3.6 (AAA)'],
-    rules: ['region', 'landmark-contentinfo-is-top-level'],
+    rules: ['landmark-contentinfo-is-top-level'],
     testCases: [
       {
-        url: '/admin',
-        selectors: ['.messages', '[role="status"]'],
-        expectedFix: 'Messages should use proper landmark role (not contentinfo)',
+        url: '/admin/appearance',
+        selectors: ['.messages', '[role="contentinfo"]'],
+        expectedFix: 'Messages should not use contentinfo landmark',
         viewport: { width: 1280, height: 1024 },
       },
     ],

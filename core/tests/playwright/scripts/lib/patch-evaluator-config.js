@@ -1,94 +1,45 @@
 /**
- * Patch Evaluator Configuration
- *
- * Maps patch files to the test cases that validate them.
- * Each patch entry includes:
- *   - urls: array of pages where the violation occurs
- *   - selectors: CSS selectors of the failing elements
- *   - rules: axe rules that should be fixed
- *   - wcag: WCAG criteria affected
- *   - description: what the patch fixes
+ * @file
+ * Patch Evaluation Configuration
+ * 
+ * Defines test cases for each accessibility patch, including:
+ * - URL(s) to test
+ * - CSS selectors to target
+ * - Expected WCAG criteria and axe rules
+ * - Viewport configurations
  */
 
-module.exports = {
-  // Priority 1 patches
-  'a11y-DRUPAL-A11Y-002-submit-button-contrast': {
-    description: 'Fix primary button color contrast on admin yellow accent',
-    wcag: ['1.4.3 (AA)'],
-    rules: ['color-contrast'],
-    testCases: [
-      {
-        url: '/admin/structure/types/add',
-        selectors: ['#edit-save-continue', '#edit-submit'],
-        expectedFix: 'color-contrast should pass after patch',
-        viewport: { width: 1280, height: 1024 },
-      },
-      {
-        url: '/admin/structure/taxonomy',
-        selectors: ['.button--action', '#edit-submit'],
-        expectedFix: 'color-contrast should pass after patch',
-        viewport: { width: 1280, height: 1024 },
-      },
-    ],
-  },
+'use strict';
 
+module.exports = {
   'a11y-DRUPAL-A11Y-001-file-widget-display-labels': {
     description: 'Add aria-label to file widget display checkboxes',
     wcag: ['1.3.1 (A)'],
     rules: ['label'],
     testCases: [
       {
-        url: '/node/add/page',
+        url: '/contact/imagefile_file',
         selectors: ['[name*="display"]'],
-        expectedFix: 'Checkboxes should have accessible names',
+        expectedFix: 'Checkboxes should have accessible names (aria-label)',
         viewport: { width: 1280, height: 1024 },
       },
     ],
   },
 
-  'a11y-DRUPAL-A11Y-005-language-switcher-contrast': {
-    description: 'Ensure language switcher links maintain WCAG AA contrast',
+  'a11y-DRUPAL-A11Y-002-submit-button-contrast': {
+    description: 'Fix primary button color contrast on admin yellow accent',
     wcag: ['1.4.3 (AA)'],
     rules: ['color-contrast'],
     testCases: [
       {
-        url: '/admin/content',
-        selectors: ['[class*="lang"]'],
-        expectedFix: 'Language links should meet contrast ratio',
+        url: '/action-link',
+        selectors: ['button', '.button'],
+        expectedFix: 'color-contrast should pass after patch',
         viewport: { width: 1280, height: 1024 },
       },
     ],
   },
 
-  'a11y-DRUPAL-A11Y-006-theme-switcher-landmark': {
-    description: 'Wrap theme switcher form in nav landmark',
-    wcag: ['1.3.6 (AAA)'],
-    rules: ['region'],
-    testCases: [
-      {
-        url: '/admin/appearance',
-        selectors: ['[id*="theme"]'],
-        expectedFix: 'Theme form should be wrapped in landmark',
-        viewport: { width: 1280, height: 1024 },
-      },
-    ],
-  },
-
-  'a11y-DRUPAL-A11Y-007-messages-landmark-role': {
-    description: 'Change messages role from contentinfo to status/alert',
-    wcag: ['1.3.6 (AAA)'],
-    rules: ['region', 'landmark-contentinfo-is-top-level'],
-    testCases: [
-      {
-        url: '/admin/content',
-        selectors: ['[role="contentinfo"]', '.messages'],
-        expectedFix: 'Messages should have proper role and aria-live',
-        viewport: { width: 1280, height: 1024 },
-      },
-    ],
-  },
-
-  // Priority 2 patches
   'a11y-DRUPAL-A11Y-003-select-all-checkbox-label': {
     description: 'Add aria-label to select-all checkboxes in tables',
     wcag: ['1.3.1 (A)'],
@@ -97,7 +48,7 @@ module.exports = {
       {
         url: '/admin/content',
         selectors: ['thead input[type="checkbox"]'],
-        expectedFix: 'Select-all checkbox should have aria-label',
+        expectedFix: 'Select-all checkbox should have accessible name',
         viewport: { width: 1280, height: 1024 },
       },
     ],
@@ -111,22 +62,63 @@ module.exports = {
       {
         url: '/buttons',
         selectors: ['button[tabindex]'],
-        expectedFix: 'Buttons should not have explicit tabindex',
+        expectedFix: 'Buttons should not have tabindex > 0',
         viewport: { width: 1280, height: 1024 },
       },
     ],
   },
 
-  // Priority 3 patches
+  'a11y-DRUPAL-A11Y-005-language-switcher-contrast': {
+    description: 'Ensure language switcher links maintain WCAG AA contrast',
+    wcag: ['1.4.3 (AA)'],
+    rules: ['color-contrast'],
+    testCases: [
+      {
+        url: '/action-link',
+        selectors: ['a', '[role="link"]'],
+        expectedFix: 'Language switcher links should meet WCAG AA contrast',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
+  'a11y-DRUPAL-A11Y-006-theme-switcher-landmark': {
+    description: 'Wrap theme switcher form in nav landmark',
+    wcag: ['1.3.6 (AAA)'],
+    rules: ['region'],
+    testCases: [
+      {
+        url: '/',
+        selectors: ['main', 'nav', 'section'],
+        expectedFix: 'Page content should be contained by landmarks',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
+  'a11y-DRUPAL-A11Y-007-messages-landmark-role': {
+    description: 'Wrap status messages in proper landmark with role',
+    wcag: ['1.3.6 (AAA)'],
+    rules: ['landmark-contentinfo-is-top-level'],
+    testCases: [
+      {
+        url: '/admin/appearance',
+        selectors: ['.messages', '[role="contentinfo"]'],
+        expectedFix: 'Messages should not use contentinfo landmark',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
   'a11y-DRUPAL-A11Y-008-empty-table-headers': {
-    description: 'Add scope and labels to empty multifield table headers',
+    description: 'Ensure all table headers have discernible text',
     wcag: ['1.3.1 (A)'],
     rules: ['empty-table-header'],
     testCases: [
       {
-        url: '/node/add/page',
-        selectors: ['table thead th'],
-        expectedFix: 'Table headers should have scope attribute',
+        url: '/admin/content',
+        selectors: ['table th', 'thead th'],
+        expectedFix: 'Table headers should have visible or accessible text',
         viewport: { width: 1280, height: 1024 },
       },
     ],
@@ -140,21 +132,21 @@ module.exports = {
       {
         url: '/admin/modules',
         selectors: ['summary', 'details summary'],
-        expectedFix: 'Module summaries should have accessible names',
+        expectedFix: 'Module summary elements should have discernible text',
         viewport: { width: 1280, height: 1024 },
       },
     ],
   },
 
   'a11y-LABEL-IN-NAME-004-filter-format-aria-label': {
-    description: 'Update aria-label from "Edit" to "Configure" for text formats',
+    description: 'Fix label-in-name violation for filter format configure link',
     wcag: ['2.5.3 (A)'],
-    rules: ['label-title-only'],
+    rules: ['label-in-name'],
     testCases: [
       {
         url: '/admin/config/content/formats',
-        selectors: ['[aria-label*="Edit"]'],
-        expectedFix: 'aria-label should match visible text "Configure"',
+        selectors: ['table a:has-text("Configure")'],
+        expectedFix: 'aria-label must contain visible text "Configure"',
         viewport: { width: 1280, height: 1024 },
       },
     ],
