@@ -26,11 +26,37 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T02:33:18.585Z",
+  "timestamp": "2026-05-07T13:50:42.455Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "default",
     "requestedColorMode": "light",
-    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+    "requestedDirection": "ltr",
+    "requestedViewport": null,
+    "requestedDevice": null,
+    "requestedOrientation": null,
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
   },
   "testCases": [
     {
@@ -105,6 +131,7 @@
           "screenType": "desktop",
           "orientation": "landscape",
           "colorMode": "light",
+          "direction": "ltr",
           "viewport": {
             "width": 1280,
             "height": 1024
@@ -162,7 +189,8 @@
     "new": [],
     "resolved": false,
     "outcome": "inconclusive",
-    "outcomeReason": "no-baseline-instances-observed"
+    "outcomeReason": "no-baseline-instances-observed",
+    "eligibleForPatchRecommendation": false
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -214,6 +242,7 @@
             "screenType": "desktop",
             "orientation": "landscape",
             "colorMode": "light",
+            "direction": "ltr",
             "viewport": {
               "width": 1280,
               "height": 1024
@@ -264,5 +293,31 @@
     "instanceIdsSeen": 1,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 1,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 1,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "default",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
   }
 }

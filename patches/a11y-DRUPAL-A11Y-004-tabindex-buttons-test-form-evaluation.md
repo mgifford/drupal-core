@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form
 
-**Generated:** 2026-05-06 at 10:33:23 p.m.
+**Generated:** 2026-05-07 at 9:50:47 a.m.
 
 ## Summary
 
@@ -10,8 +10,27 @@
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
 - **Status:** 🟨 **INCONCLUSIVE** — No baseline instances were observed on targeted URLs/selectors
 - **Outcome Reason:** `no-baseline-instances-observed`
+- **Eligible For Patch Recommendation:** no
 - **Requested color mode:** light
 - **ID consistency issues:** patterns=0, instances=0
+- **Baseline observed instances:** 0
+- **Fixed instances after patch:** 0
+- **Remaining instances after patch:** 0
+
+### Replication Instructions
+
+Use the following deterministic steps to reproduce this exact evaluation run:
+
+- Setup: `ddev drush cset system.theme default olivero -y`
+- Setup: `ddev drush cset system.theme admin claro -y`
+- Setup: `ddev drush cache-rebuild`
+- Flow: Navigate to each test case URL under requested conditions and capture baseline evidence.
+- Flow: Apply patch with: git apply "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch"
+- Flow: Clear Drupal cache with: ddev drush cache-rebuild
+- Flow: Revisit same URL + conditions and capture post-patch evidence.
+- Flow: Revert patch with: git apply -R "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch"
+- Variant ID: `default`
+- Expected proof: Problem must be observed before patch and not observed after patch under the same recorded conditions.
 
 ### Pattern Coverage (From Scan Report)
 
@@ -54,7 +73,7 @@
 **Elements tested:** #edit-submit
 
 **Conditions:**
-- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","viewport":{"width":1280,"height":1024}}
+- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","direction":"ltr","viewport":{"width":1280,"height":1024}}
 - Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
 - After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
 

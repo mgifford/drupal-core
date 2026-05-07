@@ -114,6 +114,7 @@ function collectConditionSummary(evalData) {
     failed: 0,
     error: 0,
     patches: [],
+    actionablePatches: [],
     conditionCoverage: {
       screenTypes: [],
       orientations: [],
@@ -163,6 +164,8 @@ function collectConditionSummary(evalData) {
       instanceSummary: null,
       conditionSummary: null,
       idValidation: null,
+      baselineObservedInstances: 0,
+      eligibleForPatchRecommendation: false,
     };
 
     try {
@@ -196,6 +199,13 @@ function collectConditionSummary(evalData) {
     if (evalData?.instanceReport?.summary) {
       patchResult.instanceSummary = evalData.instanceReport.summary;
     }
+    patchResult.baselineObservedInstances =
+      evalData?.validationEvidence?.baselineObservedInstances
+      ?? evalData?.instanceReport?.summary?.observedBefore
+      ?? 0;
+    patchResult.eligibleForPatchRecommendation =
+      Boolean(evalData?.summary?.eligibleForPatchRecommendation)
+      || (patchResult.baselineObservedInstances > 0 && patchResult.status !== 'error');
     patchResult.conditionSummary = collectConditionSummary(evalData);
     patchResult.idValidation = evalData?.idValidation || null;
 
@@ -207,6 +217,14 @@ function collectConditionSummary(evalData) {
     }
 
     summary.patches.push(patchResult);
+    if (patchResult.eligibleForPatchRecommendation) {
+      summary.actionablePatches.push({
+        name: patchResult.name,
+        status: patchResult.status,
+        outcomeReason: patchResult.outcomeReason,
+        baselineObservedInstances: patchResult.baselineObservedInstances,
+      });
+    }
     summary.totalPatches++;
   }
 
@@ -257,6 +275,8 @@ function collectConditionSummary(evalData) {
   lines.push(`- **Contrast preferences:** ${summary.conditionCoverage.prefersContrast.join(', ') || '-'}`);
   lines.push(`- **Viewports:** ${summary.conditionCoverage.viewports.join(', ') || '-'}`);
   lines.push('');
+  lines.push(`- **Actionable patches (baseline observed):** ${summary.actionablePatches.length}`);
+  lines.push('');
   lines.push(`---`);
   lines.push('');
   lines.push(`## Patch Details`);
@@ -294,6 +314,10 @@ function collectConditionSummary(evalData) {
   lines.push('');
   lines.push(`## Recommendations`);
   lines.push('');
+  if (summary.actionablePatches.length === 0) {
+    lines.push('⚠️ **No actionable patch recommendations** because baseline target violations were not observed under current test conditions.');
+    lines.push('');
+  }
   if (summary.passed === summary.totalPatches) {
     lines.push(`✅ **All patches pass evaluation.** Ready for deployment.`);
   } else {
@@ -320,6 +344,15 @@ function collectConditionSummary(evalData) {
       }
     }
     lines.push('');
+    const nonActionable = summary.patches.filter((p) => !p.eligibleForPatchRecommendation);
+    if (nonActionable.length > 0) {
+      lines.push('### Excluded From Patch Recommendation (No Baseline Evidence)');
+      lines.push('');
+      for (const patch of nonActionable) {
+        lines.push(`- \`${patch.name}\` (baseline observed: ${patch.baselineObservedInstances})`);
+      }
+      lines.push('');
+    }
     lines.push(`Review detailed evaluation reports in the \`patches/\` directory.`);
   }
   lines.push('');

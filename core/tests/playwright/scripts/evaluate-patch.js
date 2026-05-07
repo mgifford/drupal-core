@@ -980,6 +980,10 @@ function findTargetMatches(annotatedViolations, target) {
       evaluation.summary.outcomeReason = 'targeted-instances-not-fixed';
     }
 
+    evaluation.summary.eligibleForPatchRecommendation =
+      evaluation.validationEvidence.baselineObservedInstances > 0
+      && !evaluation.validationEvidence.hasCaseErrors;
+
     const lines = [];
     lines.push(`# Patch Evaluation Report: ${patchName}${outputSuffix}`);
     lines.push('');
@@ -1005,6 +1009,7 @@ function findTargetMatches(annotatedViolations, target) {
               : '❌ **FAIL** — Patch did not fix the targeted issues';
     lines.push(`- **Status:** ${statusLine}`);
     lines.push(`- **Outcome Reason:** \`${evaluation.summary.outcomeReason}\``);
+    lines.push(`- **Eligible For Patch Recommendation:** ${evaluation.summary.eligibleForPatchRecommendation ? 'yes' : 'no'}`);
     lines.push(`- **Requested color mode:** ${evaluation.runContext.requestedColorMode}`);
     lines.push(`- **ID consistency issues:** patterns=${evaluation.idValidation.inconsistentPatternIds.length}, instances=${evaluation.idValidation.inconsistentInstanceIds.length}`);
     lines.push(`- **Baseline observed instances:** ${evaluation.validationEvidence.baselineObservedInstances}`);

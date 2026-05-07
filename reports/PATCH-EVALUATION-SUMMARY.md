@@ -1,6 +1,7 @@
 # Patch Evaluation Batch Summary
 
-**Generated:** 2026-05-06 at 10:33:32 p.m.
+**Generated:** 2026-05-07 at 9:51:34 a.m.
+**Variant:** `default`
 
 ## Results
 
@@ -25,6 +26,8 @@
 - **Forced colors:** none
 - **Contrast preferences:** no-preference
 - **Viewports:** 1280x1024
+
+- **Actionable patches (baseline observed):** 0
 
 ---
 
@@ -58,6 +61,8 @@
 ---
 
 ## Recommendations
+
+⚠️ **No actionable patch recommendations** because baseline target violations were not observed under current test conditions.
 
 ⚠️ **7 patches failed and 3 were inconclusive:**
 
@@ -101,5 +106,18 @@
   - reason: `evaluation-or-patch-application-error`
   - instance coverage: 0 fixed, 0 remaining, 0 not observed
   - Command failed: node "/Users/mike.gifford/drupal-core/core/tests/playwright/scripts/evaluate-patch.js" "a11y-LABEL-IN-NAME-004-filter-format-aria-label"
+
+### Excluded From Patch Recommendation (No Baseline Evidence)
+
+- `a11y-DRUPAL-A11Y-001-file-widget-display-labels` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-002-submit-button-contrast` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-003-select-all-checkbox-label` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-005-language-switcher-contrast` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-006-theme-switcher-landmark` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-007-messages-landmark-role` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-008-empty-table-headers` (baseline observed: 0)
+- `a11y-DRUPAL-A11Y-009-module-summary-names` (baseline observed: 0)
+- `a11y-LABEL-IN-NAME-004-filter-format-aria-label` (baseline observed: 0)
 
 Review detailed evaluation reports in the `patches/` directory.

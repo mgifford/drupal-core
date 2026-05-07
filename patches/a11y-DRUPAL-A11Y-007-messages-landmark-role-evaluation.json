@@ -29,11 +29,37 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T02:33:26.948Z",
+  "timestamp": "2026-05-07T13:51:09.795Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "default",
     "requestedColorMode": "light",
-    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+    "requestedDirection": "ltr",
+    "requestedViewport": null,
+    "requestedDevice": null,
+    "requestedOrientation": null,
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
   },
   "testCases": [
     {
@@ -92,6 +118,7 @@
           "screenType": "desktop",
           "orientation": "landscape",
           "colorMode": "light",
+          "direction": "ltr",
           "viewport": {
             "width": 1280,
             "height": 1024
@@ -175,6 +202,7 @@
           "screenType": "desktop",
           "orientation": "landscape",
           "colorMode": "light",
+          "direction": "ltr",
           "viewport": {
             "width": 1280,
             "height": 1024
@@ -258,6 +286,7 @@
           "screenType": "desktop",
           "orientation": "landscape",
           "colorMode": "light",
+          "direction": "ltr",
           "viewport": {
             "width": 1280,
             "height": 1024
@@ -341,6 +370,7 @@
           "screenType": "desktop",
           "orientation": "landscape",
           "colorMode": "light",
+          "direction": "ltr",
           "viewport": {
             "width": 1280,
             "height": 1024
@@ -382,7 +412,8 @@
     "new": [],
     "resolved": false,
     "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error"
+    "outcomeReason": "evaluation-or-patch-application-error",
+    "eligibleForPatchRecommendation": false
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -436,5 +467,31 @@
     "instanceIdsSeen": 4,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 0,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 0,
+    "hasCaseErrors": true,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "default",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
   }
 }

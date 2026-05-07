@@ -23,18 +23,6 @@ PATCH_FILTER=priority-2 yarn a11y:evaluate-all-patches
 PATCH_FILTER=priority-3 yarn a11y:evaluate-all-patches
 ```
 
-### Evaluate Matrix (24 Variants)
-
-```bash
-# 3 devices x 2 orientations x 2 color modes x 2 directions
-yarn a11y:evaluate-all-patches-matrix
-```
-
-Optional deterministic theme overrides:
-
-```bash
-A11Y_THEME_DEFAULT=olivero A11Y_THEME_ADMIN=claro yarn a11y:evaluate-all-patches-matrix
-```
 
 ## Deterministic Setup
 
@@ -71,25 +59,12 @@ For each patch and variant:
 - `patches/{PATCH_NAME}-evaluation.md`
 - `patches/{PATCH_NAME}-evaluation.html`
 
-Matrix mode adds variant suffixes:
-
-- `patches/{PATCH_NAME}-evaluation-{variant}.json`
-- `patches/{PATCH_NAME}-evaluation-{variant}.md`
-- `patches/{PATCH_NAME}-evaluation-{variant}.html`
-
 ### Batch Summary
 
 - `reports/PATCH-EVALUATION-SUMMARY.json`
 - `reports/PATCH-EVALUATION-SUMMARY.md`
 
-Matrix mode adds per-variant summaries:
-
-- `reports/PATCH-EVALUATION-SUMMARY-{variant}.json`
-- `reports/PATCH-EVALUATION-SUMMARY-{variant}.md`
-
-Matrix index:
-
-- `reports/PATCH-EVALUATION-MATRIX-SUMMARY.json`
+Only actionable patches should be recommended: a target violation must be observed before patching and verifiably reduced or removed after patching under the same conditions.
 
 ## Replication Evidence Captured
 
@@ -105,14 +80,6 @@ Each evaluation JSON captures:
 - Pattern and instance IDs tied to condition context
 - ID consistency validation (`idValidation`)
 - Replication workflow steps (`replication`)
-
-## Variant IDs
-
-Examples:
-
-- `desktop-landscape-light-ltr`
-- `tablet-portrait-dark-rtl`
-- `mobile-portrait-dark-rtl`
 
 ## Troubleshooting
 
@@ -144,6 +111,5 @@ ddev status
 
 - `core/tests/playwright/scripts/evaluate-patch.js`
 - `core/tests/playwright/scripts/evaluate-all-patches.js`
-- `core/tests/playwright/scripts/evaluate-all-patches-matrix.js`
 - `core/tests/playwright/scripts/lib/patch-evaluator-config.js`
 - `core/tests/playwright/scripts/lib/render-markdown-report.js`
