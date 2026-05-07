@@ -5,6 +5,7 @@
     "test:a11y-debug": "playwright test core/tests/playwright/accessibility-workflows.spec.js --debug",
     "a11y:evaluate-patch": "node core/tests/playwright/scripts/evaluate-patch.js",
     "a11y:evaluate-all-patches": "node core/tests/playwright/scripts/evaluate-all-patches.js",
+    "a11y:evaluate-all-patches-matrix": "node core/tests/playwright/scripts/evaluate-all-patches-matrix.js",
     "a11y:discover-modules": "node core/tests/playwright/scripts/discover-modules.js",
     "a11y:test-module": "node core/tests/playwright/scripts/test-module-accessibility.js",
     "a11y:analyze-modules": "node core/tests/playwright/scripts/analyze-module-impact.js",

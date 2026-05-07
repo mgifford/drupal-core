@@ -1,0 +1,331 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-002-submit-button-contrast",
+  "config": {
+    "description": "Fix primary button color contrast on admin yellow accent",
+    "wcag": [
+      "1.4.3 (AA)"
+    ],
+    "rules": [
+      "color-contrast"
+    ],
+    "patternIds": [
+      "DRU-F75A07EF"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/action-link",
+        "selectors": [
+          "button",
+          ".button"
+        ],
+        "expectedFix": "color-contrast should pass after patch",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-07T12:32:36.624Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "tablet-portrait-light-rtl",
+    "requestedColorMode": "light",
+    "requestedDirection": "rtl",
+    "requestedViewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "requestedDevice": "tablet",
+    "requestedOrientation": "portrait",
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
+  },
+  "testCases": [
+    {
+      "url": "/action-link",
+      "selectors": [
+        "a[hreflang=\"he\"]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-5990f12e",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "tablet",
+          "orientation": "portrait",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "rtl",
+          "theme": "unknown",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "tablet",
+          "orientation": "portrait",
+          "colorMode": "light",
+          "direction": "rtl",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "tablet",
+          "orientation": "portrait",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "rtl",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-action-link"
+          ]
+        },
+        "after": null
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    },
+    {
+      "url": "/admin",
+      "selectors": [
+        "a[hreflang=\"he\"]"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-b6232134",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "tablet",
+          "orientation": "portrait",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "rtl",
+          "theme": "unknown",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": false,
+            "error": "Element not found: a[hreflang=\"he\"]"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "tablet",
+          "orientation": "portrait",
+          "colorMode": "light",
+          "direction": "rtl",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "tablet",
+          "orientation": "portrait",
+          "viewport": {
+            "width": 768,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "rtl",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-F75A07EF",
+        "ruleId": "color-contrast",
+        "selectorKey": "a[hreflang=\"he\"]",
+        "concretePaths": [
+          "/action-link",
+          "/admin",
+          "/admin/appearance",
+          "/admin/content",
+          "/admin/form_style",
+          "/admin/modules",
+          "/admin/structure",
+          "/admin/structure/block",
+          "/admin/structure/taxonomy",
+          "/admin/structure/taxonomy/add",
+          "/admin/structure/types",
+          "/admin/structure/types/add",
+          "/node/add/article",
+          "/node/add/page",
+          "/search/node",
+          "/user/login",
+          "/user/password"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 2,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 0,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 0,
+    "hasCaseErrors": true,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "tablet-portrait-light-rtl",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}

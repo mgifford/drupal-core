@@ -26,7 +26,12 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T21:27:21.075Z",
+  "timestamp": "2026-05-07T02:33:18.585Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "requestedColorMode": "light",
+    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+  },
   "testCases": [
     {
       "url": "/buttons",
@@ -35,10 +40,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-cebf10f5",
+          "instance_id": "DRU-dceab886",
           "pattern_id": "DRU-CC36FB25",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/buttons",
           "selector": "#edit-submit",
           "rule_id": "tabindex"
@@ -85,6 +99,53 @@
           "violations": []
         },
         "annotated_violations": []
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        },
+        "after": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        }
       }
     }
   ],
@@ -99,7 +160,9 @@
     },
     "fixed": [],
     "new": [],
-    "resolved": false
+    "resolved": false,
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed"
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -134,7 +197,7 @@
     },
     "entries": [
       {
-        "instanceId": "DRU-cebf10f5",
+        "instanceId": "DRU-dceab886",
         "patternId": "DRU-CC36FB25",
         "ruleId": "tabindex",
         "pagePath": "/buttons",
@@ -145,8 +208,61 @@
         "beforeCount": 0,
         "afterCount": 0,
         "beforeInstanceIds": [],
-        "afterInstanceIds": []
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-buttons"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-buttons"
+            ]
+          }
+        }
       }
     ]
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
   }
 }

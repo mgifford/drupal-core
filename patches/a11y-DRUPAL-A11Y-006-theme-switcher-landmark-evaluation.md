@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-006-theme-switcher-landmark
 
-**Generated:** 2026-05-06 at 5:27:28 p.m.
+**Generated:** 2026-05-06 at 10:33:26 p.m.
 
 ## Summary
 
@@ -8,7 +8,10 @@
 - **WCAG Criteria:** 1.3.6 (AAA)
 - **Affected Rules:** region
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
-- **Status:** ❌ **FAIL** — Patch introduces new violations or does not resolve all issues
+- **Status:** ❌ **FAIL** — Patch application or evaluation encountered an error
+- **Outcome Reason:** `evaluation-or-patch-application-error`
+- **Requested color mode:** light
+- **ID consistency issues:** patterns=0, instances=0
 
 ### Pattern Coverage (From Scan Report)
 

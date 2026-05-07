@@ -19,6 +19,20 @@
 
 Project queue: https://www.drupal.org/project/issues/search?text=&projects=Drupal+core&assigned=&submitted=&project_issue_followers=&status%5B%5D=Open&issue_tags_op=%3D&issue_tags=Accessibility
 
+## Patch Mapping and Evaluation Links
+
+This report is the source of truth for discovered patterns and instance IDs. Patch-level mapping and evaluation status are tracked in companion reports:
+
+- Patch cross-reference index: [reports/patches/INDEX.md](patches/INDEX.md)
+- Batch patch evaluation summary: [reports/PATCH-EVALUATION-SUMMARY.md](PATCH-EVALUATION-SUMMARY.md)
+- Per-patch evaluation artifacts: [patches/](../patches/)
+
+How to correlate findings:
+
+1. Use **Pattern ID** and **Instance IDs** in this report.
+2. Open the matching patch evaluation under `patches/*-evaluation.md`.
+3. Compare **Pattern Coverage** and **Instance ID Coverage** to see fixed/remaining/not-observed.
+
 ## Validated Keyboard Promotion Findings
 
 | Metric | Value |

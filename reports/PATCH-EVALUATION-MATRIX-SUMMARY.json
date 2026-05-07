@@ -1,0 +1,416 @@
+{
+  "timestamp": "2026-05-07T12:11:22.807Z",
+  "totalVariants": 24,
+  "completedVariants": 24,
+  "failedVariants": 24,
+  "variants": [
+    {
+      "variantId": "desktop-landscape-light-ltr",
+      "device": "desktop",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-landscape-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-landscape-light-rtl",
+      "device": "desktop",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-landscape-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-landscape-dark-ltr",
+      "device": "desktop",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-landscape-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-landscape-dark-rtl",
+      "device": "desktop",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-landscape-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-portrait-light-ltr",
+      "device": "desktop",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1024,
+        "height": 1440
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-portrait-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-portrait-light-rtl",
+      "device": "desktop",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1024,
+        "height": 1440
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-portrait-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-portrait-dark-ltr",
+      "device": "desktop",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1024,
+        "height": 1440
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-portrait-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "desktop-portrait-dark-rtl",
+      "device": "desktop",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1024,
+        "height": 1440
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-desktop-portrait-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-landscape-light-ltr",
+      "device": "tablet",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-landscape-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-landscape-light-rtl",
+      "device": "tablet",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-landscape-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-landscape-dark-ltr",
+      "device": "tablet",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-landscape-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-landscape-dark-rtl",
+      "device": "tablet",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-landscape-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-portrait-light-ltr",
+      "device": "tablet",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-portrait-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-portrait-light-rtl",
+      "device": "tablet",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-portrait-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-portrait-dark-ltr",
+      "device": "tablet",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-portrait-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "tablet-portrait-dark-rtl",
+      "device": "tablet",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-tablet-portrait-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-landscape-light-ltr",
+      "device": "mobile",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 812,
+        "height": 375
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-landscape-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-landscape-light-rtl",
+      "device": "mobile",
+      "orientation": "landscape",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 812,
+        "height": 375
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-landscape-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-landscape-dark-ltr",
+      "device": "mobile",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 812,
+        "height": 375
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-landscape-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-landscape-dark-rtl",
+      "device": "mobile",
+      "orientation": "landscape",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 812,
+        "height": 375
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-landscape-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-portrait-light-ltr",
+      "device": "mobile",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "ltr",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-portrait-light-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-portrait-light-rtl",
+      "device": "mobile",
+      "orientation": "portrait",
+      "colorMode": "light",
+      "direction": "rtl",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-portrait-light-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-portrait-dark-ltr",
+      "device": "mobile",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "ltr",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-portrait-dark-ltr.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    },
+    {
+      "variantId": "mobile-portrait-dark-rtl",
+      "device": "mobile",
+      "orientation": "portrait",
+      "colorMode": "dark",
+      "direction": "rtl",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "exitCode": 1,
+      "summaryPath": "reports/PATCH-EVALUATION-SUMMARY-mobile-portrait-dark-rtl.json",
+      "passed": 0,
+      "inconclusive": 3,
+      "failed": 7,
+      "error": 0
+    }
+  ]
+}

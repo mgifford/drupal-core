@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-005-language-switcher-contrast
 
-**Generated:** 2026-05-06 at 5:27:27 p.m.
+**Generated:** 2026-05-06 at 10:33:24 p.m.
 
 ## Summary
 
@@ -8,7 +8,10 @@
 - **WCAG Criteria:** 1.4.3 (AA)
 - **Affected Rules:** color-contrast
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
-- **Status:** ❌ **FAIL** — Patch introduces new violations or does not resolve all issues
+- **Status:** ❌ **FAIL** — Patch application or evaluation encountered an error
+- **Outcome Reason:** `evaluation-or-patch-application-error`
+- **Requested color mode:** light
+- **ID consistency issues:** patterns=0, instances=0
 
 ### Pattern Coverage (From Scan Report)
 

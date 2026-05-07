@@ -29,7 +29,12 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T21:27:29.202Z",
+  "timestamp": "2026-05-07T02:33:26.948Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "requestedColorMode": "light",
+    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+  },
   "testCases": [
     {
       "url": "/admin/appearance",
@@ -38,10 +43,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-24101f84",
+          "instance_id": "DRU-c59ff778",
           "pattern_id": "DRU-2E022F2F",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/admin/appearance",
           "selector": ".messages--error",
           "rule_id": "landmark-contentinfo-is-top-level"
@@ -73,6 +87,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22\n"
     },
     {
@@ -82,10 +126,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-59e42664",
+          "instance_id": "DRU-53ec2bb1",
           "pattern_id": "DRU-2E022F2F",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/admin/modules",
           "selector": ".messages--error",
           "rule_id": "landmark-contentinfo-is-top-level"
@@ -116,6 +169,36 @@
         "screenshots": [],
         "html": [],
         "axe": {}
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
       },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22\n"
     },
@@ -126,10 +209,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-b18d7c4c",
+          "instance_id": "DRU-3430d034",
           "pattern_id": "DRU-1260AB7D",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/admin/appearance",
           "selector": ".messages--error",
           "rule_id": "landmark-no-duplicate-contentinfo"
@@ -161,6 +253,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22\n"
     },
     {
@@ -170,10 +292,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-31162571",
+          "instance_id": "DRU-e6e58987",
           "pattern_id": "DRU-1260AB7D",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/admin/modules",
           "selector": ".messages--error",
           "rule_id": "landmark-no-duplicate-contentinfo"
@@ -204,6 +335,36 @@
         "screenshots": [],
         "html": [],
         "axe": {}
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
       },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch:22\n"
     }
@@ -219,7 +380,9 @@
     },
     "fixed": [],
     "new": [],
-    "resolved": false
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -267,5 +430,11 @@
       "notObserved": 0
     },
     "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 2,
+    "instanceIdsSeen": 4,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
   }
 }

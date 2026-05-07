@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-003-select-all-checkbox-label
 
-**Generated:** 2026-05-06 at 5:27:20 p.m.
+**Generated:** 2026-05-06 at 10:33:18 p.m.
 
 ## Summary
 
@@ -8,7 +8,10 @@
 - **WCAG Criteria:** 1.3.1 (A)
 - **Affected Rules:** label, label-title-only
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
-- **Status:** ❌ **FAIL** — Patch introduces new violations or does not resolve all issues
+- **Status:** 🟨 **INCONCLUSIVE** — No baseline instances were observed on targeted URLs/selectors
+- **Outcome Reason:** `no-baseline-instances-observed`
+- **Requested color mode:** light
+- **ID consistency issues:** patterns=0, instances=0
 
 ### Pattern Coverage (From Scan Report)
 
@@ -32,8 +35,8 @@
 
 | Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |
 |---|---|---|---|---|---|---|
-| DRU-7d849f19 | DRU-987EB788 | label-title-only | /admin/content | not-observed | - | - |
-| DRU-404575ae | DRU-987EB788 | label-title-only | /admin/people | not-observed | - | - |
+| DRU-528caf9d | DRU-987EB788 | label-title-only | /admin/content | not-observed | - | - |
+| DRU-f3489c9a | DRU-987EB788 | label-title-only | /admin/people | not-observed | - | - |
 
 ### Violation Counts
 
@@ -51,6 +54,11 @@
 
 **Elements tested:** input[title="Select all rows in this table"]
 
+**Conditions:**
+- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","viewport":{"width":1280,"height":1024}}
+- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
+- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
+
 #### Before Patch
 
 - **Total violations:** 0
@@ -64,6 +72,11 @@
 **URL:** `http://drupal-core.ddev.site/admin/people`
 
 **Elements tested:** input[title="Select all rows in this table"]
+
+**Conditions:**
+- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","viewport":{"width":1280,"height":1024}}
+- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
+- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
 
 #### Before Patch
 

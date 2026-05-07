@@ -27,7 +27,12 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T21:27:32.034Z",
+  "timestamp": "2026-05-07T02:33:29.770Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "requestedColorMode": "light",
+    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+  },
   "testCases": [
     {
       "url": "/autocomplete",
@@ -36,10 +41,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-e80908ad",
+          "instance_id": "DRU-a723349c",
           "pattern_id": "DRU-EDB3860D",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/autocomplete",
           "selector": "th:nth-child(2)",
           "rule_id": "empty-table-header"
@@ -71,6 +85,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"\nerror: core/modules/field/templates/field-multiple-value-form.html.twig: No such file or directory\n"
     }
   ],
@@ -85,7 +129,9 @@
     },
     "fixed": [],
     "new": [],
-    "resolved": false
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -119,5 +165,11 @@
       "notObserved": 0
     },
     "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
   }
 }

@@ -28,7 +28,12 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T21:27:27.529Z",
+  "timestamp": "2026-05-07T02:33:25.221Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "requestedColorMode": "light",
+    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+  },
   "testCases": [
     {
       "url": "/",
@@ -37,10 +42,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-bf0b0697",
+          "instance_id": "DRU-2b59ef7e",
           "pattern_id": "DRU-6BA9E02D",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/",
           "selector": ".themeswitcher-form__form-item",
           "rule_id": "region"
@@ -596,10 +610,19 @@
         },
         "annotated_violations": [
           {
-            "instance_id": "DRU-191a10eb",
-            "pattern_id": "DRU-28aad6ec",
+            "instance_id": "DRU-f859e9eb",
+            "pattern_id": "DRU-b09d95da",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "p:nth-child(3) > a:nth-child(1)",
             "rule_id": "link-in-text-block",
@@ -607,10 +630,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/community\">Drupal community</a>"
           },
           {
-            "instance_id": "DRU-9f0e7120",
-            "pattern_id": "DRU-c687b49b",
+            "instance_id": "DRU-917de299",
+            "pattern_id": "DRU-4abe04a8",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "p:nth-child(3) > a:nth-child(2)",
             "rule_id": "link-in-text-block",
@@ -618,10 +650,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/about/values-and-principles\">values</a>"
           },
           {
-            "instance_id": "DRU-5da765fd",
-            "pattern_id": "DRU-ccffad39",
+            "instance_id": "DRU-66d3078c",
+            "pattern_id": "DRU-608b9981",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "ol > li:nth-child(1) > a",
             "rule_id": "link-in-text-block",
@@ -629,10 +670,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/docs/user_guide/en/index.html\">User Guide:</a>"
           },
           {
-            "instance_id": "DRU-f4fed6dc",
-            "pattern_id": "DRU-f6ac10c5",
+            "instance_id": "DRU-b26a737e",
+            "pattern_id": "DRU-6fc2c5bb",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "a[href$=\"add\"]",
             "rule_id": "link-in-text-block",
@@ -640,10 +690,19 @@
             "html_snippet": "<a href=\"/node/add\">Create Content:</a>"
           },
           {
-            "instance_id": "DRU-f27cd432",
-            "pattern_id": "DRU-2ebdfb77",
+            "instance_id": "DRU-a0b165f3",
+            "pattern_id": "DRU-b65d9fec",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "ol > li:nth-child(3) > a",
             "rule_id": "link-in-text-block",
@@ -651,10 +710,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/docs/extending-drupal\">Extend Drupal:</a>"
           },
           {
-            "instance_id": "DRU-c27710a3",
-            "pattern_id": "DRU-813f378d",
+            "instance_id": "DRU-9f45794d",
+            "pattern_id": "DRU-de0e83a4",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": ".text-content > ul > li:nth-child(1) > a",
             "rule_id": "link-in-text-block",
@@ -662,10 +730,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/community/events\">Upcoming Events:</a>"
           },
           {
-            "instance_id": "DRU-61886949",
-            "pattern_id": "DRU-ac44fa5d",
+            "instance_id": "DRU-4d134933",
+            "pattern_id": "DRU-1cca3ecb",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "ul > li:nth-child(2) > a",
             "rule_id": "link-in-text-block",
@@ -673,10 +750,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/community\">Community Page:</a>"
           },
           {
-            "instance_id": "DRU-af71c6c6",
-            "pattern_id": "DRU-b5894933",
+            "instance_id": "DRU-49881acc",
+            "pattern_id": "DRU-d0a17f04",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "a[href$=\"slack\"]",
             "rule_id": "link-in-text-block",
@@ -684,10 +770,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/slack\">Slack</a>"
           },
           {
-            "instance_id": "DRU-2d8859a8",
-            "pattern_id": "DRU-3c9bd6f7",
+            "instance_id": "DRU-845b930e",
+            "pattern_id": "DRU-25f8e5ef",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "li:nth-child(3) > a:nth-child(2)",
             "rule_id": "link-in-text-block",
@@ -695,10 +790,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/drupalchat\">DrupalChat</a>"
           },
           {
-            "instance_id": "DRU-e077d4f9",
-            "pattern_id": "DRU-095eafb9",
+            "instance_id": "DRU-72772273",
+            "pattern_id": "DRU-9e4ee555",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "a[href$=\"support\"]",
             "rule_id": "link-in-text-block",
@@ -706,10 +810,19 @@
             "html_snippet": "<a href=\"https://www.drupal.org/support\">Drupal Support</a>"
           },
           {
-            "instance_id": "DRU-88ab13dc",
-            "pattern_id": "DRU-f0f3750c",
+            "instance_id": "DRU-d22038a6",
+            "pattern_id": "DRU-f4003e00",
             "screen_type": "desktop",
+            "orientation": "landscape",
             "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
             "page_path": "/",
             "selector": "a:nth-child(4)",
             "rule_id": "link-in-text-block",
@@ -723,6 +836,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-frontpage"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark.patch:15\n"
     },
     {
@@ -732,10 +875,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-9caabeeb",
+          "instance_id": "DRU-bd57f178",
           "pattern_id": "DRU-6BA9E02D",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/action-link",
           "selector": ".themeswitcher-form__form-item",
           "rule_id": "region"
@@ -767,6 +919,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark.patch:15\n"
     }
   ],
@@ -783,7 +965,9 @@
     },
     "fixed": [],
     "new": [],
-    "resolved": false
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -869,5 +1053,11 @@
       "notObserved": 0
     },
     "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 12,
+    "instanceIdsSeen": 13,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
   }
 }

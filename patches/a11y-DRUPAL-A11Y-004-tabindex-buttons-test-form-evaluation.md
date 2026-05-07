@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form
 
-**Generated:** 2026-05-06 at 5:27:25 p.m.
+**Generated:** 2026-05-06 at 10:33:23 p.m.
 
 ## Summary
 
@@ -8,7 +8,10 @@
 - **WCAG Criteria:** 2.1.1 (A)
 - **Affected Rules:** tabindex
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
-- **Status:** ❌ **FAIL** — Patch introduces new violations or does not resolve all issues
+- **Status:** 🟨 **INCONCLUSIVE** — No baseline instances were observed on targeted URLs/selectors
+- **Outcome Reason:** `no-baseline-instances-observed`
+- **Requested color mode:** light
+- **ID consistency issues:** patterns=0, instances=0
 
 ### Pattern Coverage (From Scan Report)
 
@@ -32,7 +35,7 @@
 
 | Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |
 |---|---|---|---|---|---|---|
-| DRU-cebf10f5 | DRU-CC36FB25 | tabindex | /buttons | not-observed | - | - |
+| DRU-dceab886 | DRU-CC36FB25 | tabindex | /buttons | not-observed | - | - |
 
 ### Violation Counts
 
@@ -49,6 +52,11 @@
 **URL:** `http://drupal-core.ddev.site/buttons`
 
 **Elements tested:** #edit-submit
+
+**Conditions:**
+- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","viewport":{"width":1280,"height":1024}}
+- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
+- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
 
 #### Before Patch
 

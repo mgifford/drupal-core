@@ -1,0 +1,325 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-001-file-widget-display-labels",
+  "config": {
+    "description": "Add aria-label to file widget display checkboxes",
+    "wcag": [
+      "1.3.1 (A)"
+    ],
+    "rules": [
+      "label"
+    ],
+    "patternIds": [
+      "DRU-6CA3D5EB"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/contact/imagefile_file",
+        "selectors": [
+          "[name*=\"display\"]"
+        ],
+        "expectedFix": "Checkboxes should have accessible names (aria-label)",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-07T12:40:34.007Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "mobile-landscape-dark-ltr",
+    "requestedColorMode": "dark",
+    "requestedDirection": "ltr",
+    "requestedViewport": {
+      "width": 812,
+      "height": 375
+    },
+    "requestedDevice": "mobile",
+    "requestedOrientation": "landscape",
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
+  },
+  "testCases": [
+    {
+      "url": "/contact/imagefile_file",
+      "selectors": [
+        "#edit-imagefile-file-limited-N-display"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-5dc26c96",
+          "pattern_id": "DRU-6CA3D5EB",
+          "screen_type": "mobile",
+          "orientation": "landscape",
+          "color_mode": "dark",
+          "color_scheme_detected": "dark",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 812,
+            "height": 375
+          },
+          "language": "en",
+          "page_path": "/contact/imagefile_file",
+          "selector": "#edit-imagefile-file-limited-N-display",
+          "rule_id": "label"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-imagefile-file-limited-N-display"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-imagefile-file-limited-N-display",
+            "success": false,
+            "error": "Element not found: #edit-imagefile-file-limited-N-display"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-imagefile-file-limited-N-display"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-imagefile-file-limited-N-display",
+            "success": false,
+            "error": "Element not found: #edit-imagefile-file-limited-N-display"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "mobile",
+          "orientation": "landscape",
+          "colorMode": "dark",
+          "direction": "ltr",
+          "viewport": {
+            "width": 812,
+            "height": 375
+          }
+        },
+        "before": {
+          "screenType": "mobile",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 812,
+            "height": 375
+          },
+          "colorMode": "dark",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "dark",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-contact"
+          ]
+        },
+        "after": {
+          "screenType": "mobile",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 812,
+            "height": 375
+          },
+          "colorMode": "dark",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "dark",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-contact"
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed"
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-6CA3D5EB",
+        "ruleId": "label",
+        "selectorKey": "#edit-imagefile-file-limited-N-display",
+        "concretePaths": [
+          "/contact/imagefile_file"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 1
+    },
+    "entries": [
+      {
+        "instanceId": "DRU-5dc26c96",
+        "patternId": "DRU-6CA3D5EB",
+        "ruleId": "label",
+        "pagePath": "/contact/imagefile_file",
+        "selector": "#edit-imagefile-file-limited-N-display",
+        "status": "not-observed",
+        "seenBefore": false,
+        "seenAfter": false,
+        "beforeCount": 0,
+        "afterCount": 0,
+        "beforeInstanceIds": [],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "mobile",
+            "orientation": "landscape",
+            "colorMode": "dark",
+            "direction": "ltr",
+            "viewport": {
+              "width": 812,
+              "height": 375
+            }
+          },
+          "before": {
+            "screenType": "mobile",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 812,
+              "height": 375
+            },
+            "colorMode": "dark",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "dark",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-contact"
+            ]
+          },
+          "after": {
+            "screenType": "mobile",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 812,
+              "height": 375
+            },
+            "colorMode": "dark",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "dark",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-contact"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 1,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 1,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "mobile-landscape-dark-ltr",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-001-file-widget-display-labels.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-001-file-widget-display-labels.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-001-file-widget-display-labels.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}

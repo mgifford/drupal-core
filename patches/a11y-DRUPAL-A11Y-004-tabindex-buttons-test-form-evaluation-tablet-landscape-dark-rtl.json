@@ -1,0 +1,325 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form",
+  "config": {
+    "description": "Remove explicit tabindex from buttons on test form",
+    "wcag": [
+      "2.1.1 (A)"
+    ],
+    "rules": [
+      "tabindex"
+    ],
+    "patternIds": [
+      "DRU-CC36FB25"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/buttons",
+        "selectors": [
+          "button[tabindex]"
+        ],
+        "expectedFix": "Buttons should not have tabindex > 0",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-07T12:29:52.366Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "tablet-landscape-dark-rtl",
+    "requestedColorMode": "dark",
+    "requestedDirection": "rtl",
+    "requestedViewport": {
+      "width": 1024,
+      "height": 768
+    },
+    "requestedDevice": "tablet",
+    "requestedOrientation": "landscape",
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
+  },
+  "testCases": [
+    {
+      "url": "/buttons",
+      "selectors": [
+        "#edit-submit"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-068d9176",
+          "pattern_id": "DRU-CC36FB25",
+          "screen_type": "tablet",
+          "orientation": "landscape",
+          "color_mode": "dark",
+          "color_scheme_detected": "dark",
+          "direction": "rtl",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "language": "en",
+          "page_path": "/buttons",
+          "selector": "#edit-submit",
+          "rule_id": "tabindex"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-submit",
+            "success": false,
+            "error": "Element not found: #edit-submit"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "tablet",
+          "orientation": "landscape",
+          "colorMode": "dark",
+          "direction": "rtl",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          }
+        },
+        "before": {
+          "screenType": "tablet",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "colorMode": "dark",
+          "direction": "rtl",
+          "language": "en",
+          "colorSchemeDetected": "dark",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        },
+        "after": {
+          "screenType": "tablet",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "colorMode": "dark",
+          "direction": "rtl",
+          "language": "en",
+          "colorSchemeDetected": "dark",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-buttons"
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed"
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-CC36FB25",
+        "ruleId": "tabindex",
+        "selectorKey": "#edit-submit",
+        "concretePaths": [
+          "/buttons"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 1
+    },
+    "entries": [
+      {
+        "instanceId": "DRU-068d9176",
+        "patternId": "DRU-CC36FB25",
+        "ruleId": "tabindex",
+        "pagePath": "/buttons",
+        "selector": "#edit-submit",
+        "status": "not-observed",
+        "seenBefore": false,
+        "seenAfter": false,
+        "beforeCount": 0,
+        "afterCount": 0,
+        "beforeInstanceIds": [],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "tablet",
+            "orientation": "landscape",
+            "colorMode": "dark",
+            "direction": "rtl",
+            "viewport": {
+              "width": 1024,
+              "height": 768
+            }
+          },
+          "before": {
+            "screenType": "tablet",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1024,
+              "height": 768
+            },
+            "colorMode": "dark",
+            "direction": "rtl",
+            "language": "en",
+            "colorSchemeDetected": "dark",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-buttons"
+            ]
+          },
+          "after": {
+            "screenType": "tablet",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1024,
+              "height": 768
+            },
+            "colorMode": "dark",
+            "direction": "rtl",
+            "language": "en",
+            "colorSchemeDetected": "dark",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "path-buttons"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 1,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 1,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "tablet-landscape-dark-rtl",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}

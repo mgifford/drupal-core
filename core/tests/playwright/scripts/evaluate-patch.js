@@ -26,14 +26,15 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { execSync, exec } = require('child_process');
+const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { injectAxe, getViolations } = require('axe-playwright');
 const config = require('./lib/patch-evaluator-config');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const patchName = process.argv[2];
+const argv = process.argv.slice(2);
+const patchName = argv[0];
 if (!patchName) {
   console.error('Usage: node evaluate-patch.js <patch-name>');
   console.error('Example: node evaluate-patch.js a11y-DRUPAL-A11Y-002-submit-button-contrast');
@@ -52,6 +53,16 @@ const REPORTS_DIR = path.resolve(__dirname, '../../../..', 'reports');
 const REPO_ROOT = path.resolve(__dirname, '../../../..');
 const BASE_URL = 'http://drupal-core.ddev.site';
 const PATCH_FILE = path.join(PATCHES_DIR, `${patchName}.patch`);
+const variantIdRaw = process.env.A11Y_VARIANT_ID || 'default';
+const variantId = String(variantIdRaw).replace(/[^a-zA-Z0-9._-]/g, '-');
+const outputSuffix = variantId === 'default' ? '' : `-${variantId}`;
+const configuredColorMode = (process.env.A11Y_COLOR_MODE || 'light').toLowerCase() === 'dark' ? 'dark' : 'light';
+const configuredDirection = (process.env.A11Y_DIRECTION || 'ltr').toLowerCase() === 'rtl' ? 'rtl' : 'ltr';
+const configuredViewportRaw = process.env.A11Y_VIEWPORT || '';
+const configuredDevice = process.env.A11Y_DEVICE || null;
+const configuredOrientation = process.env.A11Y_ORIENTATION || null;
+const configuredThemeDefault = process.env.A11Y_THEME_DEFAULT || 'olivero';
+const configuredThemeAdmin = process.env.A11Y_THEME_ADMIN || 'claro';
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
 
@@ -59,11 +70,82 @@ function log(msg) {
   console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
 }
 
+function parseViewport(input) {
+  const match = String(input || '').match(/^(\d+)x(\d+)$/i);
+  if (!match) {
+    return null;
+  }
+  return {
+    width: Number(match[1]),
+    height: Number(match[2]),
+  };
+}
+
+function getConfiguredViewport() {
+  return parseViewport(configuredViewportRaw);
+}
+
+function isValidThemeName(name) {
+  return /^[a-zA-Z0-9_]+$/.test(String(name || ''));
+}
+
+function setupDeterministicThemes() {
+  const result = {
+    requested: {
+      default: configuredThemeDefault,
+      admin: configuredThemeAdmin,
+    },
+    commands: [],
+    detected: null,
+    success: true,
+    error: null,
+  };
+
+  if (!isValidThemeName(configuredThemeDefault) || !isValidThemeName(configuredThemeAdmin)) {
+    result.success = false;
+    result.error = 'Invalid theme machine name configured via environment variables.';
+    return result;
+  }
+
+  const commands = [
+    `ddev drush cset system.theme default ${configuredThemeDefault} -y`,
+    `ddev drush cset system.theme admin ${configuredThemeAdmin} -y`,
+    'ddev drush cache-rebuild',
+    'ddev drush cget system.theme --format=json',
+  ];
+
+  try {
+    for (const command of commands) {
+      result.commands.push(command);
+      const output = execSync(command, { cwd: REPO_ROOT, stdio: 'pipe' }).toString();
+      if (command.includes('cget system.theme')) {
+        try {
+          result.detected = JSON.parse(output);
+        } catch {
+          result.detected = { raw: output.trim() };
+        }
+      }
+    }
+  } catch (err) {
+    result.success = false;
+    result.error = err.message;
+  }
+
+  return result;
+}
+
 function detectScreenType(viewport) {
   if (!viewport || typeof viewport.width !== 'number') {
     return 'desktop';
   }
   return viewport.width < 768 ? 'mobile' : 'desktop';
+}
+
+function detectOrientation(viewport) {
+  if (!viewport || typeof viewport.width !== 'number' || typeof viewport.height !== 'number') {
+    return 'unknown';
+  }
+  return viewport.width >= viewport.height ? 'landscape' : 'portrait';
 }
 
 function normalizeSelector(target) {
@@ -77,18 +159,48 @@ function shortHash(input) {
   return crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
 }
 
-function generateInstanceId(pagePath, selector, ruleId, screenType, prefix = 'DRU') {
-  return `${prefix}-${shortHash(`${pagePath}|${selector}|${ruleId}|${screenType}`)}`;
+function generateInstanceId(pagePath, selector, ruleId, context, prefix = 'DRU') {
+  const ctx = context || {};
+  return `${prefix}-${shortHash([
+    pagePath,
+    selector,
+    ruleId,
+    ctx.screenType || 'unknown',
+    ctx.orientation || 'unknown',
+    ctx.colorMode || 'unknown',
+    ctx.direction || 'unknown',
+    ctx.theme || 'unknown',
+  ].join('|'))}`;
 }
 
-function generatePatternId(selector, ruleId, screenType, prefix = 'DRU') {
-  return `${prefix}-${shortHash(`${selector}|${ruleId}|${screenType}`)}`;
+function generatePatternId(selector, ruleId, context, prefix = 'DRU') {
+  const ctx = context || {};
+  return `${prefix}-${shortHash([
+    selector,
+    ruleId,
+    ctx.screenType || 'unknown',
+    ctx.orientation || 'unknown',
+    ctx.colorMode || 'unknown',
+    ctx.direction || 'unknown',
+    ctx.theme || 'unknown',
+  ].join('|'))}`;
 }
 
-function annotateViolations(violations, pagePath, screenType, colorMode = 'light', prefix = 'DRU') {
+function annotateViolations(violations, pagePath, context, prefix = 'DRU') {
   if (!Array.isArray(violations)) {
     return [];
   }
+
+  const normalizedContext = {
+    screenType: context?.screenType || 'desktop',
+    orientation: context?.orientation || 'landscape',
+    colorMode: context?.colorMode || 'light',
+    direction: context?.direction || 'ltr',
+    theme: context?.theme || 'unknown',
+    viewport: context?.viewport || null,
+    colorSchemeDetected: context?.colorSchemeDetected || context?.colorMode || 'light',
+    language: context?.language || null,
+  };
 
   return violations.flatMap((violation) => {
     const ruleId = violation.id;
@@ -96,10 +208,16 @@ function annotateViolations(violations, pagePath, screenType, colorMode = 'light
     return nodes.map((node) => {
       const selector = normalizeSelector(node.target);
       return {
-        instance_id: generateInstanceId(pagePath, selector, ruleId, screenType, prefix),
-        pattern_id: generatePatternId(selector, ruleId, screenType, prefix),
-        screen_type: screenType,
-        color_mode: colorMode,
+        instance_id: generateInstanceId(pagePath, selector, ruleId, normalizedContext, prefix),
+        pattern_id: generatePatternId(selector, ruleId, normalizedContext, prefix),
+        screen_type: normalizedContext.screenType,
+        orientation: normalizedContext.orientation,
+        color_mode: normalizedContext.colorMode,
+        color_scheme_detected: normalizedContext.colorSchemeDetected,
+        direction: normalizedContext.direction,
+        theme: normalizedContext.theme,
+        viewport: normalizedContext.viewport,
+        language: normalizedContext.language,
         page_path: pagePath,
         selector,
         rule_id: ruleId,
@@ -114,19 +232,34 @@ function buildExpectedTargets(
   pagePath,
   selectors,
   rules,
-  screenType,
-  colorMode = 'light',
+  context,
   prefix = 'DRU',
   explicitPatternId = null,
 ) {
+  const normalizedContext = {
+    screenType: context?.screenType || 'desktop',
+    orientation: context?.orientation || 'landscape',
+    colorMode: context?.colorMode || 'light',
+    direction: context?.direction || 'ltr',
+    theme: context?.theme || 'unknown',
+    viewport: context?.viewport || null,
+    colorSchemeDetected: context?.colorSchemeDetected || context?.colorMode || 'light',
+    language: context?.language || null,
+  };
   const targets = [];
   for (const selector of selectors || []) {
     for (const ruleId of rules || []) {
       targets.push({
-        instance_id: generateInstanceId(pagePath, selector, ruleId, screenType, prefix),
-        pattern_id: explicitPatternId || generatePatternId(selector, ruleId, screenType, prefix),
-        screen_type: screenType,
-        color_mode: colorMode,
+        instance_id: generateInstanceId(pagePath, selector, ruleId, normalizedContext, prefix),
+        pattern_id: explicitPatternId || generatePatternId(selector, ruleId, normalizedContext, prefix),
+        screen_type: normalizedContext.screenType,
+        orientation: normalizedContext.orientation,
+        color_mode: normalizedContext.colorMode,
+        color_scheme_detected: normalizedContext.colorSchemeDetected,
+        direction: normalizedContext.direction,
+        theme: normalizedContext.theme,
+        viewport: normalizedContext.viewport,
+        language: normalizedContext.language,
         page_path: pagePath,
         selector,
         rule_id: ruleId,
@@ -189,6 +322,130 @@ async function runAxeScan(page) {
   }
 }
 
+async function collectRuntimeConditions(page, requested) {
+  const viewport = page.viewportSize();
+  const runtime = await page.evaluate(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const classList = body ? Array.from(body.classList) : [];
+    const themeClass = classList.find((c) => c.startsWith('theme-')) || null;
+    const styleLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map((l) => l.getAttribute('href') || '');
+    const themeFromHref = styleLinks
+      .map((href) => {
+        const m = href.match(/\/themes\/([^/]+)\//);
+        return m ? m[1] : null;
+      })
+      .find(Boolean);
+    return {
+      direction: html?.getAttribute('dir') || getComputedStyle(html).direction || 'ltr',
+      language: html?.getAttribute('lang') || null,
+      colorSchemeDetected: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+      prefersContrast: window.matchMedia && window.matchMedia('(prefers-contrast: more)').matches ? 'more' : 'no-preference',
+      forcedColors: window.matchMedia && window.matchMedia('(forced-colors: active)').matches ? 'active' : 'none',
+      themeClass,
+      themeFromHref,
+      bodyClasses: classList,
+    };
+  });
+
+  return {
+    screenType: requested.screenType,
+    orientation: requested.orientation,
+    viewport,
+    colorMode: requested.colorMode,
+    direction: runtime.direction || 'ltr',
+    language: runtime.language,
+    colorSchemeDetected: runtime.colorSchemeDetected || requested.colorMode,
+    prefersContrast: runtime.prefersContrast || 'no-preference',
+    forcedColors: runtime.forcedColors || 'none',
+    theme: runtime.themeClass || runtime.themeFromHref || 'unknown',
+    bodyClasses: runtime.bodyClasses || [],
+  };
+}
+
+async function applyConditionOverrides(page, requested) {
+  await page.emulateMedia({ colorScheme: requested.colorMode === 'dark' ? 'dark' : 'light' });
+  if (requested.direction === 'rtl') {
+    await page.evaluate(() => {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.style.direction = 'rtl';
+      if (document.body) {
+        document.body.setAttribute('dir', 'rtl');
+        document.body.style.direction = 'rtl';
+      }
+    });
+  } else {
+    await page.evaluate(() => {
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.style.direction = 'ltr';
+      if (document.body) {
+        document.body.setAttribute('dir', 'ltr');
+        document.body.style.direction = 'ltr';
+      }
+    });
+  }
+}
+
+function validateIdConsistency(testCases) {
+  const patternMap = new Map();
+  const instanceMap = new Map();
+
+  const register = (map, id, signature) => {
+    if (!id) {
+      return;
+    }
+    if (!map.has(id)) {
+      map.set(id, new Set());
+    }
+    map.get(id).add(signature);
+  };
+
+  for (const testCase of testCases) {
+    const containers = [
+      ...(testCase?.before?.annotated_violations || []),
+      ...(testCase?.after?.annotated_violations || []),
+      ...(testCase?.expected_targets || []),
+    ];
+    for (const item of containers) {
+      const patternSignature = [
+        item.rule_id,
+        item.selector,
+        item.screen_type,
+        item.orientation,
+        item.color_mode,
+        item.direction,
+        item.theme,
+      ].join('|');
+      const instanceSignature = [
+        item.rule_id,
+        item.selector,
+        item.page_path,
+        item.screen_type,
+        item.orientation,
+        item.color_mode,
+        item.direction,
+        item.theme,
+      ].join('|');
+      register(patternMap, item.pattern_id, patternSignature);
+      register(instanceMap, item.instance_id, instanceSignature);
+    }
+  }
+
+  const inconsistentPatternIds = Array.from(patternMap.entries())
+    .filter(([, signatures]) => signatures.size > 1)
+    .map(([id, signatures]) => ({ id, signatures: Array.from(signatures) }));
+  const inconsistentInstanceIds = Array.from(instanceMap.entries())
+    .filter(([, signatures]) => signatures.size > 1)
+    .map(([id, signatures]) => ({ id, signatures: Array.from(signatures) }));
+
+  return {
+    patternIdsSeen: patternMap.size,
+    instanceIdsSeen: instanceMap.size,
+    inconsistentPatternIds,
+    inconsistentInstanceIds,
+  };
+}
+
 function applyPatch() {
   try {
     log(`Applying patch: ${PATCH_FILE}`);
@@ -202,9 +459,9 @@ function applyPatch() {
 
 function resetPatch() {
   try {
-    log('Resetting code to original state');
-    execSync(`git checkout -- .`, { cwd: REPO_ROOT, stdio: 'pipe' });
-    log('Code reset successfully');
+    log('Reverting applied patch');
+    execSync(`git apply -R "${PATCH_FILE}"`, { cwd: REPO_ROOT, stdio: 'pipe' });
+    log('Patch reverted successfully');
     return { success: true };
   } catch (err) {
     return { success: false, error: err.message };
@@ -335,11 +592,24 @@ function findTargetMatches(annotatedViolations, target) {
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage();
+  const configuredViewport = getConfiguredViewport();
+  const themeSetup = setupDeterministicThemes();
 
   const evaluation = {
     patch: patchName,
     config: patchConfig,
     timestamp: new Date().toISOString(),
+    runContext: {
+      baseUrl: BASE_URL,
+      variantId,
+      requestedColorMode: configuredColorMode,
+      requestedDirection: configuredDirection,
+      requestedViewport: configuredViewport,
+      requestedDevice: configuredDevice,
+      requestedOrientation: configuredOrientation,
+      deterministicThemeSetup: themeSetup,
+      note: 'Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test.',
+    },
     testCases: [],
     summary: {
       before: { total: 0, byRule: {} },
@@ -347,6 +617,8 @@ function findTargetMatches(annotatedViolations, target) {
       fixed: [],
       new: [],
       resolved: false,
+      outcome: 'fail',
+      outcomeReason: 'not-evaluated',
     },
     patternReport: {
       source: null,
@@ -369,6 +641,12 @@ function findTargetMatches(annotatedViolations, target) {
       },
       entries: [],
     },
+    idValidation: {
+      patternIdsSeen: 0,
+      instanceIdsSeen: 0,
+      inconsistentPatternIds: [],
+      inconsistentInstanceIds: [],
+    },
   };
 
   const patternReport = loadPatternReport();
@@ -379,6 +657,15 @@ function findTargetMatches(annotatedViolations, target) {
         .map((patternId) => patternReport.patterns.find((p) => p.patternId === patternId))
         .filter(Boolean)
     : [];
+
+  if (!themeSetup.success) {
+    evaluation.summary.outcome = 'fail';
+    evaluation.summary.outcomeReason = 'theme-setup-failed';
+    const jsonPath = path.join(PATCHES_DIR, `${patchName}-evaluation${outputSuffix}.json`);
+    fs.writeFileSync(jsonPath, JSON.stringify(evaluation, null, 2));
+    log(`❌ Theme setup failed: ${themeSetup.error}`);
+    process.exit(1);
+  }
 
   try {
     for (const testCase of testCases) {
@@ -395,23 +682,39 @@ function findTargetMatches(annotatedViolations, target) {
         await page.setViewportSize(testCase.viewport);
       }
 
-      const screenType = detectScreenType(testCase.viewport);
+      const effectiveViewport = configuredViewport || testCase.viewport || page.viewportSize() || { width: 1280, height: 1024 };
+      await page.setViewportSize(effectiveViewport);
+      const screenType = configuredDevice || detectScreenType(effectiveViewport);
+      const orientation = configuredOrientation || detectOrientation(effectiveViewport);
       const pagePath = testCase.url;
-      const colorMode = 'light';
-      const caseRules = testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules;
-      testResult.expected_targets = buildExpectedTargets(
-        pagePath,
-        testCase.selectors,
-        caseRules,
+      const requestedConditions = {
         screenType,
-        colorMode,
-        'DRU',
-        testCase.sourcePatternId || null,
-      );
+        orientation,
+        colorMode: configuredColorMode,
+        direction: configuredDirection,
+        viewport: effectiveViewport,
+      };
+      const caseRules = testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules;
+      testResult.conditions = {
+        requested: requestedConditions,
+        before: null,
+        after: null,
+      };
 
       // ── BEFORE: Take screenshots, capture HTML, run axe ──────────────────
       log(`Navigating to ${testCase.url}`);
       await page.goto(`${BASE_URL}${testCase.url}`, { waitUntil: 'networkidle' });
+      await applyConditionOverrides(page, requestedConditions);
+      const beforeConditions = await collectRuntimeConditions(page, requestedConditions);
+      testResult.conditions.before = beforeConditions;
+      testResult.expected_targets = buildExpectedTargets(
+        pagePath,
+        testCase.selectors,
+        caseRules,
+        beforeConditions,
+        'DRU',
+        testCase.sourcePatternId || null,
+      );
 
       for (const selector of testCase.selectors) {
         log(`  Capturing before state: ${selector}`);
@@ -432,8 +735,7 @@ function findTargetMatches(annotatedViolations, target) {
       testResult.before.annotated_violations = annotateViolations(
         testResult.before.axe.violations,
         pagePath,
-        screenType,
-        colorMode,
+        beforeConditions,
       );
       evaluation.summary.before.total += testResult.before.axe.total;
       for (const [rule, count] of Object.entries(testResult.before.axe.byRule)) {
@@ -452,7 +754,11 @@ function findTargetMatches(annotatedViolations, target) {
       if (!cacheResult.success) {
         testResult.error = `Cache clear failed: ${cacheResult.error}`;
         evaluation.testCases.push(testResult);
-        resetPatch();
+        const resetAfterCacheFailure = resetPatch();
+        if (!resetAfterCacheFailure.success) {
+          testResult.error = `${testResult.error}; reset failed: ${resetAfterCacheFailure.error}`;
+          break;
+        }
         continue;
       }
 
@@ -462,6 +768,9 @@ function findTargetMatches(annotatedViolations, target) {
       // ── AFTER: Take screenshots, capture HTML, run axe ────────────────────
       log(`Navigating to ${testCase.url} (after patch)`);
       await page.goto(`${BASE_URL}${testCase.url}`, { waitUntil: 'networkidle', timeout: 60000 });
+      await applyConditionOverrides(page, requestedConditions);
+      const afterConditions = await collectRuntimeConditions(page, requestedConditions);
+      testResult.conditions.after = afterConditions;
 
       for (const selector of testCase.selectors) {
         log(`  Capturing after state: ${selector}`);
@@ -482,8 +791,7 @@ function findTargetMatches(annotatedViolations, target) {
       testResult.after.annotated_violations = annotateViolations(
         testResult.after.axe.violations,
         pagePath,
-        screenType,
-        colorMode,
+        afterConditions,
       );
       evaluation.summary.after.total += testResult.after.axe.total;
       for (const [rule, count] of Object.entries(testResult.after.axe.byRule)) {
@@ -545,6 +853,11 @@ function findTargetMatches(annotatedViolations, target) {
           afterCount: afterIds.length,
           beforeInstanceIds: beforeIds,
           afterInstanceIds: afterIds,
+          conditions: {
+            requested: testResult.conditions.requested,
+            before: testResult.conditions.before,
+            after: testResult.conditions.after,
+          },
         });
       }
 
@@ -552,6 +865,8 @@ function findTargetMatches(annotatedViolations, target) {
       const resetResult = resetPatch();
       if (!resetResult.success) {
         testResult.error = `Code reset failed: ${resetResult.error}`;
+        evaluation.testCases.push(testResult);
+        break;
       }
 
       evaluation.testCases.push(testResult);
@@ -610,12 +925,63 @@ function findTargetMatches(annotatedViolations, target) {
     evaluation.instanceReport.summary.notObserved = evaluation.instanceReport.entries.filter(
       (entry) => entry.status === 'not-observed',
     ).length;
+    evaluation.idValidation = validateIdConsistency(evaluation.testCases);
+
+    const validationEvidence = {
+      targetedInstances: evaluation.instanceReport.summary.targeted,
+      baselineObservedInstances: evaluation.instanceReport.summary.observedBefore,
+      fixedInstances: evaluation.instanceReport.summary.fixed,
+      remainingInstances: evaluation.instanceReport.summary.remaining,
+      notObservedInstances: evaluation.instanceReport.summary.notObserved,
+      hasCaseErrors: evaluation.testCases.some((tc) => Boolean(tc.error)),
+      introducedNewViolations: evaluation.summary.new.length,
+    };
+    evaluation.validationEvidence = validationEvidence;
+    evaluation.replication = {
+      variantId,
+      patchFile: PATCH_FILE,
+      setupSteps: [
+        `ddev drush cset system.theme default ${configuredThemeDefault} -y`,
+        `ddev drush cset system.theme admin ${configuredThemeAdmin} -y`,
+        'ddev drush cache-rebuild',
+      ],
+      testFlow: [
+        'Navigate to each test case URL under requested conditions and capture baseline evidence.',
+        `Apply patch with: git apply "${PATCH_FILE}"`,
+        'Clear Drupal cache with: ddev drush cache-rebuild',
+        'Revisit same URL + conditions and capture post-patch evidence.',
+        `Revert patch with: git apply -R "${PATCH_FILE}"`,
+      ],
+      expectedProof: 'Problem must be observed before patch and not observed after patch under the same recorded conditions.',
+    };
 
     // ── Generate report ──────────────────────────────────────────────────────
-    evaluation.summary.resolved = evaluation.summary.new.length === 0 && evaluation.summary.fixed.length > 0;
+    evaluation.summary.resolved =
+      validationEvidence.baselineObservedInstances > 0
+      && validationEvidence.fixedInstances > 0
+      && validationEvidence.remainingInstances === 0
+      && validationEvidence.introducedNewViolations === 0;
+    const hasCaseErrors = validationEvidence.hasCaseErrors;
+
+    if (evaluation.summary.resolved) {
+      evaluation.summary.outcome = 'pass';
+      evaluation.summary.outcomeReason = 'targeted-issues-fixed-without-regressions';
+    } else if (hasCaseErrors) {
+      evaluation.summary.outcome = 'fail';
+      evaluation.summary.outcomeReason = 'evaluation-or-patch-application-error';
+    } else if (evaluation.summary.new.length > 0) {
+      evaluation.summary.outcome = 'fail';
+      evaluation.summary.outcomeReason = 'new-violations-introduced';
+    } else if (validationEvidence.baselineObservedInstances === 0) {
+      evaluation.summary.outcome = 'inconclusive';
+      evaluation.summary.outcomeReason = 'no-baseline-instances-observed';
+    } else {
+      evaluation.summary.outcome = 'fail';
+      evaluation.summary.outcomeReason = 'targeted-instances-not-fixed';
+    }
 
     const lines = [];
-    lines.push(`# Patch Evaluation Report: ${patchName}`);
+    lines.push(`# Patch Evaluation Report: ${patchName}${outputSuffix}`);
     lines.push('');
     lines.push(`**Generated:** ${new Date().toLocaleDateString('en-CA')} at ${new Date().toLocaleTimeString()}`);
     lines.push('');
@@ -627,8 +993,50 @@ function findTargetMatches(annotatedViolations, target) {
     if (evaluation.patternReport.source) {
       lines.push(`- **Pattern Source:** ${evaluation.patternReport.source.replace(`${REPO_ROOT}/`, '')}`);
     }
-    lines.push(`- **Status:** ${evaluation.summary.resolved ? '✅ **PASS** — Patch resolves the issues without introducing new violations' : '❌ **FAIL** — Patch introduces new violations or does not resolve all issues'}`);
+    const statusLine =
+      evaluation.summary.outcome === 'pass'
+        ? '✅ **PASS** — Patch resolves targeted issues without introducing new violations'
+        : evaluation.summary.outcome === 'inconclusive'
+          ? '🟨 **INCONCLUSIVE** — No baseline instances were observed on targeted URLs/selectors'
+          : evaluation.summary.outcomeReason === 'evaluation-or-patch-application-error'
+            ? '❌ **FAIL** — Patch application or evaluation encountered an error'
+            : evaluation.summary.outcomeReason === 'new-violations-introduced'
+              ? '❌ **FAIL** — Patch introduced new accessibility violations'
+              : '❌ **FAIL** — Patch did not fix the targeted issues';
+    lines.push(`- **Status:** ${statusLine}`);
+    lines.push(`- **Outcome Reason:** \`${evaluation.summary.outcomeReason}\``);
+    lines.push(`- **Requested color mode:** ${evaluation.runContext.requestedColorMode}`);
+    lines.push(`- **ID consistency issues:** patterns=${evaluation.idValidation.inconsistentPatternIds.length}, instances=${evaluation.idValidation.inconsistentInstanceIds.length}`);
+    lines.push(`- **Baseline observed instances:** ${evaluation.validationEvidence.baselineObservedInstances}`);
+    lines.push(`- **Fixed instances after patch:** ${evaluation.validationEvidence.fixedInstances}`);
+    lines.push(`- **Remaining instances after patch:** ${evaluation.validationEvidence.remainingInstances}`);
     lines.push('');
+    lines.push('### Replication Instructions');
+    lines.push('');
+    lines.push('Use the following deterministic steps to reproduce this exact evaluation run:');
+    lines.push('');
+    for (const step of evaluation.replication.setupSteps) {
+      lines.push(`- Setup: \`${step}\``);
+    }
+    for (const step of evaluation.replication.testFlow) {
+      lines.push(`- Flow: ${step}`);
+    }
+    lines.push(`- Variant ID: \`${evaluation.replication.variantId}\``);
+    lines.push(`- Expected proof: ${evaluation.replication.expectedProof}`);
+    lines.push('');
+
+    if (evaluation.validationEvidence.baselineObservedInstances > 0 && evaluation.validationEvidence.fixedInstances > 0 && evaluation.validationEvidence.remainingInstances === 0) {
+      lines.push('### Validation Proof (Before/After)');
+      lines.push('');
+      lines.push('This run captured the target violation before patch application and confirmed it was absent after patch application under the same recorded conditions.');
+      lines.push('');
+      lines.push(`- Baseline observed: ${evaluation.validationEvidence.baselineObservedInstances}`);
+      lines.push(`- Fixed after patch: ${evaluation.validationEvidence.fixedInstances}`);
+      lines.push(`- Remaining after patch: ${evaluation.validationEvidence.remainingInstances}`);
+      lines.push(`- New violations introduced: ${evaluation.validationEvidence.introducedNewViolations}`);
+      lines.push('');
+    }
+
     if (evaluation.patternReport.matchedPatterns.length > 0) {
       lines.push('### Pattern Coverage (From Scan Report)');
       lines.push('');
@@ -706,6 +1114,13 @@ function findTargetMatches(annotatedViolations, target) {
       lines.push(`**URL:** \`${BASE_URL}${tc.url}\``);
       lines.push('');
       lines.push(`**Elements tested:** ${tc.selectors.join(', ')}`);
+      if (tc.conditions) {
+        lines.push('');
+        lines.push('**Conditions:**');
+        lines.push(`- Requested: ${JSON.stringify(tc.conditions.requested)}`);
+        lines.push(`- Before: ${JSON.stringify(tc.conditions.before)}`);
+        lines.push(`- After: ${JSON.stringify(tc.conditions.after)}`);
+      }
       lines.push('');
       lines.push('#### Before Patch');
       lines.push('');
@@ -740,12 +1155,12 @@ function findTargetMatches(annotatedViolations, target) {
     lines.push('');
 
     const md = lines.join('\n');
-    const reportPath = path.join(PATCHES_DIR, `${patchName}-evaluation.md`);
+    const reportPath = path.join(PATCHES_DIR, `${patchName}-evaluation${outputSuffix}.md`);
     fs.writeFileSync(reportPath, md);
     log(`\n✅ Report written to ${reportPath}`);
 
     // JSON data file
-    const jsonPath = path.join(PATCHES_DIR, `${patchName}-evaluation.json`);
+    const jsonPath = path.join(PATCHES_DIR, `${patchName}-evaluation${outputSuffix}.json`);
     fs.writeFileSync(jsonPath, JSON.stringify(evaluation, null, 2));
     log(`✅ Data written to ${jsonPath}`);
 
@@ -755,12 +1170,24 @@ function findTargetMatches(annotatedViolations, target) {
       markdown: md,
       sourceLabel: 'evaluate-patch.js',
     });
-    const htmlPath = path.join(PATCHES_DIR, `${patchName}-evaluation.html`);
+    const htmlPath = path.join(PATCHES_DIR, `${patchName}-evaluation${outputSuffix}.html`);
     fs.writeFileSync(htmlPath, html);
     log(`✅ HTML report written to ${htmlPath}`);
 
-    log(`\n${evaluation.summary.resolved ? '✅ PASS' : '❌ FAIL'} — Evaluation complete`);
-    process.exit(evaluation.summary.resolved ? 0 : 1);
+    const statusIcon =
+      evaluation.summary.outcome === 'pass'
+        ? '✅ PASS'
+        : evaluation.summary.outcome === 'inconclusive'
+          ? '🟨 INCONCLUSIVE'
+          : '❌ FAIL';
+    log(`\n${statusIcon} — Evaluation complete`);
+    const exitCode =
+      evaluation.summary.outcome === 'pass'
+        ? 0
+        : evaluation.summary.outcome === 'inconclusive'
+          ? 2
+          : 1;
+    process.exit(exitCode);
   } catch (err) {
     console.error('Fatal error:', err);
     resetPatch();

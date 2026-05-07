@@ -22,7 +22,12 @@
       }
     ]
   },
-  "timestamp": "2026-05-06T21:27:33.974Z",
+  "timestamp": "2026-05-07T02:33:31.697Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "requestedColorMode": "light",
+    "note": "Current evaluator runs a single condition set per test case unless test config overrides viewport."
+  },
   "testCases": [
     {
       "url": "/admin/config/content/formats",
@@ -31,10 +36,19 @@
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-f5c9f0da",
-          "pattern_id": "DRU-83cdf7d5",
+          "instance_id": "DRU-d4d523fc",
+          "pattern_id": "DRU-68589457",
           "screen_type": "desktop",
+          "orientation": "landscape",
           "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
           "page_path": "/admin/config/content/formats",
           "selector": "table a:has-text(\"Configure\")",
           "rule_id": "label-in-name"
@@ -66,6 +80,36 @@
         "html": [],
         "axe": {}
       },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
       "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23\n"
     }
   ],
@@ -80,7 +124,9 @@
     },
     "fixed": [],
     "new": [],
-    "resolved": false
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
   },
   "patternReport": {
     "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
@@ -102,5 +148,11 @@
       "notObserved": 0
     },
     "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
   }
 }

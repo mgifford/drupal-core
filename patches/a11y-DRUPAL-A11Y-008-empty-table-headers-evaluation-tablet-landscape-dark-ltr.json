@@ -1,0 +1,231 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-008-empty-table-headers",
+  "config": {
+    "description": "Ensure all table headers have discernible text",
+    "wcag": [
+      "1.3.1 (A)"
+    ],
+    "rules": [
+      "empty-table-header"
+    ],
+    "patternIds": [
+      "DRU-EDB3860D"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/admin/content",
+        "selectors": [
+          "table th",
+          "thead th"
+        ],
+        "expectedFix": "Table headers should have visible or accessible text",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-07T12:28:55.693Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site",
+    "variantId": "tablet-landscape-dark-ltr",
+    "requestedColorMode": "dark",
+    "requestedDirection": "ltr",
+    "requestedViewport": {
+      "width": 1024,
+      "height": 768
+    },
+    "requestedDevice": "tablet",
+    "requestedOrientation": "landscape",
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test."
+  },
+  "testCases": [
+    {
+      "url": "/autocomplete",
+      "selectors": [
+        "th:nth-child(2)"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-e8bdafa6",
+          "pattern_id": "DRU-EDB3860D",
+          "screen_type": "tablet",
+          "orientation": "landscape",
+          "color_mode": "dark",
+          "color_scheme_detected": "dark",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "language": "en",
+          "page_path": "/autocomplete",
+          "selector": "th:nth-child(2)",
+          "rule_id": "empty-table-header"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: th:nth-child(2)"
+          }
+        ],
+        "html": [
+          {
+            "selector": "th:nth-child(2)",
+            "success": false,
+            "error": "Element not found: th:nth-child(2)"
+          }
+        ],
+        "axe": {
+          "total": 0,
+          "byRule": {},
+          "violations": []
+        },
+        "annotated_violations": []
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "tablet",
+          "orientation": "landscape",
+          "colorMode": "dark",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          }
+        },
+        "before": {
+          "screenType": "tablet",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "colorMode": "dark",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "dark",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "path-autocomplete"
+          ]
+        },
+        "after": null
+      },
+      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"\nerror: core/modules/field/templates/field-multiple-value-form.html.twig: No such file or directory\n"
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 0,
+      "byRule": {}
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "evaluation-or-patch-application-error"
+  },
+  "patternReport": {
+    "source": "/Users/mike.gifford/drupal-core/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-EDB3860D",
+        "ruleId": "empty-table-header",
+        "selectorKey": "th:nth-child(2)",
+        "concretePaths": [
+          "/autocomplete"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    }
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 1,
+    "instanceIdsSeen": 1,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 0,
+    "baselineObservedInstances": 0,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 0,
+    "hasCaseErrors": true,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "tablet-landscape-dark-ltr",
+    "patchFile": "/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}
