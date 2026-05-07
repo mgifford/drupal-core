@@ -27,12 +27,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:50:27.254Z",
+  "timestamp": "2026-05-07T18:31:05.576Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": true,
+      "error": null
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -63,12 +68,12 @@
     {
       "url": "/admin/content",
       "selectors": [
-        "input[title=\"Select all rows in this table\"]"
+        "thead input[type=\"checkbox\"]"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-528caf9d",
-          "pattern_id": "DRU-987EB788",
+          "instance_id": "DRU-8f7f75e1",
+          "pattern_id": "DRU-2ac0d154",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -81,110 +86,12 @@
           },
           "language": "en",
           "page_path": "/admin/content",
-          "selector": "input[title=\"Select all rows in this table\"]",
-          "rule_id": "label-title-only"
-        }
-      ],
-      "before": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "html": [
-          {
-            "selector": "input[title=\"Select all rows in this table\"]",
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
+          "selector": "thead input[type=\"checkbox\"]",
+          "rule_id": "label"
         },
-        "annotated_violations": []
-      },
-      "after": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "html": [
-          {
-            "selector": "input[title=\"Select all rows in this table\"]",
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
-        },
-        "annotated_violations": []
-      },
-      "conditions": {
-        "requested": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "colorMode": "light",
-          "direction": "ltr",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          }
-        },
-        "before": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-admin"
-          ]
-        },
-        "after": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-admin"
-          ]
-        }
-      }
-    },
-    {
-      "url": "/admin/people",
-      "selectors": [
-        "input[title=\"Select all rows in this table\"]"
-      ],
-      "expected_targets": [
         {
-          "instance_id": "DRU-f3489c9a",
-          "pattern_id": "DRU-987EB788",
+          "instance_id": "DRU-7dee3d8b",
+          "pattern_id": "DRU-29203b4d",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -196,8 +103,8 @@
             "height": 1024
           },
           "language": "en",
-          "page_path": "/admin/people",
-          "selector": "input[title=\"Select all rows in this table\"]",
+          "page_path": "/admin/content",
+          "selector": "thead input[type=\"checkbox\"]",
           "rule_id": "label-title-only"
         }
       ],
@@ -205,14 +112,14 @@
         "screenshots": [
           {
             "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
+            "error": "Element not found: thead input[type=\"checkbox\"]"
           }
         ],
         "html": [
           {
-            "selector": "input[title=\"Select all rows in this table\"]",
+            "selector": "thead input[type=\"checkbox\"]",
             "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
+            "error": "Element not found: thead input[type=\"checkbox\"]"
           }
         ],
         "axe": {
@@ -223,25 +130,9 @@
         "annotated_violations": []
       },
       "after": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "html": [
-          {
-            "selector": "input[title=\"Select all rows in this table\"]",
-            "success": false,
-            "error": "Element not found: input[title=\"Select all rows in this table\"]"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
-        },
-        "annotated_violations": []
+        "screenshots": [],
+        "html": [],
+        "axe": {}
       },
       "conditions": {
         "requested": {
@@ -272,25 +163,10 @@
             "path-admin"
           ]
         },
-        "after": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-admin"
-          ]
-        }
-      }
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -336,151 +212,26 @@
   },
   "instanceReport": {
     "summary": {
-      "targeted": 2,
+      "targeted": 0,
       "observedBefore": 0,
       "fixed": 0,
       "remaining": 0,
-      "notObserved": 2
+      "notObserved": 0
     },
-    "entries": [
-      {
-        "instanceId": "DRU-528caf9d",
-        "patternId": "DRU-987EB788",
-        "ruleId": "label-title-only",
-        "pagePath": "/admin/content",
-        "selector": "input[title=\"Select all rows in this table\"]",
-        "status": "not-observed",
-        "seenBefore": false,
-        "seenAfter": false,
-        "beforeCount": 0,
-        "afterCount": 0,
-        "beforeInstanceIds": [],
-        "afterInstanceIds": [],
-        "conditions": {
-          "requested": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "colorMode": "light",
-            "direction": "ltr",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            }
-          },
-          "before": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-admin"
-            ]
-          },
-          "after": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-admin"
-            ]
-          }
-        }
-      },
-      {
-        "instanceId": "DRU-f3489c9a",
-        "patternId": "DRU-987EB788",
-        "ruleId": "label-title-only",
-        "pagePath": "/admin/people",
-        "selector": "input[title=\"Select all rows in this table\"]",
-        "status": "not-observed",
-        "seenBefore": false,
-        "seenAfter": false,
-        "beforeCount": 0,
-        "afterCount": 0,
-        "beforeInstanceIds": [],
-        "afterInstanceIds": [],
-        "conditions": {
-          "requested": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "colorMode": "light",
-            "direction": "ltr",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            }
-          },
-          "before": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-admin"
-            ]
-          },
-          "after": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-admin"
-            ]
-          }
-        }
-      }
-    ]
+    "entries": []
   },
   "idValidation": {
-    "patternIdsSeen": 1,
+    "patternIdsSeen": 2,
     "instanceIdsSeen": 2,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
   },
   "validationEvidence": {
-    "targetedInstances": 2,
+    "targetedInstances": 0,
     "baselineObservedInstances": 0,
     "fixedInstances": 0,
     "remainingInstances": 0,
-    "notObservedInstances": 2,
+    "notObservedInstances": 0,
     "hasCaseErrors": false,
     "introducedNewViolations": 0
   },

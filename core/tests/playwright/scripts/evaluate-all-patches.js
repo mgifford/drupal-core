@@ -103,6 +103,58 @@ function collectConditionSummary(evalData) {
   };
 }
 
+function classifyPatchRootCause(evalData, patchResult) {
+  if (!evalData || !Array.isArray(evalData.testCases)) {
+    return patchResult.outcomeReason || 'unknown';
+  }
+
+  const preflightError = evalData?.runContext?.patchApplicability?.success === false
+    ? String(evalData?.runContext?.patchApplicability?.error || '')
+    : '';
+  if (preflightError.includes('patch does not apply')) {
+    return 'patch-does-not-apply';
+  }
+  if (preflightError.includes('corrupt patch')) {
+    return 'patch-file-corrupt';
+  }
+  if (preflightError.includes('No such file or directory')) {
+    return 'patch-target-file-missing';
+  }
+
+  const testCaseErrors = evalData.testCases
+    .map((tc) => tc?.error)
+    .filter(Boolean)
+    .map((err) => String(err));
+
+  if (testCaseErrors.some((err) => err.includes('patch does not apply'))) {
+    return 'patch-does-not-apply';
+  }
+  if (testCaseErrors.some((err) => err.includes('corrupt patch'))) {
+    return 'patch-file-corrupt';
+  }
+  if (testCaseErrors.some((err) => err.includes('No such file or directory'))) {
+    return 'patch-target-file-missing';
+  }
+  if (patchResult.outcomeReason === 'no-baseline-instances-observed') {
+    return 'baseline-not-reproduced';
+  }
+
+  const selectorMisses = evalData.testCases.flatMap((tc) => {
+    const misses = [];
+    for (const shot of tc?.before?.screenshots || []) {
+      if (shot && shot.success === false && String(shot.error || '').includes('Element not found')) {
+        misses.push(shot.error);
+      }
+    }
+    return misses;
+  });
+  if (selectorMisses.length > 0) {
+    return 'expected-selector-not-found';
+  }
+
+  return patchResult.outcomeReason || 'unknown';
+}
+
 // ── Main evaluation flow ──────────────────────────────────────────────────────
 (async () => {
   const summary = {
@@ -115,6 +167,8 @@ function collectConditionSummary(evalData) {
     error: 0,
     patches: [],
     actionablePatches: [],
+    patchHygieneIssues: [],
+    testStateTriage: [],
     conditionCoverage: {
       screenTypes: [],
       orientations: [],
@@ -158,6 +212,7 @@ function collectConditionSummary(evalData) {
     const patchResult = {
       name: patchName,
       priority: getPriority(patchName),
+      testUrls: (config[patchName]?.testCases || []).map((tc) => tc.url).filter(Boolean),
       status: 'unknown',
       error: null,
       outcomeReason: null,
@@ -166,6 +221,7 @@ function collectConditionSummary(evalData) {
       idValidation: null,
       baselineObservedInstances: 0,
       eligibleForPatchRecommendation: false,
+      rootCause: null,
     };
 
     try {
@@ -179,7 +235,7 @@ function collectConditionSummary(evalData) {
       log(`✅ PASS`);
     } catch (err) {
       patchResult.status = err.status === 2 ? 'inconclusive' : err.status === 1 ? 'fail' : 'error';
-      patchResult.error = err.message;
+      patchResult.error = err.status === 2 ? null : err.message;
       if (err.status === 2) {
         summary.inconclusive++;
         log(`🟨 INCONCLUSIVE`);
@@ -208,6 +264,7 @@ function collectConditionSummary(evalData) {
       || (patchResult.baselineObservedInstances > 0 && patchResult.status !== 'error');
     patchResult.conditionSummary = collectConditionSummary(evalData);
     patchResult.idValidation = evalData?.idValidation || null;
+    patchResult.rootCause = classifyPatchRootCause(evalData, patchResult);
 
     for (const key of Object.keys(globalConditionSets)) {
       const list = patchResult.conditionSummary[key] || [];
@@ -276,6 +333,18 @@ function collectConditionSummary(evalData) {
   lines.push(`- **Viewports:** ${summary.conditionCoverage.viewports.join(', ') || '-'}`);
   lines.push('');
   lines.push(`- **Actionable patches (baseline observed):** ${summary.actionablePatches.length}`);
+  const rootCauseCounts = summary.patches.reduce((acc, patch) => {
+    const key = patch.rootCause || 'unknown';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+  lines.push(`- **Root-cause categories:** ${Object.keys(rootCauseCounts).length}`);
+  lines.push('');
+  lines.push('### Root Cause Breakdown');
+  lines.push('');
+  for (const [cause, count] of Object.entries(rootCauseCounts).sort((a, b) => b[1] - a[1])) {
+    lines.push(`- \`${cause}\`: ${count}`);
+  }
   lines.push('');
   lines.push(`---`);
   lines.push('');
@@ -292,6 +361,13 @@ function collectConditionSummary(evalData) {
     byPriority[patch.priority].push(patch);
   }
 
+  summary.patchHygieneIssues = summary.patches.filter((p) => (
+    p.rootCause === 'patch-file-corrupt'
+    || p.rootCause === 'patch-does-not-apply'
+    || p.rootCause === 'patch-target-file-missing'
+  ));
+  summary.testStateTriage = summary.patches.filter((p) => p.rootCause === 'baseline-not-reproduced');
+
   for (const [priority, patches] of Object.entries(byPriority)) {
     if (patches.length === 0) continue;
     lines.push(`### ${priority.toUpperCase().replace('-', ' ')}`);
@@ -305,7 +381,7 @@ function collectConditionSummary(evalData) {
       const progress = p.instanceSummary
         ? `${p.instanceSummary.fixed || 0} fixed / ${p.instanceSummary.remaining || 0} remaining / ${p.instanceSummary.notObserved || 0} not-observed`
         : '-';
-      lines.push(`| \`${p.name}\` | ${statusIcon} ${statusText} | \`${reason}\` | ${progress} |`);
+      lines.push(`| \`${p.name}\` | ${statusIcon} ${statusText} | \`${reason}\` (${p.rootCause || 'unknown'}) | ${progress} |`);
     }
     lines.push('');
   }
@@ -318,6 +394,27 @@ function collectConditionSummary(evalData) {
     lines.push('⚠️ **No actionable patch recommendations** because baseline target violations were not observed under current test conditions.');
     lines.push('');
   }
+  lines.push('### Patch Hygiene (Fix Before Validation)');
+  lines.push('');
+  if (summary.patchHygieneIssues.length === 0) {
+    lines.push('- None.');
+  } else {
+    for (const patch of summary.patchHygieneIssues) {
+      lines.push(`- \`${patch.name}\` (${patch.rootCause})`);
+    }
+  }
+  lines.push('');
+  lines.push('### Test-State Triage (Baseline Not Reproduced)');
+  lines.push('');
+  if (summary.testStateTriage.length === 0) {
+    lines.push('- None.');
+  } else {
+    for (const patch of summary.testStateTriage) {
+      const urls = patch.testUrls.length ? patch.testUrls.join(', ') : '-';
+      lines.push(`- \`${patch.name}\` on ${urls}`);
+    }
+  }
+  lines.push('');
   if (summary.passed === summary.totalPatches) {
     lines.push(`✅ **All patches pass evaluation.** Ready for deployment.`);
   } else {
@@ -325,12 +422,18 @@ function collectConditionSummary(evalData) {
     lines.push('');
     for (const patch of summary.patches) {
       if (patch.status !== 'pass') {
-        const statusText =
-          patch.status === 'inconclusive'
-            ? 'inconclusive (test did not observe baseline target)'
-            : patch.status === 'fail'
-              ? 'failed'
-              : 'evaluation error';
+        let statusText;
+        if (patch.status === 'inconclusive') {
+          if (patch.rootCause && patch.rootCause !== 'baseline-not-reproduced') {
+            statusText = `inconclusive (patch preflight issue: ${patch.rootCause})`;
+          } else {
+            statusText = 'inconclusive (test did not observe baseline target)';
+          }
+        } else if (patch.status === 'fail') {
+          statusText = 'failed';
+        } else {
+          statusText = 'evaluation error';
+        }
         lines.push(`- \`${patch.name}\`: ${statusText}`);
         if (patch.outcomeReason) {
           lines.push(`  - reason: \`${patch.outcomeReason}\``);
@@ -348,7 +451,7 @@ function collectConditionSummary(evalData) {
     if (nonActionable.length > 0) {
       lines.push('### Excluded From Patch Recommendation (No Baseline Evidence)');
       lines.push('');
-      for (const patch of nonActionable) {
+      for (const patch of nonActionable.filter((p) => p.rootCause === 'baseline-not-reproduced')) {
         lines.push(`- \`${patch.name}\` (baseline observed: ${patch.baselineObservedInstances})`);
       }
       lines.push('');

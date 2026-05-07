@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-001-file-widget-display-labels
 
-**Generated:** 2026-05-07 at 9:50:11 a.m.
+**Generated:** 2026-05-07 at 2:30:51 p.m.
 
 ## Summary
 
@@ -12,6 +12,7 @@
 - **Outcome Reason:** `no-baseline-instances-observed`
 - **Eligible For Patch Recommendation:** no
 - **Requested color mode:** light
+- **Patch preflight applicability:** applicable
 - **ID consistency issues:** patterns=0, instances=0
 - **Baseline observed instances:** 0
 - **Fixed instances after patch:** 0
@@ -44,18 +45,6 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 |---|---|---|---:|---:|---|
 | DRU-6CA3D5EB | label | /contact/imagefile_file | 0 | 0 | unchanged |
 
-### Instance ID Coverage
-
-- **Targeted instance IDs:** 1
-- **Seen before patch:** 0
-- **Fixed instances:** 0
-- **Remaining instances:** 0
-- **Not observed in baseline:** 1
-
-| Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |
-|---|---|---|---|---|---|---|
-| DRU-143e9634 | DRU-6CA3D5EB | label | /contact/imagefile_file | not-observed | - | - |
-
 ### Violation Counts
 
 | Metric | Before | After | Change |
@@ -68,22 +57,7 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 
 ### Test 1: /contact/imagefile_file
 
-**URL:** `http://drupal-core.ddev.site/contact/imagefile_file`
-
-**Elements tested:** #edit-imagefile-file-limited-N-display
-
-**Conditions:**
-- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","direction":"ltr","viewport":{"width":1280,"height":1024}}
-- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-contact"]}
-- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-contact"]}
-
-#### Before Patch
-
-- **Total violations:** 0
-
-#### After Patch
-
-- **Total violations:** 0
+**Skipped:** baseline-target-not-observed
 
 ---
 

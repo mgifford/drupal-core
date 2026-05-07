@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-003-select-all-checkbox-label
 
-**Generated:** 2026-05-07 at 9:50:36 a.m.
+**Generated:** 2026-05-07 at 2:31:06 p.m.
 
 ## Summary
 
@@ -12,6 +12,7 @@
 - **Outcome Reason:** `no-baseline-instances-observed`
 - **Eligible For Patch Recommendation:** no
 - **Requested color mode:** light
+- **Patch preflight applicability:** applicable
 - **ID consistency issues:** patterns=0, instances=0
 - **Baseline observed instances:** 0
 - **Fixed instances after patch:** 0
@@ -44,19 +45,6 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 |---|---|---|---:|---:|---|
 | DRU-987EB788 | label-title-only | /admin/content, /admin/people, /table | 0 | 0 | unchanged |
 
-### Instance ID Coverage
-
-- **Targeted instance IDs:** 2
-- **Seen before patch:** 0
-- **Fixed instances:** 0
-- **Remaining instances:** 0
-- **Not observed in baseline:** 2
-
-| Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |
-|---|---|---|---|---|---|---|
-| DRU-528caf9d | DRU-987EB788 | label-title-only | /admin/content | not-observed | - | - |
-| DRU-f3489c9a | DRU-987EB788 | label-title-only | /admin/people | not-observed | - | - |
-
 ### Violation Counts
 
 | Metric | Before | After | Change |
@@ -69,41 +57,7 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 
 ### Test 1: /admin/content
 
-**URL:** `http://drupal-core.ddev.site/admin/content`
-
-**Elements tested:** input[title="Select all rows in this table"]
-
-**Conditions:**
-- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","direction":"ltr","viewport":{"width":1280,"height":1024}}
-- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
-- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
-
-#### Before Patch
-
-- **Total violations:** 0
-
-#### After Patch
-
-- **Total violations:** 0
-
-### Test 2: /admin/people
-
-**URL:** `http://drupal-core.ddev.site/admin/people`
-
-**Elements tested:** input[title="Select all rows in this table"]
-
-**Conditions:**
-- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","direction":"ltr","viewport":{"width":1280,"height":1024}}
-- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
-- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-admin"]}
-
-#### Before Patch
-
-- **Total violations:** 0
-
-#### After Patch
-
-- **Total violations:** 0
+**Skipped:** baseline-target-not-observed
 
 ---
 

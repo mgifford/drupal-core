@@ -22,12 +22,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:51:33.508Z",
+  "timestamp": "2026-05-07T18:31:57.982Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": false,
+      "error": "Command failed: git apply --check \"/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23\n"
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -137,7 +142,8 @@
         },
         "after": null
       },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23\n"
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -152,8 +158,8 @@
     "fixed": [],
     "new": [],
     "resolved": false,
-    "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error",
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
     "eligibleForPatchRecommendation": false
   },
   "patternReport": {
@@ -189,7 +195,7 @@
     "fixedInstances": 0,
     "remainingInstances": 0,
     "notObservedInstances": 0,
-    "hasCaseErrors": true,
+    "hasCaseErrors": false,
     "introducedNewViolations": 0
   },
   "replication": {

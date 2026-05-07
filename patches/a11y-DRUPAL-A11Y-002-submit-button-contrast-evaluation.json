@@ -27,12 +27,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:50:18.964Z",
+  "timestamp": "2026-05-07T18:30:57.900Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": false,
+      "error": "Command failed: git apply --check \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -63,12 +68,13 @@
     {
       "url": "/action-link",
       "selectors": [
-        "a[hreflang=\"he\"]"
+        "button",
+        ".button"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-a94dcccd",
-          "pattern_id": "DRU-F75A07EF",
+          "instance_id": "DRU-50eba56f",
+          "pattern_id": "DRU-48d43f0e",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -81,22 +87,49 @@
           },
           "language": "en",
           "page_path": "/action-link",
-          "selector": "a[hreflang=\"he\"]",
+          "selector": "button",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-f7e4bcf1",
+          "pattern_id": "DRU-9f367cd7",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": ".button",
           "rule_id": "color-contrast"
         }
       ],
       "before": {
         "screenshots": [
           {
+            "success": true,
+            "path": "/Users/mike.gifford/drupal-core/reports/a11y-DRUPAL-A11Y-002-submit-button-contrast-before--action-link-1778178658855.png"
+          },
+          {
             "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
+            "error": "Element not found: .button"
           }
         ],
         "html": [
           {
-            "selector": "a[hreflang=\"he\"]",
+            "selector": "button",
+            "success": true,
+            "html": "<div class=\"site-header__initial\">\n            <button class=\"sticky-header-toggle\" data-drupal-selector=\"sticky-header-toggle\" role=\"switch\" aria-controls=\"site-header__inner\" aria-label=\"Sticky header\" aria-checked=\"false\">\n              <span class=\"sticky-header-toggle__icon\">\n                <span></span>\n                <span></span>\n                <span></span>\n              </span>\n            </button>\n          </div>"
+          },
+          {
+            "selector": ".button",
             "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
+            "error": "Element not found: .button"
           }
         ],
         "axe": {
@@ -142,91 +175,8 @@
         },
         "after": null
       },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
-    },
-    {
-      "url": "/admin",
-      "selectors": [
-        "a[hreflang=\"he\"]"
-      ],
-      "expected_targets": [
-        {
-          "instance_id": "DRU-c36ea975",
-          "pattern_id": "DRU-F75A07EF",
-          "screen_type": "desktop",
-          "orientation": "landscape",
-          "color_mode": "light",
-          "color_scheme_detected": "light",
-          "direction": "ltr",
-          "theme": "unknown",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "language": "en",
-          "page_path": "/admin",
-          "selector": "a[hreflang=\"he\"]",
-          "rule_id": "color-contrast"
-        }
-      ],
-      "before": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
-          }
-        ],
-        "html": [
-          {
-            "selector": "a[hreflang=\"he\"]",
-            "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
-        },
-        "annotated_violations": []
-      },
-      "after": {
-        "screenshots": [],
-        "html": [],
-        "axe": {}
-      },
-      "conditions": {
-        "requested": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "colorMode": "light",
-          "direction": "ltr",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          }
-        },
-        "before": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-admin"
-          ]
-        },
-        "after": null
-      },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-002-submit-button-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:50\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -241,8 +191,8 @@
     "fixed": [],
     "new": [],
     "resolved": false,
-    "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error",
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
     "eligibleForPatchRecommendation": false
   },
   "patternReport": {
@@ -295,7 +245,7 @@
     "entries": []
   },
   "idValidation": {
-    "patternIdsSeen": 1,
+    "patternIdsSeen": 2,
     "instanceIdsSeen": 2,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
@@ -306,7 +256,7 @@
     "fixedInstances": 0,
     "remainingInstances": 0,
     "notObservedInstances": 0,
-    "hasCaseErrors": true,
+    "hasCaseErrors": false,
     "introducedNewViolations": 0
   },
   "replication": {

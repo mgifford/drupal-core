@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form
 
-**Generated:** 2026-05-07 at 9:50:47 a.m.
+**Generated:** 2026-05-07 at 2:31:13 p.m.
 
 ## Summary
 
@@ -12,6 +12,7 @@
 - **Outcome Reason:** `no-baseline-instances-observed`
 - **Eligible For Patch Recommendation:** no
 - **Requested color mode:** light
+- **Patch preflight applicability:** applicable
 - **ID consistency issues:** patterns=0, instances=0
 - **Baseline observed instances:** 0
 - **Fixed instances after patch:** 0
@@ -44,18 +45,6 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 |---|---|---|---:|---:|---|
 | DRU-CC36FB25 | tabindex | /buttons | 0 | 0 | unchanged |
 
-### Instance ID Coverage
-
-- **Targeted instance IDs:** 1
-- **Seen before patch:** 0
-- **Fixed instances:** 0
-- **Remaining instances:** 0
-- **Not observed in baseline:** 1
-
-| Instance ID | Pattern ID | Rule | Path | Status | Before IDs | After IDs |
-|---|---|---|---|---|---|---|
-| DRU-dceab886 | DRU-CC36FB25 | tabindex | /buttons | not-observed | - | - |
-
 ### Violation Counts
 
 | Metric | Before | After | Change |
@@ -68,22 +57,7 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 
 ### Test 1: /buttons
 
-**URL:** `http://drupal-core.ddev.site/buttons`
-
-**Elements tested:** #edit-submit
-
-**Conditions:**
-- Requested: {"screenType":"desktop","orientation":"landscape","colorMode":"light","direction":"ltr","viewport":{"width":1280,"height":1024}}
-- Before: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
-- After: {"screenType":"desktop","orientation":"landscape","viewport":{"width":1280,"height":1024},"colorMode":"light","direction":"ltr","language":"en","colorSchemeDetected":"light","prefersContrast":"no-preference","forcedColors":"none","theme":"unknown","bodyClasses":["path-buttons"]}
-
-#### Before Patch
-
-- **Total violations:** 0
-
-#### After Patch
-
-- **Total violations:** 0
+**Skipped:** baseline-target-not-observed
 
 ---
 

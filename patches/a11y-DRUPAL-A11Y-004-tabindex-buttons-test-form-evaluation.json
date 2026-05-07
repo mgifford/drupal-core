@@ -26,12 +26,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:50:42.455Z",
+  "timestamp": "2026-05-07T18:31:12.834Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": true,
+      "error": null
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -62,12 +67,12 @@
     {
       "url": "/buttons",
       "selectors": [
-        "#edit-submit"
+        "button[tabindex]"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-dceab886",
-          "pattern_id": "DRU-CC36FB25",
+          "instance_id": "DRU-29fa3465",
+          "pattern_id": "DRU-b07191c1",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -80,7 +85,7 @@
           },
           "language": "en",
           "page_path": "/buttons",
-          "selector": "#edit-submit",
+          "selector": "button[tabindex]",
           "rule_id": "tabindex"
         }
       ],
@@ -88,14 +93,14 @@
         "screenshots": [
           {
             "success": false,
-            "error": "Element not found: #edit-submit"
+            "error": "Element not found: button[tabindex]"
           }
         ],
         "html": [
           {
-            "selector": "#edit-submit",
+            "selector": "button[tabindex]",
             "success": false,
-            "error": "Element not found: #edit-submit"
+            "error": "Element not found: button[tabindex]"
           }
         ],
         "axe": {
@@ -106,25 +111,9 @@
         "annotated_violations": []
       },
       "after": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: #edit-submit"
-          }
-        ],
-        "html": [
-          {
-            "selector": "#edit-submit",
-            "success": false,
-            "error": "Element not found: #edit-submit"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
-        },
-        "annotated_violations": []
+        "screenshots": [],
+        "html": [],
+        "axe": {}
       },
       "conditions": {
         "requested": {
@@ -155,25 +144,10 @@
             "path-buttons"
           ]
         },
-        "after": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-buttons"
-          ]
-        }
-      }
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -217,76 +191,13 @@
   },
   "instanceReport": {
     "summary": {
-      "targeted": 1,
+      "targeted": 0,
       "observedBefore": 0,
       "fixed": 0,
       "remaining": 0,
-      "notObserved": 1
+      "notObserved": 0
     },
-    "entries": [
-      {
-        "instanceId": "DRU-dceab886",
-        "patternId": "DRU-CC36FB25",
-        "ruleId": "tabindex",
-        "pagePath": "/buttons",
-        "selector": "#edit-submit",
-        "status": "not-observed",
-        "seenBefore": false,
-        "seenAfter": false,
-        "beforeCount": 0,
-        "afterCount": 0,
-        "beforeInstanceIds": [],
-        "afterInstanceIds": [],
-        "conditions": {
-          "requested": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "colorMode": "light",
-            "direction": "ltr",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            }
-          },
-          "before": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-buttons"
-            ]
-          },
-          "after": {
-            "screenType": "desktop",
-            "orientation": "landscape",
-            "viewport": {
-              "width": 1280,
-              "height": 1024
-            },
-            "colorMode": "light",
-            "direction": "ltr",
-            "language": "en",
-            "colorSchemeDetected": "light",
-            "prefersContrast": "no-preference",
-            "forcedColors": "none",
-            "theme": "unknown",
-            "bodyClasses": [
-              "path-buttons"
-            ]
-          }
-        }
-      }
-    ]
+    "entries": []
   },
   "idValidation": {
     "patternIdsSeen": 1,
@@ -295,11 +206,11 @@
     "inconsistentInstanceIds": []
   },
   "validationEvidence": {
-    "targetedInstances": 1,
+    "targetedInstances": 0,
     "baselineObservedInstances": 0,
     "fixedInstances": 0,
     "remainingInstances": 0,
-    "notObservedInstances": 1,
+    "notObservedInstances": 0,
     "hasCaseErrors": false,
     "introducedNewViolations": 0
   },

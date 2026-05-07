@@ -27,12 +27,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:51:19.088Z",
+  "timestamp": "2026-05-07T18:31:42.409Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": false,
+      "error": "Command failed: git apply --check \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"\nerror: core/modules/field/templates/field-multiple-value-form.html.twig: No such file or directory\n"
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -61,14 +66,15 @@
   },
   "testCases": [
     {
-      "url": "/autocomplete",
+      "url": "/admin/content",
       "selectors": [
-        "th:nth-child(2)"
+        "table th",
+        "thead th"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-a723349c",
-          "pattern_id": "DRU-EDB3860D",
+          "instance_id": "DRU-289e615d",
+          "pattern_id": "DRU-610fbb82",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -80,8 +86,26 @@
             "height": 1024
           },
           "language": "en",
-          "page_path": "/autocomplete",
-          "selector": "th:nth-child(2)",
+          "page_path": "/admin/content",
+          "selector": "table th",
+          "rule_id": "empty-table-header"
+        },
+        {
+          "instance_id": "DRU-8f881d97",
+          "pattern_id": "DRU-52a11102",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "thead th",
           "rule_id": "empty-table-header"
         }
       ],
@@ -89,14 +113,23 @@
         "screenshots": [
           {
             "success": false,
-            "error": "Element not found: th:nth-child(2)"
+            "error": "Element not found: table th"
+          },
+          {
+            "success": false,
+            "error": "Element not found: thead th"
           }
         ],
         "html": [
           {
-            "selector": "th:nth-child(2)",
+            "selector": "table th",
             "success": false,
-            "error": "Element not found: th:nth-child(2)"
+            "error": "Element not found: table th"
+          },
+          {
+            "selector": "thead th",
+            "success": false,
+            "error": "Element not found: thead th"
           }
         ],
         "axe": {
@@ -137,12 +170,13 @@
           "forcedColors": "none",
           "theme": "unknown",
           "bodyClasses": [
-            "path-autocomplete"
+            "path-admin"
           ]
         },
         "after": null
       },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-008-empty-table-headers.patch\"\nerror: core/modules/field/templates/field-multiple-value-form.html.twig: No such file or directory\n"
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -157,8 +191,8 @@
     "fixed": [],
     "new": [],
     "resolved": false,
-    "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error",
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
     "eligibleForPatchRecommendation": false
   },
   "patternReport": {
@@ -195,8 +229,8 @@
     "entries": []
   },
   "idValidation": {
-    "patternIdsSeen": 1,
-    "instanceIdsSeen": 1,
+    "patternIdsSeen": 2,
+    "instanceIdsSeen": 2,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
   },
@@ -206,7 +240,7 @@
     "fixedInstances": 0,
     "remainingInstances": 0,
     "notObservedInstances": 0,
-    "hasCaseErrors": true,
+    "hasCaseErrors": false,
     "introducedNewViolations": 0
   },
   "replication": {

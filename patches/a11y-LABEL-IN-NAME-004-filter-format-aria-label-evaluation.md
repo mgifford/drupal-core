@@ -1,6 +1,6 @@
 # Patch Evaluation Report: a11y-LABEL-IN-NAME-004-filter-format-aria-label
 
-**Generated:** 2026-05-07 at 9:51:34 a.m.
+**Generated:** 2026-05-07 at 2:31:59 p.m.
 
 ## Summary
 
@@ -8,10 +8,14 @@
 - **WCAG Criteria:** 2.5.3 (A)
 - **Affected Rules:** label-in-name
 - **Pattern Source:** reports/pattern-report-2026-05-06.json
-- **Status:** ❌ **FAIL** — Patch application or evaluation encountered an error
-- **Outcome Reason:** `evaluation-or-patch-application-error`
+- **Status:** 🟨 **INCONCLUSIVE** — No baseline instances were observed on targeted URLs/selectors
+- **Outcome Reason:** `no-baseline-instances-observed`
 - **Eligible For Patch Recommendation:** no
 - **Requested color mode:** light
+- **Patch preflight applicability:** not-applicable
+- **Patch preflight error:** Command failed: git apply --check "/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch"
+error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23
+
 - **ID consistency issues:** patterns=0, instances=0
 - **Baseline observed instances:** 0
 - **Fixed instances after patch:** 0
@@ -44,9 +48,7 @@ Use the following deterministic steps to reproduce this exact evaluation run:
 
 ### Test 1: /admin/config/content/formats
 
-**Error:** Patch application failed: Command failed: git apply "/Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch"
-error: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch:23
-
+**Skipped:** baseline-target-not-observed
 
 ---
 

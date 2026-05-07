@@ -63,6 +63,7 @@ const configuredDevice = process.env.A11Y_DEVICE || null;
 const configuredOrientation = process.env.A11Y_ORIENTATION || null;
 const configuredThemeDefault = process.env.A11Y_THEME_DEFAULT || 'olivero';
 const configuredThemeAdmin = process.env.A11Y_THEME_ADMIN || 'claro';
+const usePatternReportCases = process.env.A11Y_USE_PATTERN_REPORT === '1';
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
 
@@ -457,6 +458,15 @@ function applyPatch() {
   }
 }
 
+function canApplyPatch() {
+  try {
+    execSync(`git apply --check "${PATCH_FILE}"`, { cwd: REPO_ROOT, stdio: 'pipe' });
+    return { success: true, error: null };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
 function resetPatch() {
   try {
     log('Reverting applied patch');
@@ -541,6 +551,9 @@ function loadPatternReport() {
 }
 
 function deriveTestCasesFromPatterns(patchCfg, reportPatterns) {
+  if (!usePatternReportCases) {
+    return Array.isArray(patchCfg.testCases) ? patchCfg.testCases : [];
+  }
   if (!Array.isArray(patchCfg.patternIds) || patchCfg.patternIds.length === 0) {
     return Array.isArray(patchCfg.testCases) ? patchCfg.testCases : [];
   }
@@ -594,6 +607,7 @@ function findTargetMatches(annotatedViolations, target) {
   const page = await browser.newPage();
   const configuredViewport = getConfiguredViewport();
   const themeSetup = setupDeterministicThemes();
+  const patchApplicability = canApplyPatch();
 
   const evaluation = {
     patch: patchName,
@@ -602,8 +616,10 @@ function findTargetMatches(annotatedViolations, target) {
     runContext: {
       baseUrl: BASE_URL,
       variantId,
+      testCaseSource: usePatternReportCases ? 'pattern-report' : 'config',
       requestedColorMode: configuredColorMode,
       requestedDirection: configuredDirection,
+      patchApplicability,
       requestedViewport: configuredViewport,
       requestedDevice: configuredDevice,
       requestedOrientation: configuredOrientation,
@@ -740,6 +756,24 @@ function findTargetMatches(annotatedViolations, target) {
       evaluation.summary.before.total += testResult.before.axe.total;
       for (const [rule, count] of Object.entries(testResult.before.axe.byRule)) {
         evaluation.summary.before.byRule[rule] = (evaluation.summary.before.byRule[rule] || 0) + count;
+      }
+
+      const baselineObservedForCase = testResult.expected_targets.some((target) => {
+        const matches = findTargetMatches(testResult.before.annotated_violations, target);
+        return matches.length > 0;
+      });
+
+      if (!baselineObservedForCase) {
+        testResult.skipped = true;
+        testResult.skipReason = 'baseline-target-not-observed';
+        evaluation.testCases.push(testResult);
+        continue;
+      }
+
+      if (!patchApplicability.success) {
+        testResult.error = `Patch applicability preflight failed: ${patchApplicability.error}`;
+        evaluation.testCases.push(testResult);
+        continue;
       }
 
       // ── APPLY PATCH ──────────────────────────────────────────────────────
@@ -933,7 +967,7 @@ function findTargetMatches(annotatedViolations, target) {
       fixedInstances: evaluation.instanceReport.summary.fixed,
       remainingInstances: evaluation.instanceReport.summary.remaining,
       notObservedInstances: evaluation.instanceReport.summary.notObserved,
-      hasCaseErrors: evaluation.testCases.some((tc) => Boolean(tc.error)),
+      hasCaseErrors: evaluation.testCases.some((tc) => Boolean(tc.error) && !tc.skipped),
       introducedNewViolations: evaluation.summary.new.length,
     };
     evaluation.validationEvidence = validationEvidence;
@@ -1011,6 +1045,10 @@ function findTargetMatches(annotatedViolations, target) {
     lines.push(`- **Outcome Reason:** \`${evaluation.summary.outcomeReason}\``);
     lines.push(`- **Eligible For Patch Recommendation:** ${evaluation.summary.eligibleForPatchRecommendation ? 'yes' : 'no'}`);
     lines.push(`- **Requested color mode:** ${evaluation.runContext.requestedColorMode}`);
+    lines.push(`- **Patch preflight applicability:** ${evaluation.runContext.patchApplicability?.success ? 'applicable' : 'not-applicable'}`);
+    if (!evaluation.runContext.patchApplicability?.success) {
+      lines.push(`- **Patch preflight error:** ${evaluation.runContext.patchApplicability.error}`);
+    }
     lines.push(`- **ID consistency issues:** patterns=${evaluation.idValidation.inconsistentPatternIds.length}, instances=${evaluation.idValidation.inconsistentInstanceIds.length}`);
     lines.push(`- **Baseline observed instances:** ${evaluation.validationEvidence.baselineObservedInstances}`);
     lines.push(`- **Fixed instances after patch:** ${evaluation.validationEvidence.fixedInstances}`);
@@ -1111,6 +1149,11 @@ function findTargetMatches(annotatedViolations, target) {
       const tc = evaluation.testCases[i];
       lines.push(`### Test ${i + 1}: ${tc.url}`);
       lines.push('');
+      if (tc.skipped) {
+        lines.push(`**Skipped:** ${tc.skipReason}`);
+        lines.push('');
+        continue;
+      }
       if (tc.error) {
         lines.push(`**Error:** ${tc.error}`);
         lines.push('');

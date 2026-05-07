@@ -27,12 +27,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:50:53.130Z",
+  "timestamp": "2026-05-07T18:31:20.038Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": false,
+      "error": "Command failed: git apply --check \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:85\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -63,12 +68,13 @@
     {
       "url": "/action-link",
       "selectors": [
-        "a[hreflang=\"he\"]"
+        "a",
+        "[role=\"link\"]"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-a94dcccd",
-          "pattern_id": "DRU-F75A07EF",
+          "instance_id": "DRU-460d45bf",
+          "pattern_id": "DRU-61417ee5",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -81,22 +87,49 @@
           },
           "language": "en",
           "page_path": "/action-link",
-          "selector": "a[hreflang=\"he\"]",
+          "selector": "a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-67d5904f",
+          "pattern_id": "DRU-dd5ef6f3",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "[role=\"link\"]",
           "rule_id": "color-contrast"
         }
       ],
       "before": {
         "screenshots": [
           {
+            "success": true,
+            "path": "/Users/mike.gifford/drupal-core/reports/a11y-DRUPAL-A11Y-005-language-switcher-contrast-before--action-link-1778178681014.png"
+          },
+          {
             "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
+            "error": "Element not found: [role=\"link\"]"
           }
         ],
         "html": [
           {
-            "selector": "a[hreflang=\"he\"]",
+            "selector": "a",
+            "success": true,
+            "html": "<body class=\"path-action-link\" dir=\"ltr\" style=\"direction: ltr;\">\n        <a href=\"#main-content\" class=\"visually-hidden focusable skip-link\">\n      Skip to main content\n    </a>\n    \n      <div class=\"dialog-off-canvas-main-canvas\" data-off-canvas-main-canvas=\"\">\n    \n<div id=\"page-wrapper\" class=\"page-wrapper\">\n  <div id=\"page\">\n\n          <header id=\"header\" class=\"site-header\" data-drupal-selector=\"site-header\" data-once=\"navigation\">\n\n                <div class=\"site-header__fixable\" data-drupal-selector=\"site-header-fixable\">\n          <div class=\"site-header__initial\">\n            <button class=\"sticky-header-toggle\" data-drupal-selector=\"sticky-header-toggle\" role=\"switch\" aria-controls=\"site-header__inner\" aria-label=\"Sticky header\" aria-checked=\"false\">\n              <span class=\"sticky-header-toggle__icon\">\n                <span></span>\n                <span></span>\n                <span></span>\n              </span>\n            </button>\n          </div>\n\n                    <div id=\"site-header__inner\" class=\"site-header__inner\" data-drupal-selector=\"site-header-inner\">\n            <div class=\"container site-header__inner__container\">\n\n              \n\n\n<div id=\"block-olivero-site-branding\" class=\"site-branding block block-system block-system-branding-block\">\n  \n    \n    <div class=\"site-branding__inner\">\n              <div class=\"site-branding__text\">\n                  <div class=\"site-branding__name\">\n            <a href=\"/\" rel=\"home\" title=\"Home\">testing123</a>\n          </div>\n                      </div>\n      </div>\n</div>\n\n<div class=\"header-nav-overlay\" data-drupal-selector=\"header-nav-overlay\"></div>\n\n\n                              <div class=\"mobile-buttons\" data-drupal-selector=\"mobile-buttons\">\n                  <button class=\"mobile-nav-button\" data-drupal-selector=\"mobile-nav-button\" aria-label=\"Main Menu\" aria-controls=\"header-nav\" aria-expanded=\"false\">\n                    <span class=\"mobile-nav-button__label\">Menu</span>\n                    <span class=\"mobile-nav-button__icon\"></span>\n                  </button>\n                </div>\n\n                <div id=\"header-nav\" class=\"header-nav\" data-drupal-selector=\"header-nav\">\n                  \n<nav id=\"block-olivero-main-menu\" class=\"primary-nav block block-menu navigation menu--main\" aria-labelledby=\"block-olivero-main-menu-menu\" role=\"navigation\">\n            \n  <h2 class=\"visually-hidden block__title\" id=\"block-olivero-main-menu-menu\">Main navigation</h2>\n  \n        \n\n\n          \n        \n    <ul class=\"menu primary-nav__menu primary-nav__menu--level-1\" data-drupal-selector=\"primary-nav-menu--level-1\" data-once=\"second-level-navigation olivero-automatic-mobile-nav\">\n            \n                          \n        \n        \n        <li class=\"primary-nav__menu-item primary-nav__menu-item--link primary-nav__menu-item--level-1\">\n                              \n                      <a href=\"/\" class=\"primary-nav__menu-link primary-nav__menu-link--link primary-nav__menu-link--level-1\" data-drupal-selector=\"primary-nav-menu-link-has-children\" data-drupal-link-system-path=\"&lt;front&gt;\">            <span class=\"primary-nav__menu-link-inner primary-nav__menu-link-inner--level-1\">Home</span>\n          </a>\n\n            \n                  </li>\n          </ul>\n  \n\n\n  </nav>\n\n\n                  \n\n  <div class=\"region region--secondary-menu\">\n    <nav id=\"block-olivero-account-menu\" class=\"block block-menu navigation menu--account secondary-nav\" aria-labelledby=\"block-olivero-account-menu-menu\" role=\"navigation\">\n            \n  <span class=\"visually-hidden\" id=\"block-olivero-account-menu-menu\">User account menu</span>\n  \n        \n\n\n          <ul class=\"menu secondary-nav__menu secondary-nav__menu--level-1\">\n            \n                          \n        \n        \n        <li class=\"secondary-nav__menu-item secondary-nav__menu-item--link secondary-nav__menu-item--level-1\">\n          <a href=\"/user/login\" class=\"secondary-nav__menu-link secondary-nav__menu-link--link secondary-nav__menu-link--level-1\" data-drupal-link-system-path=\"user/login\">Log in</a>\n\n                  </li>\n          </ul>\n  \n\n\n  </nav>\n\n  </div>\n\n                </div>\n                          </div>\n          </div>\n        </div>\n      </header>\n    \n    <div id=\"main-wrapper\" class=\"layout-main-wrapper layout-container\">\n      <div id=\"main\" class=\"layout-main\">\n        <div class=\"main-content\">\n          <a id=\"main-content\" tabindex=\"-1\"></a>\n          \n          <div class=\"main-content__container container\">\n            \n\n  <div class=\"region region--highlighted grid-full layout--pass--content-medium\">\n    <div data-drupal-messages-fallback=\"\" class=\"hidden messages-list\"></div>\n\n  </div>\n\n            \n\n  <div class=\"region region--breadcrumb grid-full layout--pass--content-medium\">\n    \n\n<div id=\"block-olivero-breadcrumbs\" class=\"block block-system block-system-breadcrumb-block\">\n  \n    \n      <div class=\"block__content\">\n        <nav class=\"breadcrumb\" aria-labelledby=\"system-breadcrumb\">\n    <h2 id=\"system-breadcrumb\" class=\"visually-hidden\">Breadcrumb</h2>\n    <div class=\"breadcrumb__content\">\n      <ol class=\"breadcrumb__list\">\n                  <li class=\"breadcrumb__item\">\n                          <a href=\"/\" class=\"breadcrumb__link\">Home</a>\n                      </li>\n              </ol>\n    </div>\n  </nav>\n\n    </div>\n  </div>\n\n  </div>\n\n\n                          <main>\n                \n\n  <div class=\"region region--content-above grid-full layout--pass--content-medium\">\n    \n\n<div id=\"block-olivero-page-title\" class=\"block block-core block-page-title-block\">\n  \n  \n\n  <h1 class=\"title page-title\">Page not found</h1>\n\n\n  \n</div>\n\n  </div>\n\n                \n\n  <div class=\"region region--content grid-full layout--pass--content-medium\" id=\"content\">\n    \n\n<div id=\"block-olivero-content\" class=\"block block-system block-system-main-block\">\n  \n    \n      <div class=\"block__content\">\n      The requested page could not be found.\n    </div>\n  </div>\n\n  </div>\n\n              </main>\n                        \n          </div>\n        </div>\n        <div class=\"social-bar\">\n          \n        </div>\n      </div>\n    </div>\n\n    <footer class=\"site-footer\">\n      <div class=\"site-footer__inner container\">\n        \n        \n\n  <div class=\"region region--footer-bottom grid-full layout--pass--content-medium\">\n    \n\n<div id=\"block-olivero-powered\" class=\"block block-system block-system-powered-by-block\">\n  \n    \n    \n  <span>\n    Powered by    <a href=\"https://www.drupal.org\">Drupal</a>\n    <span class=\"drupal-logo\" role=\"img\" aria-label=\"Drupal Logo\">\n      <svg width=\"14\" height=\"19\" viewBox=\"0 0 42.15 55.08\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M29.75 11.73C25.87 7.86 22.18 4.16 21.08 0 20 4.16 16.28 7.86 12.4 11.73 6.59 17.54 0 24.12 0 34a21.08 21.08 0 1042.15 0c0-9.88-6.59-16.46-12.4-22.27zM10.84 35.92a14.13 14.13 0 00-1.65 2.62.54.54 0 01-.36.3h-.18c-.47 0-1-.92-1-.92-.14-.22-.27-.45-.4-.69l-.09-.19C5.94 34.25 7 30.28 7 30.28a17.42 17.42 0 012.52-5.41 31.53 31.53 0 012.28-3l1 1 4.72 4.82a.54.54 0 010 .72l-4.93 5.47zm10.48 13.81a7.29 7.29 0 01-5.4-12.14c1.54-1.83 3.42-3.63 5.46-6 2.42 2.58 4 4.35 5.55 6.29a3.08 3.08 0 01.32.48 7.15 7.15 0 011.3 4.12 7.23 7.23 0 01-7.23 7.25zM35 38.14a.84.84 0 01-.67.58h-.14a1.22 1.22 0 01-.68-.55 37.77 37.77 0 00-4.28-5.31l-1.93-2-6.41-6.65a54 54 0 01-3.84-3.94 1.3 1.3 0 00-.1-.15 3.84 3.84 0 01-.51-1v-.19a3.4 3.4 0 011-3c1.24-1.24 2.49-2.49 3.67-3.79 1.3 1.44 2.69 2.82 4.06 4.19a57.6 57.6 0 017.55 8.58A16 16 0 0135.65 34a14.55 14.55 0 01-.65 4.14z\"></path>\n</svg>\n    </span>\n  </span>\n</div>\n\n  </div>\n\n      </div>\n    </footer>\n\n    <div class=\"overlay\" data-drupal-selector=\"overlay\"></div>\n\n  </div>\n</div>\n\n  </div>\n\n    \n    <script type=\"application/json\" data-drupal-selector=\"drupal-settings-json\">{\"path\":{\"baseUrl\":\"\\/\",\"pathPrefix\":\"\",\"currentPath\":\"\",\"currentPathIsAdmin\":false,\"isFront\":false,\"currentLanguage\":\"en\"},\"pluralDelimiter\":\"\\u0003\",\"suppressDeprecationErrors\":true,\"user\":{\"uid\":0,\"permissionsHash\":\"e760c2a530fb1cec65f0b9505dd8cf3f6e10657ddc1647e6507e8b06b188b3f7\"}}</script>\n<script src=\"/sites/default/files/js/js_iZ5OIzg5r52lscsFEGy5ugkzgMAtH9Qck_3xSyGdO2U.js?scope=footer&amp;delta=0&amp;language=en&amp;theme=olivero&amp;include=eJzLz8ksSy3K10_PyU9KzNEtLqnMycxL18mHCucllmWmJ5Zk5ufpFhRl5iYWVQIA53wTlA\"></script>\n\n  \n\n</body>"
+          },
+          {
+            "selector": "[role=\"link\"]",
             "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
+            "error": "Element not found: [role=\"link\"]"
           }
         ],
         "axe": {
@@ -142,91 +175,8 @@
         },
         "after": null
       },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:85\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
-    },
-    {
-      "url": "/admin",
-      "selectors": [
-        "a[hreflang=\"he\"]"
-      ],
-      "expected_targets": [
-        {
-          "instance_id": "DRU-c36ea975",
-          "pattern_id": "DRU-F75A07EF",
-          "screen_type": "desktop",
-          "orientation": "landscape",
-          "color_mode": "light",
-          "color_scheme_detected": "light",
-          "direction": "ltr",
-          "theme": "unknown",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "language": "en",
-          "page_path": "/admin",
-          "selector": "a[hreflang=\"he\"]",
-          "rule_id": "color-contrast"
-        }
-      ],
-      "before": {
-        "screenshots": [
-          {
-            "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
-          }
-        ],
-        "html": [
-          {
-            "selector": "a[hreflang=\"he\"]",
-            "success": false,
-            "error": "Element not found: a[hreflang=\"he\"]"
-          }
-        ],
-        "axe": {
-          "total": 0,
-          "byRule": {},
-          "violations": []
-        },
-        "annotated_violations": []
-      },
-      "after": {
-        "screenshots": [],
-        "html": [],
-        "axe": {}
-      },
-      "conditions": {
-        "requested": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "colorMode": "light",
-          "direction": "ltr",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          }
-        },
-        "before": {
-          "screenType": "desktop",
-          "orientation": "landscape",
-          "viewport": {
-            "width": 1280,
-            "height": 1024
-          },
-          "colorMode": "light",
-          "direction": "ltr",
-          "language": "en",
-          "colorSchemeDetected": "light",
-          "prefersContrast": "no-preference",
-          "forcedColors": "none",
-          "theme": "unknown",
-          "bodyClasses": [
-            "path-admin"
-          ]
-        },
-        "after": null
-      },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"\nerror: patch failed: core/themes/default_admin/css/components/button.pcss.css:85\nerror: core/themes/default_admin/css/components/button.pcss.css: patch does not apply\n"
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -241,8 +191,8 @@
     "fixed": [],
     "new": [],
     "resolved": false,
-    "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error",
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
     "eligibleForPatchRecommendation": false
   },
   "patternReport": {
@@ -295,7 +245,7 @@
     "entries": []
   },
   "idValidation": {
-    "patternIdsSeen": 1,
+    "patternIdsSeen": 2,
     "instanceIdsSeen": 2,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
@@ -306,7 +256,7 @@
     "fixedInstances": 0,
     "remainingInstances": 0,
     "notObservedInstances": 0,
-    "hasCaseErrors": true,
+    "hasCaseErrors": false,
     "introducedNewViolations": 0
   },
   "replication": {

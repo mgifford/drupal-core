@@ -27,12 +27,17 @@
       }
     ]
   },
-  "timestamp": "2026-05-07T13:51:26.234Z",
+  "timestamp": "2026-05-07T18:31:50.499Z",
   "runContext": {
     "baseUrl": "http://drupal-core.ddev.site",
     "variantId": "default",
+    "testCaseSource": "config",
     "requestedColorMode": "light",
     "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": false,
+      "error": "Command failed: git apply --check \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch:22\n"
+    },
     "requestedViewport": null,
     "requestedDevice": null,
     "requestedOrientation": null,
@@ -63,12 +68,13 @@
     {
       "url": "/admin/modules",
       "selectors": [
-        "#edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+        "summary",
+        "details summary"
       ],
       "expected_targets": [
         {
-          "instance_id": "DRU-67f25cdc",
-          "pattern_id": "DRU-4422E904",
+          "instance_id": "DRU-416b4f4b",
+          "pattern_id": "DRU-a05e6a75",
           "screen_type": "desktop",
           "orientation": "landscape",
           "color_mode": "light",
@@ -81,7 +87,25 @@
           },
           "language": "en",
           "page_path": "/admin/modules",
-          "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+          "selector": "summary",
+          "rule_id": "summary-name"
+        },
+        {
+          "instance_id": "DRU-cba6fa5a",
+          "pattern_id": "DRU-b3ba62ac",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "details summary",
           "rule_id": "summary-name"
         }
       ],
@@ -89,14 +113,23 @@
         "screenshots": [
           {
             "success": false,
-            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+            "error": "Element not found: summary"
+          },
+          {
+            "success": false,
+            "error": "Element not found: details summary"
           }
         ],
         "html": [
           {
-            "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+            "selector": "summary",
             "success": false,
-            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+            "error": "Element not found: summary"
+          },
+          {
+            "selector": "details summary",
+            "success": false,
+            "error": "Element not found: details summary"
           }
         ],
         "axe": {
@@ -142,7 +175,8 @@
         },
         "after": null
       },
-      "error": "Patch application failed: Command failed: git apply \"/Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\"\nerror: corrupt patch at /Users/mike.gifford/drupal-core/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch:22\n"
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed"
     }
   ],
   "summary": {
@@ -157,8 +191,8 @@
     "fixed": [],
     "new": [],
     "resolved": false,
-    "outcome": "fail",
-    "outcomeReason": "evaluation-or-patch-application-error",
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
     "eligibleForPatchRecommendation": false
   },
   "patternReport": {
@@ -195,8 +229,8 @@
     "entries": []
   },
   "idValidation": {
-    "patternIdsSeen": 1,
-    "instanceIdsSeen": 1,
+    "patternIdsSeen": 2,
+    "instanceIdsSeen": 2,
     "inconsistentPatternIds": [],
     "inconsistentInstanceIds": []
   },
@@ -206,7 +240,7 @@
     "fixedInstances": 0,
     "remainingInstances": 0,
     "notObservedInstances": 0,
-    "hasCaseErrors": true,
+    "hasCaseErrors": false,
     "introducedNewViolations": 0
   },
   "replication": {
