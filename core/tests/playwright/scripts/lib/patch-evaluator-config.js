@@ -16,12 +16,12 @@ module.exports = {
     description: 'Add aria-label to file widget display checkboxes',
     wcag: ['1.3.1 (A)'],
     rules: ['label'],
-    patternIds: ['DRU-6CA3D5EB'],
+    patternIds: [],
     maxPathsPerPattern: 2,
     testCases: [
       {
         url: '/contact/imagefile_file',
-        selectors: ['[name*="display"]'],
+        selectors: ['[id^="edit-imagefile-file-limited-"][id$="-display"]'],
         expectedFix: 'Checkboxes should have accessible names (aria-label)',
         viewport: { width: 1280, height: 1024 },
       },
@@ -32,12 +32,12 @@ module.exports = {
     description: 'Fix primary button color contrast on admin yellow accent',
     wcag: ['1.4.3 (AA)'],
     rules: ['color-contrast'],
-    patternIds: ['DRU-F75A07EF'],
-    maxPathsPerPattern: 2,
+    patternIds: [],
+    maxPathsPerPattern: 6,
     testCases: [
       {
         url: '/action-link',
-        selectors: ['button', '.button'],
+        selectors: ['a[hreflang="he"]', '#edit-submit', '.button--action'],
         expectedFix: 'color-contrast should pass after patch',
         viewport: { width: 1280, height: 1024 },
       },
@@ -81,7 +81,7 @@ module.exports = {
     wcag: ['1.4.3 (AA)'],
     rules: ['color-contrast'],
     patternIds: ['DRU-F75A07EF'],
-    maxPathsPerPattern: 2,
+    maxPathsPerPattern: 6,
     testCases: [
       {
         url: '/action-link',
@@ -97,7 +97,7 @@ module.exports = {
     wcag: ['1.3.6 (AAA)'],
     rules: ['region'],
     patternIds: ['DRU-6BA9E02D'],
-    maxPathsPerPattern: 2,
+    maxPathsPerPattern: 8,
     testCases: [
       {
         url: '/',

@@ -1,13 +1,17 @@
-diff --git a/core/modules/field/templates/field-multiple-value-form.html.twig b/core/modules/field/templates/field-multiple-value-form.html.twig
+diff --git a/core/modules/system/templates/table.html.twig b/core/modules/system/templates/table.html.twig
 index 1234567..abcdefg 100644
---- a/core/modules/field/templates/field-multiple-value-form.html.twig
-+++ b/core/modules/field/templates/field-multiple-value-form.html.twig
-@@ -45,7 +45,7 @@
-           {% set row = element['#value'][key] %}
-         {% endif %}
-         <tr class="draggable">
--          <td class="field-label"></td>
-+          <td class="field-label"><span class="visually-hidden">{{ 'Row'|t }} {{ key + 1 }}</span></td>
-           <td>
-             <div class="form-item js-form-item js-form-type-textfield form-item--delta-order">
-               {{ form_label(element[key]['_weight']) }}
+--- a/core/modules/system/templates/table.html.twig
++++ b/core/modules/system/templates/table.html.twig
+@@ -66,7 +66,11 @@
+       <tr>
+         {% for cell in header %}
+           <{{ cell.tag }}{{ cell.attributes }}>
+-            {{- cell.content -}}
++            {% if cell.tag == 'th' and cell.content is empty %}
++              <span class="visually-hidden">{{ 'Column'|t }}</span>
++            {% else %}
++              {{- cell.content -}}
++            {% endif %}
+           </{{ cell.tag }}>
+         {% endfor %}
+       </tr>

@@ -1,13 +1,30 @@
-diff --git a/core/themes/default_admin/css/components/button.pcss.css b/core/themes/default_admin/css/components/button.pcss.css
+diff --git a/core/themes/default_admin/css/base/accents.pcss.css b/core/themes/default_admin/css/base/accents.pcss.css
 index 1234567..abcdefg 100644
---- a/core/themes/default_admin/css/components/button.pcss.css
-+++ b/core/themes/default_admin/css/components/button.pcss.css
-@@ -85,7 +85,7 @@
+--- a/core/themes/default_admin/css/base/accents.pcss.css
++++ b/core/themes/default_admin/css/base/accents.pcss.css
+@@ -71,6 +71,10 @@
+   --layer-background: #2a2a2d;
+ }
  
- .button.button--action {
-   background-color: var(--button-primary-bg);
--  color: var(--button-primary-text);
-+  color: #ffffff;
-   border-color: transparent;
++[data-gin-accent="yellow"] {
++  --gin-color-button-text: #111;
++}
++
+ @supports (color: contrast-color(white)) {
+   [data-gin-accent] {
+     --gin-color-button-text: contrast-color(var(--accent-color-500) vs #fff, #111);
+diff --git a/core/themes/default_admin/css/base/accents.css b/core/themes/default_admin/css/base/accents.css
+index 1234567..abcdefg 100644
+--- a/core/themes/default_admin/css/base/accents.css
++++ b/core/themes/default_admin/css/base/accents.css
+@@ -78,6 +78,10 @@
+   --layer-background: #2a2a2d;
+ }
  
-   &:hover,
++[data-gin-accent="yellow"] {
++  --gin-color-button-text: #111;
++}
++
+ @supports (color: contrast-color(white)) {
+   [data-gin-accent] {
+     --gin-color-button-text: contrast-color(var(--accent-color-500) vs #fff, #111);

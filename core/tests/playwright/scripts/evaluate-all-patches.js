@@ -19,15 +19,26 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const config = require('./lib/patch-evaluator-config');
+const { loadCanonicalPatchNames } = require('./lib/canonical-patch-map');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPORTS_DIR = path.resolve(__dirname, '../../../..', 'reports');
 const PATCHES_DIR = path.resolve(__dirname, '../../../..', 'patches');
 const REPO_ROOT = path.resolve(__dirname, '../../../..');
 const patchFilter = process.env.PATCH_FILTER;
+const earlyStopOnBlocking = process.env.A11Y_EARLY_STOP_ON_BLOCKING !== '0';
+const earlyStopMinBlocking = Math.max(1, Number.parseInt(process.env.A11Y_EARLY_STOP_MIN_BLOCKING || '2', 10) || 2);
+const sampleSize = Math.max(0, Number.parseInt(process.env.A11Y_PATCH_SAMPLE_SIZE || '0', 10) || 0);
+const randomSample = process.env.A11Y_RANDOM_SAMPLE_PATCHES !== '0';
+const enforceCanonicalPatches = process.env.A11Y_ENFORCE_CANONICAL_PATCHES !== '0';
 const variantIdRaw = process.env.A11Y_VARIANT_ID || 'default';
 const variantId = String(variantIdRaw).replace(/[^a-zA-Z0-9._-]/g, '-');
 const outputSuffix = variantId === 'default' ? '' : `-${variantId}`;
+const canonicalPatchMap = loadCanonicalPatchNames({
+  repoRoot: REPO_ROOT,
+  fallbackNames: Object.keys(config),
+});
+const canonicalPatchSet = new Set(canonicalPatchMap.names);
 
 // Categorize patches by priority (based on patch name)
 function getPriority(patchName) {
@@ -45,6 +56,15 @@ function getPriority(patchName) {
 
 function log(msg) {
   console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
+}
+
+function shuffleArray(input) {
+  const arr = [...input];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function readEvaluationJson(patchName) {
@@ -135,6 +155,19 @@ function classifyPatchRootCause(evalData, patchResult) {
   if (testCaseErrors.some((err) => err.includes('No such file or directory'))) {
     return 'patch-target-file-missing';
   }
+
+  const skippedRouteUnavailable = evalData.testCases.some((tc) => tc?.skipReason === 'route-unavailable');
+  if (skippedRouteUnavailable) {
+    return 'route-unavailable';
+  }
+
+  const authSetupFailed = evalData.testCases.some((tc) =>
+    String(tc?.error || '').includes('Authentication not established before test case')
+  );
+  if (authSetupFailed) {
+    return 'authentication-not-established';
+  }
+
   if (patchResult.outcomeReason === 'no-baseline-instances-observed') {
     return 'baseline-not-reproduced';
   }
@@ -160,11 +193,16 @@ function classifyPatchRootCause(evalData, patchResult) {
   const summary = {
     timestamp: new Date().toISOString(),
     variantId,
+    plannedPatches: 0,
     totalPatches: 0,
     passed: 0,
     inconclusive: 0,
     failed: 0,
     error: 0,
+    blocking: 0,
+    earlyStopped: false,
+    earlyStopReason: null,
+    skippedDueToEarlyStop: 0,
     patches: [],
     actionablePatches: [],
     patchHygieneIssues: [],
@@ -182,6 +220,8 @@ function classifyPatchRootCause(evalData, patchResult) {
     },
   };
 
+  const isBlockingStatus = (status) => status === 'inconclusive' || status === 'fail' || status === 'error';
+
   const globalConditionSets = {
     screenTypes: new Set(),
     orientations: new Set(),
@@ -194,15 +234,32 @@ function classifyPatchRootCause(evalData, patchResult) {
     viewports: new Set(),
   };
 
-  const patches = Object.keys(config);
+  let patches = Object.keys(config);
+  if (enforceCanonicalPatches) {
+    patches = patches.filter((patchName) => canonicalPatchSet.has(patchName));
+  }
   let filteredPatches = patches;
+
+  if (canonicalPatchMap.warning) {
+    log(`Warning: ${canonicalPatchMap.warning}`);
+  }
+  if (enforceCanonicalPatches && canonicalPatchMap.source) {
+    log(`Canonical patch map: ${canonicalPatchMap.source}`);
+  }
 
   if (patchFilter) {
     filteredPatches = patches.filter((p) => getPriority(p) === patchFilter);
     log(`Filtering patches by ${patchFilter}: ${filteredPatches.length} patches`);
   }
 
+  if (sampleSize > 0 && sampleSize < filteredPatches.length) {
+    const sourcePatches = randomSample ? shuffleArray(filteredPatches) : filteredPatches;
+    filteredPatches = sourcePatches.slice(0, sampleSize);
+    log(`Patch sampling enabled: evaluating ${filteredPatches.length} of ${sourcePatches.length} patches (${randomSample ? 'random' : 'ordered'} sample).`);
+  }
+
   log(`Starting batch evaluation of ${filteredPatches.length} patches...\n`);
+  summary.plannedPatches = filteredPatches.length;
 
   for (const patchName of filteredPatches) {
     log(`\n${'='.repeat(80)}`);
@@ -212,7 +269,7 @@ function classifyPatchRootCause(evalData, patchResult) {
     const patchResult = {
       name: patchName,
       priority: getPriority(patchName),
-      testUrls: (config[patchName]?.testCases || []).map((tc) => tc.url).filter(Boolean),
+      testUrls: [],
       status: 'unknown',
       error: null,
       outcomeReason: null,
@@ -252,6 +309,9 @@ function classifyPatchRootCause(evalData, patchResult) {
     if (evalData?.summary?.outcomeReason) {
       patchResult.outcomeReason = evalData.summary.outcomeReason;
     }
+    patchResult.testUrls = Array.from(new Set(
+      (evalData?.testCases || []).map((tc) => tc?.url).filter(Boolean),
+    ));
     if (evalData?.instanceReport?.summary) {
       patchResult.instanceSummary = evalData.instanceReport.summary;
     }
@@ -283,6 +343,18 @@ function classifyPatchRootCause(evalData, patchResult) {
       });
     }
     summary.totalPatches++;
+
+    if (isBlockingStatus(patchResult.status)) {
+      summary.blocking++;
+    }
+
+    if (earlyStopOnBlocking && summary.blocking >= earlyStopMinBlocking) {
+      summary.earlyStopped = true;
+      summary.skippedDueToEarlyStop = Math.max(0, filteredPatches.length - summary.totalPatches);
+      summary.earlyStopReason = `Reached ${summary.blocking} blocking outcomes (threshold ${earlyStopMinBlocking})`;
+      log(`⏹ Early stop: ${summary.earlyStopReason}`);
+      break;
+    }
   }
 
   // ── Generate summary report ──────────────────────────────────────────────────
@@ -313,11 +385,18 @@ function classifyPatchRootCause(evalData, patchResult) {
   lines.push(`| Metric | Count |`);
   lines.push(`|--------|-------|`);
   lines.push(`| **Total patches** | ${summary.totalPatches} |`);
+  lines.push(`| **Planned patches** | ${summary.plannedPatches} |`);
   lines.push(`| **Passed** ✅ | ${summary.passed} |`);
   lines.push(`| **Inconclusive** 🟨 | ${summary.inconclusive} |`);
   lines.push(`| **Failed** ❌ | ${summary.failed} |`);
   lines.push(`| **Error** ⚠️ | ${summary.error} |`);
+  lines.push(`| **Blocking (non-pass)** ⛔ | ${summary.blocking} |`);
+  lines.push(`| **Skipped after early stop** | ${summary.skippedDueToEarlyStop} |`);
   lines.push('');
+  if (summary.earlyStopped) {
+    lines.push(`- **Early stop:** yes (${summary.earlyStopReason})`);
+    lines.push('');
+  }
   lines.push(`**Pass rate:** ${((summary.passed / summary.totalPatches) * 100).toFixed(1)}%`);
   lines.push('');
   lines.push('### Condition Coverage Captured');
@@ -366,7 +445,9 @@ function classifyPatchRootCause(evalData, patchResult) {
     || p.rootCause === 'patch-does-not-apply'
     || p.rootCause === 'patch-target-file-missing'
   ));
-  summary.testStateTriage = summary.patches.filter((p) => p.rootCause === 'baseline-not-reproduced');
+  summary.testStateTriage = summary.patches.filter(
+    (p) => p.rootCause === 'baseline-not-reproduced' || p.rootCause === 'route-unavailable',
+  );
 
   for (const [priority, patches] of Object.entries(byPriority)) {
     if (patches.length === 0) continue;
@@ -404,35 +485,38 @@ function classifyPatchRootCause(evalData, patchResult) {
     }
   }
   lines.push('');
-  lines.push('### Test-State Triage (Baseline Not Reproduced)');
+  lines.push('### Test-State Triage (Baseline Not Reproduced / Route Unavailable)');
   lines.push('');
   if (summary.testStateTriage.length === 0) {
     lines.push('- None.');
   } else {
     for (const patch of summary.testStateTriage) {
       const urls = patch.testUrls.length ? patch.testUrls.join(', ') : '-';
-      lines.push(`- \`${patch.name}\` on ${urls}`);
+      lines.push(`- \`${patch.name}\` on ${urls} (${patch.rootCause || 'unknown'})`);
     }
   }
   lines.push('');
   if (summary.passed === summary.totalPatches) {
     lines.push(`✅ **All patches pass evaluation.** Ready for deployment.`);
   } else {
-    lines.push(`⚠️ **${summary.failed + summary.error} patches failed and ${summary.inconclusive} were inconclusive:**`);
+    const blockingCount = summary.blocking;
+    lines.push(`⚠️ **${blockingCount} patches are blocking (all non-pass outcomes treated equally):**`);
     lines.push('');
     for (const patch of summary.patches) {
-      if (patch.status !== 'pass') {
+      if (isBlockingStatus(patch.status)) {
         let statusText;
         if (patch.status === 'inconclusive') {
-          if (patch.rootCause && patch.rootCause !== 'baseline-not-reproduced') {
-            statusText = `inconclusive (patch preflight issue: ${patch.rootCause})`;
+          if (patch.rootCause && patch.rootCause !== 'baseline-not-reproduced' && patch.rootCause !== 'route-unavailable') {
+            statusText = `blocking (inconclusive, patch preflight issue: ${patch.rootCause})`;
+          } else if (patch.rootCause === 'route-unavailable') {
+            statusText = 'blocking (inconclusive, target route unavailable in this environment)';
           } else {
-            statusText = 'inconclusive (test did not observe baseline target)';
+            statusText = 'blocking (inconclusive, test did not observe baseline target)';
           }
         } else if (patch.status === 'fail') {
-          statusText = 'failed';
+          statusText = 'blocking (failed)';
         } else {
-          statusText = 'evaluation error';
+          statusText = 'blocking (evaluation error)';
         }
         lines.push(`- \`${patch.name}\`: ${statusText}`);
         if (patch.outcomeReason) {
@@ -451,7 +535,7 @@ function classifyPatchRootCause(evalData, patchResult) {
     if (nonActionable.length > 0) {
       lines.push('### Excluded From Patch Recommendation (No Baseline Evidence)');
       lines.push('');
-      for (const patch of nonActionable.filter((p) => p.rootCause === 'baseline-not-reproduced')) {
+      for (const patch of nonActionable.filter((p) => p.rootCause === 'baseline-not-reproduced' || p.rootCause === 'route-unavailable')) {
         lines.push(`- \`${patch.name}\` (baseline observed: ${patch.baselineObservedInstances})`);
       }
       lines.push('');
@@ -476,7 +560,7 @@ function classifyPatchRootCause(evalData, patchResult) {
   console.log(md);
 
   // Exit with appropriate code
-  const exitCode = summary.failed + summary.error > 0 ? 1 : 0;
+  const exitCode = summary.blocking > 0 ? 1 : 0;
   log(`\nExit code: ${exitCode}`);
   process.exit(exitCode);
 })();
