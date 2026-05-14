@@ -1,39 +1,6 @@
 ---
-title: "AI Best Practices for Drupal Accessibility"
-description: "Comprehensive AI-assisted accessibility practices for Drupal Core, including 100 validated user stories, automated workflows, module testing, and patch evaluation frameworks."
-author: "Mike Gifford"
-version: "1.0.0"
-skills:
-  - accessibility-workflows
-  - accessibility-user-stories
-  - module-testing
-  - patch-evaluation
-  - bug-reporting
-keywords:
-  - accessibility
-  - a11y
-  - WCAG 2.2
-  - workflows
-  - user stories
-  - automation
-  - testing
-  - Playwright
-  - axe-core
-  - module testing
-  - patch evaluation
-triggers:
-  - "accessibility"
-  - "a11y"
-  - "WCAG"
-  - "accessibility workflows"
-  - "user stories"
-  - "module testing"
-  - "patch evaluation"
-  - "bug reporting"
-  - "accessibility testing"
-  - "keyboard navigation"
-  - "screen reader"
-enforce: "soft"
+name: ai_best_practices
+description: Comprehensive AI-assisted accessibility practices for Drupal Core, including 100 validated user stories, automated workflows, module testing, and patch evaluation frameworks. Use when implementing, testing, or evaluating accessibility in Drupal — covers keyboard navigation, screen reader compatibility, WCAG 2.2 AA workflows, Playwright test suites, axe-core scanning, and patch evaluation.
 ---
 
 # AI Best Practices for Drupal Accessibility
