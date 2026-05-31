@@ -4,6 +4,7 @@ namespace Drupal\filter\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\filter\FilterFormatRepositoryInterface;
 
 /**
@@ -27,6 +28,7 @@ class FilterThemeHooks {
           'tips' => NULL,
           'long' => FALSE,
         ],
+        'initial preprocess' => static::class . ':preprocessFilterTips',
       ],
       'text_format_wrapper' => [
         'variables' => [
@@ -51,6 +53,53 @@ class FilterThemeHooks {
         ],
       ],
     ];
+  }
+
+  /**
+   * Prepares variables for filter tips templates.
+   *
+   * Default template: filter-tips.html.twig.
+   *
+   * @param array $variables
+   *   An associative array containing:
+   *   - tips: An associative array of filter tips keyed by text format label.
+   *   - long: Whether the tips use the long explanatory format.
+   */
+  public function preprocessFilterTips(array &$variables): void {
+    $tips = $variables['tips'] ?? [];
+    $variables['multiple'] = count($tips) > 1;
+
+    foreach ($tips as $name => $tip_list) {
+      // Some callers or themes may already provide the normalized template
+      // shape. Leave those values intact.
+      if (isset($tip_list['list'])) {
+        $variables['tips'][$name]['list'] = $this->normalizeFilterTipList($tip_list['list']);
+        $variables['tips'][$name] += [
+          'name' => $name,
+          'attributes' => new Attribute(),
+        ];
+        continue;
+      }
+
+      $variables['tips'][$name] = [
+        'name' => $name,
+        'list' => $this->normalizeFilterTipList($tip_list),
+        'attributes' => new Attribute(),
+      ];
+    }
+  }
+
+  /**
+   * Ensures each filter tip item has template-safe attributes.
+   */
+  protected function normalizeFilterTipList(array $tip_list): array {
+    foreach ($tip_list as &$item) {
+      if (is_array($item)) {
+        $item += ['attributes' => new Attribute()];
+      }
+    }
+    unset($item);
+    return $tip_list;
   }
 
   /**
