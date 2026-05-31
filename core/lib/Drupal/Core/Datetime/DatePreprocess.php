@@ -93,6 +93,18 @@ class DatePreprocess {
    */
   public function preprocessDatetimeWrapper(array &$variables): void {
     $element = $variables['element'];
+    if (
+      !isset($variables['attributes'])
+      || !$variables['attributes'] instanceof Attribute
+    ) {
+      $variables['attributes'] = new Attribute($variables['attributes'] ?? []);
+    }
+    if (
+      !isset($variables['title_attributes'])
+      || !$variables['title_attributes'] instanceof Attribute
+    ) {
+      $variables['title_attributes'] = new Attribute($variables['title_attributes'] ?? []);
+    }
 
     if (!empty($element['#title'])) {
       $variables['title'] = $element['#title'];
@@ -101,6 +113,13 @@ class DatePreprocess {
       if (is_string($variables['title']) && $variables['title'] !== '') {
         $variables['title'] = ['#markup' => $variables['title']];
       }
+    }
+    if (!empty($variables['title']) && !empty($element['#id'])) {
+      $title_id = $element['#id'] . '--label';
+      $variables['title_attributes']->setAttribute('id', $title_id);
+      $variables['attributes']
+        ->setAttribute('role', 'group')
+        ->setAttribute('aria-labelledby', $title_id);
     }
 
     // Suppress error messages.
