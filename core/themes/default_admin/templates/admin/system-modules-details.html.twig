@@ -43,7 +43,7 @@
         </td>
         <td class="expand priority-low module-list__description">
           <details class="js-form-wrapper form-wrapper module-list__module-details gin-details" id="{{ module.enable_id }}-description">
-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="gin-details__summary module-list__module-summary"><span class="text module-description">{{ module.description }}</span></summary>
+            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="gin-details__summary module-list__module-summary"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
             <div class="gin-details__wrapper module-details__wrapper">
               <div class="module-details__description">
                 <div class="module-details__requirements">
