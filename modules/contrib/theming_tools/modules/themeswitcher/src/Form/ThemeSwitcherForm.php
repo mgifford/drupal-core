@@ -151,6 +151,7 @@ class ThemeSwitcherForm extends FormBase implements TrustedCallbackInterface {
     $form['#theme_wrappers'] = [
       'form' => [
         '#attributes' => [
+          'aria-label' => $this->t('Theme switcher'),
           'class' => ['themeswitcher-form', 'js-themeswitcher-form'],
         ],
       ],
