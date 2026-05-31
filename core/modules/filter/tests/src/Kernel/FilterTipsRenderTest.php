@@ -34,7 +34,7 @@ class FilterTipsRenderTest extends KernelTestBase {
       ]);
 
       $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the format name.");
-      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
+      $this->assertStringNotContainsString('<h3' . '></h3>', $output, "$theme should not render an empty heading.");
     }
   }
 
@@ -49,7 +49,7 @@ class FilterTipsRenderTest extends KernelTestBase {
       $this->assertStringContainsString('<h2>Text Formats</h2>', $output, "$theme should render the filter tips heading.");
       $this->assertStringContainsString('<h3>Basic HTML</h3>', $output, "$theme should render the first format name.");
       $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the second format name.");
-      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
+      $this->assertStringNotContainsString('<h3' . '></h3>', $output, "$theme should not render an empty heading.");
     }
   }
 
