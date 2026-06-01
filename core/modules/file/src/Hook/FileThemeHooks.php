@@ -282,7 +282,7 @@ class FileThemeHooks {
 
       // Arrange the row with the rest of the rendered columns.
       if ($element['#display_field']) {
-        unset($widget['display']['#title']);
+        $widget['display']['#title_display'] = 'invisible';
         $row[] = [
           'data' => $widget['display'],
           'class' => ['checkbox'],
