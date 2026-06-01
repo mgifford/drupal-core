@@ -197,10 +197,7 @@
      *   Message type, can be either 'status', 'error' or 'warning'.
      */
     static announce(message, options) {
-      if (
-        !options.priority &&
-        (options.type === 'warning' || options.type === 'error')
-      ) {
+      if (!options.priority && options.type === 'error') {
         options.priority = 'assertive';
       }
       /**
@@ -253,7 +250,7 @@
     messageWrapper.setAttribute('class', `messages messages--${type}`);
     messageWrapper.setAttribute(
       'role',
-      type === 'error' || type === 'warning' ? 'alert' : 'status',
+      type === 'error' ? 'alert' : 'status',
     );
     messageWrapper.setAttribute('data-drupal-message-id', id);
     messageWrapper.setAttribute('data-drupal-message-type', type);

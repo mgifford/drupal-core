@@ -30,7 +30,7 @@
     messageWrapper.setAttribute('class', `messages-list__item messages messages--${type}`);
     messageWrapper.setAttribute(
       'role',
-      type === 'error' || type === 'warning' ? 'alert' : 'status',
+      type === 'error' ? 'alert' : 'status',
     );
     messageWrapper.setAttribute('data-drupal-message-id', id);
     messageWrapper.setAttribute('data-drupal-message-type', type);

@@ -173,6 +173,27 @@ class MessageCommandTest extends WebDriverTestBase {
   }
 
   /**
+   * Tests the default live-region priority for JavaScript messages.
+   */
+  public function testMessageDefaultAnnouncementPriorities(): void {
+    $session = $this->getSession();
+    $assert_session = $this->assertSession();
+
+    $this->drupalGet('ajax-test/message');
+    $session->executeScript("new Drupal.Message().add('Warning priority probe', { type: 'warning', id: 'warning-priority-probe' });");
+    $warning_message = $assert_session->waitForElement('css', '[data-drupal-message-id="warning-priority-probe"]');
+    $this->assertSame('status', $warning_message->getAttribute('role'));
+    $this->assertAnnounceContains('Warning priority probe');
+    $this->assertSame('polite', $session->evaluateScript("document.getElementById('drupal-live-announce').getAttribute('aria-live')"));
+
+    $session->executeScript("new Drupal.Message().add('Error priority probe', { type: 'error', id: 'error-priority-probe' });");
+    $error_message = $assert_session->waitForElement('css', '[data-drupal-message-id="error-priority-probe"]');
+    $this->assertSame('alert', $error_message->getAttribute('role'));
+    $this->assertAnnounceContains('Error priority probe');
+    $this->assertSame('assertive', $session->evaluateScript("document.getElementById('drupal-live-announce').getAttribute('aria-live')"));
+  }
+
+  /**
    * Asserts that a message of the expected type appears.
    *
    * @param string $message
