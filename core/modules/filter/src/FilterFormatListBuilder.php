@@ -133,6 +133,15 @@ class FilterFormatListBuilder extends DraggableListBuilder {
 
     if (isset($operations['edit'])) {
       $operations['edit']['title'] = $this->t('Configure');
+      // Keep the accessible name aligned with the overridden title.
+      if (isset($operations['edit']['url'])) {
+        $url = $operations['edit']['url'];
+        $attributes = $url->getOption('attributes') ?: [];
+        $attributes['aria-label'] = $this->t('Configure @entity_label', [
+          '@entity_label' => $entity->label(),
+        ]);
+        $url->setOption('attributes', $attributes);
+      }
     }
 
     // The fallback format may not be disabled.
