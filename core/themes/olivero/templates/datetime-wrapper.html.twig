@@ -13,9 +13,9 @@
     required ? 'form-required',
   ]
 %}
-<div class="form-item form-datetime-wrapper">
+<div{{ attributes.addClass('form-item', 'form-datetime-wrapper') }}>
   {% if title %}
-    <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
+    <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
   {% endif %}
   {{ content }}
   {% if errors %}
