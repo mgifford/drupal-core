@@ -80,6 +80,12 @@ class AdminTest extends BrowserTestBase {
     $response = $this->drupalGet('/admin/content');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertStringContainsString('"preset_accent_color":"red"', $response);
+
+    \Drupal::configFactory()->getEditable('default_admin.settings')->set('preset_accent_color', 'orange')->save();
+    $response = $this->drupalGet('/admin/content');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertStringContainsString('"preset_accent_color":"orange"', $response);
+    $this->assertStringContainsString('--accent-base: #bf4e25;', $response);
   }
 
   /**
