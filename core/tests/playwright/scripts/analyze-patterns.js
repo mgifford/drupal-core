@@ -168,27 +168,32 @@ function getScreenType(viewport) {
 }
 
 /**
- * Format an array of "themeId::colorScheme" condition strings into a human-readable
- * summary grouped by base theme.
- *
- * Example input:  ['admin::dark', 'admin::light', 'claro::dark', 'claro::light', 'olivero::light']
- * Example output: 'admin (light, dark), claro (light, dark), olivero (light)'
+ * Reduce a crawl theme id to its base Drupal theme for cross-theme grouping.
+ * 'admin-dark' and 'admin-accent-teal' are variants of the same theme —
+ * counting them separately would break universality detection.
  */
+function baseThemeId(themeId) {
+  return String(themeId).replace(/-accent-.+$/, '').replace(/-dark$/, '');
+}
+
 /**
  * Format conditions array into a human-readable summary grouped by base theme.
  *
  * Conditions format: "themeId::colorScheme::screenType"
- * Example input:  ['admin::dark::desktop', 'admin::light::desktop', 'claro::light::mobile']
- * Example output: '`admin` (dark desktop, light desktop), `claro` (light mobile)'
+ * Example input:  ['admin::dark::desktop', 'admin-accent-teal::light::desktop', 'claro::light::mobile']
+ * Example output: '`admin` (dark desktop, light desktop accent:teal), `claro` (light mobile)'
  */
 function formatConditions(conditions) {
   if (!conditions || conditions.length === 0) return 'unknown';
   const byTheme = {};
   for (const c of conditions) {
     const [theme, scheme, screen] = c.split('::');
-    const baseTheme = theme.replace(/-dark$/, '');
+    const baseTheme = baseThemeId(theme);
+    const accentMatch = theme.match(/-accent-(.+)$/);
     if (!byTheme[baseTheme]) byTheme[baseTheme] = new Set();
-    byTheme[baseTheme].add(`${scheme ?? 'light'} ${screen ?? 'desktop'}`);
+    byTheme[baseTheme].add(
+      `${scheme ?? 'light'} ${screen ?? 'desktop'}${accentMatch ? ` accent:${accentMatch[1]}` : ''}`,
+    );
   }
   return Object.entries(byTheme)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -1095,7 +1100,9 @@ function main() {
 
   // Collect all unique base theme IDs (strip -dark suffix) and full condition IDs.
   const allConditionIds = [...new Set(patterns.flatMap((p) => p.conditions))];
-  const allThemeIds = [...new Set(allConditionIds.map((c) => c.split('::')[0]))];
+  // Group dark/accent variants under their base Drupal theme so "universal"
+  // means "in every tested theme", not "in every tested variant".
+  const allThemeIds = [...new Set(allConditionIds.map((c) => baseThemeId(c.split('::')[0])))];
   const themeCount = allThemeIds.length || 1;
 
   // Build cross-theme groups: group patterns by how many distinct base themes they appear in.
@@ -1104,7 +1111,7 @@ function main() {
   const crossThemeSpecific = {}; // keyed by base theme id
 
   for (const p of patterns) {
-    const baseThemes = [...new Set(p.conditions.map((c) => c.split('::')[0]))];
+    const baseThemes = [...new Set(p.conditions.map((c) => baseThemeId(c.split('::')[0])))];
     const entry = {
       patternId: p.patternId,
       ruleId: p.ruleId,

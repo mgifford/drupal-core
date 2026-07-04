@@ -3,12 +3,35 @@
  *
  * Iterates over THEME_CONFIGS, switches the live Drupal site theme via drush,
  * then runs axe against every page in the inventory (anonymous + admin).
- * Each page is tested at both desktop (1280×800) and mobile (375×812) viewports.
- * Each Drupal theme is tested in both light and dark color scheme modes.
  * Violations are written to reports/axe-results.json for pattern analysis.
  *
  * Run locally:
  *   cd core && yarn test:a11y:playwright
+ *
+ * Scan matrix (kept deliberately small — matrix economics):
+ *
+ *   1. Canonical crawl: every page × 4 viewports × each theme config, with
+ *      the full WCAG 2.x + best-practice rule set. Dark mode is scanned ONLY
+ *      for themes that actually support it (the Gin-based Default Admin
+ *      theme via its `enable_dark_mode: auto` setting + Playwright
+ *      prefers-color-scheme emulation). Olivero and Claro have no dark
+ *      mode, so dark scans of them would duplicate the light results.
+ *
+ *   2. Accent presets (Default Admin only): applied via the REAL
+ *      `default_admin.settings preset_accent_color` theme setting through
+ *      drush — NOT by patching CSS variables client-side, which misses the
+ *      derived color palette the theme computes. Accents can only change
+ *      colors, so these scans run color-related rules only, on admin pages,
+ *      desktop viewport, light + dark.
+ *
+ *   3. RTL (opt-in): set RTL_LANG=he (or ar) to crawl language-prefixed
+ *      paths (e.g. /he/admin/content). This requires the language to be
+ *      installed on the site with URL-prefix negotiation:
+ *        ddev drush en language locale -y
+ *        ddev drush language:add he   # or: ar
+ *      Real RTL rendering (server-side dir attribute, RTL stylesheets,
+ *      logical-property fallbacks) cannot be simulated by flipping
+ *      document.dir client-side, so no synthetic RTL scans are performed.
  *
  * The test intentionally does NOT hard-fail on violations — instead it
  * records all findings so the pattern analyzer can group them by template.
@@ -23,7 +46,7 @@
  *   before inner describe tests push their results when test.use() is present.
  *
  * NOTE: drush cache:rebuild takes 5–10 s per call. Budget ~30 s overhead
- * per unique Drupal theme switch (light + dark share the same switch).
+ * per unique Drupal theme switch and ~10 s per accent preset switch.
  *
  * To add a hard gate once a rule is clean, promote it to a11y-regressions.spec.ts.
  */
@@ -32,7 +55,7 @@ import AxeBuilder from '@axe-core/playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
-import { anonymousPages, adminPages } from '../lib/pages';
+import { anonymousPages, adminPages, PageEntry } from '../lib/pages';
 import { THEME_CONFIGS, ThemeConfig } from '../lib/theme-configs';
 import { AUTH_STATE_FILE } from '../lib/auth-setup';
 const { writeShardedResults } = require('../scripts/lib/axe-results-store');
@@ -44,6 +67,12 @@ interface AxeViolation {
   impact: string | null;
   description: string;
   helpUrl: string;
+  /**
+   * Axe rule tags (wcag2a, wcag2aa, wcag143, best-practice, …). Recorded so
+   * the analyzer can distinguish WCAG conformance failures from Deque best
+   * practices using the same axe version that produced the results.
+   */
+  tags: string[];
   nodes: Array<{
     html: string;
     target: string[];
@@ -53,18 +82,20 @@ interface AxeViolation {
 
 /** Per-page findings record written into the sharded axe results bundle. */
 interface AxeResultRecord {
-  /** Theme config id (e.g. 'olivero', 'claro-dark', 'admin'). */
+  /** Theme config id (e.g. 'olivero', 'admin-dark', 'admin-accent-teal'). */
   theme: string;
   page: string;
   path: string;
   viewport: { width: number; height: number };
+  /** Screen label matching the viewport (desktop/tablet/mobile/mobile-landscape). */
+  screen: string;
   /** Browser color scheme preference used during this scan. */
   colorScheme: 'light' | 'dark';
   /** Accent preset used for this scan (Default Admin theme only). */
   accentPreset?: string;
-  /** HTML lang for this scan (Default Admin theme matrix uses en + he). */
+  /** HTML lang of the crawled path (en, or RTL_LANG for RTL scans). */
   language?: string;
-  /** HTML dir for this scan (Default Admin theme matrix uses ltr + rtl). */
+  /** Text direction of the crawled path. */
   direction?: 'ltr' | 'rtl';
   timestamp: string;
   violations: AxeViolation[];
@@ -81,26 +112,40 @@ const WCAG_TAGS = [
   'best-practice',
 ];
 
+/**
+ * Rules re-run for accent preset variants. Accent presets can only change
+ * colors, so running the full rule set for every preset adds scan time and
+ * CO2 without any possible new findings outside these rules.
+ */
+const COLOR_RULES = ['color-contrast', 'link-in-text-block'];
+
 const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 
 /**
- * Standard viewports for every page scan.
+ * Opt-in real-RTL crawl. Set RTL_LANG=he (or ar) and install the language
+ * first — see the header comment. Unset = no RTL scans.
+ */
+const RTL_LANG = process.env.RTL_LANG?.trim() || null;
+
+/**
+ * Standard viewports for every canonical page scan.
  * Includes desktop, tablet, and smartphone in portrait + landscape.
  */
 const STANDARD_VIEWPORTS = [
-  { label: ' [desktop]', width: 1280, height: 800  },
-  { label: ' [tablet]', width: 768, height: 1024 },
-  { label: ' [mobile-portrait]', width: 375,  height: 812  },
-  { label: ' [mobile-landscape]', width: 812,  height: 375  },
+  { label: ' [desktop]', screen: 'desktop', width: 1280, height: 800 },
+  { label: ' [tablet]', screen: 'tablet', width: 768, height: 1024 },
+  { label: ' [mobile-portrait]', screen: 'mobile', width: 375, height: 812 },
+  { label: ' [mobile-landscape]', screen: 'mobile-landscape', width: 812, height: 375 },
 ] as const;
 
-const LANGUAGE_VARIANTS = [
-  { label: 'en-ltr', lang: 'en', dir: 'ltr' as const },
-  { label: 'he-rtl', lang: 'he', dir: 'rtl' as const },
-] as const;
+/** Reduced viewport set for RTL scans — direction bugs show at both extremes. */
+const RTL_VIEWPORTS = [STANDARD_VIEWPORTS[0], STANDARD_VIEWPORTS[2]] as const;
 
+/**
+ * Default Admin accent presets. 'blue' is the shipped default and is already
+ * covered by the canonical crawl, so only the others are re-scanned.
+ */
 const DEFAULT_ADMIN_ACCENTS = [
-  'blue',
   'light_blue',
   'dark_purple',
   'purple',
@@ -117,7 +162,11 @@ const DEFAULT_ADMIN_ACCENTS = [
 const OUT_DIR = path.resolve(__dirname, '../../../../reports');
 const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
 
-// ── Theme switching ──────────────────────────────────────────────────────────
+// ── Drush helpers ────────────────────────────────────────────────────────────
+
+function drush(cmd: string): string {
+  return execSync(`ddev drush ${cmd}`).toString();
+}
 
 /**
  * Apply a theme configuration to the running Drupal site via drush.
@@ -126,55 +175,62 @@ const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
  */
 function switchTheme(config: ThemeConfig): void {
   const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(' ');
-  execSync(`ddev drush theme:enable ${themesToEnable} -y`);
-  execSync(`ddev drush config:set system.theme default ${config.defaultTheme} -y`);
-  execSync(`ddev drush config:set system.theme admin ${config.adminTheme} -y`);
-  execSync(`ddev drush cache:rebuild`);
+  drush(`theme:enable ${themesToEnable} -y`);
+  drush(`config:set system.theme default ${config.defaultTheme} -y`);
+  drush(`config:set system.theme admin ${config.adminTheme} -y`);
+  if (config.defaultTheme === 'default_admin' || config.adminTheme === 'default_admin') {
+    // 'auto' follows prefers-color-scheme, so Playwright's colorScheme
+    // emulation drives the theme's real dark mode without a config change
+    // between the light and dark scan groups.
+    drush(`config:set default_admin.settings enable_dark_mode auto -y`);
+  }
+  drush(`cache:rebuild`);
+}
+
+/** Apply a Default Admin accent preset via its real theme setting. */
+function setAccentPreset(preset: string): void {
+  drush(`config:set default_admin.settings preset_accent_color ${preset} -y`);
+  drush(`cache:rebuild`);
 }
 
 /**
  * Read a single system.theme config value from the live site.
- * Returns the trimmed string value (e.g. "admin", "olivero").
+ * Returns the trimmed string value (e.g. "default_admin", "olivero").
  */
 function getThemeSetting(key: 'default' | 'admin'): string {
-  return execSync(`ddev drush config:get system.theme ${key} --format=string`)
-    .toString()
-    .trim();
+  return drush(`config:get system.theme ${key} --format=string`).trim();
+}
+
+/** Best-effort read of a default_admin.settings key (theme may not be installed). */
+function getDefaultAdminSetting(key: string): string | null {
+  try {
+    return drush(`config:get default_admin.settings ${key} --format=string`).trim();
+  }
+  catch {
+    return null;
+  }
+}
+
+/** Whether a langcode is installed on the site (for the opt-in RTL crawl). */
+function isLanguageInstalled(langcode: string): boolean {
+  try {
+    return drush(`config:get language.entity.${langcode} id --format=string`).trim() === langcode;
+  }
+  catch {
+    return false;
+  }
 }
 
 // ── Axe helper ───────────────────────────────────────────────────────────────
 
-function buildAxeBuilder(page: any): AxeBuilder {
-  return new AxeBuilder({ page }).withTags(WCAG_TAGS);
+function buildAxeBuilder(page: Page, rules?: readonly string[]): AxeBuilder {
+  const builder = new AxeBuilder({ page });
+  return rules ? builder.withRules([...rules]) : builder.withTags(WCAG_TAGS);
 }
 
 function resolveRoute(page: Page, route: string): string {
-  const configuredBaseUrl = page.context()._options.baseURL ?? DEFAULT_BASE_URL;
+  const configuredBaseUrl = (page.context() as any)._options.baseURL ?? DEFAULT_BASE_URL;
   return new URL(route, configuredBaseUrl).toString();
-}
-
-function isDefaultAdminTheme(config: ThemeConfig): boolean {
-  return config.defaultTheme === 'default_admin' || config.adminTheme === 'default_admin';
-}
-
-async function applyLanguageAndAccent(
-  page: Page,
-  langConfig: { lang: string; dir: 'ltr' | 'rtl' },
-  accentPreset: string | null,
-): Promise<void> {
-  await page.evaluate(({ lang, dir, accent }) => {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = dir;
-
-    if (accent) {
-      const accentColors = (window as any).drupalSettings?.gin?.accent_colors ?? {};
-      const accentHex = accentColors[accent]?.hex;
-      document.documentElement.setAttribute('data-gin-accent', accent);
-      if (accentHex) {
-        document.documentElement.style.setProperty('--accent-base', accentHex);
-      }
-    }
-  }, { lang: langConfig.lang, dir: langConfig.dir, accent: accentPreset });
 }
 
 /**
@@ -225,6 +281,56 @@ async function ensurePageReadyForScan(page: Page, route: string): Promise<void> 
   );
 }
 
+/**
+ * Visit a route, run axe, and return the findings record.
+ * Shared by the canonical, RTL, and accent scan groups.
+ */
+async function scanRoute(
+  page: Page,
+  opts: {
+    themeId: string;
+    testName: string;
+    routePath: string;
+    viewport: { width: number; height: number };
+    screen: string;
+    colorScheme: 'light' | 'dark';
+    rules?: readonly string[];
+    accentPreset?: string;
+    language?: string;
+    direction?: 'ltr' | 'rtl';
+  },
+): Promise<AxeResultRecord> {
+  await page.setViewportSize({ width: opts.viewport.width, height: opts.viewport.height });
+  await page.goto(resolveRoute(page, opts.routePath), { waitUntil: 'domcontentloaded' });
+  await ensurePageReadyForScan(page, opts.routePath);
+
+  const axeResults = await buildAxeBuilder(page, opts.rules).analyze();
+
+  const record: AxeResultRecord = {
+    theme: opts.themeId,
+    page: opts.testName,
+    path: opts.routePath,
+    viewport: opts.viewport,
+    screen: opts.screen,
+    colorScheme: opts.colorScheme,
+    accentPreset: opts.accentPreset,
+    language: opts.language ?? 'en',
+    direction: opts.direction ?? 'ltr',
+    timestamp: new Date().toISOString(),
+    violations: axeResults.violations as AxeViolation[],
+    incomplete: axeResults.incomplete as AxeViolation[],
+  };
+
+  if (record.violations.length > 0) {
+    console.log(
+      `  ⚠️  [${opts.themeId}/${opts.viewport.width}px/${opts.colorScheme}${opts.accentPreset ? `/${opts.accentPreset}` : ''}${opts.direction === 'rtl' ? '/rtl' : ''}] ${record.violations.length} violation(s) on ${opts.testName}:`,
+      record.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
+    );
+  }
+
+  return record;
+}
+
 // ── Shard helpers ─────────────────────────────────────────────────────────────
 
 /**
@@ -237,10 +343,18 @@ function writeResultShard(shardId: string, records: AxeResultRecord[]): void {
   fs.writeFileSync(shardFile, JSON.stringify(records, null, 2));
 }
 
+interface OriginalSettings {
+  defaultTheme: string;
+  adminTheme: string;
+  accentPreset: string | null;
+  darkMode: string | null;
+}
+
 /**
- * Merge all shard files written by inner describes into the final sharded bundle.
+ * Merge all shard files written by inner describes into the final sharded
+ * bundle, then restore the site's original theme configuration.
  */
-function mergeAndWriteResults(originalDefault: string, originalAdmin: string): void {
+function mergeAndWriteResults(original: OriginalSettings): void {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
   let allResults: AxeResultRecord[] = [];
@@ -274,9 +388,15 @@ function mergeAndWriteResults(originalDefault: string, originalAdmin: string): v
   console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
 
   // Restore the site to its original theme configuration.
-  execSync(`ddev drush config:set system.theme default ${originalDefault} -y`);
-  execSync(`ddev drush config:set system.theme admin ${originalAdmin} -y`);
-  execSync(`ddev drush cache:rebuild`);
+  drush(`config:set system.theme default ${original.defaultTheme} -y`);
+  drush(`config:set system.theme admin ${original.adminTheme} -y`);
+  if (original.accentPreset !== null) {
+    drush(`config:set default_admin.settings preset_accent_color ${original.accentPreset} -y`);
+  }
+  if (original.darkMode !== null) {
+    drush(`config:set default_admin.settings enable_dark_mode ${original.darkMode} -y`);
+  }
+  drush(`cache:rebuild`);
 }
 
 // ── Test suite ───────────────────────────────────────────────────────────────
@@ -287,30 +407,44 @@ test.describe('Axe crawl — multi-theme', () => {
     ignoreHTTPSErrors: true,
   });
 
-  // Capture original theme settings so we can restore them after the full run.
-  let originalDefault: string;
-  let originalAdmin: string;
+  // Capture original settings so we can restore them after the full run.
+  const original: OriginalSettings = {
+    defaultTheme: '',
+    adminTheme: '',
+    accentPreset: null,
+    darkMode: null,
+  };
 
   test.beforeAll(async () => {
     // Clear any leftover shards from a previous partial run.
     if (fs.existsSync(TEMP_DIR)) {
       fs.rmSync(TEMP_DIR, { recursive: true, force: true });
     }
-    originalDefault = getThemeSetting('default');
-    originalAdmin = getThemeSetting('admin') || 'claro';
+    original.defaultTheme = getThemeSetting('default');
+    original.adminTheme = getThemeSetting('admin') || 'claro';
+    original.accentPreset = getDefaultAdminSetting('preset_accent_color');
+    original.darkMode = getDefaultAdminSetting('enable_dark_mode');
   });
 
   test.afterAll(async () => {
-    mergeAndWriteResults(originalDefault, originalAdmin);
+    mergeAndWriteResults(original);
   });
 
-  // ── Per-theme test groups ─────────────────────────────────────────────────
+  // ── Canonical per-theme scan groups (full rule set) ───────────────────────
 
   for (const themeConfig of THEME_CONFIGS) {
-    // Anonymous pages — no auth required.
-    if (themeConfig.testAnonymous) {
-      test.describe(`Theme: ${themeConfig.label} — anonymous pages`, () => {
-        test.use({ colorScheme: themeConfig.colorScheme });
+    const scanGroup = (
+      groupLabel: string,
+      pages: readonly PageEntry[],
+      useAuth: boolean,
+    ) => {
+      test.describe(`Theme: ${themeConfig.label} — ${groupLabel}`, () => {
+        if (useAuth) {
+          test.use({ storageState: AUTH_STATE_FILE, colorScheme: themeConfig.colorScheme });
+        }
+        else {
+          test.use({ colorScheme: themeConfig.colorScheme });
+        }
 
         const shardRecords: AxeResultRecord[] = [];
 
@@ -323,119 +457,151 @@ test.describe('Axe crawl — multi-theme', () => {
         });
 
         test.afterAll(() => {
-          writeResultShard(`${themeConfig.id}-anon`, shardRecords);
+          writeResultShard(`${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, shardRecords);
         });
 
-        const accentVariants = isDefaultAdminTheme(themeConfig) ? [...DEFAULT_ADMIN_ACCENTS] : [null];
-        const languageVariants = isDefaultAdminTheme(themeConfig) ? [...LANGUAGE_VARIANTS] : [LANGUAGE_VARIANTS[0]];
-
-        for (const entry of anonymousPages) {
+        for (const entry of pages) {
           for (const vp of STANDARD_VIEWPORTS) {
-            for (const langVariant of languageVariants) {
-              for (const accentPreset of accentVariants) {
-                const matrixLabel = isDefaultAdminTheme(themeConfig)
-                  ? ` [${langVariant.label}] [accent:${accentPreset}]`
-                  : '';
-                const testName = `${entry.name}${vp.label}${matrixLabel}`;
-                test(testName, async ({ page }) => {
-                  await page.setViewportSize({ width: vp.width, height: vp.height });
-                  await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-                  await ensurePageReadyForScan(page, entry.path);
-                  await applyLanguageAndAccent(page, langVariant, accentPreset);
-
-                  const axeResults = await buildAxeBuilder(page).analyze();
-
-                  shardRecords.push({
-                    theme: themeConfig.id,
-                    page: testName,
-                    path: entry.path,
-                    viewport: { width: vp.width, height: vp.height },
-                    colorScheme: themeConfig.colorScheme,
-                    accentPreset: accentPreset ?? undefined,
-                    language: langVariant.lang,
-                    direction: langVariant.dir,
-                    timestamp: new Date().toISOString(),
-                    violations: axeResults.violations as AxeViolation[],
-                    incomplete: axeResults.incomplete as AxeViolation[],
-                  });
-
-                  if (axeResults.violations.length > 0) {
-                    console.log(
-                      `  ⚠️  [${themeConfig.id}/${vp.width}px/${langVariant.label}${accentPreset ? `/${accentPreset}` : ''}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                      axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-                    );
-                  }
-                });
-              }
-            }
+            const testName = `${entry.name}${vp.label}`;
+            test(testName, async ({ page }) => {
+              shardRecords.push(await scanRoute(page, {
+                themeId: themeConfig.id,
+                testName,
+                routePath: entry.path,
+                viewport: { width: vp.width, height: vp.height },
+                screen: vp.screen,
+                colorScheme: themeConfig.colorScheme,
+              }));
+            });
           }
         }
       });
+    };
+
+    if (themeConfig.testAnonymous) {
+      scanGroup('anonymous pages', anonymousPages, false);
+    }
+    if (themeConfig.testAdmin) {
+      scanGroup('admin pages', adminPages, true);
+    }
+  }
+
+  // ── RTL scan groups (opt-in, real language install required) ─────────────
+
+  if (RTL_LANG) {
+    const rtlAvailable = isLanguageInstalled(RTL_LANG);
+    if (!rtlAvailable) {
+      console.warn(
+        `⚠️  RTL_LANG=${RTL_LANG} requested but the language is not installed. ` +
+        `Run: ddev drush en language locale -y && ddev drush language:add ${RTL_LANG}`,
+      );
     }
 
-    // Admin pages — use stored auth session.
-    if (themeConfig.testAdmin) {
-      test.describe(`Theme: ${themeConfig.label} — admin pages`, () => {
-        test.use({ storageState: AUTH_STATE_FILE, colorScheme: themeConfig.colorScheme });
+    // One RTL pass per unique Drupal theme (light only — direction bugs are
+    // independent of color scheme).
+    const rtlConfigs = THEME_CONFIGS.filter((c) => c.colorScheme === 'light');
 
-        const shardRecords: AxeResultRecord[] = [];
-
-        test.beforeAll(() => {
-          if (themeConfig.colorScheme === 'light') {
-            switchTheme(themeConfig);
+    for (const themeConfig of rtlConfigs) {
+      const rtlGroup = (
+        groupLabel: string,
+        pages: readonly PageEntry[],
+        useAuth: boolean,
+      ) => {
+        test.describe(`RTL (${RTL_LANG}): ${themeConfig.label} — ${groupLabel}`, () => {
+          test.skip(!rtlAvailable, `Language ${RTL_LANG} is not installed on the site.`);
+          if (useAuth) {
+            test.use({ storageState: AUTH_STATE_FILE, colorScheme: 'light' });
           }
-        });
+          else {
+            test.use({ colorScheme: 'light' });
+          }
 
-        test.afterAll(() => {
-          writeResultShard(`${themeConfig.id}-admin`, shardRecords);
-        });
+          const shardRecords: AxeResultRecord[] = [];
 
-        const accentVariants = isDefaultAdminTheme(themeConfig) ? [...DEFAULT_ADMIN_ACCENTS] : [null];
-        const languageVariants = isDefaultAdminTheme(themeConfig) ? [...LANGUAGE_VARIANTS] : [LANGUAGE_VARIANTS[0]];
+          test.beforeAll(() => {
+            if (rtlAvailable) {
+              switchTheme(themeConfig);
+            }
+          });
 
-        for (const entry of adminPages) {
-          for (const vp of STANDARD_VIEWPORTS) {
-            for (const langVariant of languageVariants) {
-              for (const accentPreset of accentVariants) {
-                const matrixLabel = isDefaultAdminTheme(themeConfig)
-                  ? ` [${langVariant.label}] [accent:${accentPreset}]`
-                  : '';
-                const testName = `${entry.name}${vp.label}${matrixLabel}`;
-                test(testName, async ({ page }) => {
-                  await page.setViewportSize({ width: vp.width, height: vp.height });
-                  await page.goto(resolveRoute(page, entry.path), { waitUntil: 'domcontentloaded' });
-                  await ensurePageReadyForScan(page, entry.path);
-                  await applyLanguageAndAccent(page, langVariant, accentPreset);
+          test.afterAll(() => {
+            writeResultShard(`${themeConfig.id}-rtl-${useAuth ? 'admin' : 'anon'}`, shardRecords);
+          });
 
-                  const axeResults = await buildAxeBuilder(page).analyze();
-
-                  shardRecords.push({
-                    theme: themeConfig.id,
-                    page: testName,
-                    path: entry.path,
-                    viewport: { width: vp.width, height: vp.height },
-                    colorScheme: themeConfig.colorScheme,
-                    accentPreset: accentPreset ?? undefined,
-                    language: langVariant.lang,
-                    direction: langVariant.dir,
-                    timestamp: new Date().toISOString(),
-                    violations: axeResults.violations as AxeViolation[],
-                    incomplete: axeResults.incomplete as AxeViolation[],
-                  });
-
-                  if (axeResults.violations.length > 0) {
-                    console.log(
-                      `  ⚠️  [${themeConfig.id}/${vp.width}px/${langVariant.label}${accentPreset ? `/${accentPreset}` : ''}] ${axeResults.violations.length} violation(s) on ${entry.name}:`,
-                      axeResults.violations.map((v) => `${v.id} [${v.impact}]`).join(', '),
-                    );
-                  }
-                });
-              }
+          for (const entry of pages) {
+            for (const vp of RTL_VIEWPORTS) {
+              const testName = `${entry.name}${vp.label} [${RTL_LANG}-rtl]`;
+              test(testName, async ({ page }) => {
+                shardRecords.push(await scanRoute(page, {
+                  themeId: themeConfig.id,
+                  testName,
+                  routePath: `/${RTL_LANG}${entry.path}`,
+                  viewport: { width: vp.width, height: vp.height },
+                  screen: vp.screen,
+                  colorScheme: 'light',
+                  language: RTL_LANG,
+                  direction: 'rtl',
+                }));
+              });
             }
           }
-        }
-      });
+        });
+      };
+
+      if (themeConfig.testAnonymous) {
+        rtlGroup('anonymous pages', anonymousPages, false);
+      }
+      if (themeConfig.testAdmin) {
+        rtlGroup('admin pages', adminPages, true);
+      }
+    }
+  }
+
+  // ── Accent preset scan groups (Default Admin, color rules only) ──────────
+
+  const accentBaseConfig = THEME_CONFIGS.find(
+    (c) => c.adminTheme === 'default_admin' && c.colorScheme === 'light',
+  );
+
+  if (accentBaseConfig) {
+    for (const accentPreset of DEFAULT_ADMIN_ACCENTS) {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        test.describe(`Accent: ${accentPreset} (${colorScheme}) — admin pages, color rules`, () => {
+          test.use({ storageState: AUTH_STATE_FILE, colorScheme });
+
+          const shardRecords: AxeResultRecord[] = [];
+
+          test.beforeAll(() => {
+            // The Drupal theme is already default_admin from the canonical
+            // groups; only the accent preset changes (light/dark share it).
+            if (colorScheme === 'light') {
+              switchTheme(accentBaseConfig);
+              setAccentPreset(accentPreset);
+            }
+          });
+
+          test.afterAll(() => {
+            writeResultShard(`accent-${accentPreset}-${colorScheme}`, shardRecords);
+          });
+
+          const vp = STANDARD_VIEWPORTS[0]; // desktop only — color is viewport-independent
+          for (const entry of adminPages) {
+            const testName = `${entry.name}${vp.label} [accent:${accentPreset}]`;
+            test(testName, async ({ page }) => {
+              shardRecords.push(await scanRoute(page, {
+                themeId: `${accentBaseConfig.id}-accent-${accentPreset}`,
+                testName,
+                routePath: entry.path,
+                viewport: { width: vp.width, height: vp.height },
+                screen: vp.screen,
+                colorScheme,
+                rules: COLOR_RULES,
+                accentPreset,
+              }));
+            });
+          }
+        });
+      }
     }
   }
 });
-

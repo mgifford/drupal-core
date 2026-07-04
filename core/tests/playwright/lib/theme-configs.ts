@@ -30,6 +30,8 @@ export interface ThemeConfig {
 
 export const THEME_CONFIGS: ThemeConfig[] = [
   // ── Olivero ───────────────────────────────────────────────────────────────
+  // No dark variant: Olivero does not implement prefers-color-scheme, so a
+  // dark scan would duplicate the light results.
   {
     id: 'olivero',
     label: 'Olivero',
@@ -39,16 +41,8 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     testAdmin: false,
     colorScheme: 'light',
   },
-  {
-    id: 'olivero-dark',
-    label: 'Olivero (dark)',
-    defaultTheme: 'olivero',
-    adminTheme: 'claro',
-    testAnonymous: true,
-    testAdmin: false,
-    colorScheme: 'dark',
-  },
   // ── Claro ─────────────────────────────────────────────────────────────────
+  // No dark variant: Claro has no dark mode.
   {
     id: 'claro',
     label: 'Claro',
@@ -58,16 +52,10 @@ export const THEME_CONFIGS: ThemeConfig[] = [
     testAdmin: true,
     colorScheme: 'light',
   },
-  {
-    id: 'claro-dark',
-    label: 'Claro (dark)',
-    defaultTheme: 'claro',
-    adminTheme: 'claro',
-    testAnonymous: true,
-    testAdmin: true,
-    colorScheme: 'dark',
-  },
   // ── Default admin (experimental) ──────────────────────────────────────────
+  // The only core theme with real dark-mode support (Gin-based). The crawl
+  // sets `default_admin.settings enable_dark_mode: auto` so the dark variant
+  // renders via Playwright's prefers-color-scheme emulation.
   {
     id: 'admin',
     label: 'Admin (experimental/Gin)',

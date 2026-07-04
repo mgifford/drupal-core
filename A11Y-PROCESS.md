@@ -55,13 +55,37 @@ npx playwright install chromium --with-deps
 
 The crawl tests three themes that ship with Drupal core:
 
-| Theme ID | Label | Public pages | Admin pages | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `olivero` | Olivero | ✅ | — | Default public theme |
-| `claro` | Claro | ✅ | ✅ | Stable admin theme |
-| `admin` | Admin (experimental) | ✅ | ✅ | Gin-based, the future admin theme |
+| Theme ID | Label | Public pages | Admin pages | Dark mode | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `olivero` | Olivero | ✅ | — | — | Default public theme (no dark mode) |
+| `claro` | Claro | ✅ | ✅ | — | Stable admin theme (no dark mode) |
+| `admin` | Admin (experimental) | ✅ | ✅ | ✅ | Gin-based, the future admin theme |
 
 The crawl switches themes between groups via `ddev drush` and restores the original configuration when done. **No manual theme switching is needed.**
+
+Dark mode is scanned only for the Default Admin theme — the only core theme
+that supports it. The crawl sets `default_admin.settings enable_dark_mode: auto`
+so Playwright's `prefers-color-scheme` emulation drives the theme's real dark
+rendering. Accent presets are applied via the real
+`default_admin.settings preset_accent_color` setting and re-scanned with
+color-related rules only (accents can only change colors).
+
+### RTL crawl (opt-in)
+
+Right-to-left rendering cannot be simulated by flipping `dir` client-side —
+Drupal serves different CSS per language direction. To crawl real RTL pages,
+install an RTL language once and pass `RTL_LANG`:
+
+```bash
+ddev drush en language locale -y
+ddev drush language:add he     # or: ar
+cd core
+RTL_LANG=he yarn test:a11y:playwright
+```
+
+RTL scans visit language-prefixed paths (`/he/admin/content`) at desktop and
+mobile-portrait viewports. If the language is not installed, the RTL groups
+are skipped with a warning.
 
 > **Note on the Admin theme:** `core/themes/admin` is the Drupal core integration of the [Gin admin theme](https://www.drupal.org/project/gin). It is marked experimental and is expected to replace Claro in a future major release.
 
@@ -107,15 +131,22 @@ git push github main
 For each theme:
 1. Drush switches `system.theme.default` and `system.theme.admin` to that theme
 2. Drush rebuilds the cache (~5–10s per theme)
-3. Playwright visits all applicable pages with Chromium
-4. axe-core runs the full WCAG 2.2 + best-practice rule set — **no rules are suppressed**
-5. Violations are recorded with `theme`, `screen` (desktop/mobile), and page info
+3. Playwright visits all applicable pages with Chromium at 4 viewports
+   (desktop, tablet, mobile-portrait, mobile-landscape)
+4. axe-core runs the full WCAG 2.2 + best-practice rule set — **no rules are
+   suppressed**. Rule tags are recorded so the analyzer can separate WCAG
+   conformance failures from Deque best practices.
+5. Violations are recorded with `theme`, `screen`, `colorScheme`, and page info
+
+Then the reduced variant passes run:
+- **Dark mode** — Default Admin pages re-scanned with dark emulation (full rules)
+- **Accent presets** — Default Admin admin pages × 10 presets × light/dark,
+  desktop only, color rules only (applied via drush, ~10 s per preset)
+- **RTL** — only when `RTL_LANG` is set and the language is installed
 
 At the end:
-- Original theme configuration is restored
+- Original theme configuration (including accent and dark-mode settings) is restored
 - Results written to `reports/axe-results-YYYY-MM-DD.json` and `reports/axe-results.json`
-
-**Total pages per run: ~56** (8 Olivero anon + 8 Claro anon + 20 Claro admin + 8 Admin anon + 20 Admin admin)
 
 ---
 
