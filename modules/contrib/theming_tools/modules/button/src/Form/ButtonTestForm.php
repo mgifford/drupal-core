@@ -14,14 +14,14 @@ class ButtonTestForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'button_test_form';
   }
 
   /**
    * Returns a renderable array for a test page.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $disabled = FALSE) {
+  public function buildForm(array $form, FormStateInterface $form_state, $disabled = FALSE): array {
 
     //
     // Buttons.
@@ -56,7 +56,6 @@ class ButtonTestForm extends FormBase {
         '#button_type' => 'primary',
         '#attributes' => [
           'class' => $value['extra_classes'] ?? [],
-          'tabindex' => 1,
         ],
         '#disabled' => $disabled,
       ];
@@ -66,7 +65,6 @@ class ButtonTestForm extends FormBase {
         '#button_type' => 'danger',
         '#attributes' => [
           'class' => $value['extra_classes'] ?? [],
-          'tabindex' => 1,
         ],
         '#disabled' => $disabled,
       ];
@@ -75,7 +73,6 @@ class ButtonTestForm extends FormBase {
         '#value' => $this->t('Default'),
         '#attributes' => [
           'class' => $value['extra_classes'] ?? [],
-          'tabindex' => 1,
         ],
         '#disabled' => $disabled,
       ];
@@ -224,7 +221,7 @@ class ButtonTestForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
   }
 
 }
