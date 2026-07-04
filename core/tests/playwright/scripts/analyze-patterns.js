@@ -1,52 +1,18 @@
-// --- Advanced Deduplication: Merge by Rule + Fuzzy Summary ---
-function mergeByRuleAndSummary(patterns, summaryThreshold = 12) {
-  const merged = [];
-  const used = new Set();
-  for (let i = 0; i < patterns.length; i++) {
-    if (used.has(i)) continue;
-    const base = patterns[i];
-    base.mergedSummaries = [base.summary];
-    base.mergedSelectors = [base.selectorKey];
-    for (let j = i + 1; j < patterns.length; j++) {
-      if (used.has(j)) continue;
-      const candidate = patterns[j];
-      if (base.ruleId === candidate.ruleId) {
-        const dist = levenshtein((base.summary||'').toLowerCase(), (candidate.summary||'').toLowerCase());
-        if (dist <= summaryThreshold) {
-          // Merge candidate into base
-          base.pages.push(...candidate.pages);
-          base.conditions.push(...candidate.conditions);
-          base.mergedSummaries.push(candidate.summary);
-          base.mergedSelectors.push(candidate.selectorKey);
-          used.add(j);
-        }
-      }
-    }
-    // Deduplicate merged pages/conditions/selectors/summaries
-    base.pages = base.pages.filter((v,i,a) => a.findIndex(t => t.instanceId === v.instanceId) === i);
-    base.conditions = [...new Set(base.conditions)];
-    base.mergedSummaries = [...new Set(base.mergedSummaries)];
-    base.mergedSelectors = [...new Set(base.mergedSelectors)];
-    merged.push(base);
-  }
-  return merged;
-}
-
 'use strict';
+
 const fs = require('fs');
+const path = require('path');
 const crypto = require('crypto');
 const yaml = require('js-yaml');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
 const { loadAxeResults } = require('./lib/axe-results-store');
 
-'use strict';
-
-// --- PATCH END ---
-const path = require('path');
-
 // Root-level /reports directory — one level above the repo's core/ directory.
 // Resolves from: core/tests/playwright/scripts/ → ../../../../reports/
-const REPORTS_DIR = path.resolve(__dirname, '../../../../reports');
+// Override with A11Y_REPORTS_DIR to analyze a copy without touching reports/.
+const REPORTS_DIR = process.env.A11Y_REPORTS_DIR
+  ? path.resolve(process.env.A11Y_REPORTS_DIR)
+  : path.resolve(__dirname, '../../../../reports');
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
 const KEYBOARD_REVIEW_FILE = path.join(REPORTS_DIR, 'keyboard-review-latest.json');
 const LABEL_IN_NAME_CONTRACT_FILE = path.join(REPORTS_DIR, 'label-in-name-contract-latest.json');
@@ -184,9 +150,21 @@ function mergeSimilarPatterns(patterns, selectorThreshold = FUZZY_SELECTOR_THRES
 
 // ─── Screen / mode helpers ───────────────────────────────────────────────────
 
-/** Infer screen type from viewport width stored in axe-results.json. */
+/**
+ * Infer screen type from the viewport stored in axe-results.json.
+ * Distinguishes the four crawl viewports: 375×812 mobile, 768×1024 tablet,
+ * 812×375 mobile-landscape, 1280×800 desktop. Landscape phones (width >
+ * height but narrow) must not be counted as desktop.
+ */
 function getScreenType(viewport) {
-  return viewport && viewport.width <= 768 ? 'mobile' : 'desktop';
+  if (!viewport) return 'desktop';
+  const { width, height } = viewport;
+  if (height >= width) {
+    if (width <= 480) return 'mobile';
+    if (width <= 1024) return 'tablet';
+    return 'desktop';
+  }
+  return width <= 900 ? 'mobile-landscape' : 'desktop';
 }
 
 /**
@@ -220,26 +198,28 @@ function formatConditions(conditions) {
 
 /**
  * Generate a stable 8-char hex ID for a unique violation pattern.
- * Pattern ID: same rule + selector + screen (across all pages).
- * Instance ID: adds page path — unique per page.
+ * Pattern ID: same rule + selector (across all pages/screens/themes).
+ * Instance ID: adds page path + screen — unique per page occurrence.
  *
- * Inputs are joined with | so partial collisions are impossible.
+ * IDs are the first 8 hex chars (uppercase) of a SHA-256 digest, matching the
+ * ai_best_practices bug-reporting schema. Inputs are joined with | so partial
+ * collisions are impossible.
  * Example: "DRU-A1B2C3D4" (pattern) or "INS-A1B2C3D4" (instance)
  */
-function md5Short(str) {
-  return crypto.createHash('md5').update(str).digest('hex').slice(0, 8).toUpperCase();
+function shortHash(str) {
+  return crypto.createHash('sha256').update(str).digest('hex').slice(0, 8).toUpperCase();
 }
 
 function generatePatternId(selectorKey, ruleId) {
   // screenType intentionally excluded: desktop and mobile are the same bug.
   // Theme/colorScheme also excluded: they go in conditions.
-  return `DRU-${md5Short([selectorKey, ruleId].join('|'))}`;
+  return `DRU-${shortHash([selectorKey, ruleId].join('|'))}`;
 }
 
 function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
   // Stable per page+rule+selector+screen. Theme/colorScheme intentionally excluded:
   // conditions are tracked at the pattern level, not per page occurrence.
-  return `INS-${md5Short([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
+  return `INS-${shortHash([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
 }
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
@@ -414,6 +394,90 @@ const RULE_WCAG = {
   'valid-lang':                      { sc: '3.1.2', level: 'AA', name: 'Language of Parts' },
   'video-caption':                   { sc: '1.2.2', level: 'A',  name: 'Captions (Prerecorded)' },
 };
+
+// SC number → human name, derived from the table above so tag-derived SCs
+// (for rules missing from RULE_WCAG) still get a readable name.
+const SC_NAMES = {};
+for (const { sc, name } of Object.values(RULE_WCAG)) {
+  if (!(sc in SC_NAMES)) SC_NAMES[sc] = name;
+}
+
+// ─── WCAG failure vs. Deque best practice ────────────────────────────────────
+// Classification comes from axe-core's own rule metadata so it always matches
+// the axe version that produced the results. Rules tagged `best-practice`
+// (region, heading-order, tabindex, landmark-*, …) are NOT WCAG conformance
+// failures and must never be filed on drupal.org as WCAG bugs.
+function loadAxeRuleMeta() {
+  try {
+    const axe = require('axe-core');
+    const meta = new Map();
+    for (const rule of axe.getRules()) {
+      meta.set(rule.ruleId, rule.tags ?? []);
+    }
+    return meta;
+  }
+  catch (error) {
+    console.warn(`⚠️ Could not load axe-core rule metadata (${error.message}). Falling back to the static RULE_WCAG table; classification will be "unknown".`);
+    return new Map();
+  }
+}
+
+const WCAG_LEVEL_TAGS = {
+  wcag2a: 'A', wcag21a: 'A', wcag22a: 'A',
+  wcag2aa: 'AA', wcag21aa: 'AA', wcag22aa: 'AA',
+  wcag2aaa: 'AAA',
+};
+
+/**
+ * Classify a rule from its axe tags.
+ * Returns { classification: 'wcag-failure'|'best-practice'|'unknown', sc, level }.
+ * The SC number is decoded from tags like `wcag143` → 1.4.3.
+ */
+function classifyRule(ruleId, axeRuleMeta) {
+  const tags = axeRuleMeta.get(ruleId);
+  if (!tags) return { classification: 'unknown', sc: null, level: null };
+  if (tags.includes('best-practice')) {
+    return { classification: 'best-practice', sc: null, level: null };
+  }
+  const scTag = tags.find((t) => /^wcag\d{3,4}$/.test(t));
+  const level = tags.map((t) => WCAG_LEVEL_TAGS[t]).find(Boolean) ?? null;
+  if (!scTag) return { classification: 'unknown', sc: null, level };
+  const digits = scTag.slice(4);
+  return {
+    classification: 'wcag-failure',
+    sc: `${digits[0]}.${digits[1]}.${digits.slice(2)}`,
+    level,
+  };
+}
+
+/**
+ * WCAG 2.2 Understanding URL. These use slug names (contrast-minimum), not
+ * SC numbers — numeric URLs 404. SC 4.1.1 was removed in WCAG 2.2 and has
+ * no Understanding page.
+ */
+function understandingUrl(sc, name) {
+  if (!sc || sc === 'unknown') return null;
+  if (sc === '4.1.1') return 'https://www.w3.org/TR/WCAG22/#parsing';
+  if (!name || name === 'See axe docs') return null;
+  const slug = name.toLowerCase()
+    .replace(/\(|\)/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `https://www.w3.org/WAI/WCAG22/Understanding/${slug}.html`;
+}
+
+/**
+ * drupal.org issue tags per core conventions: the `Accessibility` tag plus a
+ * `wcagXXX` tag for conformance failures (e.g. wcag143 — see the tag index at
+ * https://www.drupal.org/project/issues/search?issue_tags=wcag321).
+ */
+function suggestedIssueTags(classification, sc) {
+  const tags = ['Accessibility'];
+  if (classification === 'wcag-failure' && sc && sc !== '4.1.1') {
+    tags.push(`wcag${sc.replace(/\./g, '')}`);
+  }
+  return tags;
+}
 
 // ─── Disability groups impacted per rule ─────────────────────────────────────
 const RULE_IMPACT_GROUPS = {
@@ -877,13 +941,16 @@ function archiveOldReports(reportsDir, currentDate) {
 }
 
 function priorityScore(pattern) {
-  // Lower score = higher priority. Impact weight + inverse page count.
+  // Lower score = higher priority. WCAG conformance failures sort before
+  // Deque best practices; within each group, impact weight + inverse page count.
+  const classWeight = pattern.classification === 'best-practice' ? 100000 : 0;
   const impactWeight = (IMPACT_ORDER[pattern.impact] ?? 4) * 1000;
-  return impactWeight - pattern.pages.length;
+  return classWeight + impactWeight - pattern.pages.length;
 }
 
 function main() {
   const trustedResources = loadTrustedResources();
+  const axeRuleMeta = loadAxeRuleMeta();
 
   if (!fs.existsSync(INPUT_FILE)) {
     console.error(`❌ ${INPUT_FILE} not found. Run 'yarn test:a11y:playwright' first.`);
@@ -901,7 +968,8 @@ function main() {
   const patternMap = new Map();
 
   for (const pageResult of rawResults) {
-    const screenType = getScreenType(pageResult.viewport);
+    // Newer crawls record the screen label directly; fall back to inference.
+    const screenType = pageResult.screen ?? getScreenType(pageResult.viewport);
     // Support both new (multi-theme) and legacy (single-theme) result records.
     const themeId = pageResult.theme ?? 'unknown';
     const colorScheme = pageResult.colorScheme ?? 'light';
@@ -925,13 +993,35 @@ function main() {
 
         if (!patternMap.has(key)) {
           const drupalFix = getDrupalFix(violation.id, selKey, node.html ?? '');
-          const wcag = RULE_WCAG[violation.id] ?? { sc: 'unknown', level: '?', name: 'See axe docs' };
+          const ruleClass = classifyRule(violation.id, axeRuleMeta);
+          // WCAG data: from axe tags for conformance failures; the static
+          // RULE_WCAG entry is kept only as advisory context ("related SC")
+          // for best practices and as a fallback when metadata is missing.
+          let wcag;
+          if (ruleClass.classification === 'wcag-failure') {
+            wcag = {
+              sc: ruleClass.sc,
+              level: ruleClass.level ?? '?',
+              name: SC_NAMES[ruleClass.sc] ?? 'See axe docs',
+            };
+          }
+          else if (ruleClass.classification === 'best-practice') {
+            wcag = { sc: null, level: null, name: null };
+          }
+          else {
+            wcag = RULE_WCAG[violation.id] ?? { sc: 'unknown', level: '?', name: 'See axe docs' };
+          }
+          const relatedWcag = ruleClass.classification === 'best-practice'
+            ? (RULE_WCAG[violation.id] ?? null)
+            : null;
           const xpath = cssToXpath(Array.isArray(node.target) ? node.target[0] : node.target);
           const patternId = generatePatternId(selKey, violation.id);
 
           patternMap.set(key, {
             patternId,
             ruleId: violation.id,
+            classification: ruleClass.classification,
+            relatedWcag,
             // conditions: Set of "themeId::colorScheme::screenType" strings seen for this pattern.
             // Converted to sorted array before output.
             conditions: new Set(),
@@ -991,11 +1081,12 @@ function main() {
     .filter((p) => p.pages.length >= MIN_PAGES)
     .sort((a, b) => priorityScore(a) - priorityScore(b));
 
-  // Secondary fuzzy merge for similar selectors
+  // Secondary fuzzy merge for similar selectors.
+  // NOTE: do not merge patterns by rule + summary text — axe descriptions are
+  // identical for every instance of a rule, so that collapses all patterns of
+  // a rule (e.g. every distinct color-contrast bug) into one and makes the
+  // surviving pattern_id order-dependent.
   patterns = mergeSimilarPatterns(patterns, FUZZY_SELECTOR_THRESHOLD);
-
-  // Advanced deduplication: merge by rule + fuzzy summary
-  patterns = mergeByRuleAndSummary(patterns, 12); // threshold can be tuned
 
   // ── Cross-condition analysis ──────────────────────────────────────────────
   // Since patterns are now keyed without theme/colorScheme, each pattern already
@@ -1051,6 +1142,11 @@ function main() {
     totalViolationInstances: rawResults.reduce((n, r) => n + r.violations.reduce((m, v) => m + v.nodes.length, 0), 0),
     uniquePatterns: patterns.length,
     templateLevelPatterns: patterns.filter((p) => p.pages.length >= 3).length,
+    byClassification: {
+      wcagFailures: patterns.filter((p) => p.classification === 'wcag-failure').length,
+      bestPractices: patterns.filter((p) => p.classification === 'best-practice').length,
+      unclassified: patterns.filter((p) => p.classification === 'unknown').length,
+    },
     byImpact: {
       critical: patterns.filter((p) => p.impact === 'critical').length,
       serious:  patterns.filter((p) => p.impact === 'serious').length,
@@ -1089,12 +1185,20 @@ function main() {
         `${p.ruleId}: ${p.description.slice(0, 80)}`,
       rule_id: p.ruleId,
       impact: p.impact,
+      // 'WCAG failure' = axe maps this rule to a WCAG success criterion.
+      // 'Best practice (Deque/axe)' = worth fixing, but NOT a WCAG
+      // conformance failure — file as a task, not a WCAG bug.
+      classification: p.classification === 'wcag-failure'
+        ? 'WCAG failure'
+        : (p.classification === 'best-practice' ? 'Best practice (Deque/axe)' : 'Unclassified'),
       wcag_sc: p.wcag.sc,
       wcag_level: p.wcag.level,
       wcag_name: p.wcag.name,
-      wcag_url: p.wcag.sc === '4.1.1'
-        ? 'https://www.w3.org/TR/WCAG22/#parsing' // SC 4.1.1 deprecated in WCAG 2.2; no Understanding doc
-        : `https://www.w3.org/WAI/WCAG22/Understanding/${p.wcag.sc.replace(/\./g, '')}.html`,
+      // Advisory context only — set for best practices whose static table
+      // entry names a nearby SC. Not a conformance claim.
+      related_wcag: p.relatedWcag,
+      wcag_url: understandingUrl(p.wcag.sc, p.wcag.name),
+      suggested_issue_tags: suggestedIssueTags(p.classification, p.wcag.sc),
       axe_url: p.helpUrl,
       axe_rule_url: dequeRuleUrl(p.ruleId),
       frequency: {
