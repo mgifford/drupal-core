@@ -32,6 +32,16 @@ const { injectAxe, getViolations } = require('axe-playwright');
 const config = require('./lib/patch-evaluator-config');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
 const { loadCanonicalPatchNames } = require('./lib/canonical-patch-map');
+const {
+  buildRequiredRulesRunOnly,
+  formatRulesForReport,
+  getBaseUrl,
+  mergeAxeViolations,
+  resolveAxeRuleId,
+  resolveAxeRuleIds,
+  ruleMatchesRequestedRule,
+  selectorHintMatchesViolation,
+} = require('./lib/evaluator-support');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);
@@ -72,7 +82,7 @@ if (canonicalPatchMap.warning) {
   console.warn(`Warning: ${canonicalPatchMap.warning}`);
 }
 
-const BASE_URL = 'http://drupal-core.ddev.site';
+const BASE_URL = getBaseUrl(process.env);
 const PATCH_FILE = path.join(PATCHES_DIR, `${patchName}.patch`);
 const variantIdRaw = process.env.A11Y_VARIANT_ID || 'default';
 const variantId = String(variantIdRaw).replace(/[^a-zA-Z0-9._-]/g, '-');
@@ -781,7 +791,7 @@ function uniqueStrings(values) {
 }
 
 function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules, currentUrl, maxCandidates = 10) {
-  const rules = uniqueStrings(requestedRules);
+  const rules = resolveAxeRuleIds(requestedRules);
   if (rules.length === 0 || !Array.isArray(reportPatterns) || reportPatterns.length === 0) {
     return [];
   }
@@ -791,7 +801,7 @@ function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules,
   const seen = new Set();
 
   const eligible = reportPatterns
-    .filter((pattern) => rules.includes(pattern.ruleId))
+    .filter((pattern) => ruleMatchesRequestedRule(pattern.ruleId, rules))
     .sort((a, b) => {
       const aTarget = targetPatternIds.has(a.patternId) ? 0 : 1;
       const bTarget = targetPatternIds.has(b.patternId) ? 0 : 1;
@@ -811,14 +821,15 @@ function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules,
 
     for (const pathItem of orderedPaths) {
       for (const selector of selectors.length > 0 ? selectors : ['(pattern selector unavailable)']) {
-        const key = `${pattern.patternId}|${pattern.ruleId}|${pathItem}|${selector}`;
+        const ruleId = resolveAxeRuleId(pattern.ruleId);
+        const key = `${pattern.patternId}|${ruleId}|${pathItem}|${selector}`;
         if (seen.has(key)) {
           continue;
         }
         seen.add(key);
         candidates.push({
           patternId: pattern.patternId,
-          ruleId: pattern.ruleId,
+          ruleId,
           path: pathItem,
           selector,
           preferred: targetPatternIds.has(pattern.patternId),
@@ -852,10 +863,15 @@ async function captureHtml(page, selector) {
   }
 }
 
-async function runAxeScan(page) {
+async function runAxeScan(page, requiredRules = []) {
   try {
     await injectAxe(page);
-    const violations = await getViolations(page);
+    const defaultViolations = await getViolations(page);
+    const requiredRulesRunOnly = buildRequiredRulesRunOnly(requiredRules);
+    const requiredViolations = requiredRulesRunOnly
+      ? await getViolations(page, null, requiredRulesRunOnly)
+      : [];
+    const violations = mergeAxeViolations([defaultViolations, requiredViolations]);
     return { success: true, results: { violations } };
   } catch (err) {
     return { success: false, error: err.message };
@@ -1402,7 +1418,8 @@ function findTargetMatches(annotatedViolations, target) {
     if (v.page_path !== target.page_path) {
       return false;
     }
-    return selectorMatches(v.selector, target.selector);
+    return selectorMatches(v.selector, target.selector)
+      || selectorHintMatchesViolation(v, target.selector);
   });
 }
 
@@ -1531,7 +1548,7 @@ function findTargetMatches(annotatedViolations, target) {
         direction: configuredDirection,
         viewport: effectiveViewport,
       };
-      const caseRules = testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules;
+      const caseRules = resolveAxeRuleIds(testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules);
       const fallbackPatternId = Array.isArray(patchConfig.patternIds) && patchConfig.patternIds.length === 1
         ? patchConfig.patternIds[0]
         : null;
@@ -1614,7 +1631,7 @@ function findTargetMatches(annotatedViolations, target) {
 
       // Axe scan
       log(`  Running axe scan (before)`);
-      const axeBefore = await runAxeScan(page);
+      const axeBefore = await runAxeScan(page, caseRules);
       testResult.before.axe = formatAxeResults(axeBefore.results);
       testResult.before.selectorCounts = await countSelectorsOnPage(page, testCase.selectors);
       testResult.before.annotated_violations = annotateViolations(
@@ -1714,7 +1731,7 @@ function findTargetMatches(annotatedViolations, target) {
 
       // Axe scan
       log(`  Running axe scan (after)`);
-      const axeAfter = await runAxeScan(page);
+      const axeAfter = await runAxeScan(page, caseRules);
       testResult.after.axe = formatAxeResults(axeAfter.results);
       testResult.after.annotated_violations = annotateViolations(
         testResult.after.axe.violations,
@@ -1966,7 +1983,7 @@ function findTargetMatches(annotatedViolations, target) {
     lines.push('');
     lines.push(`- **Description:** ${patchConfig.description}`);
     lines.push(`- **WCAG Criteria:** ${patchConfig.wcag.join(', ')}`);
-    lines.push(`- **Affected Rules:** ${patchConfig.rules.join(', ')}`);
+    lines.push(`- **Affected Rules:** ${formatRulesForReport(patchConfig.rules)}`);
     if (evaluation.patternReport.source) {
       lines.push(`- **Pattern Source:** ${evaluation.patternReport.source.replace(`${REPO_ROOT}/`, '')}`);
     }
