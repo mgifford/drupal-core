@@ -38,8 +38,11 @@
       {%
         set is_message_with_icon = type in ['error', 'status', 'warning']
       %}
+      {%
+        set message_role = type == 'error' ? 'alert' : 'status'
+      %}
 
-      <div role="contentinfo" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+      <div role="{{ message_role }}" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
         {% if is_message_with_title or is_message_with_icon %}
           <div class="messages__header">
             {% if is_message_with_title %}
