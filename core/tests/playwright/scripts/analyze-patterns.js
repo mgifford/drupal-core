@@ -1249,7 +1249,8 @@ function main() {
 
   // ── bugs.csv — spreadsheet-friendly, one row per pattern ─────────────────
   const csvHeaders = [
-    'Priority', 'ID', 'Pattern_ID', 'Conditions', 'Impact', 'WCAG_SC', 'WCAG_Level', 'WCAG_Name',
+    'Priority', 'ID', 'Pattern_ID', 'Conditions', 'Impact', 'Classification',
+    'WCAG_SC', 'WCAG_Level', 'WCAG_Name', 'Suggested_Issue_Tags',
     'Rule_ID', 'Pages_Affected', 'Pct_Pages', 'Is_Template_Issue',
     'Summary', 'Selector', 'Likely_Template', 'Drupal_File',
     'Expected', 'Actual', 'Suggested_Fix', 'Drupal_Issue', 'Axe_URL',
@@ -1264,9 +1265,11 @@ function main() {
       issue.pattern_id,
       issue.conditions.join(' | '),
       issue.impact,
-      issue.wcag_sc,
-      issue.wcag_level,
-      issue.wcag_name,
+      issue.classification,
+      issue.wcag_sc ?? '',
+      issue.wcag_level ?? '',
+      issue.wcag_name ?? '',
+      issue.suggested_issue_tags.join(', '),
       issue.rule_id,
       issue.frequency.pages_affected,
       `${issue.frequency.percentage}%`,
@@ -1310,6 +1313,11 @@ function main() {
   lines.push(`| Pages crawled | ${summary.totalPagesCrawled} |`);
   lines.push(`| Total violation instances | ${summary.totalViolationInstances} |`);
   lines.push(`| Unique patterns | ${summary.uniquePatterns} |`);
+  lines.push(`| WCAG conformance failures | ${summary.byClassification.wcagFailures} |`);
+  lines.push(`| Best practices (Deque/axe — not WCAG failures) | ${summary.byClassification.bestPractices} |`);
+  if (summary.byClassification.unclassified > 0) {
+    lines.push(`| Unclassified (axe metadata unavailable) | ${summary.byClassification.unclassified} |`);
+  }
   lines.push(`| Template-level patterns (≥3 pages) 🔁 | ${summary.templateLevelPatterns} |`);
   lines.push(`| Critical | ${summary.byImpact.critical} |`);
   lines.push(`| Serious | ${summary.byImpact.serious} |`);
@@ -1455,17 +1463,33 @@ function main() {
     lines.push('');
   }
 
-  lines.push('## Reproducible Issue Details');
-  lines.push('');
+  const wcagIssues = bugsJson.issues.filter((i) => i.classification !== 'Best practice (Deque/axe)');
+  const bestPracticeIssues = bugsJson.issues.filter((i) => i.classification === 'Best practice (Deque/axe)');
 
-  for (const issue of bugsJson.issues) {
+  lines.push('## Reproducible Issue Details — WCAG Conformance Failures');
+  lines.push('');
+  lines.push('> These rules map directly to WCAG success criteria. File on drupal.org as bug reports with the `Accessibility` tag plus the per-SC `wcagXXX` tag listed under each issue.');
+  lines.push('');
+  if (wcagIssues.length === 0) {
+    lines.push('_No WCAG conformance failures found in this scan._');
+    lines.push('');
+  }
+
+  const renderIssueDetail = (issue) => {
     lines.push(`### ${issue.id}—${DATE_STAMP}: ${issue.summary}`);
     lines.push('');
     lines.push(`**Pattern ID:** ${issue.pattern_id}`);
     lines.push(`**Rule:** axe-core - ${issue.rule_id}`);
     lines.push(`**Axe Rule URL:** ${issue.axe_rule_url || issue.axe_url}`);
     lines.push(`**Severity:** ${issue.severity} (axe impact: ${issue.impact})`);
-    lines.push(`**WCAG SC:** ${issue.wcag_sc} - ${issue.wcag_name} (Level ${issue.wcag_level})`);
+    lines.push(`**Classification:** ${issue.classification}`);
+    if (issue.wcag_sc) {
+      lines.push(`**WCAG SC:** ${issue.wcag_sc} - ${issue.wcag_name} (Level ${issue.wcag_level})`);
+    }
+    else if (issue.related_wcag?.sc) {
+      lines.push(`**Related WCAG SC (advisory only — not a conformance failure):** ${issue.related_wcag.sc} - ${issue.related_wcag.name}`);
+    }
+    lines.push(`**Suggested drupal.org issue tags:** ${issue.suggested_issue_tags.join(', ')}`);
     lines.push(`**Frequency:** ${issue.frequency.pages_affected} of ${issue.frequency.total_pages_scanned} pages (${issue.frequency.percentage}%)`);
     lines.push(`**Selector:** ${issue.selector}`);
     lines.push(`**XPath:** ${issue.xpath || 'N/A'}`);
@@ -1530,7 +1554,7 @@ function main() {
     lines.push('#### Impact');
     lines.push((issue.impact_groups && issue.impact_groups.length > 0)
       ? issue.impact_groups.join(', ')
-      : 'Users impacted by this WCAG failure.');
+      : (issue.wcag_sc ? 'Users impacted by this WCAG failure.' : 'Users impacted by this accessibility barrier.'));
     lines.push('');
 
     lines.push('#### Suggested Fix');
@@ -1570,6 +1594,22 @@ function main() {
     lines.push(`- Pattern ID: ${issue.pattern_id}`);
     lines.push(`- Instance IDs: ${issue.affected_pages.map((pg) => pg.instanceId).join(', ')}`);
     lines.push('');
+  };
+
+  for (const issue of wcagIssues) {
+    renderIssueDetail(issue);
+  }
+
+  lines.push('## Reproducible Issue Details — Best Practices (not WCAG failures)');
+  lines.push('');
+  lines.push('> These rules are Deque/axe best practices. They improve the experience for assistive technology users and are worth fixing, but they are **not** WCAG conformance failures — file them on drupal.org as tasks (not bugs), tagged `Accessibility`, and do not cite a WCAG SC as failing.');
+  lines.push('');
+  if (bestPracticeIssues.length === 0) {
+    lines.push('_No best-practice findings in this scan._');
+    lines.push('');
+  }
+  for (const issue of bestPracticeIssues) {
+    renderIssueDetail(issue);
   }
 
   // Add a deduplication summary section
