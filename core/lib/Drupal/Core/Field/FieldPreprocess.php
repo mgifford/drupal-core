@@ -108,7 +108,7 @@ class FieldPreprocess {
         [
           'data' => [
             '#type' => 'html_tag',
-            '#tag' => 'h4',
+            '#tag' => 'span',
             '#value' => $element['#title'],
             '#attributes' => $header_attributes,
           ],

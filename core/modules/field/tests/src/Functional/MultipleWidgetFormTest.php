@@ -177,6 +177,8 @@ class MultipleWidgetFormTest extends FieldTestBase {
     $this->drupalGet('entity_test_base_field_display/manage/' . $entity->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('A field with multiple values');
+    $this->assertSession()->elementExists('css', 'th.field-label > span.label');
+    $this->assertSession()->elementNotExists('css', 'th.field-label > h4');
     // Test if labels were XSS filtered.
     $this->assertSession()->assertEscaped("<script>alert('a configurable field');</script>");
   }
