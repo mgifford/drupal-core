@@ -2,6 +2,7 @@
 
 namespace Drupal\system\Theme;
 
+use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Extension\ModuleExtensionList;
@@ -212,6 +213,13 @@ class SystemAdminThemePreprocess {
 
       if (!empty($module['version'])) {
         $module['version'] = $this->renderer->render($module['version']);
+      }
+
+      $module['summary_label'] = NULL;
+      if (trim(PlainTextOutput::renderFromHtml($module['description']['#markup'] ?? '')) === '') {
+        $module['summary_label'] = $this->t('Details for @module', [
+          '@module' => trim(PlainTextOutput::renderFromHtml($module['name']['#markup'] ?? '')),
+        ]);
       }
 
       $module['attributes'] = new Attribute($module['#attributes']);

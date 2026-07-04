@@ -150,6 +150,11 @@ BROKEN;
     $this->assertSession()
       ->pageTextContains("Module with empty description");
 
+    $this->assertSession()
+      ->elementExists('xpath', '//details[@id="edit-modules-missing-description-enable-description"]/summary[@aria-label="Details for Module with empty description"]');
+    $this->assertSession()
+      ->elementNotExists('xpath', '//details[@id="edit-modules-system-test-enable-description"]/summary[@aria-label]');
+
     // Check that the module filter text box is available.
     $this->assertSession()->elementExists('xpath', '//input[@name="text"]');
   }

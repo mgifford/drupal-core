@@ -44,7 +44,7 @@
         </td>
         <td class="description expand priority-low">
           <details class="js-form-wrapper form-wrapper" id="{{ module.enable_id }}-description">
-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"><span class="text module-description">{{ module.description }}</span></summary>
+            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
             <div class="details-wrapper">
               <div class="details-description">
                 <div class="requirements">
