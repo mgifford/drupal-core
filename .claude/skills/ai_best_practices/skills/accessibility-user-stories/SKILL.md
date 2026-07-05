@@ -280,8 +280,8 @@ Reference story in issue:
 
 ## References
 
-- **Full Stories:** [USER-STORIES.md](../../../../../../USER-STORIES.md) (3,500+ lines)
-- **Coverage Matrix:** [USER-STORY-COVERAGE-MATRIX.md](../../../../../../USER-STORY-COVERAGE-MATRIX.md)
-- **Implementation Queue:** [IMPLEMENTATION-QUEUE.md](../../../../../../IMPLEMENTATION-QUEUE.md)
-- **Automated Tests:** [core/tests/playwright/accessibility-workflows.spec.js](../../../../../../core/tests/playwright/accessibility-workflows.spec.js)
+- **Full Stories:** [USER-STORIES.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md) (3,500+ lines)
+- **Coverage Matrix:** [USER-STORY-COVERAGE-MATRIX.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORY-COVERAGE-MATRIX.md)
+- **Implementation Queue:** [IMPLEMENTATION-QUEUE.md](https://github.com/mgifford/drupal-core/blob/main/IMPLEMENTATION-QUEUE.md)
+- **Automated Tests:** [core/tests/playwright/accessibility-workflows.spec.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/accessibility-workflows.spec.js)
 - **WCAG 2.2 AA:** https://www.w3.org/WAI/WCAG22/quickref/

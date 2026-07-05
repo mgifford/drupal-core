@@ -387,10 +387,10 @@ Before declaring a patch evaluation complete:
 
 ## References
 
-- **Evaluator Script:** [core/tests/playwright/scripts/evaluate-patch.js](../../../../../../core/tests/playwright/scripts/evaluate-patch.js)
-- **Batch Script:** [core/tests/playwright/scripts/evaluate-all-patches.js](../../../../../../core/tests/playwright/scripts/evaluate-all-patches.js)
-- **Config:** [core/tests/playwright/scripts/lib/patch-evaluator-config.js](../../../../../../core/tests/playwright/scripts/lib/patch-evaluator-config.js)
-- **Patches:** [patches/](../../../../../../patches/)
+- **Evaluator Script:** [core/tests/playwright/scripts/evaluate-patch.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/evaluate-patch.js)
+- **Batch Script:** [core/tests/playwright/scripts/evaluate-all-patches.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/evaluate-all-patches.js)
+- **Config:** [core/tests/playwright/scripts/lib/patch-evaluator-config.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/lib/patch-evaluator-config.js)
+- **Patches:** [patches/](https://github.com/mgifford/drupal-core/blob/main/patches/)
 - **Bug Reporting Schema:** [mgifford/ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md)
 - **WCAG 2.2 AA:** https://www.w3.org/WAI/WCAG22/quickref/
 

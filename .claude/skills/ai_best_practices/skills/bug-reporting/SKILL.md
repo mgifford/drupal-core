@@ -68,7 +68,7 @@ Every bug report **must** include:
 
 ### Optional Fields
 
-- Labels: `a11y`, `WCAG 2.2 AA`, `keyboard`, etc.
+- Issue tags: `Accessibility`, `wcagXXX` (see "Filing on drupal.org" below)
 - Assignee (if accessible)
 - Priority (if prioritization system exists)
 
@@ -79,16 +79,21 @@ Every bug report **must** include:
 ### Instance ID
 Unique identifier for a **single violation on a single page**.
 
-**Formula:**
+**Formula** (as implemented in `analyze-patterns.js`):
 ```
-instance_id = SHA-256(page_url + selector + rule_id + screen_type)
+instance_id = "INS-" + first 8 hex chars (uppercase) of
+  SHA-256(generalized_page_path + "|" + normalized_selector + "|" + rule_id + "|" + screen_type)
 ```
+
+Page paths are generalized before hashing (`/node/123` → `/node/[nid]`) and
+selectors are normalized (cardinality indexes, UUIDs, and hashes collapsed),
+so IDs stay stable across content changes and re-scans.
 
 **Examples:**
 ```
-instance_id: a1b2c3d4e5f6g7h8... (login button on /user/login, desktop)
-instance_id: x9y8z7w6v5u4t3s2... (login button on /user/login, mobile)
-instance_id: m1n2o3p4q5r6s7t8... (login button on /contact, desktop)
+instance_id: INS-A1B2C3D4 (login button on /user/login, desktop)
+instance_id: INS-9F8E7D6C (login button on /user/login, mobile)
+instance_id: INS-5B4A3C2D (login button on /contact, desktop)
 ```
 
 **Use When:**
@@ -99,15 +104,20 @@ instance_id: m1n2o3p4q5r6s7t8... (login button on /contact, desktop)
 ### Pattern ID
 Unique identifier for a **recurring violation pattern** across pages/screens.
 
-**Formula:**
+**Formula** (as implemented in `analyze-patterns.js`):
 ```
-pattern_id = SHA-256(selector + rule_id + screen_type)
+pattern_id = "DRU-" + first 8 hex chars (uppercase) of
+  SHA-256(normalized_selector + "|" + rule_id)
 ```
+
+Screen type, theme, and color scheme are intentionally excluded — the same
+selector failing the same rule is the same bug everywhere; those variants are
+tracked in the pattern's `conditions` list.
 
 **Examples:**
 ```
-pattern_id: abc123def456xyz789... (all .send-button instances missing name)
-pattern_id: uvw012rst345pqr678... (all button.submit instances missing name)
+pattern_id: DRU-AB12CD34 (all .send-button instances missing name)
+pattern_id: DRU-56EF78AB (all button.submit instances missing name)
 ```
 
 **Use When:**
@@ -128,7 +138,7 @@ pattern_id: uvw012rst345pqr678... (all button.submit instances missing name)
 **Examples:**
 ```
 [WCAG 4.1.2] Submit buttons missing accessible names
-[WCAG 2.4.3] Form focus indicators not visible
+[WCAG 2.4.7] Form focus indicators not visible
 [WCAG 3.3.1] Error messages not linked to fields
 ```
 
@@ -138,8 +148,8 @@ pattern_id: uvw012rst345pqr678... (all button.submit instances missing name)
 ## Accessibility Violation
 
 ### Violation ID
-- **instance_id:** {SHA-256}
-- **pattern_id:** {SHA-256}
+- **instance_id:** {INS-XXXXXXXX — first 8 hex of SHA-256}
+- **pattern_id:** {DRU-XXXXXXXX — first 8 hex of SHA-256}
 - **Frequency:** [single_page / pattern / systematic]
 
 ### Location
@@ -211,8 +221,8 @@ pattern_id: uvw012rst345pqr678... (all button.submit instances missing name)
 ## Accessibility Violation
 
 ### Violation ID
-- **instance_id:** abc123def456xyz789.../user/login.submit
-- **pattern_id:** xyz789abc123def456.../all.submit
+- **instance_id:** INS-7C2E91A4
+- **pattern_id:** DRU-3F8B5D12
 - **Frequency:** pattern
 
 ### Location
@@ -281,9 +291,15 @@ The submit button uses only an arrow character (→) as visible text. Screen rea
 
 ---
 
-### Example 2: Pattern Across Pages
+### Example 2: Pattern Across Pages (Manual Finding)
 
-**Title:** `[WCAG 2.4.3] All buttons missing visible focus indicators`
+> **Note on evidence:** axe-core has **no rule** for missing focus
+> indicators — automated scanners cannot reliably detect this failure class.
+> This finding comes from **manual keyboard testing**, which is why the ACT
+> Rule field says "none". Never invent a rule ID to make a manual finding
+> look tool-verified; state the actual test method instead.
+
+**Title:** `[WCAG 2.4.7] All buttons missing visible focus indicators`
 
 **Body:**
 ```markdown
@@ -291,7 +307,7 @@ The submit button uses only an arrow character (→) as visible text. Screen rea
 
 ### Violation ID
 - **instance_id:** {multiple instances}
-- **pattern_id:** button.focus-outline/focus-visible
+- **pattern_id:** DRU-8A4C2F91 (manual findings get IDs from the same formula)
 - **Frequency:** systematic
 
 ### Location
@@ -305,9 +321,9 @@ The submit button uses only an arrow character (→) as visible text. Screen rea
 - **Drupal Version:** 12.0-dev
 
 ### Standards
-- **WCAG Criterion:** 2.4.3
+- **WCAG Criterion:** 2.4.7
 - **Success Criterion Name:** Focus Visible
-- **ACT Rule:** focus-visible
+- **ACT Rule:** none — found via manual keyboard testing (not automatable with axe-core)
 - **Severity:** high
 
 ### HTML Snippet
@@ -367,39 +383,54 @@ button:focus {
 
 ---
 
+## Before You File: Confidence Rubric
+
+An automated finding is **safe to file** only when every gate below passes.
+This protects the credibility of automated reporting in the core queue.
+
+| Gate | Check | If it fails |
+| :--- | :--- | :--- |
+| **1. Classification** | The report marks it a **WCAG failure** (axe `wcag2a`/`wcag2aa` tags), not a Deque **best practice** | Still file it — but as a **Task**, framed as an ARIA/usability best practice. Never claim a WCAG SC it doesn't fail. |
+| **2. Reproduction** | A human reproduced one instance manually (DevTools + keyboard, screen reader for name/role findings) and confirmed real user impact | Do not file. Automated evidence alone is a lead, not a bug. |
+| **3. Fix verified against HEAD** | Any suggested fix was checked against the current template/CSS in the target branch — generated fix snippets go stale | File the problem without the fix, or update the fix first. A wrong suggested fix is worse than none. |
+| **4. No duplicate** | The report's issue-search link (rule + selector/template) returned no open issue | Comment on the existing issue with your pattern_id and new evidence instead. |
+| **5. Honest evidence** | The issue states what found it (rule ID + tool version, or "manual keyboard testing") and links the published report | Fix the evidence trail before filing. |
+
+State the test method plainly. "Found by axe-core 4.11 `label` rule, confirmed
+manually with VoiceOver" builds trust; an unverified scanner dump erodes it.
+
+---
+
 ## Filing on drupal.org
 
+drupal.org does **not** use GitHub-style labels. The issue form has Category,
+Component, Version, Priority, and **Issue tags**.
+
 ### 1. Create New Issue
-Go to [drupal.org/project/drupal/issues](https://www.drupal.org/project/drupal/issues)
+Go to [drupal.org/node/add/project-issue/drupal](https://www.drupal.org/node/add/project-issue/drupal)
 
-Click "Create issue"
+### 2. Fill the Form
+- **Title:** Use template above (plain description also fine; the `[WCAG X.X.X]` prefix helps queue scanning)
+- **Category:** Bug report (WCAG failures) or Task (best practices)
+- **Component:** The affected theme or module (e.g. `Olivero theme`, `Claro theme`, `forms system`)
+- **Version:** Current development branch (e.g. `11.x-dev` — check what the queue uses today)
+- **Priority:** Map from axe impact — Critical → Critical, Serious → Major, Moderate → Normal, Minor → Minor
+- **Issue summary:** Use the template above
 
-### 2. Fill Form
-- **Title:** Use template above
-- **Category:** Accessibility (if available)
-- **Version:** 12.0-dev (or applicable version)
-- **Assigned:** Leave unassigned (or assign to maintainer)
-- **Description:** Use markdown template above
-
-### 3. Add Labels
-```
-accessibility
-wcag-22-aa
-keyboard
-form
-(add others as relevant)
-```
+### 3. Add Issue Tags
+- **`Accessibility`** — the canonical core a11y tag (always)
+- **`wcagXXX`** — the SC-specific tag, digits only, e.g. `wcag143` for 1.4.3, `wcag321` for 3.2.1. This supports the effort to map issues to specific criteria (see [#3506324](https://www.drupal.org/project/drupal/issues/3506324) and the [wcag321 tag search](https://www.drupal.org/project/issues/search?issue_tags=wcag321)). Only tag SCs the issue actually fails — best practices get `Accessibility` only.
 
 ### 4. Link to User Story
-In description, reference:
+Use the published URL — repo-relative links are dead on drupal.org:
 ```markdown
-[User Story 3.9: Form Field Focus - Focus Indicator Visible](../USER-STORIES.md#39-form-field-focus--focus-indicator-visible)
+[User Story 3.9: Form Field Focus - Focus Indicator Visible](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md)
 ```
 
 ### 5. Submit & Follow Up
 - Monitor for responses
 - Provide additional test results if requested
-- Link to related patches/PRs
+- Link to related merge requests
 
 ---
 
@@ -467,7 +498,8 @@ title:"[WCAG 4.1.2]" OR title:button-name
 - **WCAG 2.2 AA:** https://www.w3.org/WAI/WCAG22/quickref/
 - **ACT Rules:** https://act-rules.github.io/
 - **drupal.org Issues:** https://www.drupal.org/project/drupal/issues
-- **User Stories:** [USER-STORIES.md](../../../../../../USER-STORIES.md)
+- **User Stories:** [USER-STORIES.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md)
+- **Published reports:** https://mgifford.github.io/drupal-core/
 
 ---
 

@@ -319,7 +319,7 @@ Accessibility: Module {name} introduces {X} violations (Story {ID})
 
 ## Story Reference
 - Story ID: 2.1 (Create Node - Keyboard Navigation)
-- WCAG: 2.1.1 (Keyboard), 2.4.3 (Focus Visible)
+- WCAG: 2.1.1 (Keyboard), 2.4.3 (Focus Order), 2.4.7 (Focus Visible)
 
 ## Violations Detected
 - Button name missing (on layout builder toolbar)
@@ -368,9 +368,9 @@ Clearing caches after each module enable/disable = **~2–5 seconds per test**
 ## References
 
 - **Config:** [.drupal-a11y-module-config.json](.drupal-a11y-module-config.json) (generated)
-- **Discovery Script:** [core/tests/playwright/scripts/discover-modules.js](../../../../../../core/tests/playwright/scripts/discover-modules.js)
-- **Module Manager:** [core/tests/playwright/lib/module-manager.js](../../../../../../core/tests/playwright/lib/module-manager.js)
-- **User Stories:** [USER-STORIES.md](../../../../../../USER-STORIES.md) (reference for test paths)
+- **Discovery Script:** [core/tests/playwright/scripts/discover-modules.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/scripts/discover-modules.js)
+- **Module Manager:** [core/tests/playwright/lib/module-manager.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/lib/module-manager.js)
+- **User Stories:** [USER-STORIES.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md) (reference for test paths)
 - **Drupal Module System:** https://www.drupal.org/docs/drupal-apis/module-api
 
 ---

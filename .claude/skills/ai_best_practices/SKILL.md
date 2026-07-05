@@ -122,8 +122,8 @@ File accessibility bugs with stable IDs, WCAG criteria, and reproducibility step
 
 ### 1. Validate User Story Coverage
 ```bash
-# Check what's automated vs. documented
-grep "| Automated\|| Documented" USER-STORY-COVERAGE-MATRIX.md
+# Regenerate the coverage matrix + metrics from the actual test specs
+npm run a11y:coverage
 
 # See prioritized implementation queue
 cat IMPLEMENTATION-QUEUE.md
@@ -143,8 +143,8 @@ npm run a11y:evaluate-patch <patch-name>
 # Generate module config
 npm run a11y:discover-modules
 
-# Analyze module impact (when scripts complete)
-npm run a11y:analyze-module-impact
+# Analyze module impact
+npm run a11y:analyze-modules
 ```
 
 ### 4. File Accessibility Issues
@@ -157,15 +157,21 @@ npm run a11y:analyze-module-impact
 
 ## Key Metrics
 
-| Metric | Value | Target |
+Coverage metrics are **generated, not hand-maintained**. Run
+`npm run a11y:coverage` to regenerate
+[USER-STORY-COVERAGE-MATRIX.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORY-COVERAGE-MATRIX.md)
+and `reports/coverage-metrics.json` by parsing story IDs out of
+`USER-STORIES.md` and matching them against `test('X.Y: …')` titles in the
+Playwright specs. The generated files carry their own timestamp and a
+DO-NOT-EDIT header; treat this table's targets as the only hand-set values.
+
+| Metric | Source | Target |
 |---|---|---|
-| User Stories Defined | 100 | 100 |
-| Automated Tests (Playwright) | 18 | 40+ Tier 1 |
-| Tier 1 Coverage | 45% | 100% |
-| Tier 2 Coverage | 0% | 50%+ |
-| Tier 3 Coverage | 0% | 50%+ |
-| Modules Tracked | 100+ | All |
-| Patches Evaluated | 10 | All submitted |
+| User Stories Defined | `USER-STORIES.md` (generated count) | 100 |
+| Automated Tests (Playwright) | `reports/coverage-metrics.json` | 40+ Tier 1 |
+| Tier 1 / 2 / 3 Coverage | `reports/coverage-metrics.json` | 100% / 50%+ / 50%+ |
+| Modules Tracked | `.drupal-a11y-module-config.json` | All |
+| Patches Evaluated | `reports/patches/INDEX.md` | All submitted |
 
 ---
 

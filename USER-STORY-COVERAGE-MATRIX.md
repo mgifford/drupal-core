@@ -1,6 +1,9 @@
 # User Story Coverage Matrix
 
-Generated: 2026-05-06T18:21:25.461Z
+<!-- GENERATED FILE — DO NOT EDIT. -->
+<!-- Regenerate with: npm run a11y:coverage -->
+
+Generated: 2026-07-05T02:24:56.175Z
 
 ## Coverage Summary
 
@@ -17,112 +20,152 @@ Generated: 2026-05-06T18:21:25.461Z
 
 ## Story-by-Story Matrix
 
+### Authentication
+
 | Story ID | Story Title | Tier | Status | Evidence |
 |---|---|---|---|---|
-| 1.1 | Registration Form - Keyboard Navigation Only | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:27 |
-| 1.2 | Registration Form - Screen Reader Access | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:70 |
-| 1.3 | Password Reset Flow | Tier 1 | Documented only | Story in USER-STORIES.md:48 |
-| 1.4 | Login with Username & Password | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:108 |
-| 1.5 | Login Error Messages - Visible & Announced | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:145 |
-| 1.6 | Logout Confirmation | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:167 |
-| 1.7 | Two-Factor Authentication (if enabled) | Tier 1 | Documented only | Story in USER-STORIES.md:76 |
-| 1.8 | Account Verification Email (Receive & Verify) | Tier 1 | Documented only | Story in USER-STORIES.md:83 |
-| 1.9 | Login Timeout Warning | Tier 1 | Documented only | Story in USER-STORIES.md:90 |
-| 1.10 | Accessibility & Admin Permissions | Tier 1 | Documented only | Story in USER-STORIES.md:97 |
-| 2.1 | Create Node - Keyboard Navigation | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:182 |
-| 2.2 | Create Node - Form Validation Errors | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:210 |
-| 2.3 | Rich Text Editor - CKEditor5 Accessibility | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:239 |
-| 2.4 | Add Featured Image - File Upload with Alt Text | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:255 |
-| 2.5 | Schedule Publication - Accessible Date Picker | Tier 1 | Documented only | Story in USER-STORIES.md:136 |
-| 2.6 | Taxonomy Term Assignment - Multi-Select | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:284 |
-| 2.7 | Content Preview - Accessible Preview | Tier 1 | Documented only | Story in USER-STORIES.md:150 |
-| 2.8 | Save as Draft - Status Message | Tier 1 | Documented only | Story in USER-STORIES.md:157 |
-| 2.9 | Publish Content - Success Confirmation | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:306 |
-| 2.10 | Edit Published Content - Change History Awareness | Tier 1 | Documented only | Story in USER-STORIES.md:171 |
-| 3.1 | Contact Form - All Fields Required | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:336 |
-| 3.2 | Contact Form - Error Recovery | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:366 |
-| 3.3 | Multi-Step Form - Progress Indicator | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:401 |
-| 3.4 | Form Field Instructions - Visible & Programmatic | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:434 |
-| 3.5 | Conditional Form Fields (Show/Hide) | Tier 1 | Documented only | Story in USER-STORIES.md:210 |
-| 3.6 | Form Submission - No Time Limit | Tier 1 | Documented only | Story in USER-STORIES.md:217 |
-| 3.7 | CAPTCHA Accessibility (if present) | Tier 1 | Documented only | Story in USER-STORIES.md:224 |
-| 3.8 | Checkbox & Radio Groups - Grouped Labels | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:454 |
-| 3.9 | Form Field Focus - Focus Indicator Visible | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:478 |
-| 3.10 | Form Submission Success - Redirect & Announcement | Tier 1 | Automated (Playwright) | Test in core/tests/playwright/accessibility-workflows.spec.js:513 |
-| 4.1 | Main Menu - Keyboard Navigation | Tier 1 | Documented only | Story in USER-STORIES.md:256 |
-| 4.2 | Main Menu - Screen Reader Announcements | Tier 1 | Documented only | Story in USER-STORIES.md:263 |
-| 4.3 | Breadcrumb Navigation - Accessible | Tier 1 | Documented only | Story in USER-STORIES.md:270 |
-| 4.4 | Skip Navigation Link - Functional | Tier 1 | Documented only | Story in USER-STORIES.md:277 |
-| 4.5 | Pagination - All States Clear | Tier 1 | Documented only | Story in USER-STORIES.md:284 |
-| 4.6 | Sticky Navigation - Not Blocking Content | Tier 1 | Documented only | Story in USER-STORIES.md:291 |
-| 4.7 | Footer Navigation - Complete | Tier 1 | Documented only | Story in USER-STORIES.md:298 |
-| 4.8 | Active Page Indicator - Current Location Clear | Tier 1 | Documented only | Story in USER-STORIES.md:305 |
-| 4.9 | Search Navigation - Find & Filter Results | Tier 1 | Documented only | Story in USER-STORIES.md:312 |
-| 4.10 | Mobile Menu (Hamburger) - Keyboard & Screen Reader | Tier 1 | Documented only | Story in USER-STORIES.md:319 |
-| 5.1 | Upload Image - Alt Text Required | Tier 2 | Documented only | Story in USER-STORIES.md:332 |
-| 5.2 | Audio File Upload - Caption/Transcript Available | Tier 2 | Documented only | Story in USER-STORIES.md:339 |
-| 5.3 | Video Embed - Captions & Transcripts | Tier 2 | Documented only | Story in USER-STORIES.md:346 |
-| 5.4 | Document Download - Accessible Format Offered | Tier 2 | Documented only | Story in USER-STORIES.md:353 |
-| 5.5 | Image Gallery - Keyboard Navigation & Descriptions | Tier 2 | Documented only | Story in USER-STORIES.md:360 |
-| 5.6 | File List - Download Links Labeled | Tier 2 | Documented only | Story in USER-STORIES.md:367 |
-| 5.7 | Lightbox/Modal Image Viewer - Keyboard Escape | Tier 2 | Documented only | Story in USER-STORIES.md:374 |
-| 5.8 | Attachment Field - Multiple Files | Tier 2 | Documented only | Story in USER-STORIES.md:381 |
-| 5.9 | Media Player Controls - Keyboard Accessible | Tier 2 | Documented only | Story in USER-STORIES.md:388 |
-| 5.10 | File Preview - Accessible Format | Tier 2 | Documented only | Story in USER-STORIES.md:395 |
-| 6.1 | Term Browser - Hierarchical Labels | Tier 2 | Documented only | Story in USER-STORIES.md:406 |
-| 6.2 | Term Cloud - All Terms Accessible | Tier 2 | Documented only | Story in USER-STORIES.md:413 |
-| 6.3 | Faceted Search - Filter by Tags | Tier 2 | Documented only | Story in USER-STORIES.md:420 |
-| 6.4 | Tag Input - Auto-Complete Accessible | Tier 2 | Documented only | Story in USER-STORIES.md:427 |
-| 6.5 | Category Filter - Multiple Selections | Tier 2 | Documented only | Story in USER-STORIES.md:434 |
-| 6.6 | Term Autocomplete - Keyboard Navigation | Tier 2 | Documented only | Story in USER-STORIES.md:441 |
-| 6.7 | Taxonomy Navigation - Current Category Marked | Tier 2 | Documented only | Story in USER-STORIES.md:448 |
-| 6.8 | Search by Tag - Results Labeled | Tier 2 | Documented only | Story in USER-STORIES.md:455 |
-| 6.9 | Vocabulary Selection - Multiple Taxonomies | Tier 2 | Documented only | Story in USER-STORIES.md:462 |
-| 6.10 | Term Suggestions - Auto-Populated Field | Tier 2 | Documented only | Story in USER-STORIES.md:469 |
-| 7.1 | Custom Block - Placed in Accessible Regions | Tier 2 | Documented only | Story in USER-STORIES.md:480 |
-| 7.2 | Block Visibility Settings - Accessible Toggles | Tier 2 | Documented only | Story in USER-STORIES.md:487 |
-| 7.3 | Hero Image Block - Alt Text Present | Tier 2 | Documented only | Story in USER-STORIES.md:494 |
-| 7.4 | Card Layout - Multiple Columns Responsive | Tier 2 | Documented only | Story in USER-STORIES.md:501 |
-| 7.5 | Sidebar Layout - Order Programmatic | Tier 2 | Documented only | Story in USER-STORIES.md:508 |
-| 7.6 | Layout Grid System - Semantic Structure | Tier 2 | Documented only | Story in USER-STORIES.md:515 |
-| 7.7 | Layout Mode Toggle (Full/Boxed/Sidebar) | Tier 2 | Documented only | Story in USER-STORIES.md:522 |
-| 7.8 | Floating Elements - Not Covering Content | Tier 2 | Documented only | Story in USER-STORIES.md:529 |
-| 7.9 | Block Margins & Spacing - Visual & Structural | Tier 2 | Documented only | Story in USER-STORIES.md:536 |
-| 7.10 | Parallax Scrolling - Can Be Disabled | Tier 2 | Documented only | Story in USER-STORIES.md:543 |
-| 8.1 | Add Comment - Accessible Form | Tier 2 | Documented only | Story in USER-STORIES.md:554 |
-| 8.2 | Comment Status - Awaiting Moderation | Tier 2 | Documented only | Story in USER-STORIES.md:561 |
-| 8.3 | Reply to Comment - Threaded Comments | Tier 2 | Documented only | Story in USER-STORIES.md:568 |
-| 8.4 | Comment Moderation - Admin Interface | Tier 2 | Documented only | Story in USER-STORIES.md:575 |
-| 8.5 | Delete Comment - Confirmation | Tier 2 | Documented only | Story in USER-STORIES.md:582 |
-| 8.6 | Comment Notifications - Email Accessible | Tier 2 | Documented only | Story in USER-STORIES.md:589 |
-| 8.7 | Comment Count - Announcement | Tier 2 | Documented only | Story in USER-STORIES.md:596 |
-| 8.8 | Comment Sorting - Order & Options | Tier 2 | Documented only | Story in USER-STORIES.md:603 |
-| 8.9 | Comment Preview - Editable | Tier 2 | Documented only | Story in USER-STORIES.md:610 |
-| 8.10 | Comment Username Link - Author Linkable | Tier 2 | Documented only | Story in USER-STORIES.md:617 |
-| 9.1 | View Page - Accessible Table Display | Tier 3 | Documented only | Story in USER-STORIES.md:630 |
-| 9.2 | View Exposed Filters - Keyboard Navigation | Tier 3 | Documented only | Story in USER-STORIES.md:637 |
-| 9.3 | View Results - Empty State Message | Tier 3 | Documented only | Story in USER-STORIES.md:644 |
-| 9.4 | Pager Links - Current Page Marked | Tier 3 | Documented only | Story in USER-STORIES.md:651 |
-| 9.5 | View Style Switcher - Teaser/Full/Grid Selectable | Tier 3 | Documented only | Story in USER-STORIES.md:658 |
-| 9.6 | View Result Count - Announced | Tier 3 | Documented only | Story in USER-STORIES.md:665 |
-| 9.7 | View - Sortable Columns | Tier 3 | Documented only | Story in USER-STORIES.md:672 |
-| 9.8 | View JSON/CSV Export - Link Accessible | Tier 3 | Documented only | Story in USER-STORIES.md:679 |
-| 9.9 | View Block Attachment - Visible Location | Tier 3 | Documented only | Story in USER-STORIES.md:686 |
-| 9.10 | View Facets - Multiple Selection & Reset | Tier 3 | Documented only | Story in USER-STORIES.md:693 |
-| 10.1 | Login Page - Color Contrast | Tier 3 | Documented only | Story in USER-STORIES.md:704 |
-| 10.2 | Admin Toolbar - Keyboard Accessible | Tier 3 | Documented only | Story in USER-STORIES.md:711 |
-| 10.3 | Status Messages - Announced & Persisting | Tier 3 | Documented only | Story in USER-STORIES.md:718 |
-| 10.4 | Error Messages - Linked to Fields | Tier 3 | Documented only | Story in USER-STORIES.md:725 |
-| 10.5 | Breadcrumb Contrast - Links Underlined/Distinct | Tier 3 | Documented only | Story in USER-STORIES.md:732 |
-| 10.6 | Link Identification - Purpose Clear Without Context | Tier 3 | Documented only | Story in USER-STORIES.md:739 |
-| 10.7 | Form Focus - Tab Order Logical | Tier 3 | Documented only | Story in USER-STORIES.md:746 |
-| 10.8 | Page Loading - Loading Indicator Announced | Tier 3 | Documented only | Story in USER-STORIES.md:753 |
-| 10.9 | Dialog/Modal - Keyboard Trap Intentional & Escapable | Tier 3 | Documented only | Story in USER-STORIES.md:760 |
-| 10.10 | System Site Settings - Accessible to Edit | Tier 3 | Documented only | Story in USER-STORIES.md:767 |
+| 1.1 | Registration Form - Keyboard Navigation Only | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Registration Form - Keyboard Navigation Only |
+| 1.2 | Registration Form - Screen Reader Access | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Registration Form - Screen Reader Compliance |
+| 1.3 | Password Reset Flow | 1 | 📄 Documented | — |
+| 1.4 | Login with Username & Password | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Login Form - Keyboard Navigation |
+| 1.5 | Login Error Messages - Visible & Announced | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Login Error Messages - Visible & Announced |
+| 1.6 | Logout Confirmation | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Logout - Keyboard Navigation |
+| 1.7 | Two-Factor Authentication (if enabled) | 1 | 📄 Documented | — |
+| 1.8 | Account Verification Email (Receive & Verify) | 1 | 📄 Documented | — |
+| 1.9 | Login Timeout Warning | 1 | 📄 Documented | — |
+| 1.10 | Accessibility & Admin Permissions | 1 | 📄 Documented | — |
 
-## Notes
+### Content Creation
 
-- Status definitions:
-  - Automated (Playwright): story ID has a matching Playwright test title.
-  - Documented only: story exists in USER-STORIES.md but has no matching Playwright test yet.
-- Matching is based on story ID prefix in test names (example: `2.1:`).
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 2.1 | Create Node - Keyboard Navigation | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Create Node - Keyboard Navigation |
+| 2.2 | Create Node - Form Validation Errors | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Form Validation Errors - Identified & Correctable |
+| 2.3 | Rich Text Editor - CKEditor5 Accessibility | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Rich Text Editor - Keyboard Navigation |
+| 2.4 | Add Featured Image - File Upload with Alt Text | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Add Featured Image - Alt Text Accessible |
+| 2.5 | Schedule Publication - Accessible Date Picker | 1 | 📄 Documented | — |
+| 2.6 | Taxonomy Term Assignment - Multi-Select | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Taxonomy Term Assignment - Keyboard Navigation |
+| 2.7 | Content Preview - Accessible Preview | 1 | 📄 Documented | — |
+| 2.8 | Save as Draft - Status Message | 1 | 📄 Documented | — |
+| 2.9 | Publish Content - Success Confirmation | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Publish Content - Success Confirmation Announced |
+| 2.10 | Edit Published Content - Change History Awareness | 1 | 📄 Documented | — |
+
+### Forms
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 3.1 | Contact Form - All Fields Required | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Contact Form - Required Fields Marked |
+| 3.2 | Contact Form - Error Recovery | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Contact Form - Error Recovery |
+| 3.3 | Multi-Step Form - Progress Indicator | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Form Fields - Focus Indicator Visible on Tab |
+| 3.4 | Form Field Instructions - Visible & Programmatic | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Form Field Instructions - Associated & Visible |
+| 3.5 | Conditional Form Fields (Show/Hide) | 1 | 📄 Documented | — |
+| 3.6 | Form Submission - No Time Limit | 1 | 📄 Documented | — |
+| 3.7 | CAPTCHA Accessibility (if present) | 1 | 📄 Documented | — |
+| 3.8 | Checkbox & Radio Groups - Grouped Labels | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Checkbox Groups - Grouped Labels Present |
+| 3.9 | Form Field Focus - Focus Indicator Visible | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Form Submission - Status Message Clear |
+| 3.10 | Form Submission Success - Redirect & Announcement | 1 | ✅ Automated | `core/tests/playwright/accessibility-workflows.spec.js` — Form No Time Limit - Submission Doesn\ |
+
+### Navigation
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 4.1 | Main Menu - Keyboard Navigation | 1 | 📄 Documented | — |
+| 4.2 | Main Menu - Screen Reader Announcements | 1 | 📄 Documented | — |
+| 4.3 | Breadcrumb Navigation - Accessible | 1 | 📄 Documented | — |
+| 4.4 | Skip Navigation Link - Functional | 1 | 📄 Documented | — |
+| 4.5 | Pagination - All States Clear | 1 | 📄 Documented | — |
+| 4.6 | Sticky Navigation - Not Blocking Content | 1 | 📄 Documented | — |
+| 4.7 | Footer Navigation - Complete | 1 | 📄 Documented | — |
+| 4.8 | Active Page Indicator - Current Location Clear | 1 | 📄 Documented | — |
+| 4.9 | Search Navigation - Find & Filter Results | 1 | 📄 Documented | — |
+| 4.10 | Mobile Menu (Hamburger) - Keyboard & Screen Reader | 1 | 📄 Documented | — |
+
+### Media & Files
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 5.1 | Upload Image - Alt Text Required | 2 | 📄 Documented | — |
+| 5.2 | Audio File Upload - Caption/Transcript Available | 2 | 📄 Documented | — |
+| 5.3 | Video Embed - Captions & Transcripts | 2 | 📄 Documented | — |
+| 5.4 | Document Download - Accessible Format Offered | 2 | 📄 Documented | — |
+| 5.5 | Image Gallery - Keyboard Navigation & Descriptions | 2 | 📄 Documented | — |
+| 5.6 | File List - Download Links Labeled | 2 | 📄 Documented | — |
+| 5.7 | Lightbox/Modal Image Viewer - Keyboard Escape | 2 | 📄 Documented | — |
+| 5.8 | Attachment Field - Multiple Files | 2 | 📄 Documented | — |
+| 5.9 | Media Player Controls - Keyboard Accessible | 2 | 📄 Documented | — |
+| 5.10 | File Preview - Accessible Format | 2 | 📄 Documented | — |
+
+### Taxonomy
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 6.1 | Term Browser - Hierarchical Labels | 2 | 📄 Documented | — |
+| 6.2 | Term Cloud - All Terms Accessible | 2 | 📄 Documented | — |
+| 6.3 | Faceted Search - Filter by Tags | 2 | 📄 Documented | — |
+| 6.4 | Tag Input - Auto-Complete Accessible | 2 | 📄 Documented | — |
+| 6.5 | Category Filter - Multiple Selections | 2 | 📄 Documented | — |
+| 6.6 | Term Autocomplete - Keyboard Navigation | 2 | 📄 Documented | — |
+| 6.7 | Taxonomy Navigation - Current Category Marked | 2 | 📄 Documented | — |
+| 6.8 | Search by Tag - Results Labeled | 2 | 📄 Documented | — |
+| 6.9 | Vocabulary Selection - Multiple Taxonomies | 2 | 📄 Documented | — |
+| 6.10 | Term Suggestions - Auto-Populated Field | 2 | 📄 Documented | — |
+
+### Blocks & Layout
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 7.1 | Custom Block - Placed in Accessible Regions | 2 | 📄 Documented | — |
+| 7.2 | Block Visibility Settings - Accessible Toggles | 2 | 📄 Documented | — |
+| 7.3 | Hero Image Block - Alt Text Present | 2 | 📄 Documented | — |
+| 7.4 | Card Layout - Multiple Columns Responsive | 2 | 📄 Documented | — |
+| 7.5 | Sidebar Layout - Order Programmatic | 2 | 📄 Documented | — |
+| 7.6 | Layout Grid System - Semantic Structure | 2 | 📄 Documented | — |
+| 7.7 | Layout Mode Toggle (Full/Boxed/Sidebar) | 2 | 📄 Documented | — |
+| 7.8 | Floating Elements - Not Covering Content | 2 | 📄 Documented | — |
+| 7.9 | Block Margins & Spacing - Visual & Structural | 2 | 📄 Documented | — |
+| 7.10 | Parallax Scrolling - Can Be Disabled | 2 | 📄 Documented | — |
+
+### Comments
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 8.1 | Add Comment - Accessible Form | 2 | 📄 Documented | — |
+| 8.2 | Comment Status - Awaiting Moderation | 2 | 📄 Documented | — |
+| 8.3 | Reply to Comment - Threaded Comments | 2 | 📄 Documented | — |
+| 8.4 | Comment Moderation - Admin Interface | 2 | 📄 Documented | — |
+| 8.5 | Delete Comment - Confirmation | 2 | 📄 Documented | — |
+| 8.6 | Comment Notifications - Email Accessible | 2 | 📄 Documented | — |
+| 8.7 | Comment Count - Announcement | 2 | 📄 Documented | — |
+| 8.8 | Comment Sorting - Order & Options | 2 | 📄 Documented | — |
+| 8.9 | Comment Preview - Editable | 2 | 📄 Documented | — |
+| 8.10 | Comment Username Link - Author Linkable | 2 | 📄 Documented | — |
+
+### Views & Displays
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 9.1 | View Page - Accessible Table Display | 3 | 📄 Documented | — |
+| 9.2 | View Exposed Filters - Keyboard Navigation | 3 | 📄 Documented | — |
+| 9.3 | View Results - Empty State Message | 3 | 📄 Documented | — |
+| 9.4 | Pager Links - Current Page Marked | 3 | 📄 Documented | — |
+| 9.5 | View Style Switcher - Teaser/Full/Grid Selectable | 3 | 📄 Documented | — |
+| 9.6 | View Result Count - Announced | 3 | 📄 Documented | — |
+| 9.7 | View - Sortable Columns | 3 | 📄 Documented | — |
+| 9.8 | View JSON/CSV Export - Link Accessible | 3 | 📄 Documented | — |
+| 9.9 | View Block Attachment - Visible Location | 3 | 📄 Documented | — |
+| 9.10 | View Facets - Multiple Selection & Reset | 3 | 📄 Documented | — |
+
+### System & UI
+
+| Story ID | Story Title | Tier | Status | Evidence |
+|---|---|---|---|---|
+| 10.1 | Login Page - Color Contrast | 3 | 📄 Documented | — |
+| 10.2 | Admin Toolbar - Keyboard Accessible | 3 | 📄 Documented | — |
+| 10.3 | Status Messages - Announced & Persisting | 3 | 📄 Documented | — |
+| 10.4 | Error Messages - Linked to Fields | 3 | 📄 Documented | — |
+| 10.5 | Breadcrumb Contrast - Links Underlined/Distinct | 3 | 📄 Documented | — |
+| 10.6 | Link Identification - Purpose Clear Without Context | 3 | 📄 Documented | — |
+| 10.7 | Form Focus - Tab Order Logical | 3 | 📄 Documented | — |
+| 10.8 | Page Loading - Loading Indicator Announced | 3 | 📄 Documented | — |
+| 10.9 | Dialog/Modal - Keyboard Trap Intentional & Escapable | 3 | 📄 Documented | — |
+| 10.10 | System Site Settings - Accessible to Edit | 3 | 📄 Documented | — |

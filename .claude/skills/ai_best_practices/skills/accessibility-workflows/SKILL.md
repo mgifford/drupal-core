@@ -236,7 +236,7 @@ test('1.3: Password Reset Flow', async ({ page }) => {
 ### 2. Reference USER-STORIES.md
 Link test to story definition:
 ```markdown
-[1.3 Password Reset Flow](../USER-STORIES.md#13-password-reset-flow)
+[1.3 Password Reset Flow](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md#13-password-reset-flow)
 ```
 
 ### 3. Update Coverage Matrix
@@ -316,9 +316,9 @@ console.log('Form role:', tree);
 
 ## References
 
-- **Test File:** [core/tests/playwright/accessibility-workflows.spec.js](../../../../../../core/tests/playwright/accessibility-workflows.spec.js)
-- **Coverage Matrix:** [USER-STORY-COVERAGE-MATRIX.md](../../../../../../USER-STORY-COVERAGE-MATRIX.md)
-- **User Stories:** [USER-STORIES.md](../../../../../../USER-STORIES.md)
+- **Test File:** [core/tests/playwright/accessibility-workflows.spec.js](https://github.com/mgifford/drupal-core/blob/main/core/tests/playwright/accessibility-workflows.spec.js)
+- **Coverage Matrix:** [USER-STORY-COVERAGE-MATRIX.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORY-COVERAGE-MATRIX.md)
+- **User Stories:** [USER-STORIES.md](https://github.com/mgifford/drupal-core/blob/main/USER-STORIES.md)
 - **WCAG 2.2 AA:** https://www.w3.org/WAI/WCAG22/quickref/
 - **Playwright Docs:** https://playwright.dev/
 - **axe-core Rules:** https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md
