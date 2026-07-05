@@ -264,7 +264,8 @@ function loadAxeResults(resultsFile) {
     throw new Error(`Unsupported axe results format in ${resultsFile}`);
   }
 
-  const baseDir = path.dirname(resultsFile);
+  // Resolve so the escape check works when resultsFile is a relative path.
+  const baseDir = path.resolve(path.dirname(resultsFile));
   return raw.shards.flatMap((shard) => {
     const shardPath = path.resolve(baseDir, shard.file);
     if (!shardPath.startsWith(`${baseDir}${path.sep}`)) {
