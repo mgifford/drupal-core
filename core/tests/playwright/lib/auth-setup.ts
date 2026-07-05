@@ -11,8 +11,19 @@ import * as path from 'path';
 
 export const AUTH_STATE_FILE = path.join(__dirname, '../reports/auth-state.json');
 
+/** Temp shard dir used by the axe crawl (must match a11y-axe-crawl.spec.ts). */
+const CRAWL_TEMP_DIR = path.resolve(__dirname, '../../../../reports/.tmp-crawl');
+
 export default async function globalSetup(config: FullConfig) {
   const baseURL = config.projects[0].use.baseURL ?? 'https://drupal-core.ddev.site';
+
+  // Clear leftover crawl shards from a previous partial run. This must live
+  // here (runs exactly once per invocation) and NOT in a beforeAll: Playwright
+  // re-runs beforeAll hooks when a worker restarts after a crash, and a
+  // mid-run cleanup there wipes every shard completed so far.
+  if (fs.existsSync(CRAWL_TEMP_DIR)) {
+    fs.rmSync(CRAWL_TEMP_DIR, { recursive: true, force: true });
+  }
 
   // Read credentials from env, falling back to DDEV defaults.
   const username = process.env.DRUPAL_ADMIN_USER ?? 'admin';

@@ -505,10 +505,9 @@ test.describe('Axe crawl — multi-theme', () => {
   };
 
   test.beforeAll(async () => {
-    // Clear any leftover shards from a previous partial run.
-    if (fs.existsSync(TEMP_DIR)) {
-      fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-    }
+    // NOTE: leftover-shard cleanup lives in globalSetup (auth-setup.ts), NOT
+    // here — Playwright re-runs beforeAll when a worker restarts after a
+    // crash, and cleaning here would wipe every shard completed so far.
     original.defaultTheme = getThemeSetting('default');
     original.adminTheme = getThemeSetting('admin') || 'claro';
     original.accentPreset = getDefaultAdminSetting('preset_accent_color');
