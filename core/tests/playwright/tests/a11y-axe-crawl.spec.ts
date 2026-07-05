@@ -80,6 +80,27 @@ interface AxeViolation {
   }>;
 }
 
+/**
+ * Per-page resource metrics captured during full-rule scans, for the
+ * sustainability trend report (WSG alignment). Sizes come from the
+ * Resource Timing API on a cold cache (each Playwright test gets a fresh
+ * context), so transferBytes reflects a first-visit page load.
+ */
+interface PageMetrics {
+  /** Navigation + subresource request count. */
+  requests: number;
+  /** Total bytes over the wire (transferSize, cold cache). */
+  transferBytes: number;
+  /** Total decoded body bytes (post-decompression). */
+  decodedBytes: number;
+  /** Number of DOM elements after load. */
+  domNodes: number;
+  /** Requests/bytes grouped by resource class (script, css, image, font, other). */
+  byType: Record<string, { count: number; transferBytes: number }>;
+  /** Image requests/bytes grouped by file format (png, jpg, webp, avif, svg, …). */
+  imageFormats: Record<string, { count: number; transferBytes: number }>;
+}
+
 /** Per-page findings record written into the sharded axe results bundle. */
 interface AxeResultRecord {
   /** Theme config id (e.g. 'olivero', 'admin-dark', 'admin-accent-teal'). */
@@ -100,6 +121,8 @@ interface AxeResultRecord {
   timestamp: string;
   violations: AxeViolation[];
   incomplete: AxeViolation[];
+  /** Present on full-rule scans only (not accent quick scans). */
+  pageMetrics?: PageMetrics;
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -282,6 +305,67 @@ async function ensurePageReadyForScan(page: Page, route: string): Promise<void> 
 }
 
 /**
+ * Collect resource/DOM metrics from the loaded page via the Resource Timing
+ * API. Runs before axe so the entry buffer only holds page-load resources.
+ * transferSize is 0 for cross-origin resources without Timing-Allow-Origin;
+ * on the local DDEV site everything is same-origin so sizes are complete.
+ */
+async function collectPageMetrics(page: Page): Promise<PageMetrics> {
+  return page.evaluate(() => {
+    const IMAGE_EXTS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'svg', 'ico'];
+    const FONT_EXTS = ['woff', 'woff2', 'ttf', 'otf', 'eot'];
+
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceResourceTiming | undefined;
+    const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+    const all = nav ? [nav, ...resources] : resources;
+
+    const byType: Record<string, { count: number; transferBytes: number }> = {};
+    const imageFormats: Record<string, { count: number; transferBytes: number }> = {};
+
+    const bump = (
+      bucket: Record<string, { count: number; transferBytes: number }>,
+      key: string,
+      bytes: number,
+    ) => {
+      bucket[key] = bucket[key] ?? { count: 0, transferBytes: 0 };
+      bucket[key].count += 1;
+      bucket[key].transferBytes += bytes;
+    };
+
+    for (const entry of resources) {
+      const bytes = entry.transferSize || 0;
+      let ext = '';
+      try {
+        const pathname = new URL(entry.name, location.href).pathname;
+        ext = (pathname.match(/\.([a-z0-9]+)$/i)?.[1] ?? '').toLowerCase();
+      } catch {
+        // Ignore unparseable URLs (data:, blob:).
+      }
+
+      let type = 'other';
+      if (IMAGE_EXTS.includes(ext) || entry.initiatorType === 'img') {
+        type = 'image';
+        bump(imageFormats, ext || 'unknown', bytes);
+      }
+      else if (ext === 'css' || entry.initiatorType === 'link') type = 'css';
+      else if (ext === 'js' || ext === 'mjs' || entry.initiatorType === 'script') type = 'script';
+      else if (FONT_EXTS.includes(ext)) type = 'font';
+      else if (entry.initiatorType === 'xmlhttprequest' || entry.initiatorType === 'fetch') type = 'xhr';
+      bump(byType, type, bytes);
+    }
+
+    return {
+      requests: all.length,
+      transferBytes: all.reduce((n, e) => n + (e.transferSize || 0), 0),
+      decodedBytes: all.reduce((n, e) => n + (e.decodedBodySize || 0), 0),
+      domNodes: document.getElementsByTagName('*').length,
+      byType,
+      imageFormats,
+    };
+  });
+}
+
+/**
  * Visit a route, run axe, and return the findings record.
  * Shared by the canonical, RTL, and accent scan groups.
  */
@@ -304,6 +388,10 @@ async function scanRoute(
   await page.goto(resolveRoute(page, opts.routePath), { waitUntil: 'domcontentloaded' });
   await ensurePageReadyForScan(page, opts.routePath);
 
+  // Metrics only on full-rule scans: accent quick scans revisit the same
+  // pages and would add no new resource data.
+  const pageMetrics = opts.rules ? undefined : await collectPageMetrics(page);
+
   const axeResults = await buildAxeBuilder(page, opts.rules).analyze();
 
   const record: AxeResultRecord = {
@@ -319,6 +407,7 @@ async function scanRoute(
     timestamp: new Date().toISOString(),
     violations: axeResults.violations as AxeViolation[],
     incomplete: axeResults.incomplete as AxeViolation[],
+    pageMetrics,
   };
 
   if (record.violations.length > 0) {

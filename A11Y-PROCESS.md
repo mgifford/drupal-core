@@ -119,12 +119,33 @@ yarn test:a11y:playwright
 # 3. Analyze patterns and generate reports
 yarn a11y:analyze
 
-# 4. Commit and push the dated reports
-cd ..
+# 4. Generate the sustainability report + append to the trend history
+cd .. && npm run a11y:sustainability
+
+# 5. Commit and push the dated reports
 git add reports/
 git commit -m "chore(reports): a11y scan $(date +%Y-%m-%d)"
 git push github main
 ```
+
+### Sustainability metrics (WSG)
+
+Every full-rule page scan also captures resource metrics via the Resource
+Timing API on a cold cache: transfer bytes, request count, decoded bytes, DOM
+node count, and per-format image breakdown. `npm run a11y:sustainability`
+then:
+
+- estimates CO2 per page view with [CO2.js](https://www.thegreenwebfoundation.org/co2-js/)
+  (Sustainable Web Design model v4),
+- appends one entry per scan date to `reports/sustainability/history.json`
+  (append-only; per theme × page, so page-weight and violation trends are
+  queryable with `jq` over time),
+- writes `SUSTAINABILITY-latest.md` / `.html` with per-theme baselines, the
+  heaviest pages, image-format breakdown, and a regression table for pages
+  ≥10% heavier than the previous run.
+
+This supports Drupal's alignment with the draft
+[W3C Web Sustainability Guidelines](https://www.w3.org/TR/web-sustainability-guidelines/).
 
 ### What the crawl does
 
