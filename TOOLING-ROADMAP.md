@@ -105,6 +105,19 @@ build order:
 ### 13. OpenACR generators, core + CMS ([#37](https://github.com/mgifford/drupal-core/issues/37)) — **L: spec first** (read mgifford/python-acr + GSA schema)
 ### 14. Known-issues reconciliation v2 ([#38](https://github.com/mgifford/drupal-core/issues/38)) — **M** (v1 shipped: `npm run a11y:known-issues`)
 
+## Local AI layer — llama.cpp on the nightly server ([#39](https://github.com/mgifford/drupal-core/issues/39))
+
+Tier-C local inference, batched nightly, in this order: (15a, S/M) embedding
+similarity replaces the keyword matcher in sync-known-issues.js; (15b, M)
+GBNF-constrained extraction of 'issue quality cards' from d.o issue bodies
+(has SC? repro steps? selector?) to drive targeted nudges; (15c, M)
+content-quality flags — useless alt text, ambiguous links, non-descriptive
+headings — a class rules can't detect, always 'needs human review';
+(15d, S) nightly digest of the scan diff; (15e, S) draft prose assist.
+Guardrails in #39: no conformance determinations, no auto-merge, no
+auto-posting, calibration accuracy required per task (#27), cache
+embeddings, smallest passing model.
+
 ## Session-budget guidance
 
 - One numbered item per query. Say "do roadmap item N" — this file has the
