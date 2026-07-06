@@ -30,6 +30,19 @@ const REPORTS_DIR = process.env.A11Y_REPORTS_DIR
 const INPUT_FILE = path.join(REPORTS_DIR, 'axe-results.json');
 const HISTORY_DIR = path.join(REPORTS_DIR, 'sustainability');
 const HISTORY_FILE = path.join(HISTORY_DIR, 'history.json');
+const AX_TREE_DIR = path.join(REPORTS_DIR, 'ax-tree', 'latest');
+const BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
+
+// Expected/beneficial plaintext assets (WSG STAR expected-files,
+// beneficial-files). Checked once per run against the live site.
+const WELL_KNOWN_FILES = [
+  { path: '/robots.txt', kind: 'expected' },
+  { path: '/favicon.ico', kind: 'expected' },
+  { path: '/sitemap.xml', kind: 'expected' },
+  { path: '/humans.txt', kind: 'beneficial' },
+  { path: '/.well-known/security.txt', kind: 'beneficial' },
+  { path: '/carbon.txt', kind: 'beneficial' },
+];
 
 const pad = (n) => n.toString().padStart(2, '0');
 const now = new Date();
@@ -115,6 +128,53 @@ function mergeFormatBuckets(target, source) {
   }
 }
 
+/**
+ * Probe the well-known/expected files once per run (curl handles the DDEV
+ * self-signed cert). Returns null when the site is unreachable so report
+ * generation still works offline from recorded data.
+ */
+function checkWellKnownFiles() {
+  const { execSync } = require('child_process');
+  try {
+    execSync(`curl -sk -m 10 -o /dev/null "${BASE_URL}/"`);
+  }
+  catch {
+    console.warn(`⚠️ ${BASE_URL} unreachable — skipping well-known file checks.`);
+    return null;
+  }
+  return WELL_KNOWN_FILES.map((file) => {
+    let status = 0;
+    try {
+      status = parseInt(execSync(
+        `curl -sk -m 10 -o /dev/null -w "%{http_code}" "${BASE_URL}${file.path}"`,
+      ).toString().trim(), 10);
+    }
+    catch {
+      status = 0;
+    }
+    return { ...file, status, present: status >= 200 && status < 400 };
+  });
+}
+
+/**
+ * Write each canonical page's accessibility-tree snapshot to
+ * reports/ax-tree/latest/. The files are committed, so git history diffs
+ * them across scans — a silent accessible-name or role change shows up as
+ * a reviewable diff even when no axe rule fires.
+ */
+function writeAxTrees(records) {
+  const withTrees = records.filter((r) => r.axTree);
+  if (withTrees.length === 0) return 0;
+
+  fs.rmSync(AX_TREE_DIR, { recursive: true, force: true });
+  fs.mkdirSync(AX_TREE_DIR, { recursive: true });
+  for (const record of withTrees) {
+    const safePath = record.path === '/' ? 'front' : record.path.replace(/^\//, '').replace(/[^a-zA-Z0-9._-]+/g, '_');
+    fs.writeFileSync(path.join(AX_TREE_DIR, `${record.theme}__${safePath}.yml`), record.axTree);
+  }
+  return withTrees.length;
+}
+
 function loadHistory() {
   if (!fs.existsSync(HISTORY_FILE)) {
     return { format: 'a11y-sustainability-history-v1', runs: [] };
@@ -159,6 +219,9 @@ function main() {
       co2Grams: estimator.perByte(m.transferBytes),
       byType: m.byType,
       imageFormats: m.imageFormats,
+      // Present from the first scan after the WSG checks landed; older
+      // records won't have it.
+      wsg: m.wsg ?? null,
       a11y,
     };
   }).sort((a, b) => a.theme.localeCompare(b.theme) || a.path.localeCompare(b.path));
@@ -184,6 +247,16 @@ function main() {
       critical: pages.reduce((n, p) => n + p.a11y.critical, 0),
       serious: pages.reduce((n, p) => n + p.a11y.serious, 0),
     },
+  };
+
+  // ── WSG once-per-run checks + AX-tree extraction ─────────────────────────
+  const wellKnown = checkWellKnownFiles();
+  const axTreeCount = writeAxTrees(canonical);
+  summary.wsg = {
+    pagesWithThirdParty: pages.filter((p) => p.wsg && p.wsg.thirdParty.count > 0).length,
+    pagesWithRenderBlockingScripts: pages.filter((p) => p.wsg && p.wsg.renderBlockingScripts > 0).length,
+    wellKnownFiles: wellKnown,
+    axTreeSnapshots: axTreeCount,
   };
 
   // ── History append (replace same-date entry on re-run) ───────────────────
@@ -320,6 +393,71 @@ function main() {
     lines.push('| (no images loaded on measured pages) | | | |');
   }
   lines.push('');
+
+  // ── WSG STAR page checks ─────────────────────────────────────────────────
+  const wsgPages = pages.filter((p) => p.wsg);
+  if (wsgPages.length > 0) {
+    lines.push('## WSG Checks');
+    lines.push('');
+    lines.push('Page-level checks from the [STAR techniques](WSG-STAR-AUTOMATION.md).');
+    lines.push('');
+
+    const thirdPartyPages = wsgPages.filter((p) => p.wsg.thirdParty.count > 0);
+    if (thirdPartyPages.length === 0) {
+      lines.push('- **Third-party resources (self-hosting):** none on any measured page. ✅');
+    }
+    else {
+      lines.push(`- **Third-party resources (self-hosting):** ⚠️ ${thirdPartyPages.length} page(s) load cross-origin assets:`);
+      for (const p of thirdPartyPages.slice(0, 10)) {
+        lines.push(`  - ${p.theme} \`${p.path}\` — ${p.wsg.thirdParty.count} request(s) from ${p.wsg.thirdParty.domains.join(', ')}`);
+      }
+    }
+
+    const blockingPages = wsgPages.filter((p) => p.wsg.renderBlockingScripts > 0);
+    if (blockingPages.length === 0) {
+      lines.push('- **Render-blocking head scripts (asynchronous-code):** none. ✅');
+    }
+    else {
+      lines.push(`- **Render-blocking head scripts (asynchronous-code):** ⚠️ ${blockingPages.length} page(s):`);
+      for (const p of blockingPages.slice(0, 10)) {
+        lines.push(`  - ${p.theme} \`${p.path}\` — ${p.wsg.renderBlockingScripts} blocking script(s)`);
+      }
+    }
+
+    const requiredChecks = ['doctype', 'htmlLang', 'title', 'viewportMeta', 'metaDescription', 'structuredData'];
+    lines.push('- **Required/beneficial elements (required-elements, meta-tags, structured-data):**');
+    for (const check of requiredChecks) {
+      const missing = wsgPages.filter((p) => !p.wsg.requiredElements[check]);
+      if (missing.length === 0) {
+        lines.push(`  - ${check}: present on all pages ✅`);
+      }
+      else {
+        const examples = missing.slice(0, 3).map((p) => `\`${p.path}\``).join(', ');
+        lines.push(`  - ${check}: missing on ${missing.length} page(s) (e.g. ${examples})`);
+      }
+    }
+    lines.push('');
+  }
+
+  // ── Well-known files (expected-files, beneficial-files) ─────────────────
+  if (wellKnown) {
+    lines.push('### Expected & beneficial files');
+    lines.push('');
+    lines.push('| File | Kind | Status |');
+    lines.push('| :--- | :--- | :--- |');
+    for (const file of wellKnown) {
+      lines.push(`| \`${file.path}\` | ${file.kind} | ${file.present ? `✅ ${file.status}` : `⚠️ missing (${file.status})`} |`);
+    }
+    lines.push('');
+  }
+
+  // ── Accessibility trees ──────────────────────────────────────────────────
+  if (axTreeCount > 0) {
+    lines.push('## Accessibility Trees');
+    lines.push('');
+    lines.push(`${axTreeCount} canonical page snapshots written to [\`ax-tree/latest/\`](ax-tree/latest/) — the tree assistive tech (and AI agents) actually consume. Because these files are committed, \`git diff\` surfaces silent name/role/structure changes between scans even when no axe rule fires.`);
+    lines.push('');
+  }
 
   lines.push('## Data');
   lines.push('');

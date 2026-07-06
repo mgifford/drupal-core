@@ -98,6 +98,22 @@ interface PageMetrics {
   byType: Record<string, { count: number; transferBytes: number }>;
   /** Image requests/bytes grouped by file format (png, jpg, webp, avif, svg, …). */
   imageFormats: Record<string, { count: number; transferBytes: number }>;
+  /** WSG STAR page-level checks (see WSG-STAR-AUTOMATION.md). */
+  wsg: {
+    /** Cross-origin resources — core pages should load none (self-hosting). */
+    thirdParty: { count: number; transferBytes: number; domains: string[] };
+    /** <head> scripts without async/defer/module — block first render. */
+    renderBlockingScripts: number;
+    /** Required/beneficial document elements (required-elements, meta-tags). */
+    requiredElements: {
+      doctype: boolean;
+      htmlLang: boolean;
+      title: boolean;
+      viewportMeta: boolean;
+      metaDescription: boolean;
+      structuredData: boolean;
+    };
+  };
 }
 
 /** Per-page findings record written into the sharded axe results bundle. */
@@ -122,6 +138,15 @@ interface AxeResultRecord {
   incomplete: AxeViolation[];
   /** Present on full-rule scans only (not accent quick scans). */
   pageMetrics?: PageMetrics;
+  /**
+   * Playwright aria snapshot (YAML) of the page's accessibility tree.
+   * Captured on canonical scans only (desktop/light/no accent). This is what
+   * assistive tech — and increasingly AI agents — actually consume; diffing
+   * it across runs catches silent name/role/structure regressions that
+   * rule-based scanners miss. Written to reports/ax-tree/ by the analyzer,
+   * where git history provides the diffs.
+   */
+  axTree?: string;
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -329,6 +354,39 @@ async function collectPageMetrics(page: Page): Promise<PageMetrics> {
       bump(byType, type, bytes);
     }
 
+    // WSG STAR checks — same page, near-zero cost.
+    const thirdPartyDomains = new Set<string>();
+    let thirdPartyCount = 0;
+    let thirdPartyBytes = 0;
+    for (const entry of resources) {
+      try {
+        const url = new URL(entry.name, location.href);
+        if (url.origin !== location.origin && url.protocol.startsWith('http')) {
+          thirdPartyCount += 1;
+          thirdPartyBytes += entry.transferSize || 0;
+          thirdPartyDomains.add(url.host);
+        }
+      } catch {
+        // data:/blob: etc. are not third-party fetches.
+      }
+    }
+
+    const renderBlockingScripts = Array.from(
+      document.querySelectorAll<HTMLScriptElement>('head script[src]'),
+    ).filter((s) => !s.async && !s.defer && s.type !== 'module').length;
+
+    const requiredElements = {
+      doctype: Boolean(document.doctype),
+      htmlLang: Boolean(document.documentElement.getAttribute('lang')),
+      title: document.title.trim().length > 0,
+      viewportMeta: Boolean(document.querySelector('meta[name="viewport"]')),
+      metaDescription: Boolean(document.querySelector('meta[name="description"]')),
+      structuredData: Boolean(
+        document.querySelector('script[type="application/ld+json"]')
+        || document.querySelector('[itemscope]'),
+      ),
+    };
+
     return {
       requests: all.length,
       transferBytes: all.reduce((n, e) => n + (e.transferSize || 0), 0),
@@ -336,6 +394,15 @@ async function collectPageMetrics(page: Page): Promise<PageMetrics> {
       domNodes: document.getElementsByTagName('*').length,
       byType,
       imageFormats,
+      wsg: {
+        thirdParty: {
+          count: thirdPartyCount,
+          transferBytes: thirdPartyBytes,
+          domains: [...thirdPartyDomains].sort(),
+        },
+        renderBlockingScripts,
+        requiredElements,
+      },
     };
   });
 }
@@ -387,6 +454,13 @@ async function scanRoute(
   // pages and would add no new resource data.
   const pageMetrics = opts.rules ? undefined : await collectPageMetrics(page);
 
+  // Accessibility-tree snapshot on canonical scans only (one comparable
+  // tree per theme × page per run; other variants would just duplicate it).
+  let axTree: string | undefined;
+  if (!opts.rules && opts.screen === 'desktop' && opts.colorScheme === 'light' && !opts.accentPreset) {
+    axTree = await page.locator('body').ariaSnapshot().catch(() => undefined);
+  }
+
   const axeResults = await buildAxeBuilder(page, opts.rules).analyze();
 
   const record: AxeResultRecord = {
@@ -403,6 +477,7 @@ async function scanRoute(
     violations: axeResults.violations as AxeViolation[],
     incomplete: axeResults.incomplete as AxeViolation[],
     pageMetrics,
+    axTree,
   };
 
   if (record.violations.length > 0) {
