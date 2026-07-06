@@ -103,6 +103,7 @@ build order:
 ### 11. New-pattern → commit/MR attribution ([#35](https://github.com/mgifford/drupal-core/issues/35)) — **M**
 ### 12. Drupal CMS parallel scan profile ([#36](https://github.com/mgifford/drupal-core/issues/36)) — **M**
 ### 13. OpenACR generators, core + CMS ([#37](https://github.com/mgifford/drupal-core/issues/37)) — **L: spec first** (read mgifford/python-acr + GSA schema)
+### 14. Known-issues reconciliation v2 ([#38](https://github.com/mgifford/drupal-core/issues/38)) — **M** (v1 shipped: `npm run a11y:known-issues`)
 
 ## Session-budget guidance
 

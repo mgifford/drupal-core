@@ -7,6 +7,7 @@
     "a11y:evaluate-all-patches": "node core/tests/playwright/scripts/evaluate-all-patches.js",
     "a11y:coverage": "node core/tests/playwright/scripts/generate-coverage-matrix.js",
     "a11y:sustainability": "node core/tests/playwright/scripts/analyze-sustainability.js",
+    "a11y:known-issues": "node core/tests/playwright/scripts/sync-known-issues.js",
     "a11y:discover-modules": "node core/tests/playwright/scripts/discover-modules.js",
     "a11y:test-module": "node core/tests/playwright/scripts/test-module-accessibility.js",
     "a11y:analyze-modules": "node core/tests/playwright/scripts/analyze-module-impact.js",
