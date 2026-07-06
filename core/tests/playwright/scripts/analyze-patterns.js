@@ -47,6 +47,18 @@ const FUZZY_SELECTOR_THRESHOLD = 6;
 
 const IMPACT_ORDER = { critical: 0, serious: 1, moderate: 2, minor: 3, null: 4 };
 
+/** Git HEAD of the checkout the scanned site runs from (null outside git). */
+function getCoreCommit() {
+  try {
+    const { execSync } = require('child_process');
+    return execSync('git rev-parse HEAD', { cwd: path.resolve(__dirname, '../../../..') })
+      .toString().trim();
+  }
+  catch {
+    return null;
+  }
+}
+
 function humanReadableOs(platform) {
   switch (platform) {
     case 'darwin':
@@ -1144,6 +1156,10 @@ function main() {
   // ── Summary stats ────────────────────────────────────────────────────────
   const summary = {
     generatedAt: scanDate,
+    // Git HEAD at ANALYSIS time. Equals the scanned site's commit only when
+    // crawl + analysis run together (the nightly orchestrator guarantees
+    // this; NIGHTLY-PIPELINE.md §2-3). Attribution diffs two coreCommits.
+    coreCommit: getCoreCommit(),
     tool: axeVersion,
     totalPagesCrawled: totalPages,
     totalViolationInstances: rawResults.reduce((n, r) => n + r.violations.reduce((m, v) => m + v.nodes.length, 0), 0),

@@ -263,9 +263,18 @@ function main() {
   const history = loadHistory();
   history.runs = history.runs.filter((run) => run.date !== DATE_STAMP);
   const previousRun = history.runs.length ? history.runs[history.runs.length - 1] : null;
+  let coreCommit = null;
+  try {
+    coreCommit = require('child_process')
+      .execSync('git rev-parse HEAD', { cwd: path.resolve(__dirname, '../../../..') })
+      .toString().trim();
+  }
+  catch { /* not in a git checkout */ }
+
   history.runs.push({
     date: DATE_STAMP,
     generatedAt: now.toISOString(),
+    coreCommit,
     co2Model: estimator.label,
     summary,
     pages,

@@ -1,7 +1,8 @@
 {
   "$schema": "https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md",
   "summary": {
-    "generatedAt": "2026-07-06T02:15:48.668Z",
+    "generatedAt": "2026-07-06T02:23:18.404Z",
+    "coreCommit": "3c2ce28a825aeb9f08dcaa24bf4e0fe084887d1f",
     "tool": "axe-core (via @axe-core/playwright)",
     "totalPagesCrawled": 1341,
     "totalViolationInstances": 2672,

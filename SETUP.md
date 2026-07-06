@@ -36,6 +36,12 @@ ddev drush site:install standard --account-name=admin --account-pass=admin -y
 # inventory routes are 404s (the crawl now fails loudly on them).
 MODS=$(ls modules/contrib/theming_tools/modules/ | grep -v "devhelp\|pointertracker\|lang_hebrew\|testfilters" | tr -d '/' | paste -sd, -)
 ddev drush en -y "theming_tools,form_style,contact,search,$MODS"
+
+# Post-install permissions/config the inventory expects (modules enabled
+# after site install don't get the standard profile's default grants):
+ddev exec "drush role:perm:add anonymous 'search content' -y \
+  && drush role:perm:add authenticated 'search content' -y \
+  && drush config:set user.settings register visitors -y"
 ddev drush cache:rebuild
 
 # Playwright browser (matches the pinned @playwright/test version)

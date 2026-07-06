@@ -41,7 +41,9 @@ const ACCESSIBILITY_TID = 1101; // taxonomy_vocabulary_9 term "Accessibility"
 // Open issue statuses: active, needs work, needs review, RTBC, postponed,
 // patch to be ported, postponed (info).
 const OPEN_STATUSES = [1, 13, 8, 14, 4, 15, 16];
-const PAGE_LIMIT = 100;
+// drupal.org caps api-d7 responses at 50 regardless of the requested limit;
+// requesting more makes the "short page = last page" check terminate early.
+const PAGE_LIMIT = 50;
 const REQUEST_DELAY_MS = 1500; // be polite to drupal.org
 const MAX_PAGES_PER_STATUS = 30; // safety valve
 
