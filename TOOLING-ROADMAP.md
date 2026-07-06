@@ -91,6 +91,19 @@ Script comparing `reports/ax-tree/latest/` against the previous git
 revision; summarize name/role changes per page in the pattern report.
 Promote to a CI check once the noise level is known.
 
+## Nightly pipeline & OpenACR (design: NIGHTLY-PIPELINE.md)
+
+The end-state: nightly core + Drupal CMS scans on a local server, new
+patterns attributed to the introducing commit/MR (git blame, eventually),
+and two OpenACR vendor-attestation reports (YAML + HTML) regenerated
+nightly. Full architecture in [NIGHTLY-PIPELINE.md](NIGHTLY-PIPELINE.md);
+build order:
+
+### 10. Nightly orchestrator + coreCommit stamping ([#34](https://github.com/mgifford/drupal-core/issues/34)) — **M**
+### 11. New-pattern → commit/MR attribution ([#35](https://github.com/mgifford/drupal-core/issues/35)) — **M**
+### 12. Drupal CMS parallel scan profile ([#36](https://github.com/mgifford/drupal-core/issues/36)) — **M**
+### 13. OpenACR generators, core + CMS ([#37](https://github.com/mgifford/drupal-core/issues/37)) — **L: spec first** (read mgifford/python-acr + GSA schema)
+
 ## Session-budget guidance
 
 - One numbered item per query. Say "do roadmap item N" — this file has the
