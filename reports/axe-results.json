@@ -1,63 +1,45 @@
 {
   "format": "axe-results-sharded-v1",
-  "generatedAt": "2026-05-06T14:34:43.080Z",
-  "totalRecords": 2193,
+  "generatedAt": "2026-07-06T02:13:52.590Z",
+  "totalRecords": 1341,
   "chunkSize": 250,
   "storagePath": "axe-results/latest",
   "shards": [
     {
       "file": "axe-results/latest/shards/chunk-001.json",
       "recordCount": 250,
-      "firstPath": "/",
-      "lastPath": "/admin/appearance"
+      "firstPath": "/admin/appearance",
+      "lastPath": "/admin/reports"
     },
     {
       "file": "axe-results/latest/shards/chunk-002.json",
       "recordCount": 250,
-      "firstPath": "/admin/appearance",
-      "lastPath": "/admin/form_style"
+      "firstPath": "/admin/reports",
+      "lastPath": "/admin"
     },
     {
       "file": "axe-results/latest/shards/chunk-003.json",
       "recordCount": 250,
-      "firstPath": "/admin/form_style",
-      "lastPath": "/admin/structure/taxonomy/add"
+      "firstPath": "/admin",
+      "lastPath": "/contact/presuf_number"
     },
     {
       "file": "axe-results/latest/shards/chunk-004.json",
       "recordCount": 250,
-      "firstPath": "/admin/structure/taxonomy/add",
-      "lastPath": "/admin/structure/types"
+      "firstPath": "/contact/presuf_number",
+      "lastPath": "/message"
     },
     {
       "file": "axe-results/latest/shards/chunk-005.json",
       "recordCount": 250,
-      "firstPath": "/admin/structure/types",
-      "lastPath": "/admin"
+      "firstPath": "/message",
+      "lastPath": "/tabs/format/plain_text"
     },
     {
       "file": "axe-results/latest/shards/chunk-006.json",
-      "recordCount": 250,
-      "firstPath": "/admin",
-      "lastPath": "/node/add/article"
-    },
-    {
-      "file": "axe-results/latest/shards/chunk-007.json",
-      "recordCount": 250,
-      "firstPath": "/node/add/article",
-      "lastPath": "/tabledrag"
-    },
-    {
-      "file": "axe-results/latest/shards/chunk-008.json",
-      "recordCount": 250,
-      "firstPath": "/tabledrag",
-      "lastPath": "/user/password"
-    },
-    {
-      "file": "axe-results/latest/shards/chunk-009.json",
-      "recordCount": 193,
-      "firstPath": "/user/password",
-      "lastPath": "/user/register"
+      "recordCount": 91,
+      "firstPath": "/tabs/format/plain_text",
+      "lastPath": "/user/1/edit"
     }
   ],
   "indexes": {

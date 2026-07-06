@@ -1,0 +1,89 @@
+[
+  {
+    "theme": "claro",
+    "page": "User login [desktop]",
+    "path": "/user/login",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "screen": "desktop",
+    "colorScheme": "light",
+    "language": "en",
+    "direction": "ltr",
+    "timestamp": "2026-07-05T23:49:46.072Z",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgImage",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<select data-drupal-selector=\"edit-preferred-theme\" id=\"edit-preferred-theme\" name=\"preferred_theme\" class=\"form-select form-element form-element--type-select\">",
+                    "target": [
+                      "#edit-preferred-theme"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element's background color could not be determined due to a background image"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<select data-drupal-selector=\"edit-preferred-theme\" id=\"edit-preferred-theme\" name=\"preferred_theme\" class=\"form-select form-element form-element--type-select\">",
+            "target": [
+              "#edit-preferred-theme"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+          }
+        ]
+      }
+    ],
+    "pageMetrics": {
+      "requests": 6,
+      "transferBytes": 63728,
+      "decodedBytes": 240235,
+      "domNodes": 94,
+      "byType": {
+        "css": {
+          "count": 2,
+          "transferBytes": 26694
+        },
+        "script": {
+          "count": 3,
+          "transferBytes": 33357
+        }
+      },
+      "imageFormats": {}
+    }
+  }
+]
