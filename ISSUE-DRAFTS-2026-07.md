@@ -192,3 +192,94 @@ so complexity only accumulates.
 
 - Pick the budget numbers from the baseline rather than aspiration.
 - Coordinate with the Gin upstream on shared wins.
+
+---
+
+## Draft 6 — Add an AccessibilityTestTrait so FunctionalJavascript tests can assert axe cleanliness at interaction states
+
+- **Category:** Feature request
+- **Component:** phpunit
+- **Priority:** Normal
+- **Tags:** `Accessibility`, `Testing system`
+
+### Problem/Motivation
+
+Automated accessibility scanning in core (Nightwatch axe) sees pages at
+rest. Most real accessibility regressions appear in interaction states —
+open dialogs, expanded widgets, forms re-rendered with errors — and core's
+FunctionalJavascript tests already drive components into exactly those
+states with no accessibility assertions.
+
+`\Drupal\Tests\PerformanceTestTrait` established the pattern: a trait that
+lets any existing test add a cross-cutting assertion cheaply.
+
+### Proposed resolution
+
+Add an AccessibilityTestTrait for FunctionalJavascript tests providing
+`assertNoAxeViolations(array $rules = [], $context = NULL)` (injecting
+axe-core, already a core dev dependency, into the WebDriver session).
+Seed usage in a handful of high-state-value tests (dialog, Layout Builder,
+form validation) rather than converting everything at once. Also becomes
+the cheap way for a11y bugfix MRs to include their own regression test.
+
+### Remaining tasks
+
+- Decide rule baseline (start with the un-suppressed Nightwatch set).
+- Performance impact measurement on the converted tests.
+
+---
+
+## Draft 7 — Add PerformanceTestBase coverage for admin-theme routes
+
+- **Category:** Task
+- **Component:** Default admin theme
+- **Priority:** Normal
+- **Tags:** `Sustainability`, `Performance`, `Testing system`
+
+### Problem/Motivation
+
+`StandardPerformanceTest` pins exact query counts, cache operations, and
+CSS/JS byte counts for front-end routes — any regression fails CI and
+forces conscious review. Admin routes have no such coverage, yet editors
+spend hours a day there and external measurement shows Default Admin admin
+pages are the heaviest in core (~1.3 MB transfer on /node/add/article and
+the content list; data:
+https://github.com/mgifford/drupal-core/blob/main/reports/sustainability/history.json).
+
+### Proposed resolution
+
+Add a DefaultAdminPerformanceTest (FunctionalJavascript, extends
+PerformanceTestBase) asserting query count, CacheGetCount, and
+Stylesheet/Script bytes for /admin/content and a node edit form, with
+initial pinned values taken from current measurements. This is the
+unit-test form of an admin payload budget.
+
+### Remaining tasks
+
+- Consider extending PerformanceTestTrait to also record image transfer
+  bytes (currently CSS/JS only) — images dominate page weight and have no
+  assertion surface.
+
+---
+
+## Draft 8 — Drupal CMS: add an accessibility smoke gate per recipe
+
+- **Project:** drupal/cms (not core)
+- **Category:** Feature request
+- **Tags:** `Accessibility`
+
+### Problem/Motivation
+
+Drupal CMS recipes install complete feature sets (dashboard, project
+browser, consent management, …) with no accessibility check in the
+pipeline. New-user first impressions of Drupal accessibility are now
+formed by CMS, not bare core.
+
+### Proposed resolution
+
+A smoke-level axe pass in CMS CI: install each recipe, scan its primary
+routes (recipe-declared or convention-based), fail on new critical/serious
+WCAG-tagged violations against a recorded baseline. An external
+comprehensive crawl profile for CMS exists to generate the baseline and
+page inventory (https://github.com/mgifford/drupal-core/issues/36).
+
