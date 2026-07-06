@@ -19,7 +19,7 @@ Run them as individual queries — do not batch two M items into one ask.
 
 ## Queue
 
-### 1. Focus-indicator & tab-order walker — **M**, highest value
+### 1. Focus-indicator & tab-order walker ([#25](https://github.com/mgifford/drupal-core/issues/25)) — **M**, highest value
 New spec `tests/a11y-focus-walk.spec.ts`: for each page in `lib/pages.ts`
 (desktop, both admin themes), Tab through the full focus order and record:
 element, accessible name, computed styles focused vs. unfocused. Flag:
@@ -34,7 +34,7 @@ Calibrate against zivtech/a11y-meta-skills eval fixtures (below) before
 trusting results. Note: `a11y-keyboard-review.spec.ts` already does partial
 keyboard review — extend it rather than duplicating; read it first.
 
-### 2. Component-state crawler on theming_tools fixtures — **M**
+### 2. Component-state crawler on theming_tools fixtures ([#26](https://github.com/mgifford/drupal-core/issues/26)) — **M**
 New spec `tests/a11y-component-states.spec.ts` driving each theming_tools
 demo route into its interesting states, re-running axe + `ariaSnapshot()`
 per state: `/dialog` open, `/dropbutton` expanded, `/autocomplete` with
@@ -43,7 +43,7 @@ submitted with errors, `/tabledrag` mid-drag. Static-DOM scanning misses
 these states entirely; this is also the prototype for MR-time component
 gates in core CI.
 
-### 3. Calibration harness on a11y-meta-skills fixtures — **S/M**
+### 3. Calibration harness on a11y-meta-skills fixtures ([#27](https://github.com/mgifford/drupal-core/issues/27)) — **S/M**
 `zivtech/a11y-meta-skills` `evals/suites/a11y-critic/fixtures/` contains
 labeled bug fixtures (popover-no-focus-management, dropdown-focus-bug,
 checkbox-group-no-fieldset, …) with expected findings. Build a small runner
@@ -52,7 +52,7 @@ against the labels. Any new checker (items 1, 2, 5) should report its
 fixture score before its findings are trusted. This repo is also the
 upstream of `tools/a11y-meta-skills` (git submodule).
 
-### 4. Virtual screen reader journeys (Guidepup) — **L: spec first**
+### 4. Virtual screen reader journeys (Guidepup) ([#28](https://github.com/mgifford/drupal-core/issues/28)) — **L: spec first**
 `@guidepup/virtual-screen-reader` runs a DOM-based SR in CI (no VoiceOver
 needed). Convert Tier-1 user stories from `USER-STORIES.md` into journeys
 that assert the *announced output sequence* (e.g. registration: every field
@@ -61,7 +61,7 @@ with 3 stories (1.1, 1.4, 2.2) as a proof, then scale via the coverage
 matrix. Spec the assertion format first — this is the highest-ceiling item
 and should be a Spec Kitty mission, not a single query.
 
-### 5. Remaining WSG STAR batch 2 — **M**
+### 5. Remaining WSG STAR batch 2 ([#29](https://github.com/mgifford/drupal-core/issues/29)) — **M**
 - JS/CSS unused-bytes via Playwright coverage API (`remove-redundancy`,
   informs `code-splitting`) — per-bundle unused %, trended in history.json.
 - No-JS smoke pass (`progressive-enhancement`): `javaScriptEnabled: false`
@@ -69,24 +69,24 @@ and should be a Spec Kitty mission, not a single query.
 - Minification heuristic (`minified-code`): fetch same-origin js/css,
   flag whitespace ratio above threshold.
 
-### 6. Warm-cache second-visit metrics — **S**
+### 6. Warm-cache second-visit metrics ([#30](https://github.com/mgifford/drupal-core/issues/30)) — **S**
 In `scanRoute`, optionally reload the page in the same context and record a
 second `PageMetrics` (`warmMetrics`). Cold/warm delta per page measures
 cache-header effectiveness — evidence for the WSG alignment statement's
 caching claims.
 
-### 7. Main-thread CPU time per page — **M**
+### 7. Main-thread CPU time per page ([#31](https://github.com/mgifford/drupal-core/issues/31)) — **M**
 CDP `Performance.getMetrics` (TaskDuration, ScriptDuration) per canonical
 scan → history.json. Bytes are a proxy; CPU time catches JS-heavy energy
 regressions with identical page weight. Feeds the admin-theme budget issue.
 
-### 8. WCAG SC coverage matrix — **S**
+### 8. WCAG SC coverage matrix ([#32](https://github.com/mgifford/drupal-core/issues/32)) — **S**
 Generator mapping every WCAG 2.2 SC → (axe rule / custom check / contract
 test / manual-only), from axe-core's rule metadata + a hand-map of our
 custom checks. Output `WCAG-COVERAGE.md`. Tells the community which SCs
 have zero automated signal; doubles as ACT/WSG IG implementer feedback.
 
-### 9. AX-tree diff gate — **S** (after one more scan exists)
+### 9. AX-tree diff gate ([#33](https://github.com/mgifford/drupal-core/issues/33)) — **S** (after one more scan exists)
 Script comparing `reports/ax-tree/latest/` against the previous git
 revision; summarize name/role changes per page in the pattern report.
 Promote to a CI check once the noise level is known.
