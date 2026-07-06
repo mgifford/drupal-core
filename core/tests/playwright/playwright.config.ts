@@ -24,6 +24,9 @@ export default defineConfig({
   workers: 1,
   // Logs in as admin once and saves session cookies for all admin page tests.
   globalSetup: path.resolve(__dirname, './lib/auth-setup.ts'),
+  // Merges crawl shards and restores site settings — must run exactly once,
+  // after all workers exit (afterAll hooks run per worker; see crawl-finalize).
+  globalTeardown: path.resolve(__dirname, './lib/crawl-finalize.ts'),
   reporter: [
     ['list'],
     ['json', { outputFile: './reports/playwright-results.json' }],

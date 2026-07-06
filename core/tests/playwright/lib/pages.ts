@@ -22,6 +22,11 @@ export interface PageEntry {
   requiresAuth: boolean;
   /** Viewport override, e.g. for mobile-specific templates. */
   viewport?: { width: number; height: number };
+  /**
+   * HTTP status this route intentionally returns (e.g. 404 for the
+   * not-found page). Unset routes must return < 400 or the scan fails.
+   */
+  expectedStatus?: number;
 }
 
 /** Pages rendered by the default (Olivero) theme — no authentication. */
@@ -32,7 +37,7 @@ export const anonymousPages: PageEntry[] = [
   { name: 'User register', path: '/user/register', requiresAuth: false },
   { name: 'User password reset', path: '/user/password', requiresAuth: false },
   { name: 'Search results', path: '/search/node', requiresAuth: false },
-  { name: '404 page', path: '/this-page-does-not-exist', requiresAuth: false },
+  { name: '404 page', path: '/this-page-does-not-exist', requiresAuth: false, expectedStatus: 404 },
 ];
 
 /** Pages rendered by the admin (Claro) theme — requires authentication. */

@@ -39,11 +39,11 @@
  *
  * Result accumulation strategy:
  *   Each inner describe writes a partial JSON shard to .tmp-crawl/ in its
- *   own afterAll. The outer afterAll merges those temporary shards into a
- *   small manifest at reports/axe-results.json plus dated/latest shard
- *   directories and summary indexes.
- *   This avoids a Playwright timing issue where the outer afterAll can fire
- *   before inner describe tests push their results when test.use() is present.
+ *   own afterAll. Merging into reports/axe-results.json and restoring the
+ *   site's settings happen in globalTeardown (lib/crawl-finalize.ts), which
+ *   runs exactly once after all workers exit. afterAll is NOT safe for
+ *   merging: hooks run per worker, and every scan group gets its own worker
+ *   because its test.use() options differ.
  *
  * NOTE: drush cache:rebuild takes 5–10 s per call. Budget ~30 s overhead
  * per unique Drupal theme switch and ~10 s per accent preset switch.
@@ -54,11 +54,10 @@ import { test, Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
 import { anonymousPages, adminPages, PageEntry } from '../lib/pages';
 import { THEME_CONFIGS, ThemeConfig } from '../lib/theme-configs';
 import { AUTH_STATE_FILE } from '../lib/auth-setup';
-const { writeShardedResults } = require('../scripts/lib/axe-results-store');
+import { TEMP_DIR, drush, captureOriginalSettingsOnce } from '../lib/crawl-finalize';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -181,15 +180,9 @@ const DEFAULT_ADMIN_ACCENTS = [
   'neutral',
 ] as const;
 
-/** Temp directory for per-describe partial result shards. */
-const OUT_DIR = path.resolve(__dirname, '../../../../reports');
-const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
-
 // ── Drush helpers ────────────────────────────────────────────────────────────
-
-function drush(cmd: string): string {
-  return execSync(`ddev drush ${cmd}`).toString();
-}
+// Shared drush plumbing (drush(), TEMP_DIR, settings capture/restore) lives
+// in lib/crawl-finalize.ts so the globalTeardown can reuse it.
 
 /**
  * Apply a theme configuration to the running Drupal site via drush.
@@ -214,24 +207,6 @@ function switchTheme(config: ThemeConfig): void {
 function setAccentPreset(preset: string): void {
   drush(`config:set default_admin.settings preset_accent_color ${preset} -y`);
   drush(`cache:rebuild`);
-}
-
-/**
- * Read a single system.theme config value from the live site.
- * Returns the trimmed string value (e.g. "default_admin", "olivero").
- */
-function getThemeSetting(key: 'default' | 'admin'): string {
-  return drush(`config:get system.theme ${key} --format=string`).trim();
-}
-
-/** Best-effort read of a default_admin.settings key (theme may not be installed). */
-function getDefaultAdminSetting(key: string): string | null {
-  try {
-    return drush(`config:get default_admin.settings ${key} --format=string`).trim();
-  }
-  catch {
-    return null;
-  }
 }
 
 /** Whether a langcode is installed on the site (for the opt-in RTL crawl). */
@@ -382,10 +357,30 @@ async function scanRoute(
     accentPreset?: string;
     language?: string;
     direction?: 'ltr' | 'rtl';
+    /** HTTP status the route is expected to return (default 200/3xx). */
+    expectedStatus?: number;
   },
 ): Promise<AxeResultRecord> {
   await page.setViewportSize({ width: opts.viewport.width, height: opts.viewport.height });
-  await page.goto(resolveRoute(page, opts.routePath), { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(resolveRoute(page, opts.routePath), { waitUntil: 'domcontentloaded' });
+
+  // Guard against silently scanning error pages: a missing route renders a
+  // themed 404 that passes the readiness check and yields a useless
+  // near-clean record. Only the inventory's intentional error pages (with
+  // expectedStatus set) may scan a non-2xx/3xx response.
+  const status = response?.status() ?? 0;
+  if (opts.expectedStatus !== undefined) {
+    if (status !== opts.expectedStatus) {
+      throw new Error(`Route ${opts.routePath} returned HTTP ${status}, expected ${opts.expectedStatus}.`);
+    }
+  }
+  else if (status >= 400) {
+    throw new Error(
+      `Route ${opts.routePath} returned HTTP ${status} — the page is missing on this site. ` +
+      `Fix the site setup (see A11Y-PROCESS.md First-time setup) or remove the entry from lib/pages.ts.`,
+    );
+  }
+
   await ensurePageReadyForScan(page, opts.routePath);
 
   // Metrics only on full-rule scans: accent quick scans revisit the same
@@ -432,63 +427,14 @@ function writeResultShard(shardId: string, records: AxeResultRecord[]): void {
   fs.writeFileSync(shardFile, JSON.stringify(records, null, 2));
 }
 
-interface OriginalSettings {
-  defaultTheme: string;
-  adminTheme: string;
-  accentPreset: string | null;
-  darkMode: string | null;
-}
-
-/**
- * Merge all shard files written by inner describes into the final sharded
- * bundle, then restore the site's original theme configuration.
- */
-function mergeAndWriteResults(original: OriginalSettings): void {
-  fs.mkdirSync(OUT_DIR, { recursive: true });
-
-  let allResults: AxeResultRecord[] = [];
-
-  if (fs.existsSync(TEMP_DIR)) {
-    const shards = fs.readdirSync(TEMP_DIR).filter((f) => f.endsWith('.json'));
-    for (const shard of shards.sort()) {
-      try {
-        const data = JSON.parse(fs.readFileSync(path.join(TEMP_DIR, shard), 'utf8'));
-        allResults = allResults.concat(data);
-      } catch {
-        console.warn(`  ⚠️  Could not read shard ${shard}, skipping.`);
-      }
-    }
-    fs.rmSync(TEMP_DIR, { recursive: true, force: true });
-  }
-
-  const date = new Date().toISOString().slice(0, 10);
-  const output = writeShardedResults({
-    records: allResults,
-    reportsDir: OUT_DIR,
-    dateStamp: date,
-  });
-
-  console.log(`\n📊 Axe results written to:`);
-  console.log(`   ${output.datedManifestPath}`);
-  console.log(`   ${output.latestManifestPath} (latest)`);
-  console.log(`   ${path.join(OUT_DIR, 'axe-results', date, 'shards')} (dated shards)`);
-  console.log(`   ${path.join(OUT_DIR, 'axe-results', 'latest', 'shards')} (latest shards)`);
-  console.log(`   Total records: ${allResults.length}`);
-  console.log(`   Run: yarn a11y:analyze to generate the pattern report.`);
-
-  // Restore the site to its original theme configuration.
-  drush(`config:set system.theme default ${original.defaultTheme} -y`);
-  drush(`config:set system.theme admin ${original.adminTheme} -y`);
-  if (original.accentPreset !== null) {
-    drush(`config:set default_admin.settings preset_accent_color ${original.accentPreset} -y`);
-  }
-  if (original.darkMode !== null) {
-    drush(`config:set default_admin.settings enable_dark_mode ${original.darkMode} -y`);
-  }
-  drush(`cache:rebuild`);
-}
-
 // ── Test suite ───────────────────────────────────────────────────────────────
+//
+// Shard merging and site-settings restore happen in globalTeardown
+// (lib/crawl-finalize.ts), which runs exactly once after all workers exit.
+// They must NOT happen in afterAll: Playwright runs beforeAll/afterAll per
+// worker, and each scan group gets its own worker because their test.use()
+// options differ — an afterAll merge would run dozens of times and its
+// cleanup would delete every earlier group's shards.
 
 test.describe('Axe crawl — multi-theme', () => {
   test.use({
@@ -496,26 +442,10 @@ test.describe('Axe crawl — multi-theme', () => {
     ignoreHTTPSErrors: true,
   });
 
-  // Capture original settings so we can restore them after the full run.
-  const original: OriginalSettings = {
-    defaultTheme: '',
-    adminTheme: '',
-    accentPreset: null,
-    darkMode: null,
-  };
-
   test.beforeAll(async () => {
-    // NOTE: leftover-shard cleanup lives in globalSetup (auth-setup.ts), NOT
-    // here — Playwright re-runs beforeAll when a worker restarts after a
-    // crash, and cleaning here would wipe every shard completed so far.
-    original.defaultTheme = getThemeSetting('default');
-    original.adminTheme = getThemeSetting('admin') || 'claro';
-    original.accentPreset = getDefaultAdminSetting('preset_accent_color');
-    original.darkMode = getDefaultAdminSetting('enable_dark_mode');
-  });
-
-  test.afterAll(async () => {
-    mergeAndWriteResults(original);
+    // First worker records the site's original settings (before any theme
+    // switching) so globalTeardown can restore them; later workers no-op.
+    captureOriginalSettingsOnce();
   });
 
   // ── Canonical per-theme scan groups (full rule set) ───────────────────────
@@ -556,6 +486,7 @@ test.describe('Axe crawl — multi-theme', () => {
                 themeId: themeConfig.id,
                 testName,
                 routePath: entry.path,
+                expectedStatus: entry.expectedStatus,
                 viewport: { width: vp.width, height: vp.height },
                 screen: vp.screen,
                 colorScheme: themeConfig.colorScheme,
@@ -624,6 +555,7 @@ test.describe('Axe crawl — multi-theme', () => {
                   themeId: themeConfig.id,
                   testName,
                   routePath: `/${RTL_LANG}${entry.path}`,
+                  expectedStatus: entry.expectedStatus,
                   viewport: { width: vp.width, height: vp.height },
                   screen: vp.screen,
                   colorScheme: 'light',
@@ -680,6 +612,7 @@ test.describe('Axe crawl — multi-theme', () => {
                 themeId: `${accentBaseConfig.id}-accent-${accentPreset}`,
                 testName,
                 routePath: entry.path,
+                expectedStatus: entry.expectedStatus,
                 viewport: { width: vp.width, height: vp.height },
                 screen: vp.screen,
                 colorScheme,
