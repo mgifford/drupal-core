@@ -100,6 +100,54 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ---
 
+## Issue #3571628 - aria-expanded does not resync after details toggles
+
+I prepared a focused patch for this issue and included regression coverage.
+
+**Bug ID:** DRU-9da94f27 (instance) / DRU-e1099604 (pattern)
+**URL:** http://localhost/node/add/article
+**XPath:** //details//summary[@aria-expanded]
+**Full DOM path:** /html/body//details/summary[@aria-expanded]
+**WCAG SC:** 4.1.2 - Name, Role, Value (Level A)
+**Rule:** manual state-sync check - aria-expanded-sync
+**Severity:** Medium
+**Frequency:** Pattern-level; affects details summaries using core details-aria behavior
+**Screen type:** desktop | **Colour mode:** light
+
+### HTML Snippet
+
+```html
+<details>
+  <summary aria-expanded="true">Revision information</summary>
+</details>
+```
+
+### What changed
+
+- Updated details aria behavior to use the details open property for state sync in:
+  - core/misc/details-aria.js
+- Added regression coverage for close/reopen aria-expanded transitions in:
+  - core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+
+### Patch
+
+- patches/a11y-DRUPAL-A11Y-012-issue-3571628-aria-expanded-sync.patch
+
+### Testing status
+
+- Static checks and code review passed.
+- Local runtime execution remains blocked in current environment due missing runnable php/phpunit path.
+
+### AI disclosure
+
+This contribution was prepared with assistance from an AI coding tool.
+- Tool: GitHub Copilot (GPT-5.3-Codex)
+- Used for: patch drafting, regression test drafting, issue comment drafting
+- Reviewed by: mgifford
+- Skills loaded: drupal-accessibility (sub-skills: drupal-a11y-dynamic, drupal-a11y-qa)
+
+---
+
 ## Per-Issue Reset Workflow (to avoid patch carry-over)
 
 Use this between issue investigations so each patch is generated from clean repo state.

@@ -1,0 +1,49 @@
+From 48a72b154e4723947665556020e3a259ca6729e2 Mon Sep 17 00:00:00 2001
+From: github-actions <github-actions@github.com>
+Date: Mon, 13 Jul 2026 21:26:39 -0400
+Subject: [PATCH] Issue #3571628: Fix aria-expanded synchronization on details
+ toggle
+
+---
+ core/misc/details-aria.js                                 | 5 +----
+ .../Core/Form/FormGroupingElementsTest.php                | 8 +++++++-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/core/misc/details-aria.js b/core/misc/details-aria.js
+index c629719a3f..cf715b8f81 100644
+--- a/core/misc/details-aria.js
++++ b/core/misc/details-aria.js
+@@ -16,10 +16,7 @@
+         'summary',
+         (event) => {
+           const $summary = $(event.currentTarget);
+-          const open =
+-            $(event.currentTarget.parentNode).attr('open') === 'open'
+-              ? 'false'
+-              : 'true';
++          const open = event.currentTarget.parentNode.open ? 'false' : 'true';
+ 
+           $summary.attr({
+             'aria-expanded': open,
+diff --git a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+index a5239d3bc3..728195cb1d 100644
+--- a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
++++ b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+@@ -134,7 +134,13 @@ public function testDetailsChildVisibility(): void {
+     // Find the summary belonging to the closest details element.
+     $summary = $page->find('css', '#edit-meta > summary');
+ 
+-    // Assert that both aria-expanded and aria-pressed are true.
++    // Assert aria-expanded is true on open details.
++    $this->assertEquals('true', $summary->getAttribute('aria-expanded'));
++
++    // Close and reopen to ensure aria-expanded keeps synchronizing.
++    $summary->click();
++    $this->assertEquals('false', $summary->getAttribute('aria-expanded'));
++    $summary->click();
+     $this->assertEquals('true', $summary->getAttribute('aria-expanded'));
+   }
+ 
+-- 
+2.55.0
+
