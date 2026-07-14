@@ -134,7 +134,13 @@ class FormGroupingElementsTest extends WebDriverTestBase {
     // Find the summary belonging to the closest details element.
     $summary = $page->find('css', '#edit-meta > summary');
 
-    // Assert that both aria-expanded and aria-pressed are true.
+    // Assert aria-expanded is true on open details.
+    $this->assertEquals('true', $summary->getAttribute('aria-expanded'));
+
+    // Close and reopen to ensure aria-expanded keeps synchronizing.
+    $summary->click();
+    $this->assertEquals('false', $summary->getAttribute('aria-expanded'));
+    $summary->click();
     $this->assertEquals('true', $summary->getAttribute('aria-expanded'));
   }
 
