@@ -42,6 +42,21 @@ I prepared a focused patch for this issue and included regression coverage.
 - Static checks and code review passed.
 - Local runtime execution remains blocked in current environment due missing runnable php/phpunit path.
 
+### Strict A/B validation evidence
+
+- Baseline (patch removed):
+  - `core/misc/details-aria.js` contains `attr('open') === 'open'` marker.
+  - `core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php` does not contain `assertEquals('false', ...)` assertion.
+- Patched (patch applied):
+  - `core/misc/details-aria.js` contains `parentNode.open ? 'false' : 'true'` marker.
+  - `core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php` contains `assertEquals('false', $summary->getAttribute('aria-expanded'));`.
+- Roundtrip integrity:
+  - Patch reverse/apply cycle completed cleanly with no residual diff.
+
+Current verdict for this issue:
+- Code-level A/B evidence: confirmed.
+- Runtime A/B evidence (baseline fail + patched pass): pending environment support.
+
 ### AI disclosure
 
 This contribution was prepared with assistance from an AI coding tool.
@@ -174,3 +189,32 @@ Use this between issue investigations so each patch is generated from clean repo
    - ensure files belong only to the active issue
 
 7. Generate/refresh issue-specific patch artifact and comment draft.
+
+---
+
+## Non-Reproducible Issue Measurement Rubric
+
+When a drupal.org accessibility issue cannot be reproduced, record outcome as evidence states instead of forcing a binary fixed/not-fixed claim.
+
+1. Reproduction confidence
+  - High: reproduced on clean current main.
+  - Medium: reproduced only under a specific matrix.
+  - Low: not reproduced after matrix attempts.
+
+2. Matrix required in notes
+  - URL/route and content state
+  - Theme (default/admin)
+  - Browser + AT pair
+  - Viewport (desktop/mobile)
+  - Color mode and high-contrast state
+
+3. Outcome classification
+  - `fixed`: baseline reproduces; patched no longer reproduces.
+  - `regression`: baseline passes; patched fails.
+  - `inconclusive`: baseline not reproduced (`no-baseline-instances-observed`).
+  - `invalid-patch`: does not apply, target missing, or patch corrupt.
+
+4. Queue handling guidance
+  - Keep open with replication request when confidence is low.
+  - Mark `needs info` when reporter matrix is missing.
+  - Close `cannot reproduce` only after documented matrix attempts on current main.
