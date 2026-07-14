@@ -163,6 +163,70 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ---
 
+## Issue #3049125 - Language switcher block is an unlabelled navigation landmark region
+
+I prepared a focused patch for this issue and included regression coverage.
+
+**Bug ID:** DRU-48550bb9 (instance) / DRU-9ee9dcbd (pattern)
+**URL:** http://localhost/
+**XPath:** //div[@id="block-test-language-block" and @role="navigation"]
+**Full DOM path:** /html/body//div[@id="block-test-language-block" and @role="navigation"]
+**WCAG SC:** 4.1.2 - Name, Role, Value (Level A)
+**Rule:** manual landmark-name check - landmark-name
+**Severity:** Medium
+**Frequency:** Pattern-level; language provider blocks rendered as navigation landmarks
+**Screen type:** desktop | **Colour mode:** light
+
+### HTML Snippet
+
+```html
+<div id="block-test-language-block" role="navigation" class="language-switcher-language-interface">
+  ...
+</div>
+```
+
+### What changed
+
+- Added aria-label fallback when language block role is set to navigation in:
+  - core/modules/language/src/Hook/LanguageThemeHooks.php
+- Added functional regression assertion in:
+  - core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
+  - confirms language switcher landmark includes an accessible name via aria-label
+
+### Patch
+
+- patches/a11y-DRUPAL-A11Y-013-issue-3049125-language-switcher-nav-label.patch
+
+### Testing status
+
+- Static checks and code review passed.
+- Local runtime execution remains blocked in current environment due missing runnable php/phpunit path.
+
+### Strict A/B validation evidence
+
+- Baseline (patch removed):
+  - aria-label fallback lines absent from `LanguageThemeHooks::preprocessBlock()`.
+  - navigation landmark name assertion absent from `LanguageSwitchingTest::doTestHomePageLinks()`.
+- Patched (patch applied):
+  - aria-label fallback present in `LanguageThemeHooks::preprocessBlock()`.
+  - navigation landmark name assertion present in `LanguageSwitchingTest::doTestHomePageLinks()`.
+- Roundtrip integrity:
+  - Patch reverse/apply cycle completed cleanly with no residual diff.
+
+Current verdict for this issue:
+- Code-level A/B evidence: confirmed.
+- Runtime A/B evidence (baseline fail + patched pass): pending environment support.
+
+### AI disclosure
+
+This contribution was prepared with assistance from an AI coding tool.
+- Tool: GitHub Copilot (GPT-5.3-Codex)
+- Used for: patch drafting, regression test drafting, issue comment drafting
+- Reviewed by: mgifford
+- Skills loaded: drupal-accessibility (sub-skills: drupal-a11y-fapi, drupal-a11y-qa)
+
+---
+
 ## Per-Issue Reset Workflow (to avoid patch carry-over)
 
 Use this between issue investigations so each patch is generated from clean repo state.
