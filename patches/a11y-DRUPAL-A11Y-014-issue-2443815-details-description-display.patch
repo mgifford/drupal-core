@@ -1,0 +1,302 @@
+From 606b0b746f56f72f70c27260623a861e86b53ad3 Mon Sep 17 00:00:00 2001
+From: github-actions <github-actions@github.com>
+Date: Mon, 13 Jul 2026 21:54:56 -0400
+Subject: [PATCH] Issue #2443815: Respect #description_display for details
+ descriptions
+
+---
+ core/lib/Drupal/Core/Form/FormPreprocess.php  |  1 +
+ .../system/templates/details.html.twig        | 15 +++++++++--
+ .../src/Form/FormTestGroupDetailsForm.php     | 26 +++++++++++++++++++
+ .../tests/src/Functional/Form/ElementTest.php |  3 +++
+ .../templates/classy/form/details.html.twig   | 16 ++++++++++--
+ core/themes/claro/templates/details.html.twig | 12 ++++++++-
+ .../templates/form/details.html.twig          |  5 +++-
+ .../olivero/templates/form/details.html.twig  | 16 ++++++++++--
+ .../stable9/templates/form/details.html.twig  | 15 +++++++++--
+ .../templates/form/details.html.twig          | 16 ++++++++++--
+ 10 files changed, 113 insertions(+), 12 deletions(-)
+
+diff --git a/core/lib/Drupal/Core/Form/FormPreprocess.php b/core/lib/Drupal/Core/Form/FormPreprocess.php
+index 2a03737bf5..b581917a4e 100644
+--- a/core/lib/Drupal/Core/Form/FormPreprocess.php
++++ b/core/lib/Drupal/Core/Form/FormPreprocess.php
+@@ -363,6 +363,7 @@ public function preprocessDetails(array &$variables): void {
+       $variables['title'] = ['#markup' => $variables['title']];
+     }
+     $variables['description'] = (!empty($element['#description'])) ? $element['#description'] : '';
++    $variables['description_display'] = $element['#description_display'] ?? 'after';
+     $variables['children'] = (isset($element['#children'])) ? $element['#children'] : '';
+     $variables['value'] = (isset($element['#value'])) ? $element['#value'] : '';
+     $variables['required'] = !empty($element['#required']) ? $element['#required'] : NULL;
+diff --git a/core/modules/system/templates/details.html.twig b/core/modules/system/templates/details.html.twig
+index 1e235a07ef..577f553eab 100644
+--- a/core/modules/system/templates/details.html.twig
++++ b/core/modules/system/templates/details.html.twig
+@@ -34,11 +34,22 @@
+     </div>
+   {% endif %}
+ 
+-  {%- if description -%}
++  {%- if description and description_display == 'before' -%}
+     {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+-    <div{{ description_attributes }}>{{ description }}</div>
++    {% set description_classes = [
++      description_display == 'invisible' ? 'visually-hidden',
++    ] %}
++    <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+   {%- endif -%}
+ 
+   {{ children }}
+   {{ value }}
++
++  {%- if description and description_display in ['after', 'invisible'] -%}
++    {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++    {% set description_classes = [
++      description_display == 'invisible' ? 'visually-hidden',
++    ] %}
++    <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++  {%- endif -%}
+ </details>
+diff --git a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+index 226eb70580..ba026485df 100644
+--- a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
++++ b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+@@ -53,6 +53,32 @@ public function buildForm(array $form, FormStateInterface $form_state, $required
+       '#title' => 'Details element with description',
+       '#description' => 'I am a details description',
+     ];
++    $form['description_before'] = [
++      '#type' => 'details',
++      '#title' => 'Details element with description before',
++      '#description' => 'I am a before description',
++      '#description_display' => 'before',
++    ];
++    $form['description_before']['child'] = [
++      '#type' => 'textfield',
++      '#title' => 'Before child',
++    ];
++    $form['description_after'] = [
++      '#type' => 'details',
++      '#title' => 'Details element with description after',
++      '#description' => 'I am an after description',
++      '#description_display' => 'after',
++    ];
++    $form['description_after']['child'] = [
++      '#type' => 'textfield',
++      '#title' => 'After child',
++    ];
++    $form['description_invisible'] = [
++      '#type' => 'details',
++      '#title' => 'Details element with invisible description',
++      '#description' => 'I am an invisible description',
++      '#description_display' => 'invisible',
++    ];
+     return $form;
+   }
+ 
+diff --git a/core/modules/system/tests/src/Functional/Form/ElementTest.php b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+index 1614ca61d8..43367aa54b 100644
+--- a/core/modules/system/tests/src/Functional/Form/ElementTest.php
++++ b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+@@ -254,6 +254,9 @@ protected function testDetailsDescriptionAttributes(): void {
+     $this->drupalGet('form-test/group-details');
+     $this->assertSession()->elementExists('css', 'details[aria-describedby="edit-description-attributes--description"]');
+     $this->assertSession()->elementExists('css', 'div[id="edit-description-attributes--description"]');
++    $this->assertSession()->elementExists('xpath', '//details[@id="edit-description-before"]//div[@id="edit-description-before--description"][following-sibling::*//input[@id="edit-description-before-child"]]');
++    $this->assertSession()->elementExists('xpath', '//details[@id="edit-description-after"]//div[@id="edit-description-after--description"][preceding-sibling::*//input[@id="edit-description-after-child"]]');
++    $this->assertSession()->elementExists('css', 'details[aria-describedby="edit-description-invisible--description"] div#edit-description-invisible--description.visually-hidden');
+   }
+ 
+ }
+diff --git a/core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig b/core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig
+index 0a8a0d6032..ff13996313 100644
+--- a/core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig
++++ b/core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig
+@@ -31,9 +31,13 @@
+         {{ errors }}
+       </div>
+     {% endif %}
+-    {%- if description -%}
++    {%- if description and description_display == 'before' -%}
+       {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+-      <div {{ description_attributes.addClass(['details-description']) }}>{{ description }}</div>
++      {% set description_classes = [
++        'details-description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+     {%- endif -%}
+     {%- if children -%}
+       {{ children }}
+@@ -41,5 +45,13 @@
+     {%- if value -%}
+       {{ value }}
+     {%- endif -%}
++    {%- if description and description_display in ['after', 'invisible'] -%}
++      {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++      {% set description_classes = [
++        'details-description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div {{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++    {%- endif -%}
+   </div>
+ </details>
+diff --git a/core/themes/claro/templates/details.html.twig b/core/themes/claro/templates/details.html.twig
+index 78a30ed7aa..e25212b85c 100644
+--- a/core/themes/claro/templates/details.html.twig
++++ b/core/themes/claro/templates/details.html.twig
+@@ -74,11 +74,12 @@
+           {{ errors }}
+         </div>
+       {% endif %}
+-      {%- if description -%}
++      {%- if description and description_display == 'before' -%}
+         {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+         {% set description_classes = [
+           'claro-details__description',
+           disabled ? 'is-disabled',
++          description_display == 'invisible' ? 'visually-hidden',
+         ] %}
+         <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+       {%- endif -%}
+@@ -88,6 +89,15 @@
+       {%- if value -%}
+         {{ value }}
+       {%- endif -%}
++      {%- if description and description_display in ['after', 'invisible'] -%}
++        {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++        {% set description_classes = [
++          'claro-details__description',
++          disabled ? 'is-disabled',
++          description_display == 'invisible' ? 'visually-hidden',
++        ] %}
++        <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++      {%- endif -%}
+ 
+     {% if accordion or accordion_item %}
+     </div>
+diff --git a/core/themes/default_admin/templates/form/details.html.twig b/core/themes/default_admin/templates/form/details.html.twig
+index 3759401a32..ce4ad74773 100644
+--- a/core/themes/default_admin/templates/form/details.html.twig
++++ b/core/themes/default_admin/templates/form/details.html.twig
+@@ -87,7 +87,7 @@
+           {{ errors }}
+         </div>
+       {% endif %}
+-      {%- if description -%}
++      {%- if description and (description_display == 'before' or description_display_toggle == 'before') -%}
+         <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
+       {%- endif -%}
+       {%- if children -%}
+@@ -96,6 +96,9 @@
+       {%- if value -%}
+         {{ value }}
+       {%- endif -%}
++      {%- if description and description_display in ['after', 'invisible'] and description_display_toggle != 'before' -%}
++        <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
++      {%- endif -%}
+ 
+     {% if accordion or accordion_item %}
+     </div>
+diff --git a/core/themes/olivero/templates/form/details.html.twig b/core/themes/olivero/templates/form/details.html.twig
+index 6fc00ff460..f4a2d3ec4f 100644
+--- a/core/themes/olivero/templates/form/details.html.twig
++++ b/core/themes/olivero/templates/form/details.html.twig
+@@ -49,9 +49,13 @@
+         {{ errors }}
+       </div>
+     {% endif %}
+-    {%- if description -%}
++    {%- if description and description_display == 'before' -%}
+       {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+-      <div{{ description_attributes.addClass(['olivero-details__description']) }}>{{ description }}</div>
++      {% set description_classes = [
++        'olivero-details__description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+     {%- endif -%}
+     {%- if children -%}
+       {{ children }}
+@@ -59,5 +63,13 @@
+     {%- if value -%}
+       {{ value }}
+     {%- endif -%}
++    {%- if description and description_display in ['after', 'invisible'] -%}
++      {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++      {% set description_classes = [
++        'olivero-details__description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++    {%- endif -%}
+   </div>
+ </details>
+diff --git a/core/themes/stable9/templates/form/details.html.twig b/core/themes/stable9/templates/form/details.html.twig
+index 1343adf6c8..11d589b904 100644
+--- a/core/themes/stable9/templates/form/details.html.twig
++++ b/core/themes/stable9/templates/form/details.html.twig
+@@ -32,11 +32,22 @@
+     </div>
+   {% endif %}
+ 
+-  {%- if description -%}
++  {%- if description and description_display == 'before' -%}
+     {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+-    <div{{ description_attributes }}>{{ description }}</div>
++    {% set description_classes = [
++      description_display == 'invisible' ? 'visually-hidden',
++    ] %}
++    <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+   {%- endif -%}
+ 
+   {{ children }}
+   {{ value }}
++
++  {%- if description and description_display in ['after', 'invisible'] -%}
++    {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++    {% set description_classes = [
++      description_display == 'invisible' ? 'visually-hidden',
++    ] %}
++    <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++  {%- endif -%}
+ </details>
+diff --git a/core/themes/starterkit_theme/templates/form/details.html.twig b/core/themes/starterkit_theme/templates/form/details.html.twig
+index 33d9461fba..8731100c98 100644
+--- a/core/themes/starterkit_theme/templates/form/details.html.twig
++++ b/core/themes/starterkit_theme/templates/form/details.html.twig
+@@ -31,9 +31,13 @@
+         <strong>{{ errors }}</strong>
+       </div>
+     {% endif %}
+-    {%- if description -%}
++    {%- if description and description_display == 'before' -%}
+       {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
+-      <div{{ description_attributes.addClass(['details-description']) }}>{{ description }}</div>
++      {% set description_classes = [
++        'details-description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+     {%- endif -%}
+     {%- if children -%}
+       {{ children }}
+@@ -41,5 +45,13 @@
+     {%- if value -%}
+       {{ value }}
+     {%- endif -%}
++    {%- if description and description_display in ['after', 'invisible'] -%}
++      {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
++      {% set description_classes = [
++        'details-description',
++        description_display == 'invisible' ? 'visually-hidden',
++      ] %}
++      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
++    {%- endif -%}
+   </div>
+ </details>
+-- 
+2.55.0
+

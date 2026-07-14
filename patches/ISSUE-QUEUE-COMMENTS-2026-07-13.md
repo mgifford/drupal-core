@@ -227,6 +227,78 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ---
 
+## Issue #2443815 - #description_display does not work for details descriptions
+
+I prepared a focused patch for this issue and included regression coverage.
+
+**Bug ID:** DRU-9a7895e1 (instance) / DRU-7df48324 (pattern)
+**URL:** http://localhost/form-test/group-details
+**XPath:** //details[@id="edit-description-before"]//div[@id="edit-description-before--description"]
+**Full DOM path:** /html/body//details[@id="edit-description-before"]/div[@id="edit-description-before--description"]
+**WCAG SC:** 1.3.1 - Info and Relationships (Level A)
+**Rule:** manual description-placement check - details-description-display
+**Severity:** Medium
+**Frequency:** Pattern-level; affects details elements with #description and #description_display across core and core themes
+**Screen type:** desktop | **Colour mode:** light
+
+### HTML Snippet
+
+```html
+<details id="edit-description-before">
+  <div id="edit-description-before--description">Description before the child.</div>
+</details>
+```
+
+### What changed
+
+- Propagated details-specific description display configuration in:
+  - core/lib/Drupal/Core/Form/FormPreprocess.php
+- Updated details templates to respect before/after/invisible ordering in:
+  - core/modules/system/templates/details.html.twig
+  - core/themes/stable9/templates/form/details.html.twig
+  - core/themes/starterkit_theme/templates/form/details.html.twig
+  - core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig
+  - core/themes/olivero/templates/form/details.html.twig
+  - core/themes/claro/templates/details.html.twig
+  - core/themes/default_admin/templates/form/details.html.twig
+- Added fixture and functional coverage in:
+  - core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+  - core/modules/system/tests/src/Functional/Form/ElementTest.php
+
+### Patch
+
+- patches/a11y-DRUPAL-A11Y-014-issue-2443815-details-description-display.patch
+
+### Testing status
+
+- Static checks and code review passed.
+- Local runtime execution remains blocked in current environment due missing runnable php/phpunit path.
+
+### Strict A/B validation evidence
+
+- Baseline (patch removed):
+  - `FormPreprocess::preprocessDetails()` does not include details-specific fallback assignment for `description_display`.
+  - `ElementTest::testDetailsDescriptionAttributes()` does not include assertion for `edit-description-before` ordering.
+- Patched (patch applied):
+  - `FormPreprocess::preprocessDetails()` includes `$variables['description_display'] = $element['#description_display'] ?? 'after';`.
+  - `ElementTest::testDetailsDescriptionAttributes()` includes `edit-description-before` ordering assertion.
+- Roundtrip integrity:
+  - Patch reverse/apply cycle completed cleanly with no residual diff.
+
+Current verdict for this issue:
+- Code-level A/B evidence: confirmed.
+- Runtime A/B evidence (baseline fail + patched pass): pending environment support.
+
+### AI disclosure
+
+This contribution was prepared with assistance from an AI coding tool.
+- Tool: GitHub Copilot (GPT-5.3-Codex)
+- Used for: patch drafting, regression test drafting, issue comment drafting
+- Reviewed by: mgifford
+- Skills loaded: drupal-accessibility (sub-skills: drupal-a11y-fapi, drupal-a11y-qa)
+
+---
+
 ## Per-Issue Reset Workflow (to avoid patch carry-over)
 
 Use this between issue investigations so each patch is generated from clean repo state.
