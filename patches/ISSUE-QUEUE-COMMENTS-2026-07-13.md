@@ -16,10 +16,18 @@ I prepared a focused patch for this issue and included regression coverage.
 **Frequency:** Pattern-level; applies to details summaries rendered by core preprocess on pages using #type details
 **Screen type:** desktop | **Colour mode:** light
 
-### HTML Snippet
+### HTML context (current output vs expected after fix)
 
 ```html
+<!-- Current output (problematic): role is redundantly added on native summary. -->
 <summary data-summary-attribute="test" role="button" aria-expanded="false">
+  Details element with summary attributes
+</summary>
+```
+
+```html
+<!-- Expected output after fix: native summary semantics preserved, aria-expanded retained. -->
+<summary data-summary-attribute="test" aria-expanded="false">
   Details element with summary attributes
 </summary>
 ```
@@ -99,10 +107,16 @@ I prepared a focused patch for this issue and included regression coverage.
 **Frequency:** 1 instance per user profile page where member_for is displayed<br>
 **Screen type:** desktop | **Colour mode:** light
 
-### HTML Snippet
+### HTML context (current output vs expected after fix)
 
 ```html
+<!-- Current output (problematic): visual label is incorrectly a heading. -->
 <h4 class="label">Member for</h4>
+```
+
+```html
+<!-- Expected output after fix: non-heading label container. -->
+<div class="label">Member for</div>
 ```
 
 ### What changed
@@ -160,11 +174,23 @@ I prepared a focused patch for this issue and included regression coverage.
 **Frequency:** Pattern-level; affects details summaries using core details-aria behavior
 **Screen type:** desktop | **Colour mode:** light
 
-### HTML Snippet
+### HTML context (current output vs expected after fix)
 
 ```html
+<!-- Current output can desynchronize after toggle cycles (example state bug when closed): -->
 <details>
   <summary aria-expanded="true">Revision information</summary>
+</details>
+```
+
+```html
+<!-- Expected output after fix: aria-expanded mirrors the details open state. -->
+<details open>
+  <summary aria-expanded="true">Revision information</summary>
+</details>
+
+<details>
+  <summary aria-expanded="false">Revision information</summary>
 </details>
 ```
 
@@ -208,10 +234,18 @@ I prepared a focused patch for this issue and included regression coverage.
 **Frequency:** Pattern-level; language provider blocks rendered as navigation landmarks
 **Screen type:** desktop | **Colour mode:** light
 
-### HTML Snippet
+### HTML context (current output vs expected after fix)
 
 ```html
+<!-- Current output (problematic): navigation landmark has no accessible name. -->
 <div id="block-test-language-block" role="navigation" class="language-switcher-language-interface">
+  ...
+</div>
+```
+
+```html
+<!-- Expected output after fix: navigation landmark has an accessible label. -->
+<div id="block-test-language-block" role="navigation" aria-label="Language switcher" class="language-switcher-language-interface">
   ...
 </div>
 ```
@@ -263,7 +297,7 @@ This contribution was prepared with assistance from an AI coding tool.
 I prepared a focused patch for this issue and included regression coverage.
 
 **Bug ID:** DRU-9a7895e1 (instance) / DRU-7df48324 (pattern)
-**URL:** http://localhost/form-test/group-details
+**URL:** http://localhost/form-test/group-details, http://localhost/admin/config/people/accounts
 **XPath:** //details[@id="edit-description-before"]//div[@id="edit-description-before--description"]
 **Full DOM path:** /html/body//details[@id="edit-description-before"]/div[@id="edit-description-before--description"]
 **WCAG SC:** 1.3.1 - Info and Relationships (Level A)
@@ -272,11 +306,27 @@ I prepared a focused patch for this issue and included regression coverage.
 **Frequency:** Pattern-level; affects details elements with #description and #description_display across core and core themes
 **Screen type:** desktop | **Colour mode:** light
 
-### HTML Snippet
+### HTML context (current output vs expected after fix)
 
 ```html
+<!-- Current output example: description position can ignore #description_display intent. -->
+<details id="edit-description-before">
+  <input id="edit-description-before-child" type="text" />
+  <div id="edit-description-before--description">Description before the child.</div>
+</details>
+```
+
+```html
+<!-- Expected output after fix (description_display='before'): -->
 <details id="edit-description-before">
   <div id="edit-description-before--description">Description before the child.</div>
+  <input id="edit-description-before-child" type="text" />
+</details>
+
+<!-- Expected output after fix (description_display='after'): -->
+<details id="edit-description-after">
+  <input id="edit-description-after-child" type="text" />
+  <div id="edit-description-after--description">Description after the child.</div>
 </details>
 ```
 
@@ -308,11 +358,42 @@ I prepared a focused patch for this issue and included regression coverage.
   - Thread records explicit baseline-vs-patched test reasoning and an earlier RTBC phase before the issue went stale.
 - This current patch should be presented as a modernized, current-core refresh of that prior work, not a replacement without attribution.
 
+### Comparison to old patch #107 and Ketr feedback
+
+- Ketr's comment #16530075 highlighted four things: clearer issue summary steps to reproduce (pointing at #13), preprocess location updates, Default Admin theme updates, and likely change-record consideration.
+- File-scope comparison (old `description_display-2443815-107.patch` vs current local patch):
+  - Common files:
+    - `core/modules/system/templates/details.html.twig`
+    - `core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php`
+  - Old-only (legacy architecture):
+    - `core/includes/form.inc`
+    - `core/lib/Drupal/Core/Render/Element/Details.php`
+    - `core/modules/system/src/Tests/Form/ElementsLabelsTest.php`
+    - `core/modules/system/tests/modules/form_test/src/Form/FormTestDescriptionForm.php`
+    - `core/modules/system/tests/src/Functional/Form/ElementsDetailsTest.php`
+    - `core/themes/classy/templates/form/details.html.twig`
+    - `core/themes/stable/templates/form/details.html.twig`
+  - Current-only (modern architecture/themes):
+    - `core/lib/Drupal/Core/Form/FormPreprocess.php`
+    - `core/modules/system/tests/src/Functional/Form/ElementTest.php`
+    - `core/profiles/demo_umami/themes/umami/templates/classy/form/details.html.twig`
+    - `core/themes/claro/templates/details.html.twig`
+    - `core/themes/default_admin/templates/form/details.html.twig`
+    - `core/themes/olivero/templates/form/details.html.twig`
+    - `core/themes/stable9/templates/form/details.html.twig`
+    - `core/themes/starterkit_theme/templates/form/details.html.twig`
+- Behavioral difference to confirm in-thread:
+  - Old patch #107 set details `#description_display` default to `before`.
+  - Current patch fallback in preprocess is `after`.
+  - This should be explicitly confirmed in review to avoid semantic drift.
+- Reproduction matrix should explicitly include `/admin/config/people/accounts` in addition to `form-test/group-details`.
+
 ### Loose ends to call out in queue comment
 
 - Clarify which historical concerns are now resolved by current implementation (description placement propagation + cross-theme template behavior).
 - Ask reviewers to focus on stale historical patch noise vs current patch applicability to main.
 - Note that runtime A/B remains pending in this environment, while code-level A/B and patch roundtrip are confirmed.
+- Confirm whether a change record is required for any resulting behavior/default change.
 
 ### Testing status
 
@@ -430,13 +511,55 @@ Use the following HTML blocks directly in drupal.org comments.
 <p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
 
 <ul>
-  <li><strong>Local patch scope:</strong> preprocess propagation + cross-theme details template handling + fixture and functional coverage.</li>
+  <li><strong>Local patch scope:</strong> preprocess propagation + cross-theme details template handling (including Default Admin) + fixture and functional coverage.</li>
+  <li><strong>Comparison to old patch #107:</strong> current patch ports legacy preprocess/test/theme changes to modern core locations and modern themes, while preserving the core template/form-test coverage intent.</li>
+  <li><strong>Open review point from historical thread:</strong> confirm expected default behavior when <code>#description_display</code> is not explicitly set (old patch used <code>before</code>; current patch fallback uses <code>after</code>).</li>
+  <li><strong>Reproduction routes to include in IS:</strong> <code>/admin/config/people/accounts</code> and <code>/form-test/group-details</code>.</li>
 </ul>
 
-<p><strong>Action requested:</strong> when a fresh thread patch is posted, compare template/preprocess coverage and test breadth against this scope before final review.</p>
+<p><strong>Action requested:</strong> when a fresh thread patch is posted, compare template/preprocess coverage and test breadth against this scope before final review, and explicitly resolve the default display expectation.</p>
 ```
 
 ---
+
+## Posting A Patch To Drupal.org (Detailed + Short)
+
+This project file is for drafting. For Drupal.org issue work, prefer branch + MR over manually editing large comments.
+
+### Detailed workflow
+
+1. Open the target issue and create/use an issue fork from the Drupal.org issue UI.
+2. Copy the exact `git remote add` command from the issue fork panel (avoids remote-name/path mistakes).
+3. Create a clean branch for one issue only:
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `git checkout -b issue-<nid>-<short-topic>`
+4. Apply or refresh changes locally:
+  - if using an existing patch file: `git apply patches/<patch-file>.patch`
+  - or edit files directly, then run targeted checks/tests.
+5. Commit with issue reference:
+  - `git add <changed-files>`
+  - `git commit -m "Issue #<nid>: <short summary>"`
+6. Push to the issue fork remote/branch shown in the issue UI.
+7. Create merge request to `project/drupal` from that pushed branch.
+8. In the issue comment, include:
+  - what changed (file list summary)
+  - reproduction steps (IS), including real route(s) and test route(s)
+  - test evidence (manual + automated)
+  - comparison vs latest patch/MR if one exists.
+
+### Short workflow
+
+1. Create issue fork.
+2. Branch from current main.
+3. Apply patch or make fix + tests.
+4. Commit and push to issue fork.
+5. Open MR and post a concise issue comment with IS + test results.
+
+### Practical note for this repo
+
+- Keep full drafting context in this file.
+- Post a concise HTML comment in the queue, linking to MR and the key comparison points.
 
 ## Per-Issue Reset Workflow (to avoid patch carry-over)
 
@@ -530,6 +653,74 @@ Suggested next-step framing for the thread:
 3. Add/refresh functional coverage on existing `form_test` routes that already exercise details elements.
 
 I am intentionally not proposing a broad new implementation here without a fresh failing test and a current-main patch path, to avoid repeating stale patch cycles.
+
+---
+
+## Ready-To-Post: Legacy Reports Targeted Follow-Ups
+
+These are targeted queue comments based on older patch evaluations and older reports, aimed at unblocking current work instead of filing duplicate issues.
+
+### Target: #3587682 - Empty Table Header in Select some other countries
+
+```html
+<p>Follow-up based on older evaluation artifacts (A11Y-008) and current report reconciliation.</p>
+
+<p><strong>Why this is still worth advancing:</strong> historical patch evaluation for empty table headers was inconclusive due to patch preflight issues (<code>patch-target-file-missing</code>), not because the accessibility concern was invalid.</p>
+
+<p><strong>Proposed next step:</strong> refresh the fix against current table template/output, then add a focused regression assertion for discernible table header text on the affected route.</p>
+
+<p><strong>Evidence anchor:</strong> older evaluation references <code>DRU-EDB3860D</code> and route coverage including <code>/autocomplete</code>; current queue issue #3587682 appears to be the best active target for this class of problem.</p>
+```
+
+### Target: #3015239 - Assess Drupal core for WCAG success criterion 2.5.3 Label in Name
+
+```html
+<p>Follow-up based on older LABEL-IN-NAME patch evaluation artifacts.</p>
+
+<p><strong>Why this should move:</strong> earlier patch validation was blocked by patch hygiene and baseline observation limits, but the rule class remains relevant across core UI controls.</p>
+
+<p><strong>Proposed next step:</strong> scope one current reproducible control per component and land small, test-backed fixes incrementally under this umbrella issue, rather than a broad one-shot patch.</p>
+
+<p><strong>Evidence anchor:</strong> legacy patch family <code>a11y-LABEL-IN-NAME-004-*</code> and related evaluation reports in this repository.</p>
+```
+
+### Target: #3587678 - Ensure landmarks are unique - Status Messages
+
+```html
+<p>Follow-up from legacy landmark/messages patch evaluations (A11Y-007) and recent reconciliation.</p>
+
+<p><strong>Why this is actionable:</strong> older patch attempts were inconclusive because of patch integrity/application issues, but the messages landmark role/announcement concerns are still represented in current scan and queue themes.</p>
+
+<p><strong>Proposed next step:</strong> produce a refreshed patch against current main that validates landmark uniqueness and message semantics in one representative route, then expand coverage once baseline is confirmed.</p>
+
+<p><strong>Related issues for coordination:</strong> #2942404 and #3088245 (message accessibility behavior).</p>
+```
+
+### Target: #3049125 - Language switcher block is an unlabelled navigation landmark region
+
+```html
+<p>Follow-up from legacy language-switcher evaluation artifacts (A11Y-005) and current patch work.</p>
+
+<p><strong>Why this should stay in this issue:</strong> older contrast-oriented language-switcher patch attempts did not apply cleanly, but current landmark naming and language-switcher accessibility concerns are already centered in #3049125.</p>
+
+<p><strong>Proposed next step:</strong> keep fixes narrow and test-backed in this thread, and avoid opening duplicate language-switcher issues unless a new, clearly separate WCAG failure is demonstrated.</p>
+```
+
+### Target: #3509700 / #3583486 - Toolbar and default_admin landmark structure
+
+```html
+<p>Follow-up from older landmark patch evaluations (A11Y-006) plus newer reconciliation output.</p>
+
+<p><strong>Why these are likely better targets than net-new:</strong> theme/toolbar landmark structure concerns from older patch sets map more naturally to active toolbar/default_admin landmark issues.</p>
+
+<p><strong>Proposed next step:</strong> pick one route and one selector path from current reports, attach before/after DOM evidence, and confirm whether #3509700 or #3583486 is the tighter scope before adding code changes.</p>
+```
+
+### Legacy triage rule of thumb
+
+- If old evaluation says <code>patch-file-corrupt</code> or <code>patch-does-not-apply</code>: treat as patch hygiene debt, not invalid accessibility evidence.
+- If old evaluation says <code>no-baseline-instances-observed</code>: refresh reproduction matrix first (route/theme/state), then decide whether to close as inconclusive or proceed with a current-main patch.
+- Prefer posting to an active related issue with concrete updated evidence before filing net-new duplicates.
 
 ---
 
