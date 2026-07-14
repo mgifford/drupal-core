@@ -711,13 +711,25 @@ Short paste variant:
 ### Target: #3015239 - Assess Drupal core for WCAG success criterion 2.5.3 Label in Name
 
 ```html
-<p>Follow-up based on older LABEL-IN-NAME patch evaluation artifacts.</p>
+<p>Follow-up on #3015239 with an incremental, per-component approach instead of a broad one-shot patch.</p>
 
-<p><strong>Why this should move:</strong> earlier patch validation was blocked by patch hygiene and baseline observation limits, but the rule class remains relevant across core UI controls.</p>
+<p><strong>Slice 1 (Filter component) is now scoped and test-backed:</strong></p>
+<ul>
+  <li><strong>Reproducible control:</strong> <code>/admin/config/content/formats</code>, Configure action link for a format row (visible text: <code>Configure</code>).</li>
+  <li><strong>Issue:</strong> visible text and accessible name diverged (<code>Configure</code> vs <code>Edit &lt;format&gt;</code>).</li>
+  <li><strong>Fix:</strong> align aria-label with visible action text in <code>FilterFormatListBuilder::getDefaultOperations()</code>.</li>
+  <li><strong>Regression test:</strong> assert aria-label equals <code>Configure Filter test</code> in <code>FilterAdminTest::testFilterEnableAndDisable()</code>.</li>
+  <li><strong>Patch artifact:</strong> <code>patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch</code>.</li>
+</ul>
 
-<p><strong>Proposed next step:</strong> scope one current reproducible control per component and land small, test-backed fixes incrementally under this umbrella issue, rather than a broad one-shot patch.</p>
+<p><strong>Proposed workflow under #3015239:</strong></p>
+<ol>
+  <li>One reproducible control per component (Filter, Node, Media, etc.).</li>
+  <li>Land a minimal fix + one focused regression test per slice.</li>
+  <li>Repeat, linking each slice back to #3015239 for umbrella tracking.</li>
+</ol>
 
-<p><strong>Evidence anchor:</strong> legacy patch family <code>a11y-LABEL-IN-NAME-004-*</code> and related evaluation reports in this repository.</p>
+<p>This keeps review scope tight, avoids risky broad rewrites, and provides measurable progress per component.</p>
 ```
 
 ### Target: #3587678 - Ensure landmarks are unique - Status Messages
