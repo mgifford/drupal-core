@@ -391,12 +391,21 @@ Use the following HTML blocks directly in drupal.org comments.
 
 <p><strong>Latest diff comparison (MR !14647 vs local patch):</strong></p>
 <ul>
-  <li><strong>Common:</strong> JavaScript behavior update in <code>core/misc/details-aria.js</code>.</li>
-  <li><strong>Local-only:</strong> added functional JS regression coverage in <code>core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php</code>.</li>
-  <li><strong>MR-only:</strong> none in current diff snapshot.</li>
+  <li><strong>Common:</strong> aria-expanded synchronization logic in <code>core/misc/details-aria.js</code>.</li>
+  <li><strong>Local-only:</strong> functional JS regression coverage in <code>core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php</code> (close then reopen assertions).</li>
+  <li><strong>MR-only:</strong> broader JS refactor to <code>once()</code> + <code>toggle</code> listener and role assignment on summary when missing.</li>
 </ul>
 
-<p><strong>Action requested:</strong> carry regression assertions with the JS behavior fix so close/reopen state transitions stay verified.</p>
+<p><strong>Important alignment note:</strong> if this issue is merged after #3573865 direction settles, we should avoid re-introducing <code>role="button"</code> on native <code>&lt;summary&gt;</code>.</p>
+
+<p><strong>Action requested to move this ahead:</strong></p>
+<ol>
+  <li>Keep either implementation style (minimal click-handler fix or broader toggle-listener refactor), but preserve synchronized <code>aria-expanded</code> behavior.</li>
+  <li>Include the functional regression assertions so close/reopen transitions remain protected.</li>
+  <li>Resolve the summary role decision explicitly in-thread to avoid cross-issue semantic regression.</li>
+</ol>
+
+<p><strong>RTBC path:</strong> once role handling is aligned and regression coverage is in place, this looks ready for another review pass.</p>
 ```
 
 ### Issue #3049125 - HTML follow-up with current comparison status
