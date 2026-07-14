@@ -41,6 +41,7 @@ class ElementTest extends BrowserTestBase {
     $this->testFormAutocomplete();
     $this->testFormElementErrors();
     $this->testDetailsSummaryAttributes();
+    $this->testDetailsDefaultTitle();
     $this->testDetailsDescriptionAttributes();
   }
 
@@ -245,6 +246,15 @@ class ElementTest extends BrowserTestBase {
     $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"]');
     $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"][aria-expanded="false"]');
     $this->assertSession()->elementNotExists('css', 'summary[data-summary-attribute="test"][role]');
+  }
+
+  /**
+   * Tests that details render a summary when #title is omitted.
+   */
+  protected function testDetailsDefaultTitle(): void {
+    $this->drupalGet('form-test/group-details');
+    $this->assertSession()->elementExists('xpath', '//details[@id="edit-default-title"]/summary[normalize-space()="Details"]');
+    $this->assertSession()->elementExists('css', 'details#edit-default-title > summary[aria-expanded="false"]');
   }
 
   /**

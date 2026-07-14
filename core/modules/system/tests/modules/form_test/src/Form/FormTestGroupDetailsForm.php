@@ -79,6 +79,13 @@ class FormTestGroupDetailsForm extends FormBase {
       '#description' => 'I am an invisible description',
       '#description_display' => 'invisible',
     ];
+    $form['default_title'] = [
+      '#type' => 'details',
+    ];
+    $form['default_title']['child'] = [
+      '#type' => 'textfield',
+      '#title' => 'Default title child',
+    ];
     return $form;
   }
 

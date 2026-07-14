@@ -142,6 +142,7 @@ class FileFieldDisplayTest extends FileFieldTestBase {
     $label = $this->assertSession()->elementExists('xpath', '//label[@for="' . $display_checkbox->getAttribute('id') . '"]');
     $this->assertSame('Include file in display', $label->getText());
     $this->assertStringContainsString('visually-hidden', $label->getAttribute('class'));
+    $this->assertSame('Include file in display', $display_checkbox->getAttribute('aria-label'));
   }
 
   /**

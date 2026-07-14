@@ -4,7 +4,9 @@ Prepared for d.o user: mgifford
 
 ## Issue #3573865 - Details preprocess incorrectly adds role to summary
 
-I prepared a focused patch for this issue and included regression coverage.
+**Issue URL:** https://www.drupal.org/i/3573865
+**Issue state (last checked 2026-07-14):** Needs review (status 8)
+**Issue status last changed:** 2026-07-14
 
 **Bug ID:** DRU-3d2c0738 (instance) / DRU-93a3d129 (pattern)
 **URL:** http://localhost/form-test/group-details
@@ -95,7 +97,9 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ## Issue #3533586 - Member for label rendered as heading
 
-I prepared a focused patch for this issue and included regression coverage.
+**Issue URL:** https://www.drupal.org/i/3533586
+**Issue state (last checked 2026-07-14):** Reviewed & tested by the community (status 14)
+**Issue status last changed:** 2026-06-25
 
 **Bug ID:** DRU-ce079269 (instance) / DRU-1aae3721 (pattern)<br>
 **URL:** http://localhost/user/2<br>
@@ -162,7 +166,9 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ## Issue #3571628 - aria-expanded does not resync after details toggles
 
-I prepared a focused patch for this issue and included regression coverage.
+**Issue URL:** https://www.drupal.org/i/3571628
+**Issue state (last checked 2026-07-14):** Needs work (status 13)
+**Issue status last changed:** 2026-02-09
 
 **Bug ID:** DRU-9da94f27 (instance) / DRU-e1099604 (pattern)
 **URL:** http://localhost/node/add/article
@@ -222,7 +228,9 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ## Issue #3049125 - Language switcher block is an unlabelled navigation landmark region
 
-I prepared a focused patch for this issue and included regression coverage.
+**Issue URL:** https://www.drupal.org/i/3049125
+**Issue state (last checked 2026-07-14):** Active (status 1)
+**Issue status last changed:** 2019-04-18
 
 **Bug ID:** DRU-48550bb9 (instance) / DRU-9ee9dcbd (pattern)
 **URL:** http://localhost/
@@ -294,7 +302,9 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ## Issue #2443815 - #description_display does not work for details descriptions
 
-I prepared a focused patch for this issue and included regression coverage.
+**Issue URL:** https://www.drupal.org/i/2443815
+**Issue state (last checked 2026-07-14):** Needs work (status 13)
+**Issue status last changed:** 2026-07-14
 
 **Bug ID:** DRU-9a7895e1 (instance) / DRU-7df48324 (pattern)
 **URL:** http://localhost/form-test/group-details, http://localhost/admin/config/people/accounts
@@ -425,139 +435,142 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ---
 
-## Ready-To-Post HTML: Existing Issue Follow-Up Comments (With Comparison)
+## Consolidated Existing Issues And Recommendations
 
-Use the following HTML blocks directly in drupal.org comments.
+This section replaces the duplicated "issue writeup + follow-up HTML + MR/test gap" blocks above with one canonical source of truth.
 
-### Issue #3573865 - HTML follow-up with latest MR comparison
+### Consolidated issue matrix
+
+| Issue | Bug ID | Current state | MR state | Patch status | Single recommendation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| #3573865 | DRU-3d2c0738 / DRU-93a3d129 | Needs review | MR !14777 open, conflict | Local patch + test ready | Rebase MR, keep semantic summary-role fix, add ElementTest assertion, remove phpstan baseline churn. |
+| #3533586 | DRU-ce079269 / DRU-1aae3721 | RTBC | MR !16141 mergeable | Local patch + test ready | Keep markup fix and add UserLoginTest regression coverage before merge. |
+| #3571628 | DRU-9da94f27 / DRU-e1099604 | Needs work | MR !14647 mergeable | Local patch + test ready | Keep aria-expanded sync, add FunctionalJavascript close/reopen assertions, and avoid reintroducing summary role. |
+| #3049125 | DRU-48550bb9 / DRU-9ee9dcbd | Active | No active MR | Local patch + test ready | Post fresh MR with LanguageThemeHooks + LanguageSwitchingTest only (scope-clean landmark naming fix). |
+| #2443815 | DRU-9a7895e1 / DRU-7df48324 | Needs work | No active MR | Local patch + test ready | Post fresh MR, keep cross-theme + test scope, and explicitly resolve default #description_display behavior. |
+| #3587661 | TBD / TBD | Active | No active MR | Local patch + test ready | Post fresh MR with FileWidget display-checkbox fallback label + FileFieldDisplayTest assertion. |
+| #3044440 | TBD / TBD | Active | No active MR | Local patch + test ready | Post fresh MR with Details default <code>#title</code> fallback + focused ElementTest coverage for omitted title path. |
+
+### Consolidated recommendations (priority order)
+
+1. Update active MRs to include missing regression tests before requesting final review (#3573865, #3533586, #3571628).
+2. For issues without active MRs but with ready patches, post fresh scope-clean MRs (#3049125, #2443815, #3587661, #3044440).
+3. For scan-only or legacy-scan issues still unverified on current-main, require a failing baseline before proposing implementation changes (for example #3587682).
+4. Keep cross-issue semantic alignment for native details/summary behavior: do not reintroduce redundant summary roles while fixing aria-expanded sync.
+5. Keep every issue comment scoped to one issue, one selector family, one primary recommendation to avoid queue noise.
+
+### Consolidated test targets
+
+- #3573865: core/modules/system/tests/src/Functional/Form/ElementTest.php and core/modules/views/tests/src/Functional/Plugin/StyleTableTest.php
+- #3533586: core/modules/user/tests/src/Functional/UserLoginTest.php
+- #3571628: core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+- #3049125: core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
+- #2443815: core/modules/system/tests/src/Functional/Form/ElementTest.php and core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+- #3587661: core/modules/file/tests/src/Functional/FileFieldDisplayTest.php and core/modules/file/src/Plugin/Field/FieldWidget/FileWidget.php
+- #3044440: core/modules/system/tests/src/Functional/Form/ElementTest.php and existing form_test details fixtures
+
+### Canonical ready-to-post snippets for active existing issues
+
+Use one snippet per issue. Do not post multiple variants for the same issue.
+
+#### #3573865
 
 ```html
-<p>Follow-up validation for issue #3573865 (details summary role semantics).</p>
-
-<p><strong>Identifiers:</strong><br>
-<strong>Bug ID:</strong> DRU-3d2c0738 (instance) / DRU-93a3d129 (pattern)<br>
-<strong>Issue URL:</strong> https://www.drupal.org/i/3573865<br>
-<strong>Primary route:</strong> /form-test/group-details<br>
-<strong>WCAG SC:</strong> 1.3.1 (A)<br>
-<strong>Rule:</strong> redundant-role-summary</p>
-
-<p><strong>Scope confirmation:</strong> this issue is pattern-level for <code>#type details</code> where summary attributes are preprocessed, not a single-page-only case.</p>
-
-<p><strong>Latest diff comparison (MR !14777 vs local patch):</strong></p>
-<ul>
-  <li><strong>Common:</strong> removes role assignment from <code>core/lib/Drupal/Core/Form/FormPreprocess.php</code>.</li>
-  <li><strong>Local-only:</strong> adds regression coverage in <code>core/modules/system/tests/src/Functional/Form/ElementTest.php</code>.</li>
-  <li><strong>MR-only:</strong> removes summary role assertion in <code>core/modules/views/tests/src/Functional/Plugin/StyleTableTest.php</code> and includes unrelated <code>core/.phpstan-baseline.php</code> churn.</li>
-</ul>
-
-<p><strong>Action requested:</strong></p>
+<p>Follow-up on MR !14777 for #3573865.</p>
+<p><strong>Request before merge:</strong></p>
 <ol>
-  <li>Rebase MR !14777 on current main and keep the semantic fix in <code>FormPreprocess.php</code>.</li>
-  <li>Include test coverage from both contexts: <code>StyleTableTest.php</code> expectation update and <code>ElementTest.php</code> regression assertion for missing summary role.</li>
-  <li>Drop unrelated <code>.phpstan-baseline.php</code> churn from this issue MR so reviewers can RTBC on scope-clean changes.</li>
+  <li>Rebase on current main and keep the semantic fix in <code>FormPreprocess.php</code>.</li>
+  <li>Keep <code>StyleTableTest.php</code> expectation updates.</li>
+  <li>Add regression assertions in <code>ElementTest.php</code> for summary without redundant role.</li>
+  <li>Drop unrelated <code>core/.phpstan-baseline.php</code> churn.</li>
 </ol>
 ```
 
-### Issue #3533586 - HTML follow-up with scope clarification and MR comparison
+#### #3533586
 
 ```html
-<p>Follow-up validation for issue #3533586 ("Member for" heading semantics).</p>
-
-<p><strong>Identifiers:</strong><br>
-<strong>Bug ID:</strong> DRU-ce079269 (instance) / DRU-1aae3721 (pattern)<br>
-<strong>Issue URL:</strong> https://www.drupal.org/i/3533586<br>
-<strong>Primary route:</strong> /user/{uid}<br>
-<strong>WCAG SC:</strong> 1.3.1 (A)<br>
-<strong>Rule:</strong> heading-misuse-label</p>
-
-<p><strong>Scope clarification:</strong> the reproduction text "Create any details element with content and a set #title..." belongs to issue #3573865, not #3533586. This issue is about <code>Member for</code> being rendered as heading markup on user profile output.</p>
-
-<p><strong>Frequency clarification:</strong> approximately one instance per rendered user profile page where the <code>member_for</code> component is displayed.</p>
-
-<p><strong>Latest diff comparison (MR !16141 vs local patch):</strong></p>
-<ul>
-  <li><strong>Common:</strong> markup change in <code>core/modules/user/src/Hook/UserHooks.php</code> (heading replaced with non-heading label container).</li>
-  <li><strong>Local-only:</strong> added regression test in <code>core/modules/user/tests/src/Functional/UserLoginTest.php</code>.</li>
-  <li><strong>MR-only:</strong> none in current diff snapshot.</li>
-</ul>
-
-<p><strong>Action requested:</strong> keep/merge regression coverage so the semantic fix remains protected against future heading regressions.</p>
+<p>Follow-up on MR !16141 for #3533586.</p>
+<p><strong>Request before merge:</strong> keep the semantic markup change and add focused regression assertions in <code>core/modules/user/tests/src/Functional/UserLoginTest.php</code> so <code>Member for</code> is not rendered as heading markup.</p>
 ```
 
-### Issue #3571628 - HTML follow-up with latest MR comparison
+#### #3571628
 
 ```html
-<p>Follow-up validation for issue #3571628 (aria-expanded state resynchronization on details toggles).</p>
-
-<p><strong>Identifiers:</strong><br>
-<strong>Bug ID:</strong> DRU-9da94f27 (instance) / DRU-e1099604 (pattern)<br>
-<strong>Issue URL:</strong> https://www.drupal.org/i/3571628<br>
-<strong>Primary route:</strong> /node/add/article (details behaviors also exercised on /form-test/group-details)<br>
-<strong>WCAG SC:</strong> 4.1.2 (A)<br>
-<strong>Rule:</strong> aria-expanded-sync</p>
-
-<p><strong>Latest diff comparison (MR !14647 vs local patch):</strong></p>
-<ul>
-  <li><strong>Common:</strong> aria-expanded synchronization logic in <code>core/misc/details-aria.js</code>.</li>
-  <li><strong>Local-only:</strong> functional JS regression coverage in <code>core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php</code> (close then reopen assertions).</li>
-  <li><strong>MR-only:</strong> broader JS refactor to <code>once()</code> + <code>toggle</code> listener and role assignment on summary when missing.</li>
-</ul>
-
-<p><strong>Important alignment note:</strong> if this issue is merged after #3573865 direction settles, we should avoid re-introducing <code>role="button"</code> on native <code>&lt;summary&gt;</code>.</p>
-
-<p><strong>Action requested to move this ahead:</strong></p>
+<p>Follow-up on MR !14647 for #3571628.</p>
+<p><strong>Request before merge:</strong></p>
 <ol>
-  <li>Keep either implementation style (minimal click-handler fix or broader toggle-listener refactor), but preserve synchronized <code>aria-expanded</code> behavior.</li>
-  <li>Include the functional regression assertions so close/reopen transitions remain protected.</li>
-  <li>Resolve the summary role decision explicitly in-thread to avoid cross-issue semantic regression.</li>
+  <li>Add FunctionalJavascript regression coverage in <code>core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php</code> for close/reopen <code>aria-expanded</code> transitions.</li>
+  <li>Preserve synchronized <code>aria-expanded</code> behavior without reintroducing <code>role="button"</code> on native <code>&lt;summary&gt;</code>.</li>
 </ol>
-
-<p><strong>RTBC path:</strong> once role handling is aligned and regression coverage is in place, this looks ready for another review pass.</p>
 ```
 
-### Issue #3049125 - HTML follow-up with current comparison status
+#### #3049125
 
 ```html
-<p>Follow-up validation for issue #3049125 (language switcher landmark naming).</p>
-
-<p><strong>Identifiers:</strong><br>
-<strong>Bug ID:</strong> DRU-48550bb9 (instance) / DRU-9ee9dcbd (pattern)<br>
-<strong>Issue URL:</strong> https://www.drupal.org/i/3049125<br>
-<strong>Primary route:</strong> / (language switcher block render)<br>
-<strong>WCAG SC:</strong> 4.1.2 (A)<br>
-<strong>Rule:</strong> landmark-name</p>
-
-<p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
-
-<ul>
-  <li><strong>Local patch scope:</strong> landmark label fallback in <code>core/modules/language/src/Hook/LanguageThemeHooks.php</code> plus functional coverage in <code>core/modules/language/tests/src/Functional/LanguageSwitchingTest.php</code>.</li>
-</ul>
-
-<p><strong>Action requested:</strong> when a new/rebased thread patch appears, compare file scope before RTBC so landmark naming and tests remain aligned.</p>
+<p>Follow-up on #3049125.</p>
+<p><strong>Current status:</strong> no active public MR found in the latest pass.</p>
+<p><strong>Request:</strong> post a fresh, scope-clean MR with landmark naming fallback in <code>LanguageThemeHooks.php</code> and matching regression coverage in <code>LanguageSwitchingTest.php</code>.</p>
 ```
 
-### Issue #2443815 - HTML follow-up with current comparison status
+#### #2443815
 
 ```html
-<p>Follow-up validation for issue #2443815 (details description_display behavior).</p>
+<p>Follow-up on #2443815.</p>
+<p><strong>Current status:</strong> no active public MR found in the latest pass.</p>
+<p><strong>Request:</strong> post a fresh current-main MR with preprocess + cross-theme template + functional test coverage, and resolve in-thread the expected default when <code>#description_display</code> is not explicitly set.</p>
+```
 
-<p><strong>Identifiers:</strong><br>
-<strong>Bug ID:</strong> DRU-9a7895e1 (instance) / DRU-7df48324 (pattern)<br>
-<strong>Issue URL:</strong> https://www.drupal.org/i/2443815<br>
-<strong>Primary routes:</strong> /form-test/group-details and /admin/config/people/accounts<br>
-<strong>WCAG SC:</strong> 1.3.1 (A)<br>
-<strong>Rule:</strong> details-description-display</p>
+#### #3587661
 
-<p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
+```html
+<p>Follow-up on #3587661.</p>
+<p>I prepared a current-main reroll for the missing display checkbox label in the limited file widget variant.</p>
 
+<p><strong>What changed</strong></p>
 <ul>
-  <li><strong>Local patch scope:</strong> preprocess propagation + cross-theme details template handling (including Default Admin) + fixture and functional coverage.</li>
-  <li><strong>Comparison to old patch #107:</strong> current patch ports legacy preprocess/test/theme changes to modern core locations and modern themes, while preserving the core template/form-test coverage intent.</li>
-  <li><strong>Open review point from historical thread:</strong> confirm expected default behavior when <code>#description_display</code> is not explicitly set (old patch used <code>before</code>; current patch fallback uses <code>after</code>).</li>
-  <li><strong>Reproduction routes to include in IS:</strong> <code>/admin/config/people/accounts</code> and <code>/form-test/group-details</code>.</li>
+  <li>Added a fallback accessible name on the display checkbox in <code>core/modules/file/src/Plugin/Field/FieldWidget/FileWidget.php</code> via <code>aria-label=&quot;Include file in display&quot;</code>.</li>
+  <li>Added regression coverage in <code>core/modules/file/tests/src/Functional/FileFieldDisplayTest.php</code> asserting the rendered checkbox includes that aria-label.</li>
 </ul>
 
-<p><strong>Action requested:</strong> when a fresh thread patch is posted, compare template/preprocess coverage and test breadth against this scope before final review, and explicitly resolve the default display expectation.</p>
+<p><strong>Patch</strong></p>
+<p><code>patches/a11y-DRUPAL-A11Y-015-issue-3587661-file-widget-display-checkbox-label.patch</code></p>
+
+<p><strong>Request for review</strong></p>
+<ol>
+  <li>Confirm this fallback wording is acceptable for a translatable default accessible name.</li>
+  <li>Confirm this narrow scope is preferred over broader widget markup changes.</li>
+</ol>
+```
+
+#### #3044440
+
+```html
+<p>Follow-up on #3044440.</p>
+<p>I prepared a current-main reroll aligned with the latest thread direction to remove jQuery UI dependence by ensuring a physical, focusable <code>&lt;summary&gt;</code> always exists for <code>#type = details</code>.</p>
+
+<p><strong>What changed</strong></p>
+<ul>
+  <li>Set a translatable default title in <code>core/lib/Drupal/Core/Render/Element/Details.php</code>: <code>#title =&gt; $this-&gt;t('Details')</code>.</li>
+  <li>Added a no-explicit-title fixture in <code>core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php</code> (<code>default_title</code> details element + child field).</li>
+  <li>Added functional regression coverage in <code>core/modules/system/tests/src/Functional/Form/ElementTest.php</code> to assert:
+    <ul>
+      <li><code>//details[@id=&quot;edit-default-title&quot;]/summary[normalize-space()=&quot;Details&quot;]</code> exists, and</li>
+      <li><code>aria-expanded=&quot;false&quot;</code> is present on first render.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Patch</strong></p>
+<p><code>patches/a11y-DRUPAL-A11Y-016-issue-3044440-details-default-title.patch</code></p>
+
+<p><strong>Why this direction</strong></p>
+<p>This keeps native <code>details/summary</code> semantics and avoids empty-title fallbacks that can suppress summary rendering in the DOM. It also matches the current post-jQuery-UI architecture direction discussed in comment #16692349.</p>
+
+<p><strong>Request for review</strong></p>
+<ol>
+  <li>Confirm the default string <code>Details</code> is acceptable for core fallback semantics/translatability.</li>
+  <li>Confirm this scope (element default + focused functional coverage) is sufficient for this issue.</li>
+</ol>
 ```
 
 ---
@@ -661,38 +674,8 @@ When a drupal.org accessibility issue cannot be reproduced, record outcome as ev
 
 ## Ready-To-Post: Existing Queue Issues (Additional)
 
-Use these when posting follow-up comments to existing issues so we keep continuity with prior community work.
-
-### Issue #3587661 - Missing labels in "Limited files with a single pre-existing value (required) field."
-
-I validated this issue again against current local evidence and wanted to add context that should help move it forward.
-
-- This issue is already in the queue and should be treated as ongoing community work, not a net-new report.
-- The affected route from our scan evidence remains `/contact/imagefile_file`, with recurring selectors in the limited-file widget variants.
-- The latest thread direction includes work being made on `main`, which aligns with current branch policy.
-
-What I can add from current evidence:
-- This appears adjacent to broader file-widget rendering/accessibility patterns that have shown up repeatedly in scan output.
-- I recommend evaluating any incoming patch against the existing file-widget test coverage and ensuring label semantics are explicit, not only inferred from surrounding context.
-
-Open reviewer checks I suggest calling out:
-1. Confirm the exact control lacking an effective accessible label in the limited-file scenario.
-2. Confirm the fix remains valid across admin/default themes and disabled-state variants.
-3. Confirm test coverage includes a failing baseline assertion for the specific selector/route variant.
-
-### Issue #3044440 - Improve tab navigation by providing 'details' elements with a default value for #title
-
-I reviewed this issue as part of current accessibility triage and wanted to add a concise status-oriented note.
-
-- This issue is still open in the queue and has prior discussion history.
-- It intersects with details/summary semantics and therefore should be considered together with other active details-related fixes.
-
-Suggested next-step framing for the thread:
-1. Reconfirm whether the intended behavior is a default `#title` fallback at render-element level or at preprocess/theme level.
-2. Ensure any proposed fallback does not mask real authoring mistakes where a meaningful title is required.
-3. Add/refresh functional coverage on existing `form_test` routes that already exercise details elements.
-
-I am intentionally not proposing a broad new implementation here without a fresh failing test and a current-main patch path, to avoid repeating stale patch cycles.
+Merged into "Consolidated Existing Issues And Recommendations" above.
+Use the canonical snippets in that section for #3587661 and #3044440.
 
 ---
 
@@ -703,13 +686,26 @@ These are targeted queue comments based on older patch evaluations and older rep
 ### Target: #3587682 - Empty Table Header in Select some other countries
 
 ```html
-<p>Follow-up based on older evaluation artifacts (A11Y-008) and current report reconciliation.</p>
+<p>Follow-up on #3587682 after re-checking current-main local evidence.</p>
 
-<p><strong>Why this is still worth advancing:</strong> historical patch evaluation for empty table headers was inconclusive due to patch preflight issues (<code>patch-target-file-missing</code>), not because the accessibility concern was invalid.</p>
+<p><strong>Current finding:</strong> I could not reproduce <code>empty-table-header</code> on <code>/autocomplete</code> in the latest scan artifacts in this repository.</p>
 
-<p><strong>Proposed next step:</strong> refresh the fix against current table template/output, then add a focused regression assertion for discernible table header text on the affected route.</p>
+<p><strong>Evidence from current artifacts:</strong></p>
+<ul>
+  <li><code>reports/axe-results/latest/shards/chunk-*.json</code> shows <code>/autocomplete</code> violations only for <code>color-contrast</code> (no <code>empty-table-header</code> entries).</li>
+  <li>Current <code>empty-table-header</code> hits are on <code>/table</code>, selector <code>#edit-table-empty &gt; thead &gt; tr &gt; .select-all</code>.</li>
+  <li>The <code>/autocomplete</code> "Select some other countries" output is built via <code>field_multiple_value_form</code> with non-empty header content in current core preprocess/theme paths.</li>
+</ul>
 
-<p><strong>Evidence anchor:</strong> older evaluation references <code>DRU-EDB3860D</code> and route coverage including <code>/autocomplete</code>; current queue issue #3587682 appears to be the best active target for this class of problem.</p>
+<p><strong>Proposed next step:</strong> either update this issue with a current reproducible baseline for <code>/autocomplete</code> (route, theme, viewport, exact selector), or reclassify/close as non-reproducible and track the current <code>/table</code> empty-header case separately.</p>
+```
+
+Short paste variant:
+
+```html
+<p>Follow-up on #3587682: I could not reproduce <code>empty-table-header</code> on <code>/autocomplete</code> from current-main artifacts in this repo.</p>
+<p>Current <code>empty-table-header</code> evidence points to <code>/table</code> (selector <code>#edit-table-empty &gt; thead &gt; tr &gt; .select-all</code>), while <code>/autocomplete</code> currently reports <code>color-contrast</code> only.</p>
+<p>Request: either provide an updated reproducible <code>/autocomplete</code> baseline (theme + viewport + selector), or reclassify this issue as non-reproducible and track the current <code>/table</code> case separately.</p>
 ```
 
 ### Target: #3015239 - Assess Drupal core for WCAG success criterion 2.5.3 Label in Name
@@ -734,16 +730,6 @@ These are targeted queue comments based on older patch evaluations and older rep
 <p><strong>Proposed next step:</strong> produce a refreshed patch against current main that validates landmark uniqueness and message semantics in one representative route, then expand coverage once baseline is confirmed.</p>
 
 <p><strong>Related issues for coordination:</strong> #2942404 and #3088245 (message accessibility behavior).</p>
-```
-
-### Target: #3049125 - Language switcher block is an unlabelled navigation landmark region
-
-```html
-<p>Follow-up from legacy language-switcher evaluation artifacts (A11Y-005) and current patch work.</p>
-
-<p><strong>Why this should stay in this issue:</strong> older contrast-oriented language-switcher patch attempts did not apply cleanly, but current landmark naming and language-switcher accessibility concerns are already centered in #3049125.</p>
-
-<p><strong>Proposed next step:</strong> keep fixes narrow and test-backed in this thread, and avoid opening duplicate language-switcher issues unless a new, clearly separate WCAG failure is demonstrated.</p>
 ```
 
 ### Target: #3509700 / #3583486 - Toolbar and default_admin landmark structure
