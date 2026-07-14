@@ -434,6 +434,13 @@ Use the following HTML blocks directly in drupal.org comments.
 ```html
 <p>Follow-up validation for issue #3573865 (details summary role semantics).</p>
 
+<p><strong>Identifiers:</strong><br>
+<strong>Bug ID:</strong> DRU-3d2c0738 (instance) / DRU-93a3d129 (pattern)<br>
+<strong>Issue URL:</strong> https://www.drupal.org/i/3573865<br>
+<strong>Primary route:</strong> /form-test/group-details<br>
+<strong>WCAG SC:</strong> 1.3.1 (A)<br>
+<strong>Rule:</strong> redundant-role-summary</p>
+
 <p><strong>Scope confirmation:</strong> this issue is pattern-level for <code>#type details</code> where summary attributes are preprocessed, not a single-page-only case.</p>
 
 <p><strong>Latest diff comparison (MR !14777 vs local patch):</strong></p>
@@ -443,13 +450,25 @@ Use the following HTML blocks directly in drupal.org comments.
   <li><strong>MR-only:</strong> removes summary role assertion in <code>core/modules/views/tests/src/Functional/Plugin/StyleTableTest.php</code> and includes unrelated <code>core/.phpstan-baseline.php</code> churn.</li>
 </ul>
 
-<p><strong>Action requested:</strong> align final patch scope on main by deciding whether to include the <code>StyleTableTest.php</code> expectation change together with the functional regression test coverage.</p>
+<p><strong>Action requested:</strong></p>
+<ol>
+  <li>Rebase MR !14777 on current main and keep the semantic fix in <code>FormPreprocess.php</code>.</li>
+  <li>Include test coverage from both contexts: <code>StyleTableTest.php</code> expectation update and <code>ElementTest.php</code> regression assertion for missing summary role.</li>
+  <li>Drop unrelated <code>.phpstan-baseline.php</code> churn from this issue MR so reviewers can RTBC on scope-clean changes.</li>
+</ol>
 ```
 
 ### Issue #3533586 - HTML follow-up with scope clarification and MR comparison
 
 ```html
 <p>Follow-up validation for issue #3533586 ("Member for" heading semantics).</p>
+
+<p><strong>Identifiers:</strong><br>
+<strong>Bug ID:</strong> DRU-ce079269 (instance) / DRU-1aae3721 (pattern)<br>
+<strong>Issue URL:</strong> https://www.drupal.org/i/3533586<br>
+<strong>Primary route:</strong> /user/{uid}<br>
+<strong>WCAG SC:</strong> 1.3.1 (A)<br>
+<strong>Rule:</strong> heading-misuse-label</p>
 
 <p><strong>Scope clarification:</strong> the reproduction text "Create any details element with content and a set #title..." belongs to issue #3573865, not #3533586. This issue is about <code>Member for</code> being rendered as heading markup on user profile output.</p>
 
@@ -469,6 +488,13 @@ Use the following HTML blocks directly in drupal.org comments.
 
 ```html
 <p>Follow-up validation for issue #3571628 (aria-expanded state resynchronization on details toggles).</p>
+
+<p><strong>Identifiers:</strong><br>
+<strong>Bug ID:</strong> DRU-9da94f27 (instance) / DRU-e1099604 (pattern)<br>
+<strong>Issue URL:</strong> https://www.drupal.org/i/3571628<br>
+<strong>Primary route:</strong> /node/add/article (details behaviors also exercised on /form-test/group-details)<br>
+<strong>WCAG SC:</strong> 4.1.2 (A)<br>
+<strong>Rule:</strong> aria-expanded-sync</p>
 
 <p><strong>Latest diff comparison (MR !14647 vs local patch):</strong></p>
 <ul>
@@ -494,6 +520,13 @@ Use the following HTML blocks directly in drupal.org comments.
 ```html
 <p>Follow-up validation for issue #3049125 (language switcher landmark naming).</p>
 
+<p><strong>Identifiers:</strong><br>
+<strong>Bug ID:</strong> DRU-48550bb9 (instance) / DRU-9ee9dcbd (pattern)<br>
+<strong>Issue URL:</strong> https://www.drupal.org/i/3049125<br>
+<strong>Primary route:</strong> / (language switcher block render)<br>
+<strong>WCAG SC:</strong> 4.1.2 (A)<br>
+<strong>Rule:</strong> landmark-name</p>
+
 <p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
 
 <ul>
@@ -507,6 +540,13 @@ Use the following HTML blocks directly in drupal.org comments.
 
 ```html
 <p>Follow-up validation for issue #2443815 (details description_display behavior).</p>
+
+<p><strong>Identifiers:</strong><br>
+<strong>Bug ID:</strong> DRU-9a7895e1 (instance) / DRU-7df48324 (pattern)<br>
+<strong>Issue URL:</strong> https://www.drupal.org/i/2443815<br>
+<strong>Primary routes:</strong> /form-test/group-details and /admin/config/people/accounts<br>
+<strong>WCAG SC:</strong> 1.3.1 (A)<br>
+<strong>Rule:</strong> details-description-display</p>
 
 <p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
 
@@ -721,6 +761,60 @@ These are targeted queue comments based on older patch evaluations and older rep
 - If old evaluation says <code>patch-file-corrupt</code> or <code>patch-does-not-apply</code>: treat as patch hygiene debt, not invalid accessibility evidence.
 - If old evaluation says <code>no-baseline-instances-observed</code>: refresh reproduction matrix first (route/theme/state), then decide whether to close as inconclusive or proceed with a current-main patch.
 - Prefer posting to an active related issue with concrete updated evidence before filing net-new duplicates.
+
+### Old Queue Revive Comments (Created-Asc Candidates)
+
+Use these to nudge long-open issues with concrete next actions.
+
+#### Target: #2318757 - Make position of #description configurable via the API for form field widgets
+
+```html
+<p>Revive note: this long-open issue is still structurally relevant to current <code>#description_display</code> behavior work.</p>
+
+<p><strong>Suggested next step:</strong> align this thread with current details/description implementation points in <code>FormPreprocess::preprocessDetails()</code> and modern theme templates, then decide whether remaining work is still generic widget API scope or now mostly details-element-specific scope.</p>
+
+<p><strong>Why now:</strong> current #2443815 work and historical patch #107 discussions show this API question is still blocking clean closure.</p>
+```
+
+#### Target: #2547063 - Remove the aria-describedby introduced in FAPI if there is no description
+
+```html
+<p>Revive note: this issue is a useful guardrail for avoiding stale/empty accessibility relationships.</p>
+
+<p><strong>Suggested next step:</strong> add/refresh a focused test that asserts no <code>aria-describedby</code> is emitted when description output is absent, including details-based elements after preprocess/template changes.</p>
+
+<p><strong>Why now:</strong> current details description placement work increases the importance of keeping described-by wiring strict and non-redundant.</p>
+```
+
+#### Target: #2608180 - View Search Filter's Label isn't Associated with Input
+
+```html
+<p>Revive note: this remains a high-value form-label association issue in Views UI.</p>
+
+<p><strong>Suggested next step:</strong> post a fresh baseline on current main with one failing selector/path example and attach a minimal fix plus regression assertion for label/input association.</p>
+
+<p><strong>Why now:</strong> older label-focused patch evaluations in this repo were often inconclusive due to baseline/preflight conditions, not because the accessibility requirement was resolved.</p>
+```
+
+#### Target: #2848307 - Inline errors not working on form table elements
+
+```html
+<p>Revive note: this issue aligns with current message/landmark and error-announcement accessibility themes.</p>
+
+<p><strong>Suggested next step:</strong> update IS with one reproducible table-element error path and verify announcement/association behavior with both visual inline errors and assistive-technology output.</p>
+
+<p><strong>Why now:</strong> this can likely be advanced with a narrow, test-backed fix without waiting on broader form-system refactors.</p>
+```
+
+#### Target: #1096124 - Compose tips tables need better use of ids and summary elements
+
+```html
+<p>Revive note: this is old but still relevant to table semantics and assistive context quality.</p>
+
+<p><strong>Suggested next step:</strong> provide a current-main DOM snapshot for compose tips markup and identify whether remaining gaps are header associations, table naming, or deprecated-summary usage, then scope a modernized fix.</p>
+
+<p><strong>Why now:</strong> this complements recent table/header accessibility work and can benefit from updated semantic guidance rather than legacy table-summary patterns.</p>
+```
 
 ---
 
