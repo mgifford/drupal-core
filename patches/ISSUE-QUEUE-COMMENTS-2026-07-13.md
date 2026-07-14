@@ -344,6 +344,91 @@ This contribution was prepared with assistance from an AI coding tool.
 
 ---
 
+## Ready-To-Post HTML: Existing Issue Follow-Up Comments (With Comparison)
+
+Use the following HTML blocks directly in drupal.org comments.
+
+### Issue #3573865 - HTML follow-up with latest MR comparison
+
+```html
+<p>Follow-up validation for issue #3573865 (details summary role semantics).</p>
+
+<p><strong>Scope confirmation:</strong> this issue is pattern-level for <code>#type details</code> where summary attributes are preprocessed, not a single-page-only case.</p>
+
+<p><strong>Latest diff comparison (MR !14777 vs local patch):</strong></p>
+<ul>
+  <li><strong>Common:</strong> removes role assignment from <code>core/lib/Drupal/Core/Form/FormPreprocess.php</code>.</li>
+  <li><strong>Local-only:</strong> adds regression coverage in <code>core/modules/system/tests/src/Functional/Form/ElementTest.php</code>.</li>
+  <li><strong>MR-only:</strong> removes summary role assertion in <code>core/modules/views/tests/src/Functional/Plugin/StyleTableTest.php</code> and includes unrelated <code>core/.phpstan-baseline.php</code> churn.</li>
+</ul>
+
+<p><strong>Action requested:</strong> align final patch scope on main by deciding whether to include the <code>StyleTableTest.php</code> expectation change together with the functional regression test coverage.</p>
+```
+
+### Issue #3533586 - HTML follow-up with scope clarification and MR comparison
+
+```html
+<p>Follow-up validation for issue #3533586 ("Member for" heading semantics).</p>
+
+<p><strong>Scope clarification:</strong> the reproduction text "Create any details element with content and a set #title..." belongs to issue #3573865, not #3533586. This issue is about <code>Member for</code> being rendered as heading markup on user profile output.</p>
+
+<p><strong>Frequency clarification:</strong> approximately one instance per rendered user profile page where the <code>member_for</code> component is displayed.</p>
+
+<p><strong>Latest diff comparison (MR !16141 vs local patch):</strong></p>
+<ul>
+  <li><strong>Common:</strong> markup change in <code>core/modules/user/src/Hook/UserHooks.php</code> (heading replaced with non-heading label container).</li>
+  <li><strong>Local-only:</strong> added regression test in <code>core/modules/user/tests/src/Functional/UserLoginTest.php</code>.</li>
+  <li><strong>MR-only:</strong> none in current diff snapshot.</li>
+</ul>
+
+<p><strong>Action requested:</strong> keep/merge regression coverage so the semantic fix remains protected against future heading regressions.</p>
+```
+
+### Issue #3571628 - HTML follow-up with latest MR comparison
+
+```html
+<p>Follow-up validation for issue #3571628 (aria-expanded state resynchronization on details toggles).</p>
+
+<p><strong>Latest diff comparison (MR !14647 vs local patch):</strong></p>
+<ul>
+  <li><strong>Common:</strong> JavaScript behavior update in <code>core/misc/details-aria.js</code>.</li>
+  <li><strong>Local-only:</strong> added functional JS regression coverage in <code>core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php</code>.</li>
+  <li><strong>MR-only:</strong> none in current diff snapshot.</li>
+</ul>
+
+<p><strong>Action requested:</strong> carry regression assertions with the JS behavior fix so close/reopen state transitions stay verified.</p>
+```
+
+### Issue #3049125 - HTML follow-up with current comparison status
+
+```html
+<p>Follow-up validation for issue #3049125 (language switcher landmark naming).</p>
+
+<p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
+
+<ul>
+  <li><strong>Local patch scope:</strong> landmark label fallback in <code>core/modules/language/src/Hook/LanguageThemeHooks.php</code> plus functional coverage in <code>core/modules/language/tests/src/Functional/LanguageSwitchingTest.php</code>.</li>
+</ul>
+
+<p><strong>Action requested:</strong> when a new/rebased thread patch appears, compare file scope before RTBC so landmark naming and tests remain aligned.</p>
+```
+
+### Issue #2443815 - HTML follow-up with current comparison status
+
+```html
+<p>Follow-up validation for issue #2443815 (details description_display behavior).</p>
+
+<p><strong>Current comparison status:</strong> no active public MR was returned for this issue in current GitLab search, so comparison is against local patch scope only.</p>
+
+<ul>
+  <li><strong>Local patch scope:</strong> preprocess propagation + cross-theme details template handling + fixture and functional coverage.</li>
+</ul>
+
+<p><strong>Action requested:</strong> when a fresh thread patch is posted, compare template/preprocess coverage and test breadth against this scope before final review.</p>
+```
+
+---
+
 ## Per-Issue Reset Workflow (to avoid patch carry-over)
 
 Use this between issue investigations so each patch is generated from clean repo state.
