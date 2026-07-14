@@ -87,7 +87,7 @@
           {{ errors }}
         </div>
       {% endif %}
-      {%- if description -%}
+      {%- if description and (description_display == 'before' or description_display_toggle == 'before') -%}
         <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
       {%- endif -%}
       {%- if children -%}
@@ -95,6 +95,9 @@
       {%- endif -%}
       {%- if value -%}
         {{ value }}
+      {%- endif -%}
+      {%- if description and description_display in ['after', 'invisible'] and description_display_toggle != 'before' -%}
+        <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
       {%- endif -%}
 
     {% if accordion or accordion_item %}

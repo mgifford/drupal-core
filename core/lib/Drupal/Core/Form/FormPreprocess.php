@@ -363,6 +363,7 @@ class FormPreprocess {
       $variables['title'] = ['#markup' => $variables['title']];
     }
     $variables['description'] = (!empty($element['#description'])) ? $element['#description'] : '';
+    $variables['description_display'] = $element['#description_display'] ?? 'after';
     $variables['children'] = (isset($element['#children'])) ? $element['#children'] : '';
     $variables['value'] = (isset($element['#value'])) ? $element['#value'] : '';
     $variables['required'] = !empty($element['#required']) ? $element['#required'] : NULL;
