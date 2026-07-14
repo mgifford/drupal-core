@@ -1,0 +1,39 @@
+From ed4b210a2e4b8a4efc912ceaf3f033b509b06e06 Mon Sep 17 00:00:00 2001
+From: github-actions <github-actions@github.com>
+Date: Mon, 13 Jul 2026 20:30:40 -0400
+Subject: [PATCH] Issue #3573865 and #3533586: Fix summary/member label
+ semantics
+
+---
+ core/lib/Drupal/Core/Form/FormPreprocess.php                  | 1 -
+ core/modules/system/tests/src/Functional/Form/ElementTest.php | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/core/lib/Drupal/Core/Form/FormPreprocess.php b/core/lib/Drupal/Core/Form/FormPreprocess.php
+index 342f92f1ff..2a03737bf5 100644
+--- a/core/lib/Drupal/Core/Form/FormPreprocess.php
++++ b/core/lib/Drupal/Core/Form/FormPreprocess.php
+@@ -351,7 +351,6 @@ public function preprocessDetails(array &$variables): void {
+     $variables['attributes'] = $element['#attributes'];
+     $variables['summary_attributes'] = new Attribute($element['#summary_attributes']);
+     if (!empty($element['#title'])) {
+-      $variables['summary_attributes']['role'] = 'button';
+       if (!empty($element['#attributes']['id'])) {
+         $variables['summary_attributes']['aria-controls'] = $element['#attributes']['id'];
+       }
+diff --git a/core/modules/system/tests/src/Functional/Form/ElementTest.php b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+index 37385cc316..1614ca61d8 100644
+--- a/core/modules/system/tests/src/Functional/Form/ElementTest.php
++++ b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+@@ -243,6 +243,8 @@ protected function testFormElementErrors(): void {
+   protected function testDetailsSummaryAttributes(): void {
+     $this->drupalGet('form-test/group-details');
+     $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"]');
++    $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"][aria-expanded="false"]');
++    $this->assertSession()->elementNotExists('css', 'summary[data-summary-attribute="test"][role]');
+   }
+ 
+   /**
+-- 
+2.55.0
+
