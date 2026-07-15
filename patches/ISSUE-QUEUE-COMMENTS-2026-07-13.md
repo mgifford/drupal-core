@@ -735,23 +735,15 @@ Short paste variant:
 ### Target: #3587678 - Ensure landmarks are unique - Status Messages
 
 ```html
-<p>Follow-up from legacy landmark/messages patch evaluations (A11Y-007) and recent reconciliation.</p>
-
-<p><strong>Why this is actionable:</strong> older patch attempts were inconclusive because of patch integrity/application issues, but the messages landmark role/announcement concerns are still represented in current scan and queue themes.</p>
-
-<p><strong>Proposed next step:</strong> produce a refreshed patch against current main that validates landmark uniqueness and message semantics in one representative route, then expand coverage once baseline is confirmed.</p>
-
-<p><strong>Related issues for coordination:</strong> #2942404 and #3088245 (message accessibility behavior).</p>
+<p>De-prioritized for now: this item will be addressed as part of the Gin / Default Admin Theme update track.</p>
+<p>No separate patch is planned in this queue pass.</p>
 ```
 
 ### Target: #3509700 / #3583486 - Toolbar and default_admin landmark structure
 
 ```html
-<p>Follow-up from older landmark patch evaluations (A11Y-006) plus newer reconciliation output.</p>
-
-<p><strong>Why these are likely better targets than net-new:</strong> theme/toolbar landmark structure concerns from older patch sets map more naturally to active toolbar/default_admin landmark issues.</p>
-
-<p><strong>Proposed next step:</strong> pick one route and one selector path from current reports, attach before/after DOM evidence, and confirm whether #3509700 or #3583486 is the tighter scope before adding code changes.</p>
+<p>Deferred for now: this item depends on upstream issue work and is being tracked through upstream-first updates.</p>
+<p>No local patch is planned in this queue pass.</p>
 ```
 
 ### Legacy triage rule of thumb
@@ -767,11 +759,26 @@ Use these to nudge long-open issues with concrete next actions.
 #### Target: #2318757 - Make position of #description configurable via the API for form field widgets
 
 ```html
-<p>Revive note: this long-open issue is still structurally relevant to current <code>#description_display</code> behavior work.</p>
+<p>Follow-up on #2318757 with a focused patch candidate for multi-value field widgets.</p>
 
-<p><strong>Suggested next step:</strong> align this thread with current details/description implementation points in <code>FormPreprocess::preprocessDetails()</code> and modern theme templates, then decide whether remaining work is still generic widget API scope or now mostly details-element-specific scope.</p>
+<p><strong>Problem confirmed:</strong> in <code>field_multiple_value_form</code>, description output is effectively fixed after the table and does not consistently honor <code>#description_display</code> for before/after placement.</p>
 
-<p><strong>Why now:</strong> current #2443815 work and historical patch #107 discussions show this API question is still blocking clean closure.</p>
+<p><strong>Patch scope (small + test-backed):</strong></p>
+<ul>
+  <li>Add <code>#description_display</code> support in <code>FieldPreprocess::preprocessFieldMultipleValueForm()</code>.</li>
+  <li>Update field-multiple templates (system + stable9 + starterkit + olivero + claro + default_admin) to render description before/after based on <code>description_display</code>.</li>
+  <li>Add functional regression coverage in <code>MultipleWidgetFormTest</code> for default-after and configured-before behavior.</li>
+  <li>Use field_test widget alter hook in tests to set <code>#description_display = 'before'</code> on the widget wrapper.</li>
+</ul>
+
+<p><strong>Patch artifact:</strong> <code>patches/a11y-DRUPAL-A11Y-017-issue-2318757-multiple-widget-description-display.patch</code></p>
+
+<p><strong>Proposed review plan:</strong></p>
+<ol>
+  <li>Review preprocess and template ordering changes first (API behavior).</li>
+  <li>Review functional test assertions second (before vs after output order).</li>
+  <li>If accepted, follow up with optional additional component-specific tests in separate slices.</li>
+</ol>
 ```
 
 #### Target: #2547063 - Remove the aria-describedby introduced in FAPI if there is no description
