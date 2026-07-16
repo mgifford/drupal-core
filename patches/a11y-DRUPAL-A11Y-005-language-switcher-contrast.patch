@@ -1,30 +1,24 @@
-diff --git a/core/themes/default_admin/css/base/accents.pcss.css b/core/themes/default_admin/css/base/accents.pcss.css
-index 1234567..abcdefg 100644
---- a/core/themes/default_admin/css/base/accents.pcss.css
-+++ b/core/themes/default_admin/css/base/accents.pcss.css
-@@ -71,6 +71,10 @@
-   --layer-background: #2a2a2d;
+diff --git a/core/themes/default_admin/css/theme/accent.css b/core/themes/default_admin/css/theme/accent.css
+index 0c8f711a77..b1c22f8781 100644
+--- a/core/themes/default_admin/css/theme/accent.css
++++ b/core/themes/default_admin/css/theme/accent.css
+@@ -44,6 +44,7 @@
+ 
+ [data-gin-accent="yellow"] {
+   --admin-color-bg-sticky: rgb(249, 244, 235);
++  --admin-color-text-on-primary: #111;
  }
  
-+[data-gin-accent="yellow"] {
-+  --gin-color-button-text: #111;
-+}
-+
- @supports (color: contrast-color(white)) {
-   [data-gin-accent] {
-     --gin-color-button-text: contrast-color(var(--accent-color-500) vs #fff, #111);
-diff --git a/core/themes/default_admin/css/base/accents.css b/core/themes/default_admin/css/base/accents.css
-index 1234567..abcdefg 100644
---- a/core/themes/default_admin/css/base/accents.css
-+++ b/core/themes/default_admin/css/base/accents.css
-@@ -78,6 +78,10 @@
-   --layer-background: #2a2a2d;
+ [data-gin-accent="pink"] {
+diff --git a/core/themes/default_admin/css/theme/accent.pcss.css b/core/themes/default_admin/css/theme/accent.pcss.css
+index e9abee2081..df26b041ba 100644
+--- a/core/themes/default_admin/css/theme/accent.pcss.css
++++ b/core/themes/default_admin/css/theme/accent.pcss.css
+@@ -37,6 +37,7 @@
+ 
+ [data-gin-accent="yellow"] {
+   --admin-color-bg-sticky: rgb(249, 244, 235);
++  --admin-color-text-on-primary: #111;
  }
  
-+[data-gin-accent="yellow"] {
-+  --gin-color-button-text: #111;
-+}
-+
- @supports (color: contrast-color(white)) {
-   [data-gin-accent] {
-     --gin-color-button-text: contrast-color(var(--accent-color-500) vs #fff, #111);
+ [data-gin-accent="pink"] {

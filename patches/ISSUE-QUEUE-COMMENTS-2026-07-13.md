@@ -845,9 +845,16 @@ Sample snippet:
 ```
 
 Request for issue triage:
-1. Confirm contrast ratio across supported admin color-mode/theme variants.
-2. Fix token/variable source rather than one-off CSS overrides where possible.
-3. Add regression coverage for affected theme conditions.
+1. Validate contrast with an explicit matrix across color mode and directionality:
+  - Light mode and dark mode
+  - Admin accent variants
+  - Forced-colors/high contrast mode
+  - LTR and RTL interfaces
+2. Confirm WCAG thresholds are met in each matrix row:
+  - 4.5:1 for label text against immediate background
+  - 3:1 for focus indicators against adjacent colors
+3. Fix token/variable source rather than one-off CSS overrides.
+4. Add regression coverage for affected selectors in light/dark and in both LTR/RTL rendering.
 
 ### New Candidate B - DRU-6CBB7080 (color-contrast, admin toolbar burger label)
 
@@ -865,9 +872,23 @@ I found a serious color-contrast issue on the admin toolbar burger-label text in
 ```
 
 Request for issue triage:
-1. Verify in admin dark/accent variants where this pattern appears.
-2. Ensure fixes preserve toolbar icon/text semantics and focus visibility.
-3. Add regression checks for responsive toolbar states.
+1. Validate contrast with an explicit matrix, not a single screenshot:
+  - Light mode (default admin palette)
+  - Dark mode
+  - Accent variants used in admin theming tools
+  - Forced-colors/high contrast mode
+2. Verify state-level behavior for the same selector in each mode:
+  - default
+  - hover
+  - focus-visible
+  - active/expanded
+  - responsive collapsed toolbar
+3. Run the same mode/state matrix in both LTR and RTL interfaces so mirrored toolbar layouts are covered.
+4. Enforce WCAG thresholds in each mode/state:
+  - 4.5:1 for toolbar label text against its immediate background
+  - 3:1 for focus indicators against adjacent colors
+5. Implement the fix at shared toolbar token level (not per-route overrides), and avoid hard-coded absolute colors that break in alternate modes.
+6. Add regression coverage that checks this selector in light/dark plus at least one accent variant, includes forced-colors fallback assertions, and runs in both LTR and RTL.
 
 ### New Candidate C - DRU-D377125E (link-in-text-block in limited file widget)
 
@@ -1041,6 +1062,127 @@ This section captures additional high-value targets from the latest ranking pass
 - For the first posting batch today, prioritize 3 high-prevalence serious issues from the list above.
 - Use the existing issue comments section first when an issue already exists; only file net-new issues for items in the likely-new list.
 - Keep each issue narrowly scoped to one pattern ID and one primary selector key.
+- For any color-contrast filing, include a minimum validation matrix of: light, dark, accent variant, forced-colors, and both LTR/RTL directionality.
+
+### Reusable Color-Contrast Filing Template (Light/Dark + LTR/RTL)
+
+Use this block when posting any new color-contrast issue comment.
+
+```html
+<p>I found a reproducible color-contrast issue in Drupal core.</p>
+
+<p><strong>Pattern ID:</strong> [PATTERN_ID]<br>
+<strong>Rule:</strong> color-contrast<br>
+<strong>WCAG:</strong> 1.4.3 (AA)<br>
+<strong>Impact:</strong> [serious/moderate]<br>
+<strong>Selector:</strong> [SELECTOR]<br>
+<strong>Representative route:</strong> [ROUTE]</p>
+
+<p><strong>Request for triage/review:</strong></p>
+<ol>
+  <li>Validate with an explicit matrix: light mode, dark mode, admin accent variants, forced-colors/high contrast mode, and both LTR/RTL directionality.</li>
+  <li>Check state-level behavior in each matrix row: default, hover, focus-visible, active/expanded, and responsive/collapsed state where applicable.</li>
+  <li>Confirm WCAG thresholds in each row: 4.5:1 for text contrast and 3:1 for focus indicators.</li>
+  <li>Apply a shared token-level fix (avoid per-route overrides and hard-coded absolute colors).</li>
+  <li>Add regression coverage that includes light/dark and both LTR/RTL; include forced-colors fallback verification.</li>
+</ol>
+```
+
+Suggested evidence table to include in issue comments:
+
+| Mode | Direction | Viewport | State | Selector | Ratio | Pass/Fail |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Light | LTR | Desktop | Default | [selector] | [x:1] | [pass/fail] |
+| Light | LTR | Tablet portrait | Default | [selector] | [x:1] | [pass/fail] |
+| Light | LTR | Tablet landscape | Default | [selector] | [x:1] | [pass/fail] |
+| Light | LTR | Mobile portrait | Default | [selector] | [x:1] | [pass/fail] |
+| Light | LTR | Mobile landscape | Default | [selector] | [x:1] | [pass/fail] |
+| Dark | RTL | Desktop | Default | [selector] | [x:1] | [pass/fail] |
+| Forced-colors | LTR/RTL | Desktop | Focus-visible | [selector] | [n/a or x:1] | [pass/fail] |
+
+### Playwright Checklist (Color Modes + Directionality)
+
+Use this checklist to generate repeatable evidence for color-contrast issue comments.
+
+Starter spec in this repository:
+
+- `core/tests/playwright/tests/a11y-color-contrast-matrix.spec.ts`
+- Writes JSON evidence to `core/tests/playwright/reports/color-contrast-matrix/`
+- Auto-generates a paste-ready comment artifact (`-comment.txt`) beside each JSON report
+- Runs viewport matrix by default: desktop, tablet portrait, tablet landscape, mobile portrait, mobile landscape
+
+Run example:
+
+```bash
+cd core/tests/playwright
+MATRIX_TARGET_PATH=/admin/config/system/site-information \
+MATRIX_TARGET_SELECTOR='label[for="edit-preferred-theme"]' \
+MATRIX_RTL_LANG=he \
+npx playwright test tests/a11y-color-contrast-matrix.spec.ts
+```
+
+Optional viewport subset:
+
+```bash
+MATRIX_VIEWPORT_SET=mobile npx playwright test tests/a11y-color-contrast-matrix.spec.ts
+```
+
+Optional forced-colors rows:
+
+```bash
+MATRIX_FORCE_COLORS=1 npx playwright test tests/a11y-color-contrast-matrix.spec.ts
+```
+
+Generate a paste-ready evidence table from the latest matrix JSON:
+
+```bash
+cd core
+yarn a11y:matrix-comment
+```
+
+Generate a compact Drupal.org HTML snippet:
+
+```bash
+cd core
+yarn a11y:matrix-comment:drupal
+```
+
+Optional explicit input/output:
+
+```bash
+node tests/playwright/scripts/generate-color-contrast-matrix-comment.js \
+  --input tests/playwright/reports/color-contrast-matrix/<report>.json \
+  --format drupal-html \
+  --output tests/playwright/reports/color-contrast-matrix/<report>-comment.txt
+```
+
+1. Select one representative route and one primary selector.
+2. Run in light mode and dark mode with automated color-contrast checks.
+3. Run each mode in LTR and RTL contexts.
+4. Run each mode/direction across viewport matrix: desktop, tablet portrait, tablet landscape, mobile portrait, mobile landscape.
+5. Record default and focus-visible state evidence at minimum.
+6. Run at least one admin accent variant.
+7. Validate forced-colors/high contrast mode in a dedicated environment and record pass/fail.
+
+Playwright execution outline:
+
+```text
+- For each mode in [light, dark]
+  - Set color scheme
+  - For each direction in [ltr, rtl]
+    - For each viewport in [desktop, tablet portrait, tablet landscape, mobile portrait, mobile landscape]
+      - Load route in target direction context
+      - Trigger default and focus-visible states
+      - Run axe color-contrast checks for the selector context
+      - Capture ratio/pass output and screenshot
+- Run accent variant pass with same matrix rows
+- Run forced-colors/high contrast pass and attach evidence
+```
+
+Notes:
+
+- If forced-colors cannot be fully emulated in the local browser runner, run this check on a dedicated Windows high-contrast environment and attach screenshot + DOM evidence.
+- Keep issue comments scoped to one selector family and one primary recommendation.
 
 ### Fully Drafted HTML Filings (Top 3)
 
@@ -1081,9 +1223,10 @@ Manual search reference:
 
 <p><strong>Request for triage/review:</strong></p>
 <ol>
-  <li>Confirm the measured text/background contrast ratio for the primary submit style token in admin theme variants.</li>
+  <li>Validate with an explicit matrix: light mode, dark mode, admin accent variants, forced-colors/high contrast mode, and both LTR/RTL directionality.</li>
+  <li>Confirm WCAG thresholds in each matrix row: 4.5:1 for text and 3:1 for focus indicators.</li>
   <li>Fix through shared design token/variable updates rather than per-route overrides.</li>
-  <li>Add regression coverage to prevent reintroduction across admin forms using <code>#edit-submit</code>.</li>
+  <li>Add regression coverage to prevent reintroduction across admin forms using <code>#edit-submit</code>, including LTR and RTL runs.</li>
 </ol>
 ```
 
@@ -1122,9 +1265,12 @@ Manual search reference:
 
 <p><strong>Request for triage/review:</strong></p>
 <ol>
-  <li>Confirm contrast measurements for toolbar label text in default, dark, and accent admin variants.</li>
-  <li>Apply a shared toolbar text token fix so sibling toolbar icon-label items do not diverge.</li>
-  <li>Add regression coverage for toolbar label contrast in responsive/collapsed toolbar states.</li>
+  <li>Validate with an explicit matrix: light mode, dark mode, admin accent variants, and forced-colors/high contrast mode.</li>
+  <li>Run the same mode/state matrix in both LTR and RTL interfaces so mirrored toolbar layouts are covered.</li>
+  <li>Check state-level contrast for this selector in each mode: default, hover, focus-visible, active/expanded, and responsive collapsed toolbar.</li>
+  <li>Confirm WCAG thresholds are met in each case: 4.5:1 for label text and 3:1 for focus indicators.</li>
+  <li>Apply a shared toolbar token-level fix (avoid route-specific overrides and hard-coded absolute colors that fail in alternate modes).</li>
+  <li>Add regression coverage for this selector across light/dark plus at least one accent variant, with forced-colors fallback assertions and LTR/RTL coverage.</li>
 </ol>
 ```
 
@@ -1163,9 +1309,10 @@ Manual search reference:
 
 <p><strong>Request for triage/review:</strong></p>
 <ol>
-  <li>Confirm label text contrast failures against current background tokens on affected routes.</li>
+  <li>Validate with an explicit matrix: light mode, dark mode, admin accent variants, forced-colors/high contrast mode, and both LTR/RTL directionality.</li>
+  <li>Confirm label text contrast failures (or pass values) against current background tokens in each matrix row.</li>
   <li>Fix via shared label/form token variables to avoid one-off selector overrides.</li>
-  <li>Add a regression check for label contrast in both default and admin themes.</li>
+  <li>Add a regression check for label contrast in both default and admin themes, with LTR and RTL coverage.</li>
 </ol>
 ```
 

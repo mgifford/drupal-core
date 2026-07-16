@@ -123,7 +123,7 @@ interface AxeResultRecord {
   page: string;
   path: string;
   viewport: { width: number; height: number };
-  /** Screen label matching the viewport (desktop/tablet/mobile/mobile-landscape). */
+  /** Screen label matching the viewport (desktop/tablet/tablet-landscape/mobile/mobile-landscape). */
   screen: string;
   /** Browser color scheme preference used during this scan. */
   colorScheme: 'light' | 'dark';
@@ -181,12 +181,10 @@ const RTL_LANG = process.env.RTL_LANG?.trim() || null;
 const STANDARD_VIEWPORTS = [
   { label: ' [desktop]', screen: 'desktop', width: 1280, height: 800 },
   { label: ' [tablet]', screen: 'tablet', width: 768, height: 1024 },
+  { label: ' [tablet-landscape]', screen: 'tablet-landscape', width: 1024, height: 768 },
   { label: ' [mobile-portrait]', screen: 'mobile', width: 375, height: 812 },
   { label: ' [mobile-landscape]', screen: 'mobile-landscape', width: 812, height: 375 },
 ] as const;
-
-/** Reduced viewport set for RTL scans — direction bugs show at both extremes. */
-const RTL_VIEWPORTS = [STANDARD_VIEWPORTS[0], STANDARD_VIEWPORTS[2]] as const;
 
 /**
  * Default Admin accent presets. 'blue' is the shipped default and is already
@@ -623,7 +621,7 @@ test.describe('Axe crawl — multi-theme', () => {
           });
 
           for (const entry of pages) {
-            for (const vp of RTL_VIEWPORTS) {
+            for (const vp of STANDARD_VIEWPORTS) {
               const testName = `${entry.name}${vp.label} [${RTL_LANG}-rtl]`;
               test(testName, async ({ page }) => {
                 shardRecords.push(await scanRoute(page, {

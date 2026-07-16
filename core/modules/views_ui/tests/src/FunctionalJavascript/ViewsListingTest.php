@@ -53,6 +53,12 @@ class ViewsListingTest extends WebDriverTestBase {
     $session = $this->assertSession();
 
     $page = $this->getSession()->getPage();
+    $search_input = $page->find('css', '.views-filter-text.form-search');
+    $search_input_id = $search_input->getAttribute('id');
+
+    // Verify the search label is explicitly associated with the input.
+    $this->assertNotEmpty($search_input_id);
+    $this->assertSession()->elementExists('css', 'label.visually-hidden[for="' . $search_input_id . '"]');
 
     // Test that we search in both the enabled and disabled rows.
     $enabled_rows = $page->findAll('css', 'tr.views-ui-list-enabled');
@@ -65,7 +71,6 @@ class ViewsListingTest extends WebDriverTestBase {
     $this->assertCount($disabled_views_count, $disabled_rows);
 
     // Filter on the string 'people'. This should only show the people view.
-    $search_input = $page->find('css', '.views-filter-text.form-search');
     $search_input->setValue('people');
 
     $enabled_rows = $page->findAll('css', 'tr.views-ui-list-enabled');

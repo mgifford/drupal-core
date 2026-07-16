@@ -36,6 +36,16 @@ Use shift-left behavior whenever possible:
 - Keep checks deterministic and task-scoped.
 - In CI, prioritize actionable output over noisy logs.
 
+### Definition of Done for Accessibility Patches
+
+For accessibility patch MRs, done means:
+
+- Include automated regression coverage for the accessibility behavior being fixed.
+- Prefer the narrowest appropriate test layer for the change (Functional, FunctionalJavascript, Kernel, Unit, or Playwright).
+- Do not mark accessibility patch MRs ready without at least one test assertion tied to the reported issue behavior.
+- In the issue/MR summary, list the test file(s) and what behavior each assertion protects.
+- If automated coverage is temporarily infeasible, document the blocker explicitly and include manual evidence plus a follow-up test issue.
+
 References:
 - https://mgifford.github.io/ACCESSIBILITY.md/examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.html
 - https://mgifford.github.io/ACCESSIBILITY.md/examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.html

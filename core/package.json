@@ -48,7 +48,9 @@
     "a11y:extract-content": "node tests/playwright/scripts/extract-content-patterns.js",
     "a11y:plain-language": "node tests/playwright/scripts/plain-language-analysis.js",
     "a11y:rtl-theme": "node tests/playwright/scripts/rtl-theme-analysis.js",
-    "a11y:theme-reports": "node tests/playwright/scripts/generate-theme-reports.js"
+    "a11y:theme-reports": "node tests/playwright/scripts/generate-theme-reports.js",
+    "a11y:matrix-comment": "node tests/playwright/scripts/generate-color-contrast-matrix-comment.js --latest",
+    "a11y:matrix-comment:drupal": "node tests/playwright/scripts/generate-color-contrast-matrix-comment.js --latest --format drupal-html"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",

@@ -1,24 +1,28 @@
-diff --git a/core/themes/default_admin/migration/css/theme/accent.pcss.css b/core/themes/default_admin/migration/css/theme/accent.pcss.css
-index 1234567..abcdefg 100644
---- a/core/themes/default_admin/migration/css/theme/accent.pcss.css
-+++ b/core/themes/default_admin/migration/css/theme/accent.pcss.css
-@@ -33,6 +33,7 @@
-
- [data-gin-accent="orange"] {
-   --gin-color-sticky-rgb: 252, 243, 235;
-+  --gin-color-button-text: #111;
+diff --git a/core/themes/default_admin/css/_variables/variables-color-accent.css b/core/themes/default_admin/css/_variables/variables-color-accent.css
+index d66ac85df9..9b9d06e728 100644
+--- a/core/themes/default_admin/css/_variables/variables-color-accent.css
++++ b/core/themes/default_admin/css/_variables/variables-color-accent.css
+@@ -88,3 +88,9 @@
+     --admin-color-accent-040: rgb(from var(--admin-color-accent-base) r g b / 0.2);
+   }
  }
-
- [data-gin-accent="yellow"] {
-diff --git a/core/themes/default_admin/migration/css/theme/accent.css b/core/themes/default_admin/migration/css/theme/accent.css
-index 1234567..abcdefg 100644
---- a/core/themes/default_admin/migration/css/theme/accent.css
-+++ b/core/themes/default_admin/migration/css/theme/accent.css
-@@ -40,6 +40,7 @@
-
- [data-gin-accent="orange"] {
-   --gin-color-sticky-rgb: 252, 243, 235;
-+  --gin-color-button-text: #111;
++
++@supports (color: contrast-color(white)) {
++  [data-gin-accent] {
++    --admin-color-text-on-primary: contrast-color(var(--admin-color-primary) vs #fff, #111);
++  }
++}
+diff --git a/core/themes/default_admin/css/_variables/variables-color-accent.pcss.css b/core/themes/default_admin/css/_variables/variables-color-accent.pcss.css
+index 4a56ff4169..d6a066f79b 100644
+--- a/core/themes/default_admin/css/_variables/variables-color-accent.pcss.css
++++ b/core/themes/default_admin/css/_variables/variables-color-accent.pcss.css
+@@ -81,3 +81,9 @@
+     --admin-color-accent-040: rgb(from var(--admin-color-accent-base) r g b / 0.2);
+   }
  }
-
- [data-gin-accent="yellow"] {
++
++@supports (color: contrast-color(white)) {
++  [data-gin-accent] {
++    --admin-color-text-on-primary: contrast-color(var(--admin-color-primary) vs #fff, #111);
++  }
++}
