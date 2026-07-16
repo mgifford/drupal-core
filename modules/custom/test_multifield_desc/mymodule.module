@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Test module for description_display.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function mymodule_field_widget_complete_form_alter(&$element, &$form_state, $context) {
+  // Set description above the field for multi-value fields.
+  if (isset($element['#description']) && !empty($element['#description'])) {
+    $element['#description_display'] = 'before';
+  }
+}

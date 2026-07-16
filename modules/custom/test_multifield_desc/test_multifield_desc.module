@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Demonstrates #description_display for multi-value fields.
+ *
+ * This module moves field descriptions from below the field table
+ * to above it, making help text more visible.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function test_multifield_desc_field_widget_complete_form_alter(&$element, &$form_state, $context) {
+  // Set description above the field for all fields with descriptions.
+  if (!empty($element['#description'])) {
+    $element['#description_display'] = 'before';
+  }
+}
