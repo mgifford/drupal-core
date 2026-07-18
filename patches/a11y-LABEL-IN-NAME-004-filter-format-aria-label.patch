@@ -1,7 +1,7 @@
-diff --git a/core/modules/filter/src/FilterFormatListBuilder.php b/core/modules/filter/src/FilterFormatListBuilder.php
+diff --git b/core/modules/filter/src/FilterFormatListBuilder.php a/core/modules/filter/src/FilterFormatListBuilder.php
 index e6a90f7a9e..2500a5a9b7 100644
---- a/core/modules/filter/src/FilterFormatListBuilder.php
-+++ b/core/modules/filter/src/FilterFormatListBuilder.php
+--- b/core/modules/filter/src/FilterFormatListBuilder.php
++++ a/core/modules/filter/src/FilterFormatListBuilder.php
 @@ -133,6 +133,15 @@ protected function getDefaultOperations(EntityInterface $entity, CacheableMetada
  
      if (isset($operations['edit'])) {
@@ -18,10 +18,10 @@ index e6a90f7a9e..2500a5a9b7 100644
      }
  
      // The fallback format may not be disabled.
-diff --git a/core/modules/filter/tests/src/Functional/FilterAdminTest.php b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+diff --git b/core/modules/filter/tests/src/Functional/FilterAdminTest.php a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
 index b9776c852a..245bd05931 100644
---- a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
-+++ b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+--- b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
++++ a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
 @@ -498,7 +498,11 @@ public function testFilterEnableAndDisable(): void {
      $this->assertSession()->linkByHrefNotExists('/admin/config/content/formats/manage/filter_test/enable');
  

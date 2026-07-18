@@ -1,13 +1,7 @@
-commit 48a72b154e4723947665556020e3a259ca6729e2
-Author: github-actions <github-actions@github.com>
-Date:   Mon Jul 13 21:26:39 2026 -0400
-
-    Issue #3571628: Fix aria-expanded synchronization on details toggle
-
-diff --git a/core/misc/details-aria.js b/core/misc/details-aria.js
+diff --git b/core/misc/details-aria.js a/core/misc/details-aria.js
 index c629719a3f..cf715b8f81 100644
---- a/core/misc/details-aria.js
-+++ b/core/misc/details-aria.js
+--- b/core/misc/details-aria.js
++++ a/core/misc/details-aria.js
 @@ -16,10 +16,7 @@
          'summary',
          (event) => {
@@ -20,10 +14,10 @@ index c629719a3f..cf715b8f81 100644
  
            $summary.attr({
              'aria-expanded': open,
-diff --git a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+diff --git b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
 index a5239d3bc3..728195cb1d 100644
---- a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
-+++ b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
+--- b/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
++++ a/core/tests/Drupal/FunctionalJavascriptTests/Core/Form/FormGroupingElementsTest.php
 @@ -134,7 +134,13 @@ public function testDetailsChildVisibility(): void {
      // Find the summary belonging to the closest details element.
      $summary = $page->find('css', '#edit-meta > summary');

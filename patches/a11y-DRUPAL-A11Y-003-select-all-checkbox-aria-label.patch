@@ -1,7 +1,7 @@
-diff --git a/core/themes/default_admin/templates/dataset/table.html.twig b/core/themes/default_admin/templates/dataset/table.html.twig
+diff --git b/core/themes/default_admin/templates/dataset/table.html.twig a/core/themes/default_admin/templates/dataset/table.html.twig
 index 9bc07c5d41..6cc9658c58 100644
---- a/core/themes/default_admin/templates/dataset/table.html.twig
-+++ b/core/themes/default_admin/templates/dataset/table.html.twig
+--- b/core/themes/default_admin/templates/dataset/table.html.twig
++++ a/core/themes/default_admin/templates/dataset/table.html.twig
 @@ -67,8 +67,8 @@
            {% if 'gin--sticky-bulk-select' in cell_classes %}
              <input
@@ -12,10 +12,10 @@ index 9bc07c5d41..6cc9658c58 100644
              />
            {% endif %}
          </{{ cell.tag }}>
-diff --git a/core/themes/default_admin/templates/views/views-view-table.html.twig b/core/themes/default_admin/templates/views/views-view-table.html.twig
+diff --git b/core/themes/default_admin/templates/views/views-view-table.html.twig a/core/themes/default_admin/templates/views/views-view-table.html.twig
 index 50ab1ca4c4..31152a4700 100644
---- a/core/themes/default_admin/templates/views/views-view-table.html.twig
-+++ b/core/themes/default_admin/templates/views/views-view-table.html.twig
+--- b/core/themes/default_admin/templates/views/views-view-table.html.twig
++++ a/core/themes/default_admin/templates/views/views-view-table.html.twig
 @@ -61,8 +61,8 @@
            {% if gin_is_sticky and fields[key] is defined and 'bulk-form' in fields[key] %}
              <input

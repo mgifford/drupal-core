@@ -1,7 +1,7 @@
-diff --git a/core/lib/Drupal/Core/Field/FieldPreprocess.php b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+diff --git b/core/lib/Drupal/Core/Field/FieldPreprocess.php a/core/lib/Drupal/Core/Field/FieldPreprocess.php
 index 85f03d9eaf..1e29a3fdd4 100644
---- a/core/lib/Drupal/Core/Field/FieldPreprocess.php
-+++ b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+--- b/core/lib/Drupal/Core/Field/FieldPreprocess.php
++++ a/core/lib/Drupal/Core/Field/FieldPreprocess.php
 @@ -195,7 +195,11 @@ public function preprocessFieldMultipleValueForm(array &$variables): void {
  
        if (!empty($element['#description'])) {
@@ -15,10 +15,10 @@ index 85f03d9eaf..1e29a3fdd4 100644
          $variables['description']['attributes'] = new Attribute($description_attributes);
          $variables['description']['content'] = $element['#description'];
  
-diff --git a/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php b/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
+diff --git b/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php a/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
 index dd58152a90..67174dc383 100644
---- a/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
-+++ b/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
+--- b/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
++++ a/core/modules/field/tests/modules/field_test/src/Hook/FieldTestHooks.php
 @@ -220,6 +220,9 @@ public function alterWidget($hook, array &$field_widget_complete_form, FormState
      $alter_info = \Drupal::state()->get("field_test.widget_alter_test");
      $name = $context['items']->getFieldDefinition()->getName();
@@ -29,10 +29,10 @@ index dd58152a90..67174dc383 100644
        $elements['#prefix'] = "From $hook(): prefix on $name parent element.";
        foreach (Element::children($elements) as $delta => $element) {
          $elements[$delta]['#suffix'] = "From $hook(): suffix on $name child element.";
-diff --git a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
+diff --git b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
 index fe02b63d26..39e9d9efdf 100644
---- a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
-+++ b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
+--- b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
++++ a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
 @@ -183,6 +183,58 @@ public function testLabelOnMultiValueFields(): void {
      $this->assertSession()->assertEscaped("<script>alert('a configurable field');</script>");
    }
@@ -92,10 +92,10 @@ index fe02b63d26..39e9d9efdf 100644
    /**
     * Tests hook_field_widget_complete_form_alter().
     */
-diff --git a/core/modules/system/templates/field-multiple-value-form.html.twig b/core/modules/system/templates/field-multiple-value-form.html.twig
+diff --git b/core/modules/system/templates/field-multiple-value-form.html.twig a/core/modules/system/templates/field-multiple-value-form.html.twig
 index ecd268690b..d96e17fbf3 100644
---- a/core/modules/system/templates/field-multiple-value-form.html.twig
-+++ b/core/modules/system/templates/field-multiple-value-form.html.twig
+--- b/core/modules/system/templates/field-multiple-value-form.html.twig
++++ a/core/modules/system/templates/field-multiple-value-form.html.twig
 @@ -14,6 +14,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.
@@ -120,10 +120,10 @@ index ecd268690b..d96e17fbf3 100644
        <div{{ description.attributes.addClass('description') }} >{{ description.content }}</div>
      {% endif %}
      {% if button %}
-diff --git a/core/themes/claro/templates/form/field-multiple-value-form.html.twig b/core/themes/claro/templates/form/field-multiple-value-form.html.twig
+diff --git b/core/themes/claro/templates/form/field-multiple-value-form.html.twig a/core/themes/claro/templates/form/field-multiple-value-form.html.twig
 index 89a08a2528..706afc7f3e 100644
---- a/core/themes/claro/templates/form/field-multiple-value-form.html.twig
-+++ b/core/themes/claro/templates/form/field-multiple-value-form.html.twig
+--- b/core/themes/claro/templates/form/field-multiple-value-form.html.twig
++++ a/core/themes/claro/templates/form/field-multiple-value-form.html.twig
 @@ -15,6 +15,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.
@@ -148,10 +148,10 @@ index 89a08a2528..706afc7f3e 100644
        <div{{ description.attributes.addClass(description_classes) }} >{{ description.content }}</div>
      {% endif %}
      {% if button %}
-diff --git a/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig b/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
+diff --git b/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig a/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
 index 57972d3c5b..e69d24c2fb 100644
---- a/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
-+++ b/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
+--- b/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
++++ a/core/themes/default_admin/templates/form/field-multiple-value-form.html.twig
 @@ -15,6 +15,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.
@@ -176,10 +176,10 @@ index 57972d3c5b..e69d24c2fb 100644
        <div{{ description.attributes.addClass(description_classes) }} >{{ description.content }}</div>
      {% endif %}
      {% if button %}
-diff --git a/core/themes/olivero/templates/form/field-multiple-value-form.html.twig b/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
+diff --git b/core/themes/olivero/templates/form/field-multiple-value-form.html.twig a/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
 index f187e37fe5..90a4efe128 100644
---- a/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
-+++ b/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
+--- b/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
++++ a/core/themes/olivero/templates/form/field-multiple-value-form.html.twig
 @@ -14,6 +14,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.
@@ -204,10 +204,10 @@ index f187e37fe5..90a4efe128 100644
        <div{{ description.attributes.addClass(description_classes) }}>{{ description.content }}</div>
      {% endif %}
      {% if button %}
-diff --git a/core/themes/stable9/templates/form/field-multiple-value-form.html.twig b/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
+diff --git b/core/themes/stable9/templates/form/field-multiple-value-form.html.twig a/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
 index 7e548afad6..101ad50f28 100644
---- a/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
-+++ b/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
+--- b/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
++++ a/core/themes/stable9/templates/form/field-multiple-value-form.html.twig
 @@ -14,6 +14,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.
@@ -232,10 +232,10 @@ index 7e548afad6..101ad50f28 100644
        <div{{ description.attributes.addClass('description') }} >{{ description.content }}</div>
      {% endif %}
      {% if button %}
-diff --git a/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig b/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
+diff --git b/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig a/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
 index 7e548afad6..101ad50f28 100644
---- a/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
-+++ b/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
+--- b/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
++++ a/core/themes/starterkit_theme/templates/form/field-multiple-value-form.html.twig
 @@ -14,6 +14,10 @@
   * - description: The description element containing the following properties:
   *   - content: The description content of the form element.

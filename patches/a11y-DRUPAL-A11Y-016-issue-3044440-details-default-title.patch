@@ -1,13 +1,7 @@
-commit 27deb48b3e598e87910993c05a0dd8df632db7cc
-Author: Mike Gifford <mike.gifford@gmail.com>
-Date:   Tue Jul 14 18:24:30 2026 -0400
-
-    Issue #3587661 and #3044440: add accessibility fixes, tests, and queue updates
-
-diff --git a/core/lib/Drupal/Core/Render/Element/Details.php b/core/lib/Drupal/Core/Render/Element/Details.php
+diff --git b/core/lib/Drupal/Core/Render/Element/Details.php a/core/lib/Drupal/Core/Render/Element/Details.php
 index 28e7396887..e164480550 100644
---- a/core/lib/Drupal/Core/Render/Element/Details.php
-+++ b/core/lib/Drupal/Core/Render/Element/Details.php
+--- b/core/lib/Drupal/Core/Render/Element/Details.php
++++ a/core/lib/Drupal/Core/Render/Element/Details.php
 @@ -46,6 +46,7 @@ public function getInfo() {
        '#open' => FALSE,
        '#summary_attributes' => [],
@@ -16,10 +10,10 @@ index 28e7396887..e164480550 100644
        '#process' => [
          [static::class, 'processGroup'],
          [static::class, 'processAjaxForm'],
-diff --git a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+diff --git b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
 index ba026485df..eb9068f633 100644
---- a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
-+++ b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
+--- b/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
++++ a/core/modules/system/tests/modules/form_test/src/Form/FormTestGroupDetailsForm.php
 @@ -79,6 +79,13 @@ public function buildForm(array $form, FormStateInterface $form_state, $required
        '#description' => 'I am an invisible description',
        '#description_display' => 'invisible',
@@ -34,10 +28,10 @@ index ba026485df..eb9068f633 100644
      return $form;
    }
  
-diff --git a/core/modules/system/tests/src/Functional/Form/ElementTest.php b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+diff --git b/core/modules/system/tests/src/Functional/Form/ElementTest.php a/core/modules/system/tests/src/Functional/Form/ElementTest.php
 index 43367aa54b..76313f0f8e 100644
---- a/core/modules/system/tests/src/Functional/Form/ElementTest.php
-+++ b/core/modules/system/tests/src/Functional/Form/ElementTest.php
+--- b/core/modules/system/tests/src/Functional/Form/ElementTest.php
++++ a/core/modules/system/tests/src/Functional/Form/ElementTest.php
 @@ -41,6 +41,7 @@ public function testFormElements(): void {
      $this->testFormAutocomplete();
      $this->testFormElementErrors();

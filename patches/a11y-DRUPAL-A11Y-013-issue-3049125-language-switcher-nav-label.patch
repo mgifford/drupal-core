@@ -1,18 +1,7 @@
-From ed7b83f00c516962bb4a44ec92a5d7784b27eb24 Mon Sep 17 00:00:00 2001
-From: github-actions <github-actions@github.com>
-Date: Mon, 13 Jul 2026 21:42:56 -0400
-Subject: [PATCH] Issue #3049125: Add accessible name for language switcher
- navigation landmark
-
----
- core/modules/language/src/Hook/LanguageThemeHooks.php        | 3 +++
- .../language/tests/src/Functional/LanguageSwitchingTest.php  | 5 +++++
- 2 files changed, 8 insertions(+)
-
-diff --git a/core/modules/language/src/Hook/LanguageThemeHooks.php b/core/modules/language/src/Hook/LanguageThemeHooks.php
+diff --git b/core/modules/language/src/Hook/LanguageThemeHooks.php a/core/modules/language/src/Hook/LanguageThemeHooks.php
 index 269cca04bd..79d7199033 100644
---- a/core/modules/language/src/Hook/LanguageThemeHooks.php
-+++ b/core/modules/language/src/Hook/LanguageThemeHooks.php
+--- b/core/modules/language/src/Hook/LanguageThemeHooks.php
++++ a/core/modules/language/src/Hook/LanguageThemeHooks.php
 @@ -177,6 +177,9 @@ public function preprocessLanguageContentSettingsTable(array &$variables): void
    public function preprocessBlock(&$variables): void {
      if ($variables['configuration']['provider'] == 'language') {
@@ -23,10 +12,10 @@ index 269cca04bd..79d7199033 100644
      }
    }
  
-diff --git a/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php b/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
+diff --git b/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php a/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
 index 825cac86af..801b148552 100644
---- a/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
-+++ b/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
+--- b/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
++++ a/core/modules/language/tests/src/Functional/LanguageSwitchingTest.php
 @@ -115,6 +115,11 @@ protected function doTestHomePageLinks(string|int|float|bool $block_label): void
      $this->DrupalGet('<front>');
      // The language switcher block should display.
@@ -39,6 +28,3 @@ index 825cac86af..801b148552 100644
      // Assert that each list item and anchor element has the appropriate data-
      // attributes.
      $language_switchers = $this->xpath('//div[@id=:id]/ul/li', [':id' => 'block-test-language-block']);
--- 
-2.55.0
-

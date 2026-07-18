@@ -2,7 +2,7 @@
 
 This directory contains all proposed accessibility patches for Drupal Core and their comprehensive evaluation reports.
 
-**Status:** 10 patches evaluated | All evaluations available  
+**Status:** 13 patches evaluated | All evaluations available  
 **Baseline:** WCAG 2.2 AA  
 **Tool:** axe-core 4.x via Playwright  
 
@@ -53,7 +53,7 @@ Visual report with screenshots, element highlighting, and interactive violation 
 
 ## Key Statistics
 
-- **Patches Evaluated:** 10
+- **Patches Evaluated:** 13
 - **All WCAG Mapped:** ✅ Yes  
 - **Average Issues Found:** 3-5 per patch
 - **Impact Areas:** Contrast, Labels, Landmarks, Keyboard Navigation
@@ -104,25 +104,29 @@ Each patch was tested by:
 
 ## Common Findings
 
-### Why Patches Don't Apply
+### Patch applicability (2026-07-18 reroll)
 
-Most patches in this directory cannot be applied to the current Drupal Core codebase. This is expected and not a failure - it indicates:
+All patch files in this directory have been rerolled so they apply cleanly against the
+current Drupal Core codebase (`drupal/core 12.x-dev`):
 
-✅ **The accessibility issues were correctly identified**  
-✅ **Evaluation methodology is working**  
-❌ **Patches target outdated code structure**  
+- **Already-applied (committed to this tree):** a11y-DRUPAL-A11Y-001, 003 (×3),
+  007, 009, 010 (×2), 011, 012, 013, 014, 015, 016, 017, LABEL-IN-NAME-004,
+  default-admin-accent. The fixes are already in the tree; the patch files remain
+  valid for a clean checkout.
+- **Applies-clean (needs an upstream issue):** a11y-DRUPAL-A11Y-002, 004, 005, 006,
+  008, default-admin-focus, default-admin-contrast.
+- **Re-rolled from working tree:** a11y-DRUPAL-A11Y-018 (tableselect inline form
+  errors) — previously stale/broken, now applies.
 
-The Drupal Core codebase has evolved significantly:
-- CSS now uses custom properties (variables) instead of hardcoded hex values
-- Widget markup has been refactored
-- Theme system has been improved
-- Implementation patterns have changed
+Earlier evaluations were generated against outdated code structure (CSS custom
+properties, refactored widget markup, updated theme system). Patches were rerolled to
+match current code so `git apply` succeeds on a clean checkout.
 
 ### Path Forward
 
 1. Use these evaluations to understand exactly what needs to be fixed
-2. Inspect current code and identify where the problem still exists
-3. Create updated patches against current codebase
+2. For already-applied patches, confirm the fix is present in current code
+3. For applies-clean patches, file an upstream issue and attach the patch
 4. Re-run evaluations to verify fixes work
 
 ---

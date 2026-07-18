@@ -1,18 +1,7 @@
-From ed4b210a2e4b8a4efc912ceaf3f033b509b06e06 Mon Sep 17 00:00:00 2001
-From: github-actions <github-actions@github.com>
-Date: Mon, 13 Jul 2026 20:30:40 -0400
-Subject: [PATCH] Issue #3573865 and #3533586: Fix summary/member label
- semantics
-
----
- core/modules/user/src/Hook/UserHooks.php             |  2 +-
- .../user/tests/src/Functional/UserLoginTest.php      | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/core/modules/user/src/Hook/UserHooks.php b/core/modules/user/src/Hook/UserHooks.php
+diff --git b/core/modules/user/src/Hook/UserHooks.php a/core/modules/user/src/Hook/UserHooks.php
 index d029f4aa15..d7ce7ef532 100644
---- a/core/modules/user/src/Hook/UserHooks.php
-+++ b/core/modules/user/src/Hook/UserHooks.php
+--- b/core/modules/user/src/Hook/UserHooks.php
++++ a/core/modules/user/src/Hook/UserHooks.php
 @@ -144,7 +144,7 @@ public function userView(array &$build, UserInterface $account, EntityViewDispla
      if ($account->isAuthenticated() && $display->getComponent('member_for')) {
        $build['member_for'] = [
@@ -22,10 +11,10 @@ index d029f4aa15..d7ce7ef532 100644
        ];
      }
    }
-diff --git a/core/modules/user/tests/src/Functional/UserLoginTest.php b/core/modules/user/tests/src/Functional/UserLoginTest.php
+diff --git b/core/modules/user/tests/src/Functional/UserLoginTest.php a/core/modules/user/tests/src/Functional/UserLoginTest.php
 index 91921fc060..18f1abc9c2 100644
---- a/core/modules/user/tests/src/Functional/UserLoginTest.php
-+++ b/core/modules/user/tests/src/Functional/UserLoginTest.php
+--- b/core/modules/user/tests/src/Functional/UserLoginTest.php
++++ a/core/modules/user/tests/src/Functional/UserLoginTest.php
 @@ -140,6 +140,18 @@ public function testPerUserLoginFloodControl(): void {
      $this->assertSession()->responseContains('Member for');
    }
@@ -45,6 +34,3 @@ index 91921fc060..18f1abc9c2 100644
    /**
     * Tests user password is re-hashed upon login after changing $count_log2.
     */
--- 
-2.55.0
-

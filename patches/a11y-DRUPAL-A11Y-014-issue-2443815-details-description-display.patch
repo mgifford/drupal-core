@@ -1,8 +1,16 @@
-diff --git a/core/lib/Drupal/Core/Form/FormPreprocess.php b/core/lib/Drupal/Core/Form/FormPreprocess.php
-index 2a03737bf5..b581917a4e 100644
---- a/core/lib/Drupal/Core/Form/FormPreprocess.php
-+++ b/core/lib/Drupal/Core/Form/FormPreprocess.php
-@@ -363,6 +363,7 @@ public function preprocessDetails(array &$variables): void {
+diff --git b/core/lib/Drupal/Core/Form/FormPreprocess.php a/core/lib/Drupal/Core/Form/FormPreprocess.php
+index 342f92f1ff..b581917a4e 100644
+--- b/core/lib/Drupal/Core/Form/FormPreprocess.php
++++ a/core/lib/Drupal/Core/Form/FormPreprocess.php
+@@ -351,7 +351,6 @@ public function preprocessDetails(array &$variables): void {
+     $variables['attributes'] = $element['#attributes'];
+     $variables['summary_attributes'] = new Attribute($element['#summary_attributes']);
+     if (!empty($element['#title'])) {
+-      $variables['summary_attributes']['role'] = 'button';
+       if (!empty($element['#attributes']['id'])) {
+         $variables['summary_attributes']['aria-controls'] = $element['#attributes']['id'];
+       }
+@@ -364,6 +363,7 @@ public function preprocessDetails(array &$variables): void {
        $variables['title'] = ['#markup' => $variables['title']];
      }
      $variables['description'] = (!empty($element['#description'])) ? $element['#description'] : '';
