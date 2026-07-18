@@ -20,8 +20,8 @@ module.exports = {
     maxPathsPerPattern: 2,
     testCases: [
       {
-        url: '/contact/imagefile_file',
-        selectors: ['[id^="edit-imagefile-file-limited-"][id$="-display"]'],
+        url: '/a11y-file-widget',
+        selectors: ['[id^="edit-imagefile-file-limited-"][id$="-display"]', 'input[type="checkbox"]'],
         expectedFix: 'Checkboxes should have accessible names (aria-label)',
         viewport: { width: 1280, height: 1024 },
       },
@@ -132,7 +132,7 @@ module.exports = {
     maxPathsPerPattern: 2,
     testCases: [
       {
-        url: '/admin/content',
+        url: '/a11y-empty-headers',
         selectors: ['table th', 'thead th'],
         expectedFix: 'Table headers should have visible or accessible text',
         viewport: { width: 1280, height: 1024 },
@@ -165,6 +165,54 @@ module.exports = {
         url: '/admin/config/content/formats',
         selectors: ['table a:has-text("Configure")'],
         expectedFix: 'aria-label must contain visible text "Configure"',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
+  'default-admin-focus-aa-proposals': {
+    description: 'Raise admin theme focus indicator contrast (light + dark)',
+    wcag: ['2.4.7 (AA)', '1.4.11 (AA)'],
+    rules: [],
+    patternIds: [],
+    maxPathsPerPattern: 2,
+    testCases: [
+      {
+        url: '/admin/content',
+        selectors: ['a', 'button', 'input', '.button', '[tabindex]'],
+        expectedFix: 'Focus indicator should meet non-text contrast after patch',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
+  'default-admin-contrast-color-hints': {
+    description: 'Add admin theme contrast hints for low-contrast UI',
+    wcag: ['1.4.3 (AA)'],
+    rules: ['color-contrast'],
+    patternIds: [],
+    maxPathsPerPattern: 2,
+    testCases: [
+      {
+        url: '/admin/content',
+        selectors: ['a', 'button', '.button', '.action-link'],
+        expectedFix: 'color-contrast should pass after patch',
+        viewport: { width: 1280, height: 1024 },
+      },
+    ],
+  },
+
+  'default-admin-accent-aa-defaults': {
+    description: 'Set admin accent color AA defaults',
+    wcag: ['1.4.3 (AA)'],
+    rules: ['color-contrast'],
+    patternIds: [],
+    maxPathsPerPattern: 2,
+    testCases: [
+      {
+        url: '/admin',
+        selectors: ['a', 'button', '.button'],
+        expectedFix: 'Accent color contrast should meet AA after patch',
         viewport: { width: 1280, height: 1024 },
       },
     ],
