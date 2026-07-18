@@ -8,12 +8,13 @@ Reference: [Drupal Accessibility Coding Standards](https://www.drupal.org/docs/g
 
 ## Overview
 
-Drupal core uses a **two-layer automated testing strategy** for accessibility:
+Drupal core uses a **three-layer automated testing strategy** for accessibility:
 
 | Layer | Tool | Purpose | When it runs |
 | :--- | :--- | :--- | :--- |
 | Nightwatch + axe | axe-core via Nightwatch | Fast checks on ~10 key pages | Every MR (GitLab CI) |
 | Playwright crawl + axe | axe-core via Playwright | Full-site multi-theme crawl, pattern analysis | Weekly or on demand |
+| **Playwright + virtual SR** | **Guidepup virtual SR** | **Semantic validation of accessibility tree** | **On demand (opt-in)** |
 | Playwright + Lighthouse | Lighthouse | Accessibility scores per page | On demand |
 | Regression suite | Playwright + axe | Guards re-enabled rules | Every MR |
 
@@ -190,7 +191,64 @@ At the end:
 
 ---
 
-## 4. Analyzing Patterns and Reports
+## 4. Virtual Screen Reader Crawl
+
+The virtual screen reader crawl validates that Drupal's markup produces correct accessibility tree output across all pages, themes, viewports, and color schemes. It complements axe-core by catching **semantic issues** that automated WCAG checks miss.
+
+### How it works
+
+1. **axe-core** runs WCAG 2.2 checks (same as the existing crawl)
+2. **Guidepup virtual SR** simulates the accessibility tree from DOM (no real screen reader needed)
+3. Both tools run on every page, then cross-reference results to distinguish real barriers from false positives
+
+| Cross-reference result | Meaning |
+| :--- | :--- |
+| Both tools flag | **Confirmed barrier** — fix it |
+| Axe only | Visual/structural issue — tree is correct, CSS or HTML needs fixing |
+| Virtual SR only | Semantic issue — tree is wrong, axe doesn't catch it |
+| Neither flag | Likely OK |
+
+### Running the virtual SR crawl
+
+```bash
+cd core
+yarn test:a11y:playwright --grep "Virtual SR"
+```
+
+This runs the virtual SR crawl across all configured themes and viewports. Results are written to `reports/virtual-sr-results.json`.
+
+### What it checks
+
+- Empty buttons and links (no accessible name)
+- Missing alt text on images
+- Heading level skips (h1 → h3 without h2)
+- Missing landmarks (main, nav, banner, contentinfo)
+- Unlabeled form inputs
+- Dialog/modal announcement
+- Administrative sidebar structure
+
+### What it can't detect
+
+- Keyboard traps or focus order problems (use `a11y-keyboard-review.spec.ts`)
+- Color contrast failures (use `a11y-axe-crawl.spec.ts`)
+- CSS-hidden content that screen readers still read
+- Dynamic content updates (aria-live behavior)
+- Actual screen reader quirks (VoiceOver/NVDA may differ)
+
+### Modal dialog testing
+
+Virtual SR validates modal dialogs for correct announcement:
+
+```bash
+cd core
+yarn test:a11y:playwright --grep "Virtual SR.*modal"
+```
+
+This opens each dialog trigger on `/dialog`, runs virtual SR to verify the dialog is announced as a landmark with an accessible name, and checks that focus management is correct.
+
+---
+
+## 5. Analyzing Patterns and Reports
 
 ```bash
 cd core
@@ -252,7 +310,7 @@ jq '.summary.uniquePatterns' reports/bugs-latest.json
 
 ---
 
-## 5. Scheduling Regular Runs
+## 6. Scheduling Regular Runs
 
 ### macOS launchd (recommended for local dev)
 
@@ -307,7 +365,7 @@ The `🎭 Playwright A11y` job in `.gitlab-ci.yml` runs on a daily schedule and 
 
 ---
 
-## 6. Fixing a Violation
+## 7. Fixing a Violation
 
 ### Step 1 — Identify the template
 
@@ -386,7 +444,7 @@ git push drupal-NNNNNN HEAD:11.x
 
 ---
 
-## 7. Adding Pages to the Inventory
+## 8. Adding Pages to the Inventory
 
 When core adds a new route or you find a page type not covered, add it to `lib/pages.ts`:
 
@@ -406,7 +464,7 @@ To add a new **theme** to the crawl, edit `lib/theme-configs.ts` and add an entr
 
 ---
 
-## 8. CI Integration
+## 9. CI Integration
 
 ### GitLab CI jobs
 
@@ -430,7 +488,7 @@ In GitLab, on any completed `🎭 Playwright A11y` pipeline:
 
 ---
 
-## 9. Tracking Progress Over Time
+## 10. Tracking Progress Over Time
 
 The stable `DRU-XXXXXXXX` pattern IDs make it possible to track the accessibility debt reduction over time:
 
@@ -452,7 +510,7 @@ Each committed `bugs-YYYY-MM-DD.json` in git history gives a permanent record. T
 
 ---
 
-## 10. Phased Rule Re-enablement in Nightwatch
+## 11. Phased Rule Re-enablement in Nightwatch
 
 The Nightwatch tests still suppress some axe rules for CI noise reasons. Now that the Playwright crawl captures everything, re-enabling them in Nightwatch is lower urgency. The current priority (tracked in `ACCESSIBILITY.md` section 9):
 
@@ -466,7 +524,7 @@ Work one rule at a time. File all child issues before starting. See `ACCESSIBILI
 
 ---
 
-## 11. Quick Reference
+## 12. Quick Reference
 
 ```bash
 # ── Full workflow ──────────────────────────────────────────────────────────
@@ -476,6 +534,12 @@ cd core && yarn a11y:crawl-and-report
 # ── Individual steps ───────────────────────────────────────────────────────
 # Run multi-theme axe crawl only (~15-20 min, switches 3 themes via drush)
 cd core && yarn test:a11y:playwright
+
+# Run virtual screen reader crawl (semantic validation)
+cd core && yarn test:a11y:playwright --grep "Virtual SR"
+
+# Run virtual SR modal dialog tests
+cd core && yarn test:a11y:playwright --grep "Virtual SR.*modal"
 
 # Analyze latest crawl results → reports/bugs-latest.{json,csv,md}
 cd core && yarn a11y:analyze
@@ -517,7 +581,10 @@ cd core && npx playwright install chromium --with-deps
 | `ACCESSIBILITY.md` | Standards, severity taxonomy, governance |
 | `core/tests/playwright/lib/pages.ts` | Page inventory for crawls |
 | `core/tests/playwright/lib/theme-configs.ts` | Theme configurations (Olivero / Claro / Admin) |
+| `core/tests/playwright/lib/virtual-sr.ts` | Virtual SR helpers (inject, audit, analyze, cross-reference) |
 | `core/tests/playwright/tests/a11y-axe-crawl.spec.ts` | Multi-theme axe crawl |
+| `core/tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts` | Multi-theme virtual SR crawl |
+| `core/tests/playwright/tests/a11y-modal-sr.spec.ts` | Virtual SR modal dialog validation |
 | `core/tests/playwright/tests/a11y-regressions.spec.ts` | Regression guards |
 | `core/tests/playwright/scripts/analyze-patterns.js` | Pattern analyzer + report generator |
 | `core/tests/playwright/scripts/add-regression.js` | Regression test scaffolding |
@@ -525,5 +592,6 @@ cd core && npx playwright install chromium --with-deps
 | `core/tests/Drupal/Nightwatch/Tests/a11yTestAdmin.js` | Nightwatch axe (Claro) |
 | `.gitlab-ci.yml` | CI pipeline configuration |
 | `reports/` | Scan outputs — dated JSON, CSV, MD; archive/ for previous scans |
+| `GUIDE-TO-GUIDEUP-AND-AXE-IN-DRUPAL.md` | Standalone guide to virtual SR + axe-core approach |
 
 ---

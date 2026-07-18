@@ -81,6 +81,7 @@
     "@drupal/once": "^1.0.1",
     "@floating-ui/dom": "^1.7.4",
     "@gitlab-formatters/stylelint-formatter-gitlab": "^1.0.2",
+    "@guidepup/virtual-screen-reader": "^0.32.1",
     "@playwright/test": "^1.46.0",
     "apca-w3": "^0.1.9",
     "backbone": "^1.6.1",
