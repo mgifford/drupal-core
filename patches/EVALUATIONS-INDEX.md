@@ -11,20 +11,25 @@ This directory contains all proposed accessibility patches for Drupal Core and t
 ## Quick Navigation
 
 ### Priority 1 - Critical Fixes
-- [a11y-DRUPAL-A11Y-001: File Widget Display Labels](a11y-DRUPAL-A11Y-001-file-widget-display-labels-evaluation.md)
-- [a11y-DRUPAL-A11Y-002: Submit Button Contrast](a11y-DRUPAL-A11Y-002-submit-button-contrast-evaluation.md)
-- [a11y-DRUPAL-A11Y-005: Language Switcher Contrast](a11y-DRUPAL-A11Y-005-language-switcher-contrast-evaluation.md)
+- [a11y-DRUPAL-A11Y-001: File Widget Display Labels](a11y-DRUPAL-A11Y-001-file-widget-display-labels-evaluation.md) — regenerated 2026-07-18; applies-clean via /a11y-file-widget; axe did not flag (checkbox has visible "Display" label) → INCONCLUSIVE
+- [a11y-DRUPAL-A11Y-002: Submit Button Contrast](a11y-DRUPAL-A11Y-002-submit-button-contrast-evaluation.md) — regenerated 2026-07-18; applies-clean via /action-link (default_admin theme); color-contrast 0 → INCONCLUSIVE
+- [a11y-DRUPAL-A11Y-005: Language Switcher Contrast](a11y-DRUPAL-A11Y-005-language-switcher-contrast-evaluation.md) — regenerated 2026-07-18; applies-clean via /action-link; color-contrast 0 → INCONCLUSIVE
 
 ### Priority 2 - Important Fixes
-- [a11y-DRUPAL-A11Y-006: Theme Switcher Landmark](a11y-DRUPAL-A11Y-006-theme-switcher-landmark-evaluation.md)
-- [a11y-DRUPAL-A11Y-007: Messages Landmark Role](a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation.md)
+- [a11y-DRUPAL-A11Y-006: Theme Switcher Landmark](a11y-DRUPAL-A11Y-006-theme-switcher-landmark-evaluation.md) — regenerated 2026-07-18; applies-clean; no frontend theme switcher exists on `/` → INCONCLUSIVE
+- [a11y-DRUPAL-A11Y-007: Messages Landmark Role](a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation.md) — regenerated 2026-07-18; already-applied (revert-run-reapply); axe 0 on /admin/appearance → INCONCLUSIVE
 
 ### Priority 3 - Extended Fixes
-- [a11y-DRUPAL-A11Y-003: Select-All Checkbox Labels](a11y-DRUPAL-A11Y-003-select-all-checkbox-label-evaluation.md)
-- [a11y-DRUPAL-A11Y-004: Tabindex on Buttons](a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-evaluation.md)
-- [a11y-DRUPAL-A11Y-008: Empty Table Headers](a11y-DRUPAL-A11Y-008-empty-table-headers-evaluation.md)
-- [a11y-DRUPAL-A11Y-009: Module Summary Names](a11y-DRUPAL-A11Y-009-module-summary-names-evaluation.md)
-- [a11y-LABEL-IN-NAME-004: Filter Format ARIA Label](a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation.md)
+- [a11y-DRUPAL-A11Y-003: Select-All Checkbox Labels](a11y-DRUPAL-A11Y-003-select-all-checkbox-label-evaluation.md) — regenerated 2026-07-18; already-applied (revert-run-reapply); axe `label` 0 on /admin/content → INCONCLUSIVE
+- [a11y-DRUPAL-A11Y-004: Tabindex on Buttons](a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-evaluation.md) — regenerated 2026-07-18; applies-clean via /buttons; button has tabindex but axe `tabindex` rule returned 0 → INCONCLUSIVE
+- [a11y-DRUPAL-A11Y-008: Empty Table Headers](a11y-DRUPAL-A11Y-008-empty-table-headers-evaluation.md) — regenerated 2026-07-18; applies-clean via /a11y-empty-headers; axe DETECTED before=1 (empty-table-header) but after-scan empty + pattern-gate → INCONCLUSIVE (strong evidence present)
+- [a11y-DRUPAL-A11Y-009: Module Summary Names](a11y-DRUPAL-A11Y-009-module-summary-names-evaluation.md) — regenerated 2026-07-18; already-applied (revert-run-reapply); axe `summary-name` 0 on /admin/modules → INCONCLUSIVE
+- [a11y-LABEL-IN-NAME-004: Filter Format ARIA Label](a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation.md) — regenerated 2026-07-18; already-applied (revert-run-reapply); **PASS** (1 instance fixed, observed before/after)
+
+### Default Admin theme patches (not in original eval set)
+- [default-admin-focus-aa-proposals: Focus indicator contrast (light + dark)](default-admin-focus-aa-proposals-evaluation.md) — regenerated 2026-07-18 under `default_admin` theme; axe cannot measure focus-ring contrast → INCONCLUSIVE
+- [default-admin-contrast-color-hints: Admin theme contrast hints](default-admin-contrast-color-hints-evaluation.md) — regenerated 2026-07-18 under `default_admin` theme; color-contrast 0 on /admin/content → INCONCLUSIVE
+- [default-admin-accent-aa-defaults: Admin accent AA defaults](default-admin-accent-aa-defaults-evaluation.md) — regenerated 2026-07-18 (revert-run-reapply under `default_admin`); context applies-clean → INCONCLUSIVE
 
 ---
 

@@ -1,0 +1,4 @@
+name: A11Y Test Routes
+type: module
+description: 'Test routes/pages used to exercise accessibility patch evaluations.'
+core_version_requirement: ^12
