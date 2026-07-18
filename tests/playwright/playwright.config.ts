@@ -22,7 +22,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: 1,
   // Log in as admin once and save session cookies for admin page tests.
-  globalSetup: path.resolve(__dirname, '../../core/tests/playwright/lib/auth-setup.ts'),
+  globalSetup: path.resolve(__dirname, './lib/auth-setup.ts'),
   reporter: [
     ['list'],
     ['json', { outputFile: './reports/playwright-results.json' }],

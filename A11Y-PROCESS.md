@@ -212,11 +212,11 @@ The virtual screen reader crawl validates that Drupal's markup produces correct 
 
 ```bash
 cd tests/playwright
-yarn install  # first time only
-yarn test:virtual-sr
+npm install  # first time only
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR"
 ```
 
-This runs the virtual SR crawl across all configured themes and viewports. Results are written to `tests/playwright/reports/virtual-sr-results.json`.
+This runs the virtual SR crawl across all configured themes and viewports (~3 minutes). Results are written to `tests/playwright/reports/virtual-sr-results.json`.
 
 ### What it checks
 
@@ -242,7 +242,7 @@ Virtual SR validates modal dialogs for correct announcement:
 
 ```bash
 cd tests/playwright
-yarn test:modal
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR.*modal"
 ```
 
 This opens each dialog trigger on `/dialog`, runs virtual SR to verify the dialog is announced as a landmark with an accessible name, and checks that focus management is correct.
@@ -536,11 +536,11 @@ cd core && yarn a11y:crawl-and-report
 # Run multi-theme axe crawl only (~15-20 min, switches 3 themes via drush)
 cd core && yarn test:a11y:playwright
 
-# Run virtual screen reader crawl (semantic validation)
-cd tests/playwright && yarn test:virtual-sr
+# Run virtual screen reader crawl (semantic validation, ~3 min)
+cd tests/playwright && NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR"
 
 # Run virtual SR modal dialog tests
-cd tests/playwright && yarn test:modal
+cd tests/playwright && NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR.*modal"
 
 # Analyze latest crawl results → reports/bugs-latest.{json,csv,md}
 cd core && yarn a11y:analyze

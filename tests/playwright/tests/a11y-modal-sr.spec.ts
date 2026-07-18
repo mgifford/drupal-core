@@ -15,7 +15,7 @@
  *   cd core && yarn test:a11y:playwright --grep "Virtual SR.*modal"
  */
 import { test, expect, Locator } from '@playwright/test';
-import { AUTH_STATE_FILE } from '../../../core/tests/playwright/lib/auth-setup';
+import { AUTH_STATE_FILE } from '../lib/auth-setup';
 import {
   injectVirtualSR,
   getSpokenPhraseLog,

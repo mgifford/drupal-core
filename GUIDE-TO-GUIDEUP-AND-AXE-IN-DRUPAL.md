@@ -374,16 +374,16 @@ This approach is integrated into Drupal core's accessibility testing suite, but 
 cd tests/playwright
 
 # Install dependencies (first time only)
-yarn install
+npm install
 
-# Run the full virtual SR crawl across all themes and viewports
-yarn test:virtual-sr
+# Run the full virtual SR crawl across all themes and viewports (~3 min)
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR"
 
 # Run just the modal dialog tests
-yarn test:modal
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR.*modal"
 
 # Or run all Guidepup tests
-yarn test
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test
 ```
 
 ### How it integrates with existing infrastructure
