@@ -50,6 +50,25 @@ References:
 - https://mgifford.github.io/ACCESSIBILITY.md/examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.html
 - https://mgifford.github.io/ACCESSIBILITY.md/examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.html
 
+## Drupal core patch pre-submit gate
+
+Every Drupal core patch (issue-fork branch / merge request) must pass these
+locally before pushing. This is the same gate GitLab CI runs; catching it
+locally avoids red pipelines.
+
+- **`core/scripts/dev/commit-code-check.sh`** (run from the core checkout). It
+  checks changed files for PHPCS (Drupal + DrupalPractice), PHPStan, CSpell
+  spell-check, ESLint (JS), and PostCSS/CSS compile correctness. Must exit `0`.
+  It does **not** run PHPUnit — run that separately.
+- **PHPUnit**: `./vendor/bin/phpunit -c core <path-to-tests>` for the changed
+  module. Green before push.
+- If a check fails, fix the root cause (do not suppress PHPCS/PHPStan). Add
+  genuinely new terms to `core/misc/cspell/dictionary.txt` only with a follow-up.
+
+Reference: the issue-fork `AGENTS.md` §3 — "Run
+`./core/scripts/dev/commit-code-check.sh` before submitting; fix what it
+reports. It does not run PHPUnit."
+
 ## Working style for agents
 
 - Make minimal, request-scoped changes.
@@ -63,6 +82,7 @@ References:
 - Keep prompts and context narrow to reduce compute and noise.
 - Avoid repeated or redundant tool calls.
 - When proposing PR text, include concise AI-usage disclosure if AI was used materially.
+- Commit messages for changes materially produced or revised with AI assistance must include an AI-usage disclosure. Use a `Co-Authored-by: <AI tool>` trailer or a short footer such as `AI-assisted: <tool>`. This applies to work done in this repository and to upstream contributions prepared here.
 
 Reference: https://mgifford.github.io/ACCESSIBILITY.md/SUSTAINABILITY.html
 

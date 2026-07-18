@@ -17,6 +17,7 @@ queue, and file.
 - **Component:** Default admin theme
 - **Priority:** Normal
 - **Tags:** `Accessibility`, `RTL`, `Usability`
+- **Upstream status:** No matching core issue found; Default Admin is new to core (11.4), so coverage work is plausibly new. Safe to file. Part of the Default Admin theme cluster with Drafts 5 and 7 — cross-reference.
 
 ### Problem/Motivation
 
@@ -64,6 +65,7 @@ theme across these real states, and no automated coverage of them.
 - **Component:** image system
 - **Priority:** Normal
 - **Tags:** `Sustainability`, `Performance`
+- **Upstream status:** AVIF capability already shipped in core 11.2 via #3202016 (Closed/Fixed: "Let GDToolkit support AVIF image format", with WebP fallback applied to default image styles). Before filing, verify a real gap remains — high risk of duplicate or works-as-designed.
 
 ### Problem/Motivation
 
@@ -103,6 +105,7 @@ on efficient media formats).
 - **Component:** Olivero theme
 - **Priority:** Normal
 - **Tags:** `Sustainability`, `Performance`, `frontend`
+- **Upstream status:** Overlaps #3500955 (Active: Olivero preload/gap issues) and #3216489 (Closed/Fixed: preload cleanups). The broader subsetting + per-metric override scope may be novel; file referencing these to avoid duplicate.
 
 ### Problem/Motivation
 
@@ -134,6 +137,7 @@ themes routinely ship render-blocking, unsubsetted fonts.
 - **Component:** asset library system
 - **Priority:** Normal
 - **Tags:** `Sustainability`, `Performance`
+- **Upstream status:** No duplicate found. Adjacent: #3308122 (open: pre-minify/optimize core JS). Safe to file, referencing it.
 
 ### Problem/Motivation
 
@@ -168,6 +172,7 @@ common template can silently put tens of KB back on every anonymous view.
 - **Component:** Default admin theme
 - **Priority:** Normal
 - **Tags:** `Sustainability`, `Performance`, `Usability`
+- **Upstream status:** No duplicate found; Default Admin is new to core, so a page-weight/DOM budget is plausibly new. Safe to file. Companion to Draft 7 (PerformanceTestBase admin-route coverage is the mechanism for this budget) and part of the Default Admin cluster (Drafts 1, 5, 7).
 
 ### Problem/Motivation
 
@@ -201,6 +206,7 @@ so complexity only accumulates.
 - **Component:** phpunit
 - **Priority:** Normal
 - **Tags:** `Accessibility`, `Testing system`
+- **Upstream status:** Overlaps #2857808 (Active meta: "Automate Accessibility Checks") and the Nightwatch axe effort (#3293469, Closed/Fixed). Scope explicitly as a PHPUnit/FunctionalJavascript trait — note core currently runs axe via Nightwatch, not PHPUnit — to avoid a duplicate. Related scanning work: Draft 8 (Drupal CMS CI gate).
 
 ### Problem/Motivation
 
@@ -235,6 +241,7 @@ the cheap way for a11y bugfix MRs to include their own regression test.
 - **Component:** Default admin theme
 - **Priority:** Normal
 - **Tags:** `Sustainability`, `Performance`, `Testing system`
+- **Upstream status:** Extends #3346765 (Closed/Fixed: introduced PerformanceTestBase). The admin-route assertion scope is new. Safe to file, referencing the parent issue. Companion to Draft 5 (admin theme page-weight/DOM budget).
 
 ### Problem/Motivation
 
@@ -267,6 +274,7 @@ unit-test form of an admin payload budget.
 - **Project:** drupal/cms (not core)
 - **Category:** Feature request
 - **Tags:** `Accessibility`
+- **Upstream status:** Targets the drupal/cms project. No duplicate found in a reasonable search of the CMS queue. Verify against drupal/cms before filing; distinct from core's Nightwatch gate. Related scanning work: Draft 6.
 
 ### Problem/Motivation
 
@@ -277,9 +285,58 @@ formed by CMS, not bare core.
 
 ### Proposed resolution
 
-A smoke-level axe pass in CMS CI: install each recipe, scan its primary
-routes (recipe-declared or convention-based), fail on new critical/serious
-WCAG-tagged violations against a recorded baseline. An external
-comprehensive crawl profile for CMS exists to generate the baseline and
-page inventory (https://github.com/mgifford/drupal-core/issues/36).
+  A smoke-level axe pass in CMS CI: install each recipe, scan its primary
+  routes (recipe-declared or convention-based), fail on new critical/serious
+  WCAG-tagged violations against a recorded baseline. An external
+  comprehensive crawl profile for CMS exists to generate the baseline and
+  page inventory (https://github.com/mgifford/drupal-core/issues/36).
+
+---
+
+## Draft 9 — Inline form errors not shown for tableselect (table) form elements
+
+- **Project:** drupal (core)
+- **Category:** Bug report
+- **Component:** inline_form_errors.module
+- **Priority:** Normal
+- **Tags:** `Accessibility`, `Forms`, `inline_form_errors`
+- **Upstream status:** Corresponds to existing drupal.org **#2848307** ("Inline errors not working on form table elements"). **Submitted** via MR !16355 with a green Unit test (`OK (3 tests, 49 assertions)`); do not file a new issue. This draft + patch (`a11y-DRUPAL-A11Y-018`) is a contribution to that issue. Patch landed in working tree (`core/modules/inline_form_errors/...`).
+
+### Problem/Motivation
+
+The Inline Form Errors module (`inline_form_errors`) shows a field's error
+message next to the field and links to it from the top-of-page summary. It
+does this for most elements, but for table form elements it only handles
+`#type => 'table'`.
+
+The common table form element in core is `tableselect` (used on the module
+uninstall form and many admin lists). `tableselect` declares
+`#type => 'tableselect'`, so `FormErrorHandler::setTableElementInlineErrors()`
+skips it. When a `tableselect` has an error, the message appears only in the
+top summary, never inline next to the table. Screen reader and keyboard users
+lose the inline association (`aria-describedby`) that other elements get.
+
+Drupal 8 added the Table form element precisely so tables could take form
+errors; tableselect should too.
+
+### Proposed resolution
+
+1. Extend the type check in
+   `core/modules/inline_form_errors/src/FormErrorHandler.php`:
+   `setTableElementInlineErrors()` to also match `tableselect` (keep `table`).
+   Both already render via the `table` theme and set `#errors`, so the existing
+   inline-error markup and `aria-describedby` wiring apply unchanged.
+2. Add a regression test (`testTableElementErrorsInline`) asserting that a
+   `tableselect` (and `table`) error is rendered inline in `#prefix` and
+   associated via `aria-describedby` (`edit-<id>--error`). The test fails when
+   `tableselect` is excluded, confirming the guard.
+3. Patch: `patches/a11y-DRUPAL-A11Y-018-issue-2848307-tableselect-inline-form-errors.patch`.
+
+### Remaining tasks
+
+- Verify no contrib/custom table-like `#type` values need coverage beyond
+  `table` and `tableselect`.
+- Optional: add a Kernel/Functional render test for the assistive-technology
+  output (the Unit test already asserts the `aria-describedby` association).
+
 
