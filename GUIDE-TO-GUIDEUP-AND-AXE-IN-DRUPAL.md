@@ -360,36 +360,39 @@ This requires `npx @guidepup/setup` and headed browser mode.
 
 ## Drupal Core Integration
 
-This approach is integrated into Drupal core's Playwright test suite. The implementation lives in:
+This approach is integrated into Drupal core's accessibility testing suite, but lives outside `core/` to avoid shipping with core updates. The implementation lives in:
 
 | File | Purpose |
 |------|---------|
-| `core/tests/playwright/lib/virtual-sr.ts` | Helpers: inject, audit, analyze, cross-reference |
-| `core/tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts` | Full-site multi-theme virtual SR crawl |
-| `core/tests/playwright/tests/a11y-modal-sr.spec.ts` | Virtual SR validation for modal dialogs |
+| `tests/playwright/lib/virtual-sr.ts` | Helpers: inject, audit, analyze, cross-reference |
+| `tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts` | Full-site multi-theme virtual SR crawl |
+| `tests/playwright/tests/a11y-modal-sr.spec.ts` | Virtual SR validation for modal dialogs |
 
 ### Running the integrated tests
 
 ```bash
-cd core
+cd tests/playwright
+
+# Install dependencies (first time only)
+yarn install
 
 # Run the full virtual SR crawl across all themes and viewports
-yarn test:a11y:playwright --grep "Virtual SR"
+yarn test:virtual-sr
 
 # Run just the modal dialog tests
-yarn test:a11y:playwright --grep "Virtual SR.*modal"
+yarn test:modal
 
-# Run both virtual SR and axe-core crawls (full audit)
-yarn test:a11y:playwright
+# Or run all Guidepup tests
+yarn test
 ```
 
 ### How it integrates with existing infrastructure
 
-The virtual SR crawl reuses:
-- **Page inventory** (`lib/pages.ts`) — same ~40+ pages as the axe crawl
-- **Theme configs** (`lib/theme-configs.ts`) — Olivero, Claro, Admin (with dark mode)
-- **Auth setup** (`lib/auth-setup.ts`) — pre-authenticated admin state
-- **Shard pattern** (`lib/crawl-finalize.ts`) — parallel test execution with merged reports
+The virtual SR crawl reuses from `core/tests/playwright/lib/`:
+- **Page inventory** (`pages.ts`) — same ~40+ pages as the axe crawl
+- **Theme configs** (`theme-configs.ts`) — Olivero, Claro, Admin (with dark mode)
+- **Auth setup** (`auth-setup.ts`) — pre-authenticated admin state
+- **Shard helpers** (`crawl-finalize.ts`) — drush commands and settings capture
 
 ### Cross-reference workflow
 
@@ -405,7 +408,7 @@ Neither flag → likely OK
 ### Reports
 
 Virtual SR results are written to:
-- `reports/virtual-sr-results-YYYY-MM-DD.json` — dated full results
-- `reports/virtual-sr-results.json` — always the latest scan
+- `tests/playwright/reports/virtual-sr-results-YYYY-MM-DD.json` — dated full results
+- `tests/playwright/reports/virtual-sr-results.json` — always the latest scan
 
 Each result includes the full spoken phrase log, findings, axe violations, and cross-reference analysis.

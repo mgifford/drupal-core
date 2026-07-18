@@ -18,14 +18,14 @@
 import { test, Page } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
-import { anonymousPages, adminPages, PageEntry } from '../lib/pages';
-import { THEME_CONFIGS, ThemeConfig } from '../lib/theme-configs';
-import { AUTH_STATE_FILE } from '../lib/auth-setup';
+import { anonymousPages, adminPages, PageEntry } from '../../../core/tests/playwright/lib/pages';
+import { THEME_CONFIGS, ThemeConfig } from '../../../core/tests/playwright/lib/theme-configs';
+import { AUTH_STATE_FILE } from '../../../core/tests/playwright/lib/auth-setup';
 import {
   TEMP_DIR,
   drush,
   captureOriginalSettingsOnce,
-} from '../lib/crawl-finalize';
+} from '../../../core/tests/playwright/lib/crawl-finalize';
 import {
   injectVirtualSR,
   getSpokenPhraseLog,

@@ -1,0 +1,16 @@
+{
+  "name": "drupal-guidepup-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Guidepup virtual screen reader tests for Drupal Core",
+  "scripts": {
+    "test": "playwright test",
+    "test:virtual-sr": "playwright test --grep 'Virtual SR'",
+    "test:modal": "playwright test --grep 'Virtual SR.*modal'"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@guidepup/virtual-screen-reader": "^0.32.0",
+    "@playwright/test": "^1.48.0"
+  }
+}

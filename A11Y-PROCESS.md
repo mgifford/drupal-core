@@ -211,11 +211,12 @@ The virtual screen reader crawl validates that Drupal's markup produces correct 
 ### Running the virtual SR crawl
 
 ```bash
-cd core
-yarn test:a11y:playwright --grep "Virtual SR"
+cd tests/playwright
+yarn install  # first time only
+yarn test:virtual-sr
 ```
 
-This runs the virtual SR crawl across all configured themes and viewports. Results are written to `reports/virtual-sr-results.json`.
+This runs the virtual SR crawl across all configured themes and viewports. Results are written to `tests/playwright/reports/virtual-sr-results.json`.
 
 ### What it checks
 
@@ -240,8 +241,8 @@ This runs the virtual SR crawl across all configured themes and viewports. Resul
 Virtual SR validates modal dialogs for correct announcement:
 
 ```bash
-cd core
-yarn test:a11y:playwright --grep "Virtual SR.*modal"
+cd tests/playwright
+yarn test:modal
 ```
 
 This opens each dialog trigger on `/dialog`, runs virtual SR to verify the dialog is announced as a landmark with an accessible name, and checks that focus management is correct.
@@ -536,10 +537,10 @@ cd core && yarn a11y:crawl-and-report
 cd core && yarn test:a11y:playwright
 
 # Run virtual screen reader crawl (semantic validation)
-cd core && yarn test:a11y:playwright --grep "Virtual SR"
+cd tests/playwright && yarn test:virtual-sr
 
 # Run virtual SR modal dialog tests
-cd core && yarn test:a11y:playwright --grep "Virtual SR.*modal"
+cd tests/playwright && yarn test:modal
 
 # Analyze latest crawl results → reports/bugs-latest.{json,csv,md}
 cd core && yarn a11y:analyze
@@ -581,10 +582,10 @@ cd core && npx playwright install chromium --with-deps
 | `ACCESSIBILITY.md` | Standards, severity taxonomy, governance |
 | `core/tests/playwright/lib/pages.ts` | Page inventory for crawls |
 | `core/tests/playwright/lib/theme-configs.ts` | Theme configurations (Olivero / Claro / Admin) |
-| `core/tests/playwright/lib/virtual-sr.ts` | Virtual SR helpers (inject, audit, analyze, cross-reference) |
+| `tests/playwright/lib/virtual-sr.ts` | Virtual SR helpers (inject, audit, analyze, cross-reference) |
 | `core/tests/playwright/tests/a11y-axe-crawl.spec.ts` | Multi-theme axe crawl |
-| `core/tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts` | Multi-theme virtual SR crawl |
-| `core/tests/playwright/tests/a11y-modal-sr.spec.ts` | Virtual SR modal dialog validation |
+| `tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts` | Multi-theme virtual SR crawl |
+| `tests/playwright/tests/a11y-modal-sr.spec.ts` | Virtual SR modal dialog validation |
 | `core/tests/playwright/tests/a11y-regressions.spec.ts` | Regression guards |
 | `core/tests/playwright/scripts/analyze-patterns.js` | Pattern analyzer + report generator |
 | `core/tests/playwright/scripts/add-regression.js` | Regression test scaffolding |
