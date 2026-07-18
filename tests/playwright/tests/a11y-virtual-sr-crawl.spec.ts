@@ -200,53 +200,62 @@ function writeResultShard(shardId: string, records: VirtualSRResultRecord[]): vo
 
 test.describe('Virtual SR Crawl — Multi-Theme', () => {
   for (const themeConfig of THEME_CONFIGS) {
-    const pagesToTest = [
-      ...(themeConfig.testAnonymous ? anonymousPages : []),
-      ...(themeConfig.testAdmin ? adminPages : []),
-    ];
+    const scanGroup = (
+      groupLabel: string,
+      pages: PageEntry[],
+      useAuth: boolean,
+    ) => {
+      if (pages.length === 0) return;
 
-    if (pagesToTest.length === 0) continue;
-
-    test.describe(`Theme: ${themeConfig.label} (${themeConfig.colorScheme})`, () => {
-      let allRecords: VirtualSRResultRecord[] = [];
-
-      test.beforeAll(() => {
-        captureOriginalSettingsOnce();
-        switchTheme(themeConfig);
-      });
-
-      test.afterAll(() => {
-        writeResultShard(`virtual-sr-${themeConfig.id}`, allRecords);
-        allRecords = [];
-      });
-
-      for (const pageEntry of pagesToTest) {
-        for (const viewport of STANDARD_VIEWPORTS) {
-          const testLabel = `${pageEntry.name}${viewport.label}`;
-
-          test(testLabel, async ({ page }) => {
-            const record = await scanRoute(page, {
-              themeId: themeConfig.id,
-              testName: pageEntry.name,
-              routePath: pageEntry.path,
-              viewport: { width: viewport.width, height: viewport.height },
-              screen: viewport.screen,
-              colorScheme: themeConfig.colorScheme,
-              expectedStatus: pageEntry.expectedStatus,
-            });
-
-            allRecords.push(record);
-
-            // Log SR-only findings (potential semantic issues axe misses).
-            if (record.crossRef.virtualSROnly.length > 0) {
-              console.log(
-                `    SR-only findings on ${pageEntry.name}:`,
-                record.crossRef.virtualSROnly.map((f) => `${f.rule}: ${f.description}`),
-              );
-            }
-          });
+      test.describe(`Theme: ${themeConfig.label} (${themeConfig.colorScheme}) — ${groupLabel}`, () => {
+        if (useAuth) {
+          test.use({ storageState: AUTH_STATE_FILE });
         }
-      }
-    });
+
+        let allRecords: VirtualSRResultRecord[] = [];
+
+        test.beforeAll(() => {
+          captureOriginalSettingsOnce();
+          if (themeConfig.colorScheme === 'light') {
+            switchTheme(themeConfig);
+          }
+        });
+
+        test.afterAll(() => {
+          writeResultShard(`virtual-sr-${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, allRecords);
+          allRecords = [];
+        });
+
+        for (const pageEntry of pages) {
+          for (const viewport of STANDARD_VIEWPORTS) {
+            const testLabel = `${pageEntry.name}${viewport.label}`;
+
+            test(testLabel, async ({ page }) => {
+              const record = await scanRoute(page, {
+                themeId: themeConfig.id,
+                testName: pageEntry.name,
+                routePath: pageEntry.path,
+                viewport: { width: viewport.width, height: viewport.height },
+                screen: viewport.screen,
+                colorScheme: themeConfig.colorScheme,
+                expectedStatus: pageEntry.expectedStatus,
+              });
+
+              allRecords.push(record);
+
+              if (record.crossRef.virtualSROnly.length > 0) {
+                console.log(
+                  `    SR-only findings on ${pageEntry.name}:`,
+                  record.crossRef.virtualSROnly.map((f) => `${f.rule}: ${f.description}`),
+                );
+              }
+            });
+          }
+        }
+      });
+    };
+
+    scanGroup('anonymous pages', themeConfig.testAnonymous ? anonymousPages : [], false);
+    scanGroup('admin pages', themeConfig.testAdmin ? adminPages : [], true);
   }
 });
