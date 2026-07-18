@@ -8,8 +8,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 
-/** Root-level reports/ dir (repo root is four levels up from lib/). */
-export const OUT_DIR = path.resolve(__dirname, '../../../../reports');
+/** Root-level reports/ dir (repo root is three levels up from lib/). */
+export const OUT_DIR = path.resolve(__dirname, '../../../reports');
 /** Temp dir where each scan group writes its partial result shard. */
 export const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
 

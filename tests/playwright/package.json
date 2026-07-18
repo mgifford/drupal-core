@@ -11,6 +11,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
     "@guidepup/virtual-screen-reader": "^0.32.0",
-    "@playwright/test": "^1.48.0"
+    "@playwright/test": "^1.48.0",
+    "accessibility-checker": "^4.0.29"
   }
 }

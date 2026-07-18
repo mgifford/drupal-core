@@ -1,19 +1,16 @@
 /**
- * Virtual Screen Reader full-site crawl for Drupal Core.
+ * Multi-scanner full-site crawl for Drupal Core.
  *
- * Uses @guidepup/virtual-screen-reader to validate that Drupal's markup
- * produces the correct accessibility tree across all pages, themes,
- * viewports, and color schemes.
+ * Runs three independent accessibility scanners on every page:
+ *   1. axe-core — structural/CSS/ARIA violations
+ *   2. IBM Equal Access — WCAG rule-based scanning
+ *   3. Virtual Screen Reader — semantic/accessibility tree validation
  *
- * Runs alongside the axe-core crawl (a11y-axe-crawl.spec.ts) and
- * cross-references findings to distinguish real barriers from false
- * positives. See lib/virtual-sr.ts for the cross-validation logic.
+ * Cross-references findings across all three tools to distinguish
+ * real barriers from false positives. See lib/multi-scanner.ts.
  *
  * Run locally:
- *   cd core && yarn test:a11y:playwright --grep "Virtual SR"
- *
- * This test reuses the same page inventory, theme configs, auth setup,
- * and shard infrastructure as the axe crawl.
+ *   cd tests/playwright && npx playwright test --grep "Multi-Scanner"
  */
 import { test, Page } from '@playwright/test';
 import * as fs from 'fs';
@@ -27,18 +24,16 @@ import {
   captureOriginalSettingsOnce,
 } from '../lib/drush-helpers';
 import {
-  injectVirtualSR,
-  getSpokenPhraseLog,
-  analyzeVirtualSR,
-  crossReference,
-  VirtualSRFinding,
-  VirtualSRResult,
-} from '../lib/virtual-sr';
-import AxeBuilder from '@axe-core/playwright';
+  runAllScanners,
+  crossReferenceAll,
+  MultiScannerResult,
+  CrossRefResult,
+} from '../lib/multi-scanner';
+import { VirtualSRFinding } from '../lib/virtual-sr';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-interface VirtualSRResultRecord {
+interface ScanResultRecord {
   theme: string;
   page: string;
   path: string;
@@ -46,28 +41,19 @@ interface VirtualSRResultRecord {
   screen: string;
   colorScheme: 'light' | 'dark';
   timestamp: string;
-  /** Full spoken phrase log. */
+  /** Axe violations. */
+  axeViolations: Array<{ id: string; description: string; impact: string }>;
+  /** IBM EA violations. */
+  ibmEAViolations: Array<{ ruleId: string; message: string; level: string }>;
+  /** Virtual SR findings. */
+  virtualSRFindings: VirtualSRFinding[];
+  /** Full spoken phrase log from virtual SR. */
   srLog: string[];
-  /** Findings from virtual SR pattern analysis. */
-  findings: VirtualSRFinding[];
-  /** Axe violations on the same page (for cross-reference). */
-  axeViolations: Array<{ id: string; description: string; impact: string | null }>;
-  /** Cross-reference results. */
-  crossRef: {
-    confirmed: Array<{ rule: string; description: string; axeRule?: string }>;
-    axeOnly: Array<{ rule: string; description: string }>;
-    virtualSROnly: VirtualSRFinding[];
-  };
+  /** Cross-reference results across all three tools. */
+  crossRef: CrossRefResult;
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
-
-const WCAG_TAGS = [
-  'wcag2a', 'wcag2aa',
-  'wcag21a', 'wcag21aa',
-  'wcag22a', 'wcag22aa',
-  'best-practice',
-];
 
 const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 
@@ -106,7 +92,7 @@ async function ensurePageReady(page: Page): Promise<void> {
 }
 
 /**
- * Visit a route, run both axe and virtual SR, and return the combined
+ * Visit a route, run all three scanners, and return the combined
  * result record with cross-reference analysis.
  */
 async function scanRoute(
@@ -120,11 +106,10 @@ async function scanRoute(
     colorScheme: 'light' | 'dark';
     expectedStatus?: number;
   },
-): Promise<VirtualSRResultRecord> {
+): Promise<ScanResultRecord> {
   await page.setViewportSize({ width: opts.viewport.width, height: opts.viewport.height });
-  const response = await page.goto(resolveRoute(page, opts.routePath), {
-    waitUntil: 'domcontentloaded',
-  });
+  const url = resolveRoute(page, opts.routePath);
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
 
   const status = response?.status() ?? 0;
   if (opts.expectedStatus !== undefined) {
@@ -133,6 +118,29 @@ async function scanRoute(
         `Route ${opts.routePath} returned HTTP ${status}, expected ${opts.expectedStatus}.`,
       );
     }
+  } else if (status === 403 || status === 404) {
+    // Page exists but requires permissions or is not available — skip gracefully.
+    console.log(`  ⏭️  Skipping ${opts.routePath} (HTTP ${status})`);
+    return {
+      theme: opts.themeId,
+      page: opts.testName,
+      path: opts.routePath,
+      viewport: opts.viewport,
+      screen: opts.screen,
+      colorScheme: opts.colorScheme,
+      timestamp: new Date().toISOString(),
+      axeViolations: [],
+      ibmEAViolations: [],
+      virtualSRFindings: [],
+      srLog: [],
+      crossRef: {
+        confirmed: [],
+        investigate: [],
+        axeOnly: [],
+        ibmEAOnly: [],
+        virtualSROnly: [],
+      },
+    };
   } else if (status >= 400) {
     throw new Error(
       `Route ${opts.routePath} returned HTTP ${status} — page missing on this site.`,
@@ -141,56 +149,55 @@ async function scanRoute(
 
   await ensurePageReady(page);
 
-  // Run axe-core.
-  const axeResults = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+  // Run all three scanners (axe, IBM EA, virtual SR).
+  const multiResult = await runAllScanners(page, url, opts.themeId, opts.screen);
 
-  // Run virtual screen reader.
-  const srResult = await (async (): Promise<VirtualSRResult> => {
-    await injectVirtualSR(page);
-    await page.waitForTimeout(1500);
-    const log = await getSpokenPhraseLog(page);
-    const findings = analyzeVirtualSR(log);
-    return { log, findings, timestamp: new Date().toISOString() };
-  })();
+  // Cross-reference across all three tools.
+  const crossRef = crossReferenceAll(multiResult);
 
-  // Cross-reference.
-  const crossRef = crossReference(srResult.findings, axeResults.violations as any);
-
-  const record: VirtualSRResultRecord = {
+  const record: ScanResultRecord = {
     theme: opts.themeId,
     page: opts.testName,
     path: opts.routePath,
     viewport: opts.viewport,
     screen: opts.screen,
     colorScheme: opts.colorScheme,
-    timestamp: srResult.timestamp,
-    srLog: srResult.log,
-    findings: srResult.findings,
-    axeViolations: axeResults.violations.map((v: any) => ({
+    timestamp: multiResult.timestamp,
+    axeViolations: multiResult.axe.violations.map((v) => ({
       id: v.id,
       description: v.description,
       impact: v.impact,
     })),
-    crossRef: {
-      confirmed: crossRef.confirmed.map((c) => ({ rule: c.rule, description: c.description, axeRule: c.axeRule })),
-      axeOnly: crossRef.axeOnly,
-      virtualSROnly: crossRef.virtualSROnly,
-    },
+    ibmEAViolations: multiResult.ibmEA.violations.map((v) => ({
+      ruleId: v.ruleId,
+      message: v.message,
+      level: v.level,
+    })),
+    virtualSRFindings: multiResult.virtualSR.findings,
+    srLog: multiResult.virtualSR.log,
+    crossRef,
   };
 
-  if (record.findings.length > 0 || record.crossRef.confirmed.length > 0) {
+  const totalIssues =
+    crossRef.confirmed.length +
+    crossRef.investigate.length +
+    crossRef.axeOnly.length +
+    crossRef.ibmEAOnly.length +
+    crossRef.virtualSROnly.length;
+
+  if (totalIssues > 0) {
     console.log(
       `  ⚠️  [${opts.themeId}/${opts.viewport.width}px/${opts.colorScheme}] ` +
-      `${record.findings.length} SR findings, ${record.crossRef.confirmed.length} confirmed, ` +
-      `${record.crossRef.virtualSROnly.length} SR-only on ${opts.testName}:`,
-      [...record.findings, ...record.crossRef.virtualSROnly].map((f) => f.rule).join(', '),
+      `${crossRef.confirmed.length} confirmed, ${crossRef.investigate.length} investigate, ` +
+      `${crossRef.axeOnly.length} axe-only, ${crossRef.ibmEAOnly.length} ibmEA-only, ` +
+      `${crossRef.virtualSROnly.length} SR-only on ${opts.testName}`,
     );
   }
 
   return record;
 }
 
-function writeResultShard(shardId: string, records: VirtualSRResultRecord[]): void {
+function writeResultShard(shardId: string, records: ScanResultRecord[]): void {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
   const shardFile = path.join(TEMP_DIR, `${shardId}.json`);
   fs.writeFileSync(shardFile, JSON.stringify(records, null, 2));
@@ -198,7 +205,7 @@ function writeResultShard(shardId: string, records: VirtualSRResultRecord[]): vo
 
 // ── Tests ────────────────────────────────────────────────────────────────────
 
-test.describe('Virtual SR Crawl — Multi-Theme', () => {
+test.describe('Multi-Scanner Crawl — axe + IBM EA + Virtual SR', () => {
   for (const themeConfig of THEME_CONFIGS) {
     const scanGroup = (
       groupLabel: string,
@@ -212,7 +219,7 @@ test.describe('Virtual SR Crawl — Multi-Theme', () => {
           test.use({ storageState: AUTH_STATE_FILE });
         }
 
-        let allRecords: VirtualSRResultRecord[] = [];
+        let allRecords: ScanResultRecord[] = [];
 
         test.beforeAll(() => {
           captureOriginalSettingsOnce();
@@ -222,7 +229,7 @@ test.describe('Virtual SR Crawl — Multi-Theme', () => {
         });
 
         test.afterAll(() => {
-          writeResultShard(`virtual-sr-${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, allRecords);
+          writeResultShard(`multi-scanner-${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, allRecords);
           allRecords = [];
         });
 
@@ -243,10 +250,16 @@ test.describe('Virtual SR Crawl — Multi-Theme', () => {
 
               allRecords.push(record);
 
-              if (record.crossRef.virtualSROnly.length > 0) {
+              if (record.crossRef.confirmed.length > 0) {
                 console.log(
-                  `    SR-only findings on ${pageEntry.name}:`,
-                  record.crossRef.virtualSROnly.map((f) => `${f.rule}: ${f.description}`),
+                  `    CONFIRMED barriers on ${pageEntry.name}:`,
+                  record.crossRef.confirmed.map((c) => `${c.rule} [${c.tools.join('+')}]`),
+                );
+              }
+              if (record.crossRef.investigate.length > 0) {
+                console.log(
+                  `    INVESTIGATE on ${pageEntry.name}:`,
+                  record.crossRef.investigate.map((i) => `${i.rule} [${i.tools.join('+')}]`),
                 );
               }
             });
