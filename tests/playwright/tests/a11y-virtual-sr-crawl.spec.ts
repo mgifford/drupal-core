@@ -149,6 +149,33 @@ async function scanRoute(
 
   await ensurePageReady(page);
 
+  // Detect PHP error pages — if the page contains fatal/error messages,
+  // skip it rather than scanning a broken page.
+  const bodyText = await page.textContent('body').catch(() => '');
+  if (bodyText && (bodyText.includes('Fatal error') || bodyText.includes('Warning:') || bodyText.includes('Failed to open stream'))) {
+    console.log(`  ⏭️  Skipping ${opts.routePath} (PHP error detected)`);
+    return {
+      theme: opts.themeId,
+      page: opts.testName,
+      path: opts.routePath,
+      viewport: opts.viewport,
+      screen: opts.screen,
+      colorScheme: opts.colorScheme,
+      timestamp: new Date().toISOString(),
+      axeViolations: [],
+      ibmEAViolations: [],
+      virtualSRFindings: [],
+      srLog: [],
+      crossRef: {
+        confirmed: [],
+        investigate: [],
+        axeOnly: [],
+        ibmEAOnly: [],
+        virtualSROnly: [],
+      },
+    };
+  }
+
   // Run all three scanners (axe, IBM EA, virtual SR).
   const multiResult = await runAllScanners(page, url, opts.themeId, opts.screen);
 
