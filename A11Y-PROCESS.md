@@ -14,7 +14,7 @@ Drupal core uses a **three-layer automated testing strategy** for accessibility:
 | :--- | :--- | :--- | :--- |
 | Nightwatch + axe | axe-core via Nightwatch | Fast checks on ~10 key pages | Every MR (GitLab CI) |
 | Playwright crawl + axe | axe-core via Playwright | Full-site multi-theme crawl, pattern analysis | Weekly or on demand |
-| **Playwright + virtual SR** | **Guidepup virtual SR** | **Semantic validation of accessibility tree** | **On demand (opt-in)** |
+| **Playwright + multi-scanner** | **axe + IBM EA + virtual SR** | **Cross-validated accessibility scan** | **On demand (opt-in)** |
 | Playwright + Lighthouse | Lighthouse | Accessibility scores per page | On demand |
 | Regression suite | Playwright + axe | Guards re-enabled rules | Every MR |
 
@@ -191,61 +191,60 @@ At the end:
 
 ---
 
-## 4. Virtual Screen Reader Crawl
+## 4. Multi-Scanner Accessibility Crawl
 
-The virtual screen reader crawl validates that Drupal's markup produces correct accessibility tree output across all pages, themes, viewports, and color schemes. It complements axe-core by catching **semantic issues** that automated WCAG checks miss.
+The multi-scanner crawl runs **three independent accessibility tools** on every page and cross-references findings to distinguish real barriers from false positives.
 
 ### How it works
 
-1. **axe-core** runs WCAG 2.2 checks (same as the existing crawl)
-2. **Guidepup virtual SR** simulates the accessibility tree from DOM (no real screen reader needed)
-3. Both tools run on every page, then cross-reference results to distinguish real barriers from false positives
+1. **axe-core** — structural/CSS/ARIA violations (fastest)
+2. **IBM Equal Access** — WCAG rule-based scanning (accessibility-checker)
+3. **Guidepup virtual SR** — semantic accessibility tree validation (slowest)
 
-| Cross-reference result | Meaning |
-| :--- | :--- |
-| Both tools flag | **Confirmed barrier** — fix it |
-| Axe only | Visual/structural issue — tree is correct, CSS or HTML needs fixing |
-| Virtual SR only | Semantic issue — tree is wrong, axe doesn't catch it |
-| Neither flag | Likely OK |
+All three run on every page, then cross-reference results:
 
-### Running the virtual SR crawl
+| Confidence level | Meaning | Action |
+| :--- | :--- | :--- |
+| **CONFIRMED** (2+ tools) | High confidence real barrier | Fix it |
+| **INVESTIGATE** (1 tool) | May be false positive | Manual review |
+| **AXE-ONLY** | Visual/structural issue | CSS or HTML fix |
+| **IBM-EA-ONLY** | IBM-specific WCAG rule | Check IBM rule details |
+| **SR-ONLY** | Semantic issue | Accessibility tree fix |
+
+### Running the multi-scanner crawl
 
 ```bash
 cd tests/playwright
 npm install  # first time only
-NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR"
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Multi-Scanner"
 ```
 
-This runs the virtual SR crawl across all configured themes and viewports (~3 minutes). Results are written to `tests/playwright/reports/virtual-sr-results.json`.
+This runs all three scanners across all core pages, themes, and viewports. Results are written to `tests/playwright/reports/.tmp-crawl/multi-scanner-*.json`.
 
-### What it checks
-
-- Empty buttons and links (no accessible name)
-- Missing alt text on images
-- Heading level skips (h1 → h3 without h2)
-- Missing landmarks (main, nav, banner, contentinfo)
-- Unlabeled form inputs
-- Dialog/modal announcement
-- Administrative sidebar structure
-
-### What it can't detect
-
-- Keyboard traps or focus order problems (use `a11y-keyboard-review.spec.ts`)
-- Color contrast failures (use `a11y-axe-crawl.spec.ts`)
-- CSS-hidden content that screen readers still read
-- Dynamic content updates (aria-live behavior)
-- Actual screen reader quirks (VoiceOver/NVDA may differ)
-
-### Modal dialog testing
-
-Virtual SR validates modal dialogs for correct announcement:
+### Generating reports
 
 ```bash
 cd tests/playwright
-NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright test --grep "Virtual SR.*modal"
+node scripts/merge-results.js
 ```
 
-This opens each dialog trigger on `/dialog`, runs virtual SR to verify the dialog is announced as a landmark with an accessible name, and checks that focus management is correct.
+Reports:
+- `reports/MULTI-SCANNER-REPORT-latest.md` — human-readable with confidence badges
+- `reports/bugs-multi-scanner.json` — structured bug reports per ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES
+
+### What each scanner checks
+
+| Scanner | Strengths | Limitations |
+| :--- | :--- | :--- |
+| axe-core | Color contrast, ARIA roles, landmarks, heading order | No semantic tree validation |
+| IBM Equal Access | Target spacing, label placement, ARIA validity | IBM-specific rules may differ from other tools |
+| Virtual SR | Empty names, heading skips, missing landmarks, unlabeled inputs | Can hang on very large DOM (30s timeout) |
+
+### safeguards
+
+- **PHP error detection** — pages with fatal errors are skipped (prevents false positives)
+- **Virtual SR timeout** — 30s limit prevents hangs on complex pages (e.g., Modules page with 5000+ DOM nodes)
+- **403/404 handling** — inaccessible or missing pages are skipped gracefully
 
 ---
 
