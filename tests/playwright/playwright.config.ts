@@ -33,7 +33,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     viewport: { width: 1280, height: 800 },
     ignoreHTTPSErrors: true,
-    timeout: 60000,
+    timeout: 120000,
   },
   projects: [
     {

@@ -113,7 +113,16 @@ export async function auditPageWithVirtualSR(page: Page): Promise<VirtualSRResul
   await injectVirtualSR(page);
   // Small delay for script evaluation in the browser.
   await page.waitForTimeout(1500);
-  const log = await getSpokenPhraseLog(page);
+
+  // Timeout after 30 seconds to prevent hanging on complex pages.
+  const timeoutMs = 30000;
+  const log = await Promise.race([
+    getSpokenPhraseLog(page),
+    new Promise<string[]>((_, reject) =>
+      setTimeout(() => reject(new Error(`Virtual SR timed out after ${timeoutMs}ms`)), timeoutMs)
+    ),
+  ]);
+
   const findings = analyzeVirtualSR(log);
 
   return {

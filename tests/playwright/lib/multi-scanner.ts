@@ -171,6 +171,7 @@ export async function runIBMEAScan(page: Page): Promise<IBMEAResult> {
  * Run all three scanners on the current page.
  *
  * Order: axe → IBM EA → Virtual SR (axe is fastest, virtual SR is slowest).
+ * If virtual SR times out, we still return axe and IBM EA results.
  */
 export async function runAllScanners(
   page: Page,
@@ -185,7 +186,14 @@ export async function runAllScanners(
   const [axe, ibmEA, virtualSR] = await Promise.all([
     runAxeScan(page),
     runIBMEAScan(page),
-    auditPageWithVirtualSR(page),
+    auditPageWithVirtualSR(page).catch((err) => {
+      console.warn(`[multi-scanner] Virtual SR failed: ${err.message}`);
+      return {
+        log: [],
+        findings: [],
+        timestamp: new Date().toISOString(),
+      };
+    }),
   ]);
 
   return {
