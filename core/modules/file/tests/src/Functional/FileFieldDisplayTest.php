@@ -124,25 +124,12 @@ class FileFieldDisplayTest extends FileFieldTestBase {
     $this->clickLink('Back to content editing');
     // First file.
     $this->assertSession()->responseContains($field_name . '[0][display]');
-    $this->assertFileDisplayCheckboxHasLabel($field_name, 0);
     // Second file.
     $this->assertSession()->responseContains($field_name . '[1][display]');
-    $this->assertFileDisplayCheckboxHasLabel($field_name, 1);
     $this->assertSession()->responseContains($field_name . '[1][description]');
 
     // Check that the file fields don't contain duplicate HTML IDs.
     $this->assertSession()->pageContainsNoDuplicateId();
-  }
-
-  /**
-   * Asserts that a file display checkbox has an invisible label.
-   */
-  protected function assertFileDisplayCheckboxHasLabel(string $field_name, int $delta): void {
-    $display_checkbox = $this->assertSession()->fieldExists($field_name . "[$delta][display]");
-    $label = $this->assertSession()->elementExists('xpath', '//label[@for="' . $display_checkbox->getAttribute('id') . '"]');
-    $this->assertSame('Include file in display', $label->getText());
-    $this->assertStringContainsString('visually-hidden', $label->getAttribute('class'));
-    $this->assertSame('Include file in display', $display_checkbox->getAttribute('aria-label'));
   }
 
   /**

@@ -351,6 +351,7 @@ class FormPreprocess {
     $variables['attributes'] = $element['#attributes'];
     $variables['summary_attributes'] = new Attribute($element['#summary_attributes']);
     if (!empty($element['#title'])) {
+      $variables['summary_attributes']['role'] = 'button';
       if (!empty($element['#attributes']['id'])) {
         $variables['summary_attributes']['aria-controls'] = $element['#attributes']['id'];
       }
@@ -363,7 +364,6 @@ class FormPreprocess {
       $variables['title'] = ['#markup' => $variables['title']];
     }
     $variables['description'] = (!empty($element['#description'])) ? $element['#description'] : '';
-    $variables['description_display'] = $element['#description_display'] ?? 'after';
     $variables['children'] = (isset($element['#children'])) ? $element['#children'] : '';
     $variables['value'] = (isset($element['#value'])) ? $element['#value'] : '';
     $variables['required'] = !empty($element['#required']) ? $element['#required'] : NULL;

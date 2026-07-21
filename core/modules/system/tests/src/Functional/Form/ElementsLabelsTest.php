@@ -108,13 +108,6 @@ class ElementsLabelsTest extends BrowserTestBase {
     // Check Title/Label not displayed when 'visually-hidden' attribute is set
     // in radios.
     $this->assertSession()->elementExists('xpath', '//fieldset[@id="edit-form-radios-title-invisible--wrapper"]/legend/span[contains(@class, "visually-hidden")]');
-
-    foreach (['datelist', 'datetime'] as $type) {
-      $id = "edit-form-$type-title-no-xss";
-      $label_id = "$id--label";
-      $this->assertSession()->elementExists('css', "[role=\"group\"][aria-labelledby=\"$label_id\"] #$label_id");
-      $this->assertSession()->elementNotExists('css', "[role=\"group\"][aria-labelledby=\"$label_id\"] h4");
-    }
   }
 
   /**

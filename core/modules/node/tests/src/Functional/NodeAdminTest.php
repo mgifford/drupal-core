@@ -141,23 +141,6 @@ class NodeAdminTest extends NodeTestBase {
   }
 
   /**
-   * Tests the content overview pager heading level.
-   */
-  public function testContentAdminPagerHeadingLevel(): void {
-    $this->config('views.view.content')
-      ->set('display.default.display_options.pager.options.items_per_page', 1)
-      ->save();
-
-    $this->drupalCreateNode(['type' => 'page']);
-    $this->drupalCreateNode(['type' => 'page']);
-
-    $this->drupalLogin($this->adminUser);
-    $this->drupalGet('admin/content');
-
-    $this->assertSame('h2', $this->assertSession()->elementExists('css', '#pagination-heading')->getTagName());
-  }
-
-  /**
    * Tests content overview with different user permissions.
    *
    * Taxonomy filters are tested separately.

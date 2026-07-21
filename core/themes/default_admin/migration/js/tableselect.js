@@ -54,7 +54,7 @@
           const stateChanged = $checkbox.prop('checked') !== state;
 
           $checkbox.attr(
-            'aria-label',
+            'title',
             state ? strings.selectNone : strings.selectAll,
           );
 
@@ -76,9 +76,7 @@
 
     // Check if select-all already exists, if not add it.
     if ($table.find('th.select-all').find('input[type="checkbox"]').length === 0) {
-      $table.find('th.select-all').prepend(
-        $(Drupal.theme('checkbox')).attr('aria-label', strings.selectAll),
-      );
+      $table.find('th.select-all').prepend($(Drupal.theme('checkbox')).attr('title', strings.selectAll));
     }
 
     // Find all <th> with class select-all, and insert the check all checkbox.

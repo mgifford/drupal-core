@@ -31,17 +31,14 @@
         'messages--' ~ type,
       ]
       %}
-      {%
-        set message_role = type == 'error' ? 'alert' : 'status'
-      %}
 
       <div{{ attributes
         .addClass(classes)
         .setAttribute('data-drupal-selector', 'messages')
-        .setAttribute('role', message_role)
+        .setAttribute('role', 'contentinfo')
         .setAttribute('aria-label', status_headings[type])
         }}>
-        <div class="messages__container" data-drupal-selector="messages-container">
+        <div class="messages__container" data-drupal-selector="messages-container"{% if type == 'error' %} role="alert"{% endif %}>
           {% if status_headings[type] %}
             <div class="messages__header">
             <h2 class="visually-hidden">{{ status_headings[type] }}</h2>

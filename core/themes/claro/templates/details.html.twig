@@ -74,12 +74,11 @@
           {{ errors }}
         </div>
       {% endif %}
-      {%- if description and description_display == 'before' -%}
+      {%- if description -%}
         {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
         {% set description_classes = [
           'claro-details__description',
           disabled ? 'is-disabled',
-          description_display == 'invisible' ? 'visually-hidden',
         ] %}
         <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
       {%- endif -%}
@@ -88,15 +87,6 @@
       {%- endif -%}
       {%- if value -%}
         {{ value }}
-      {%- endif -%}
-      {%- if description and description_display in ['after', 'invisible'] -%}
-        {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
-        {% set description_classes = [
-          'claro-details__description',
-          disabled ? 'is-disabled',
-          description_display == 'invisible' ? 'visually-hidden',
-        ] %}
-        <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
       {%- endif -%}
 
     {% if accordion or accordion_item %}

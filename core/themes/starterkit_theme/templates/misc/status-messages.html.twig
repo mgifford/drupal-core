@@ -28,10 +28,10 @@
       'messages--' ~ type,
     ]
   %}
-  {%
-    set message_role = type == 'error' ? 'alert' : 'status'
-  %}
-  <div role="{{ message_role }}" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+    {% if type == 'error' %}
+      <div role="alert">
+    {% endif %}
       {% if status_headings[type] %}
         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
       {% endif %}
@@ -44,6 +44,9 @@
       {% else %}
         {{ messages|first }}
       {% endif %}
+    {% if type == 'error' %}
+      </div>
+    {% endif %}
   </div>
   {# Remove type specific classes. #}
   {% set attributes = attributes.removeClass(classes) %}

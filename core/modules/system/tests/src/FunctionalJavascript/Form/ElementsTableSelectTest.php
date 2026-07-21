@@ -33,10 +33,6 @@ class ElementsTableSelectTest extends WebDriverTestBase {
     $this->drupalGet('form_test/tableselect/multiple-true');
     $session = $this->getSession();
     $page = $session->getPage();
-    $select_all_checkbox = $this->assertSession()->elementExists('css', 'th.select-all input[type="checkbox"]');
-    $this->assertSame('Select all rows in this table', $select_all_checkbox->getAttribute('aria-label'));
-    $this->assertFalse($select_all_checkbox->hasAttribute('title'));
-
     for ($i = 1; $i <= 3; $i++) {
       $row = 'row' . $i;
       $page->hasUncheckedField($row);
@@ -48,8 +44,6 @@ class ElementsTableSelectTest extends WebDriverTestBase {
         $page->hasCheckedField($other_row);
       }
     }
-    $this->assertSame('Deselect all rows in this table', $select_all_checkbox->getAttribute('aria-label'));
-    $this->assertFalse($select_all_checkbox->hasAttribute('title'));
 
     // Test radios (#multiple == FALSE).
     $this->drupalGet('form_test/tableselect/multiple-false');

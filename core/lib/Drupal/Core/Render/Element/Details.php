@@ -46,7 +46,6 @@ class Details extends RenderElementBase {
       '#open' => FALSE,
       '#summary_attributes' => [],
       '#value' => NULL,
-      '#title' => $this->t('Details'),
       '#process' => [
         [static::class, 'processGroup'],
         [static::class, 'processAjaxForm'],

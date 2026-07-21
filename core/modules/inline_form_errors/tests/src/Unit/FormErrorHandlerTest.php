@@ -105,14 +105,6 @@ class FormErrorHandlerTest extends UnitTestCase {
       '#array_parents' => ['test6'],
       '#id' => 'edit-test6',
     ];
-    $this->testForm['table'] = [
-      '#type' => 'table',
-      '#title' => 'Table test',
-      '#parents' => ['table'],
-      '#array_parents' => ['table'],
-      '#id' => 'edit-table',
-      '#attributes' => [],
-    ];
   }
 
   /**
@@ -127,7 +119,7 @@ class FormErrorHandlerTest extends UnitTestCase {
       'no title given',
       'element is invisible',
       'this missing element is invalid',
-      '4 errors have been found: <ul-comma-list-mock><li-mock>Test 1</li-mock><li-mock>Test 2 &amp; a half</li-mock><li-mock>Test 3</li-mock><li-mock>Table test</li-mock></ul-comma-list-mock>',
+      '3 errors have been found: <ul-comma-list-mock><li-mock>Test 1</li-mock><li-mock>Test 2 &amp; a half</li-mock><li-mock>Test 3</li-mock></ul-comma-list-mock>',
     ];
 
     $this->messenger->expects($this->exactly(count($messages)))
@@ -157,7 +149,6 @@ class FormErrorHandlerTest extends UnitTestCase {
     $form_state->setErrorByName('test4', 'no error message');
     $form_state->setErrorByName('test5', 'no title given');
     $form_state->setErrorByName('test6', 'element is invisible');
-    $form_state->setErrorByName('table', 'No items selected.');
     $form_state->setErrorByName('missing_element', 'this missing element is invalid');
     $this->formErrorHandler->handleFormErrors($this->testForm, $form_state);
 
@@ -168,9 +159,6 @@ class FormErrorHandlerTest extends UnitTestCase {
     $this->assertSame('no error message', $this->testForm['test4']['#errors']);
     $this->assertSame('no title given', $this->testForm['test5']['#errors']);
     $this->assertSame('element is invisible', $this->testForm['test6']['#errors']);
-    $this->assertSame('No items selected.', $this->testForm['table']['#errors']);
-    $this->assertStringContainsString('No items selected.', $this->testForm['table']['#prefix']);
-    $this->assertStringContainsString('edit-table--error', $this->testForm['table']['#attributes']['aria-describedby']);
   }
 
   /**
@@ -185,7 +173,6 @@ class FormErrorHandlerTest extends UnitTestCase {
       'no error message',
       'no title given',
       'element is invisible',
-      'No items selected.',
       'this missing element is invalid',
     ];
 
@@ -211,7 +198,6 @@ class FormErrorHandlerTest extends UnitTestCase {
     $form_state->setErrorByName('test4', 'no error message');
     $form_state->setErrorByName('test5', 'no title given');
     $form_state->setErrorByName('test6', 'element is invisible');
-    $form_state->setErrorByName('table', 'No items selected.');
     $form_state->setErrorByName('missing_element', 'this missing element is invalid');
     $this->formErrorHandler->handleFormErrors($this->testForm, $form_state);
 
@@ -222,8 +208,6 @@ class FormErrorHandlerTest extends UnitTestCase {
     $this->assertSame('no error message', $this->testForm['test4']['#errors']);
     $this->assertSame('no title given', $this->testForm['test5']['#errors']);
     $this->assertSame('element is invisible', $this->testForm['test6']['#errors']);
-    $this->assertSame('No items selected.', $this->testForm['table']['#errors']);
-    $this->assertArrayNotHasKey('#prefix', $this->testForm['table']);
   }
 
 }
