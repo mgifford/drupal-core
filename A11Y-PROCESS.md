@@ -308,6 +308,61 @@ comm -13 \
 jq '.summary.uniquePatterns' reports/bugs-latest.json
 ```
 
+### Cross-project fingerprints (dual-write)
+
+Every `DRU-`/`INS-` pattern and instance ID (and every `MS-` ID from the
+multi-scanner crawl) is now accompanied by a versioned, cross-project
+fingerprint from the canonical
+[ACCESSIBILITY.md fingerprint profiles](https://mgifford.github.io/ACCESSIBILITY.md/examples/fingerprints/README.html):
+`a11y_pattern_fingerprint` / `a11y_pattern_display_id` and
+`a11yOccurrenceFingerprint` / `a11yOccurrenceDisplayId` (per-page instance)
+in `bugs-latest.json`.
+
+This is a **dual-write**, not a replacement:
+
+- `DRU-`, `INS-`, and `MS-` continue to be generated exactly as before —
+  nothing about them has changed, and no historical value has been
+  recomputed or reformatted.
+- The new fingerprints are additional fields alongside the existing ones.
+- Generation for all of these (legacy and new) is centralized in
+  [`tools/a11y-fingerprints.js`](tools/a11y-fingerprints.js), shared by
+  `core/tests/playwright/scripts/analyze-patterns.js` and
+  `tests/playwright/scripts/merge-results.js`. See
+  [`tools/a11y-fingerprints.test.js`](tools/a11y-fingerprints.test.js) for
+  golden tests asserting the legacy formulas are unchanged and the new
+  fingerprints match the frozen profiles' published test vectors.
+- A short `A11Y-PAT-`/`A11Y-OCC-` display ID is **not** authoritative — see
+  [ACCESSIBILITY_FINDING_TRACKING.md](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_FINDING_TRACKING.html)
+  for why. Use the full 64-character fingerprint for any automated
+  comparison.
+
+Do not change the frozen fingerprint profiles, their canonicalization, or
+their display-ID derivation in `tools/a11y-fingerprints.js` without first
+reading
+[the fingerprint profile stability requirements](https://mgifford.github.io/ACCESSIBILITY.md/examples/fingerprints/README.html) —
+a profile change that alters an already-emitted fingerprint requires a new
+profile version, not an in-place edit.
+
+### Pattern tracker map
+
+[`reports/pattern-tracker-map.json`](reports/pattern-tracker-map.json) links
+a pattern ID (and its `a11y/pattern/v1` fingerprint) to a filed Drupal.org
+issue, when one exists. This is separate from the `drupal_issue` field
+already present on some patterns in `bugs-latest.json` (drawn from
+`analyze-patterns.js`'s internal rule+selector fix table): the tracker map
+is keyed by the stable pattern identifier itself, so it survives even if the
+fix-table heuristic that originally matched the pattern changes.
+
+Regenerate it after a scan with:
+
+```bash
+node tools/build-pattern-tracker-map.js
+```
+
+This only adds entries for patterns whose `drupal_issue` is a real, filed
+Drupal.org issue URL (not a `.../issues/new` placeholder). It never guesses
+or infers a tracker relationship — see the file's own `notes` field.
+
 ---
 
 ## 6. Scheduling Regular Runs

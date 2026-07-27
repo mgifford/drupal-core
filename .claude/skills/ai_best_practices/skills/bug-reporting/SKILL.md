@@ -126,6 +126,29 @@ pattern_id: DRU-56EF78AB (all button.submit instances missing name)
 - Reporting: "All .send-button elements are missing accessible names"
 - Higher-level: "This selector pattern needs fixing once to fix everywhere"
 
+### Cross-project fingerprints (a11y_pattern_fingerprint / a11yOccurrenceFingerprint)
+
+`bugs-latest.json` also carries a versioned, cross-project fingerprint
+alongside every `DRU-`/`INS-` ID: `a11y_pattern_fingerprint` (with a
+`a11y_pattern_display_id` short alias) on each pattern, and
+`a11yOccurrenceFingerprint` (with `a11yOccurrenceDisplayId`) on each
+per-page occurrence in `affected_pages`. These follow the frozen
+`a11y/pattern/v1` / `a11y/occurrence/v1` profiles defined in the canonical
+[ACCESSIBILITY.md fingerprint guide](https://mgifford.github.io/ACCESSIBILITY.md/examples/fingerprints/README.html) —
+this file does not restate that algorithm; see
+`tools/a11y-fingerprints.js` for this repository's implementation.
+
+This is additive, not a replacement: `DRU-` and `INS-` remain the IDs this
+repository's own tooling and reports key off of. The new fingerprints exist
+so a pattern discovered here can eventually be correlated with the same
+underlying defect reported through a different tool or project, without
+either project having to adopt the other's identifier format. A short
+`A11Y-PAT-`/`A11Y-OCC-` display ID is never authoritative on its own — treat
+it as a human-readable label, and use the full fingerprint for any
+automated comparison. See
+[`reports/pattern-tracker-map.json`](../../../../../reports/pattern-tracker-map.json)
+for how a pattern is linked to a filed Drupal.org issue once one exists.
+
 ---
 
 ## Issue Template
