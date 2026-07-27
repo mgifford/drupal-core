@@ -29,6 +29,10 @@ export interface PageEntry {
   expectedStatus?: number;
 }
 
+export type ScanMode = 'core-baseline' | 'seeded-benchmark';
+
+export const DEFAULT_SCAN_MODE: ScanMode = 'core-baseline';
+
 /** Core pages rendered by the default (Olivero) theme — no authentication. */
 export const anonymousPages: PageEntry[] = [
   { name: 'Homepage', path: '/', requiresAuth: false },
@@ -60,6 +64,17 @@ export const adminPages: PageEntry[] = [
   { name: 'Text format (restricted)', path: '/admin/config/content/formats/manage/restricted_html', requiresAuth: true },
   { name: 'Site information', path: '/admin/config/system/site-information', requiresAuth: true },
   { name: 'Reports', path: '/admin/reports', requiresAuth: true },
+];
+
+/**
+ * Seeded-benchmark pages from generated_content_a11y.
+ *
+ * These pages intentionally include seeded defects when
+ * generated_content_a11y.settings:seed_bugs is true.
+ */
+export const seededBenchmarkPages: PageEntry[] = [
+  { name: 'Generated A11y articles', path: '/a11y-articles', requiresAuth: false },
+  { name: 'Generated A11y contact form', path: '/a11y-contact', requiresAuth: false },
 ];
 
 /** All pages combined — used by the full crawl. */
