@@ -2,10 +2,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const yaml = require('js-yaml');
 const { renderMarkdownReport } = require('./lib/render-markdown-report');
 const { loadAxeResults } = require('./lib/axe-results-store');
+const {
+  generateDrupalPatternId,
+  generateDrupalInstanceId,
+  computeA11yPatternFingerprint,
+  computeA11yOccurrenceFingerprint,
+} = require('../../../../tools/a11y-fingerprints');
 
 // Root-level /reports directory — one level above the repo's core/ directory.
 // Resolves from: core/tests/playwright/scripts/ → ../../../../reports/
@@ -214,7 +219,6 @@ function formatConditions(conditions) {
 }
 
 /**
- * Generate a stable 8-char hex ID for a unique violation pattern.
  * Pattern ID: same rule + selector (across all pages/screens/themes).
  * Instance ID: adds page path + screen — unique per page occurrence.
  *
@@ -222,22 +226,14 @@ function formatConditions(conditions) {
  * ai_best_practices bug-reporting schema. Inputs are joined with | so partial
  * collisions are impossible.
  * Example: "DRU-A1B2C3D4" (pattern) or "INS-A1B2C3D4" (instance)
+ *
+ * Generation is centralized in tools/a11y-fingerprints.js (imported above as
+ * generateDrupalPatternId / generateDrupalInstanceId) so
+ * tests/playwright/scripts/merge-results.js can share the same
+ * implementation instead of duplicating it. This file also dual-writes the
+ * new a11y/pattern/v1 / a11y/occurrence/v1 fingerprints from the same
+ * module; see https://mgifford.github.io/ACCESSIBILITY.md/examples/fingerprints/README.html.
  */
-function shortHash(str) {
-  return crypto.createHash('sha256').update(str).digest('hex').slice(0, 8).toUpperCase();
-}
-
-function generatePatternId(selectorKey, ruleId) {
-  // screenType intentionally excluded: desktop and mobile are the same bug.
-  // Theme/colorScheme also excluded: they go in conditions.
-  return `DRU-${shortHash([selectorKey, ruleId].join('|'))}`;
-}
-
-function generateInstanceId(pagePath, selectorKey, ruleId, screenType) {
-  // Stable per page+rule+selector+screen. Theme/colorScheme intentionally excluded:
-  // conditions are tracked at the pattern level, not per page occurrence.
-  return `INS-${shortHash([pagePath, selectorKey, ruleId, screenType].join('|'))}`;
-}
 
 // ─── Axe rule → WCAG SC mapping ──────────────────────────────────────────────
 
@@ -1032,10 +1028,16 @@ function main() {
             ? (RULE_WCAG[violation.id] ?? null)
             : null;
           const xpath = cssToXpath(Array.isArray(node.target) ? node.target[0] : node.target);
-          const patternId = generatePatternId(selKey, violation.id);
+          const patternId = generateDrupalPatternId(selKey, violation.id);
+          // Dual-write: a11y/pattern/v1 alongside the legacy DRU- pattern ID.
+          // Same identity rule as DRU- (selector + rule; screenType/theme/
+          // colorScheme excluded) — see tools/a11y-fingerprints.js.
+          const a11yPattern = computeA11yPatternFingerprint(selKey, 'axe-core', violation.id);
 
           patternMap.set(key, {
             patternId,
+            a11yPatternFingerprint: a11yPattern.fingerprint,
+            a11yPatternDisplayId: a11yPattern.displayId,
             ruleId: violation.id,
             classification: ruleClass.classification,
             relatedWcag,
@@ -1068,9 +1070,21 @@ function main() {
         const generalizedPath = generalizePath(pageResult.path);
         const pageKey = `${generalizedPath}::${screenType}`;
         if (!pat.pages.some((pg) => pg._pageKey === pageKey)) {
-          const instanceId = generateInstanceId(generalizedPath, selKey, violation.id, screenType);
+          const instanceId = generateDrupalInstanceId(generalizedPath, selKey, violation.id, screenType);
+          // Dual-write: a11y/occurrence/v1 alongside the legacy INS- instance
+          // ID. screenType is explicitly named as this project's test_profile
+          // rather than silently folded into location.key or dropped — see
+          // examples/fingerprints/README.md's occurrence contract for why
+          // test_profile must come from explicit configuration.
+          const a11yOccurrence = computeA11yOccurrenceFingerprint(
+            pat.a11yPatternFingerprint,
+            generalizedPath,
+            `drupal-core/screen-type/${screenType}`,
+          );
           pat.pages.push({
             instanceId,
+            a11yOccurrenceFingerprint: a11yOccurrence.fingerprint,
+            a11yOccurrenceDisplayId: a11yOccurrence.displayId,
             name: pageResult.page,
             path: generalizedPath,
             url: `${REPORT_BASE_URL}${generalizedPath}`,
@@ -1201,6 +1215,13 @@ function main() {
     issues: patterns.map((p, i) => ({
       id: `DRUPAL-A11Y-${String(i + 1).padStart(3, '0')}`,
       pattern_id: p.patternId,          // stable hash: rule + selector (no theme/screen)
+      // Dual-write: the versioned, cross-project a11y/pattern/v1 fingerprint
+      // for the same pattern identity as pattern_id above. See
+      // https://mgifford.github.io/ACCESSIBILITY.md/examples/fingerprints/README.html.
+      // display_id is a short, non-authoritative alias; do not use it as a
+      // lookup key on its own.
+      a11y_pattern_fingerprint: p.a11yPatternFingerprint,
+      a11y_pattern_display_id: p.a11yPatternDisplayId,
       priority: i + 1,
       conditions: p.conditions,
       isTemplateLevelIssue: p.pages.length >= 3,

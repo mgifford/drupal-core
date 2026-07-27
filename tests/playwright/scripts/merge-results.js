@@ -16,9 +16,13 @@
  *   - reports/MULTI-SCANNER-REPORT-latest.md (human-readable)
  *   - reports/bugs-multi-scanner.json (deduplicated bug reports)
  */
-const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const {
+  generateMultiScannerId,
+  computeA11yPatternFingerprint,
+  computeA11yOccurrenceFingerprint,
+} = require('../../../tools/a11y-fingerprints');
 
 const CRAWL_DIR = path.resolve(__dirname, '../../../reports/.tmp-crawl');
 const REPORTS_DIR = path.resolve(__dirname, '../../../reports');
@@ -99,8 +103,45 @@ function detectScreenType(viewport) {
 }
 
 function generateId(inputs, prefix) {
-  const hash = crypto.createHash('sha256').update(inputs).digest('hex').slice(0, 8);
-  return `${prefix}-${hash}`;
+  // Retained as a thin call-through so existing call sites in this file
+  // don't need to change; generation itself now lives in
+  // tools/a11y-fingerprints.js (shared with core/tests/playwright/scripts/analyze-patterns.js).
+  return generateMultiScannerId(inputs);
+}
+
+/**
+ * Computes the MS- instance/pattern IDs (unchanged) plus the dual-written
+ * a11y/pattern/v1 / a11y/occurrence/v1 fingerprints for one finding.
+ *
+ * toolNamespace identifies which scanner produced this finding (e.g.
+ * "axe-core", "ibm-equal-access", "guidepup-virtual-sr", or "multi-scanner"
+ * for a cross-tool confirmed/investigate finding) and becomes
+ * a11y/pattern/v1's rule.namespace.
+ *
+ * MS-'s own pattern identity includes screenType (unlike DRU-, which
+ * excludes it — see tools/a11y-fingerprints.js). The dual-write preserves
+ * that same identity boundary by passing screenType as state_key, an
+ * explicit, named part of the pattern contract, rather than folding it into
+ * the locator value.
+ */
+function computeIds(pagePath, selector, ruleId, screenType, toolNamespace) {
+  const instanceId = generateId(`${pagePath}|${selector}|${ruleId}|${screenType}`, PREFIX);
+  const patternId = generateId(`${selector}|${ruleId}|${screenType}`, PREFIX);
+  const a11yPattern = computeA11yPatternFingerprint(
+    selector,
+    toolNamespace,
+    ruleId,
+    `drupal-core/screen-type/${screenType}`,
+  );
+  const a11yOccurrence = computeA11yOccurrenceFingerprint(a11yPattern.fingerprint, pagePath, null);
+  return {
+    instanceId,
+    patternId,
+    a11yPatternFingerprint: a11yPattern.fingerprint,
+    a11yPatternDisplayId: a11yPattern.displayId,
+    a11yOccurrenceFingerprint: a11yOccurrence.fingerprint,
+    a11yOccurrenceDisplayId: a11yOccurrence.displayId,
+  };
 }
 
 // ── Load shards ──────────────────────────────────────────────────────────────
@@ -155,12 +196,15 @@ for (const record of allRecords) {
     const wcag = lookupWcag(f.rule);
     const tools = (f.tools || ['unknown']).join(' + ');
     const selector = `[data-confirmed="${f.rule}"]`;
-    const instanceId = generateId(`${pagePath}|${selector}|${f.rule}|${screenType}`, PREFIX);
-    const patternId = generateId(`${selector}|${f.rule}|${screenType}`, PREFIX);
+    const ids = computeIds(pagePath, selector, f.rule, screenType, 'multi-scanner-confirmed');
 
     addBug({
-      instance_id: instanceId,
-      pattern_id: patternId,
+      instance_id: ids.instanceId,
+      pattern_id: ids.patternId,
+      a11y_pattern_fingerprint: ids.a11yPatternFingerprint,
+      a11y_pattern_display_id: ids.a11yPatternDisplayId,
+      a11y_occurrence_fingerprint: ids.a11yOccurrenceFingerprint,
+      a11y_occurrence_display_id: ids.a11yOccurrenceDisplayId,
       rule_id: f.rule,
       tool: tools,
       wcag_sc: wcag.sc,
@@ -204,12 +248,15 @@ for (const record of allRecords) {
     const wcag = lookupWcag(f.rule);
     const tools = (f.tools || ['unknown']).join(' + ');
     const selector = `[data-investigate="${f.rule}"]`;
-    const instanceId = generateId(`${pagePath}|${selector}|${f.rule}|${screenType}`, PREFIX);
-    const patternId = generateId(`${selector}|${f.rule}|${screenType}`, PREFIX);
+    const ids = computeIds(pagePath, selector, f.rule, screenType, 'multi-scanner-investigate');
 
     addBug({
-      instance_id: instanceId,
-      pattern_id: patternId,
+      instance_id: ids.instanceId,
+      pattern_id: ids.patternId,
+      a11y_pattern_fingerprint: ids.a11yPatternFingerprint,
+      a11y_pattern_display_id: ids.a11yPatternDisplayId,
+      a11y_occurrence_fingerprint: ids.a11yOccurrenceFingerprint,
+      a11y_occurrence_display_id: ids.a11yOccurrenceDisplayId,
       rule_id: f.rule,
       tool: tools,
       wcag_sc: wcag.sc,
@@ -252,12 +299,15 @@ for (const record of allRecords) {
   for (const f of (crossRef.axeOnly ?? [])) {
     const wcag = lookupWcag(f.rule);
     const selector = `[data-axe-rule="${f.rule}"]`;
-    const instanceId = generateId(`${pagePath}|${selector}|${f.rule}|${screenType}`, PREFIX);
-    const patternId = generateId(`${selector}|${f.rule}|${screenType}`, PREFIX);
+    const ids = computeIds(pagePath, selector, f.rule, screenType, 'axe-core');
 
     addBug({
-      instance_id: instanceId,
-      pattern_id: patternId,
+      instance_id: ids.instanceId,
+      pattern_id: ids.patternId,
+      a11y_pattern_fingerprint: ids.a11yPatternFingerprint,
+      a11y_pattern_display_id: ids.a11yPatternDisplayId,
+      a11y_occurrence_fingerprint: ids.a11yOccurrenceFingerprint,
+      a11y_occurrence_display_id: ids.a11yOccurrenceDisplayId,
       rule_id: f.rule,
       tool: 'axe-core',
       wcag_sc: wcag.sc,
@@ -299,12 +349,15 @@ for (const record of allRecords) {
   for (const f of (crossRef.ibmEAOnly ?? [])) {
     const wcag = lookupWcag(f.rule);
     const selector = `[data-ibmea-rule="${f.rule}"]`;
-    const instanceId = generateId(`${pagePath}|${selector}|${f.rule}|${screenType}`, PREFIX);
-    const patternId = generateId(`${selector}|${f.rule}|${screenType}`, PREFIX);
+    const ids = computeIds(pagePath, selector, f.rule, screenType, 'ibm-equal-access');
 
     addBug({
-      instance_id: instanceId,
-      pattern_id: patternId,
+      instance_id: ids.instanceId,
+      pattern_id: ids.patternId,
+      a11y_pattern_fingerprint: ids.a11yPatternFingerprint,
+      a11y_pattern_display_id: ids.a11yPatternDisplayId,
+      a11y_occurrence_fingerprint: ids.a11yOccurrenceFingerprint,
+      a11y_occurrence_display_id: ids.a11yOccurrenceDisplayId,
       rule_id: f.rule,
       tool: 'IBM Equal Access',
       wcag_sc: wcag.sc,
@@ -346,12 +399,15 @@ for (const record of allRecords) {
   for (const f of (crossRef.virtualSROnly ?? [])) {
     const wcag = lookupWcag(f.rule);
     const selector = `[data-vsr-rule="${f.rule}"]`;
-    const instanceId = generateId(`${pagePath}|${selector}|${f.rule}|${screenType}`, PREFIX);
-    const patternId = generateId(`${selector}|${f.rule}|${screenType}`, PREFIX);
+    const ids = computeIds(pagePath, selector, f.rule, screenType, 'guidepup-virtual-sr');
 
     addBug({
-      instance_id: instanceId,
-      pattern_id: patternId,
+      instance_id: ids.instanceId,
+      pattern_id: ids.patternId,
+      a11y_pattern_fingerprint: ids.a11yPatternFingerprint,
+      a11y_pattern_display_id: ids.a11yPatternDisplayId,
+      a11y_occurrence_fingerprint: ids.a11yOccurrenceFingerprint,
+      a11y_occurrence_display_id: ids.a11yOccurrenceDisplayId,
       rule_id: f.rule,
       tool: 'Guidepup Virtual Screen Reader',
       wcag_sc: wcag.sc,
