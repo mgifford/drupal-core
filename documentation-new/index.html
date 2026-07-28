@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drupal Accessibility Documentation Review Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        nav {
+            background: #f8f9fa;
+            border-bottom: 3px solid #004d99;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #004d99;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        nav a:hover,
+        nav a:focus {
+            background: #004d99;
+            color: white;
+            outline: 2px solid #003366;
+            outline-offset: 2px;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .intro {
+            background: #e3f2fd;
+            border-left: 4px solid #004d99;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .intro h2 {
+            color: #003366;
+            margin-bottom: 0.5rem;
+        }
+
+        .intro ul {
+            margin-left: 1.5rem;
+        }
+
+        .intro li {
+            margin-bottom: 0.5rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        section h2 {
+            color: #003366;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #004d99;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .guide-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .guide-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .guide-card h3 {
+            color: #003366;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .guide-card .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .guide-card a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #004d99;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .guide-card a:hover,
+        .guide-card a:focus {
+            background: #003366;
+            outline: 2px solid #004d99;
+            outline-offset: 2px;
+        }
+
+        .guide-card .changes-link {
+            background: #ff6b6b;
+        }
+
+        .guide-card .changes-link:hover,
+        .guide-card .changes-link:focus {
+            background: #cc5555;
+        }
+
+        .guide-card .new-link {
+            background: #51cf66;
+        }
+
+        .guide-card .new-link:hover,
+        .guide-card .new-link:focus {
+            background: #40c057;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .priority-1 {
+            background: #ffcccb;
+            color: #cc0000;
+        }
+
+        .priority-2 {
+            background: #ffe8cc;
+            color: #cc6600;
+        }
+
+        .priority-3 {
+            background: #e8f5e9;
+            color: #006600;
+        }
+
+        .review-status {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .review-status strong {
+            color: #333;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #004d99;
+            text-decoration: none;
+        }
+
+        footer a:hover,
+        footer a:focus {
+            text-decoration: underline;
+            outline: 2px solid #004d99;
+            outline-offset: 2px;
+        }
+
+        .toc-box {
+            background: #f0f4f8;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc-box h3 {
+            color: #003366;
+            margin-bottom: 1rem;
+        }
+
+        .toc-box ol {
+            columns: 2;
+            gap: 1.5rem;
+            margin-left: 1.5rem;
+        }
+
+        .toc-box li {
+            margin-bottom: 0.5rem;
+            break-inside: avoid;
+        }
+
+        .toc-box a {
+            color: #004d99;
+            text-decoration: none;
+        }
+
+        .toc-box a:hover,
+        .toc-box a:focus {
+            text-decoration: underline;
+            outline: 2px solid #004d99;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            nav a {
+                display: block;
+            }
+
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toc-box ol {
+                columns: 1;
+            }
+        }
+
+        /* Keyboard navigation focus styles */
+        *:focus {
+            outline: 2px solid #004d99;
+            outline-offset: 2px;
+        }
+
+        button:focus,
+        a:focus {
+            outline: 2px solid #004d99;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Drupal Accessibility Documentation</h1>
+            <p>Review Index for Proposed Updates &amp; Changes</p>
+        </header>
+
+        <nav role="navigation" aria-label="Quick navigation">
+            <a href="#foundation">Foundation</a>
+            <a href="#development">Development</a>
+            <a href="#implementation">Implementation</a>
+            <a href="#review">Review &amp; Testing</a>
+            <a href="#resources">Resources</a>
+        </nav>
+
+        <main>
+            <section class="intro">
+                <h2>About This Review</h2>
+                <p>This page summarizes proposed updates to Drupal's accessibility documentation. The guides below are organized by recommended review priority and editorial order.</p>
+                <ul>
+                    <li><strong>Green priority (3):</strong> Supporting resources and reference material</li>
+                    <li><strong>Orange priority (2):</strong> Important implementation guides</li>
+                    <li><strong>Red priority (1):</strong> Critical foundation and development standards</li>
+                </ul>
+                <p style="margin-top: 1rem; font-style: italic;">Each guide includes links to view the current version, proposed changes, and new content variants.</p>
+            </section>
+
+            <div class="toc-box">
+                <h3>Quick Navigation: Review in This Order</h3>
+                <ol>
+                    <li><a href="#guide-accessibility">Drupal Accessibility Foundation</a></li>
+                    <li><a href="#guide-accessibility-coding">Accessibility Coding Standards</a></li>
+                    <li><a href="#guide-features">Drupal Accessibility Features for D11</a></li>
+                    <li><a href="#guide-contribution">How to Ensure Your Contribution is Accessible</a></li>
+                    <li><a href="#guide-forms">Build Accessible Forms</a></li>
+                    <li><a href="#guide-themes">Creating Accessible Themes</a></li>
+                    <li><a href="#guide-images">Accessible Images and Media</a></li>
+                    <li><a href="#guide-javascript">Accessible JavaScript and Components</a></li>
+                    <li><a href="#guide-hide-content">Hide Content Properly</a></li>
+                    <li><a href="#guide-color">Color Contrast and Typography</a></li>
+                    <li><a href="#guide-structure">Page Structure and Navigation</a></li>
+                    <li><a href="#guide-core-gate">Core Gate: Accessibility</a></li>
+                    <li><a href="#guide-acr">ACR Process: Accessibility Conformance Report</a></li>
+                    <li><a href="#guide-review">How to Do an Accessibility Review</a></li>
+                    <li><a href="#guide-office-hours">Drupal A11y Office Hours</a></li>
+                    <li><a href="#guide-contrib-modules">Contributed Modules</a></li>
+                    <li><a href="#guide-tools">Tools, Techniques &amp; Resources</a></li>
+                    <li><a href="#guide-external">External Accessibility Resources</a></li>
+                </ol>
+            </div>
+
+            <!-- PRIORITY 1: FOUNDATION & DEVELOPMENT STANDARDS -->
+            <section id="foundation">
+                <h2>Priority 1: Foundation &amp; Development Standards</h2>
+                <p class="section-description">Critical guides that define Drupal's accessibility commitment and standards. Review and approve these first.</p>
+
+                <div class="guides-grid">
+                    <!-- Accessibility Foundation -->
+                    <div class="guide-card" id="guide-accessibility">
+                        <span class="priority-badge priority-1">Priority 1</span>
+                        <h3>Drupal Accessibility Foundation</h3>
+                        <p>Core accessibility principles, Drupal's commitment to WCAG 2.2 AA, and how accessibility is integrated into the development process.</p>
+                        <div class="links">
+                            <a href="accessibility.html">View Current Page</a>
+                            <a href="accessibility-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="accessibility-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Accessibility Coding Standards -->
+                    <div class="guide-card" id="guide-accessibility-coding">
+                        <span class="priority-badge priority-1">Priority 1</span>
+                        <h3>Accessibility Coding Standards</h3>
+                        <p>Best practices and coding patterns for developers and contributors ensuring WCAG 2.2 AA compliance in code, markup, and interactions.</p>
+                        <div class="links">
+                            <a href="accessibility-coding-standards.html">View Current Page</a>
+                            <a href="accessibility-coding-standards-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="accessibility-coding-standards-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Drupal Accessibility Features D11 -->
+                    <div class="guide-card" id="guide-features">
+                        <span class="priority-badge priority-1">Priority 1</span>
+                        <h3>Drupal Accessibility Features (D11)</h3>
+                        <p>Overview of built-in accessibility features, defaults, and capabilities provided by Drupal core for D11+.</p>
+                        <div class="links">
+                            <a href="drupal-accessibility-features.html">View Current Page</a>
+                            <a href="drupal-accessibility-features-d11-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="drupal-accessibility-features-d11-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Contribution Accessibility -->
+                    <div class="guide-card" id="guide-contribution">
+                        <span class="priority-badge priority-1">Priority 1</span>
+                        <h3>How to Ensure Your Contribution is Accessible</h3>
+                        <p>Guidelines for contributors on accessibility requirements, testing, and review processes before submitting patches.</p>
+                        <div class="links">
+                            <a href="how-to-ensure-your-contribution-is-accessible.html">View Current Page</a>
+                            <a href="how-to-ensure-your-contribution-is-accessible-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="how-to-ensure-your-contribution-is-accessible-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRIORITY 2: IMPLEMENTATION GUIDES -->
+            <section id="implementation">
+                <h2>Priority 2: Implementation Guides</h2>
+                <p class="section-description">Practical guides for building accessible features. Review after Priority 1 foundation guides.</p>
+
+                <div class="guides-grid">
+                    <!-- Accessible Forms -->
+                    <div class="guide-card" id="guide-forms">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Build Accessible Forms</h3>
+                        <p>Practical patterns for creating accessible forms, labels, validation, and error handling that meet WCAG 2.2 AA.</p>
+                        <div class="links">
+                            <a href="build-accessible-forms.html">View Current Page</a>
+                            <a href="build-accessible-forms-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Creating Accessible Themes -->
+                    <div class="guide-card" id="guide-themes">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Creating Accessible Themes</h3>
+                        <p>Guide for theme developers on building accessible Drupal themes, including semantic markup, CSS, and JavaScript best practices.</p>
+                        <div class="links">
+                            <a href="create-accessible-themes.html">View Current Page</a>
+                            <a href="creating-accessible-themes-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="creating-accessible-themes-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Accessible Images and Media -->
+                    <div class="guide-card" id="guide-images">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Accessible Images and Media</h3>
+                        <p>Best practices for providing text alternatives, captions, transcripts, and audio descriptions for images and media content.</p>
+                        <div class="links">
+                            <a href="accessible-images-and-media.html">View Current Page</a>
+                            <a href="accessible-images-and-media-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Accessible JavaScript and Components -->
+                    <div class="guide-card" id="guide-javascript">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Accessible JavaScript and Components</h3>
+                        <p>Patterns for building interactive components, widgets, and behaviors that are keyboard-accessible and work with assistive technologies.</p>
+                        <div class="links">
+                            <a href="accessible-javascript-and-components.html">View Current Page</a>
+                            <a href="accessible-javascript-and-components-change.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Hide Content Properly -->
+                    <div class="guide-card" id="guide-hide-content">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Hide Content Properly</h3>
+                        <p>Technical patterns for hiding content accessibly—using CSS display, visibility, ARIA, and responsive design without breaking AT access.</p>
+                        <div class="links">
+                            <a href="hide-content-properly.html">View Current Page</a>
+                            <a href="hide-content-properly-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Color Contrast and Typography -->
+                    <div class="guide-card" id="guide-color">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Color Contrast and Typography</h3>
+                        <p>Guidelines for achieving compliant color contrast ratios, readable typography, and accessible visual design across light and dark modes.</p>
+                        <div class="links">
+                            <a href="color-contrast-and-typography.html">View Current Page</a>
+                            <a href="color-contrast-and-typography-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Page Structure and Navigation -->
+                    <div class="guide-card" id="guide-structure">
+                        <span class="priority-badge priority-2">Priority 2</span>
+                        <h3>Page Structure and Navigation</h3>
+                        <p>Patterns for accessible page structure, headings, landmarks, navigation menus, and skip links that aid both users and assistive technologies.</p>
+                        <div class="links">
+                            <a href="page-structure-and-navigation.html">View Current Page</a>
+                            <a href="page-structure-and-navigation-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRIORITY 3: REVIEW, TESTING & RESOURCES -->
+            <section id="review">
+                <h2>Priority 3: Review, Testing &amp; Processes</h2>
+                <p class="section-description">Processes, testing methodologies, and team resources. Review after implementation guides.</p>
+
+                <div class="guides-grid">
+                    <!-- Core Gate Accessibility -->
+                    <div class="guide-card" id="guide-core-gate">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>Core Gate: Accessibility</h3>
+                        <p>Quality gate criteria and automated checks for ensuring accessibility compliance in Drupal core contributions and patches.</p>
+                        <div class="links">
+                            <a href="core-gate-accessibility.html">View Current Page</a>
+                            <a href="core-gate-accessibility-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="core-gate-accessibility-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- ACR Process -->
+                    <div class="guide-card" id="guide-acr">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>ACR Process: Accessibility Conformance Reporting</h3>
+                        <p>Guide to creating and using Accessibility Conformance Reports (ACR) for documenting WCAG 2.2 compliance and accessibility testing results.</p>
+                        <div class="links">
+                            <a href="acr-process.html">View Current Page</a>
+                            <a href="acr-process-change.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Accessibility Review -->
+                    <div class="guide-card" id="guide-review">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>How to Do an Accessibility Review</h3>
+                        <p>Step-by-step methodology for conducting manual and automated accessibility reviews, including tools, techniques, and reporting findings.</p>
+                        <div class="links">
+                            <a href="ow-to-do-an-accessibility-review.html">View Current Page</a>
+                            <a href="ow-to-do-an-accessibility-review-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="ow-to-do-an-accessibility-review-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Office Hours -->
+                    <div class="guide-card" id="guide-office-hours">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>Drupal A11y Office Hours</h3>
+                        <p>Information about regular community office hours for accessibility support, questions, and collaborative problem-solving.</p>
+                        <div class="links">
+                            <a href="drupal-a11y-office-hours.html">View Current Page</a>
+                            <a href="drupal-a11y-office-hours-changes.html" class="changes-link">Review Proposed Changes</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRIORITY 3: RESOURCES -->
+            <section id="resources">
+                <h2>Priority 3: References &amp; Resources</h2>
+                <p class="section-description">Reference material and external resources. Review last as supporting documentation.</p>
+
+                <div class="guides-grid">
+                    <!-- Contributed Modules -->
+                    <div class="guide-card" id="guide-contrib-modules">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>Contributed Modules for Accessibility</h3>
+                        <p>Overview of community-maintained Drupal modules that enhance accessibility, testing, and compliance features.</p>
+                        <div class="links">
+                            <a href="contributed-modules.html">View Current Page</a>
+                            <a href="contributed-modules-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="contributed-modules-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- Tools, Techniques &amp; Resources -->
+                    <div class="guide-card" id="guide-tools">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>Tools, Techniques &amp; Resources</h3>
+                        <p>Curated list of accessibility testing tools, techniques, browser extensions, and learning resources for the Drupal community.</p>
+                        <div class="links">
+                            <a href="tools-techniques-resources.html">View Current Page</a>
+                            <a href="tools-techniques-resources-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="tools-techniques-resources-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+
+                    <!-- External Accessibility Resources -->
+                    <div class="guide-card" id="guide-external">
+                        <span class="priority-badge priority-3">Priority 3</span>
+                        <h3>External Accessibility Resources</h3>
+                        <p>Links to W3C/WAI standards, WCAG guidelines, accessibility best practices, and learning resources from trusted external sources.</p>
+                        <div class="links">
+                            <a href="external-accessibility-resources.html">View Current Page</a>
+                            <a href="external-accessibility-resources-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="external-accessibility-resources-new.html" class="new-link">See New Draft</a>
+                        </div>
+                        <div class="review-status">
+                            <strong>Status:</strong> Awaiting editorial review
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <strong>Drupal Accessibility Documentation Review Index</strong>
+            </p>
+            <p style="margin-top: 1rem;">
+                For more information, visit the <a href="https://www.drupal.org/docs/getting-started/accessibility">Drupal Accessibility documentation</a>
+                or the <a href="https://www.drupal.org/project/issues/drupal?component=accessibility">Drupal accessibility issue queue</a>.
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.8rem;">
+                Last updated: 2026-07-28 | Status: Documentation review in progress
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
