@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'reports/**'
+      - 'documentation-new/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -30,16 +31,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare site root
+        run: |
+          # Create a directory for the Pages deployment
+          mkdir -p _site
+          # Copy documentation-new to docs/ subdirectory
+          cp -r documentation-new/ _site/docs/
+          # Copy reports to root
+          cp -r reports/* _site/
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload reports/ as Pages artifact
+      - name: Upload combined artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          # Deploy everything inside reports/ as the site root.
-          # Result: https://mgifford.github.io/drupal-core/ shows index.html
-          # and all report HTML files are at their own paths.
-          path: reports/
+          # Deploy the combined _site/ directory
+          # Result: https://mgifford.github.io/drupal-core/ shows root content
+          # and docs are available at https://mgifford.github.io/drupal-core/docs/
+          path: _site/
 
       - name: Deploy to GitHub Pages
         id: deployment
