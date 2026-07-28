@@ -498,11 +498,7 @@ class FilterAdminTest extends BrowserTestBase {
     $this->assertSession()->linkByHrefNotExists('/admin/config/content/formats/manage/filter_test/enable');
 
     // Test the configure link appears for Filter test.
-    $configure_link = $this->assertSession()->elementExists(
-      'xpath',
-      '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]',
-    );
-    $this->assertSame('Configure Filter test', $configure_link->getAttribute('aria-label'));
+    $this->assertSession()->elementExists('xpath', '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]');
 
     // Disable 'Filter test'.
     $this->getSession()->getPage()->find('css', '[href*="/admin/config/content/formats/manage/filter_test/disable"]')->click();

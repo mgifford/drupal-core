@@ -108,23 +108,14 @@ class FieldPreprocess {
         [
           'data' => [
             '#type' => 'html_tag',
-            '#tag' => 'span',
+            '#tag' => 'h4',
             '#value' => $element['#title'],
             '#attributes' => $header_attributes,
           ],
           'colspan' => 2,
           'class' => ['field-label'],
         ],
-        [
-          'data' => [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#value' => $this->t('Operations'),
-            '#attributes' => [
-              'class' => ['visually-hidden'],
-            ],
-          ],
-        ],
+        [],
         $this->t('Order', [], ['context' => 'Sort order']),
       ];
       $rows = [];
@@ -195,11 +186,7 @@ class FieldPreprocess {
 
       if (!empty($element['#description'])) {
         $description_id = $element['#attributes']['aria-describedby'];
-        $description_attributes = ['id' => $description_id];
-        $variables['description_display'] = $element['#description_display'] ?? 'after';
-        if ($variables['description_display'] === 'invisible') {
-          $description_attributes['class'][] = 'visually-hidden';
-        }
+        $description_attributes['id'] = $description_id;
         $variables['description']['attributes'] = new Attribute($description_attributes);
         $variables['description']['content'] = $element['#description'];
 

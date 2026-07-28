@@ -6,7 +6,9 @@
   "scripts": {
     "test": "playwright test",
     "test:virtual-sr": "playwright test --grep 'Virtual SR'",
-    "test:modal": "playwright test --grep 'Virtual SR.*modal'"
+    "test:modal": "playwright test --grep 'Virtual SR.*modal'",
+    "test:multi-scanner:core-baseline": "A11Y_SCAN_MODE=core-baseline playwright test --grep 'Multi-Scanner Crawl'",
+    "test:multi-scanner:seeded-benchmark": "A11Y_SCAN_MODE=seeded-benchmark playwright test --grep 'Multi-Scanner Crawl'"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",

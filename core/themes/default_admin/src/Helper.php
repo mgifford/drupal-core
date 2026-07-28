@@ -60,7 +60,7 @@ final class Helper {
       ],
       'orange' => [
         'label' => t('Orange'),
-        'hex' => '#bf4e25',
+        'hex' => '#c55228',
       ],
       'yellow' => [
         'label' => t('Yellow'),

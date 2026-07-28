@@ -14,9 +14,9 @@
     errors ? 'has-error',
   ]
 %}
-<div{{ attributes.addClass('form-item', 'form-datetime-wrapper') }}>
+<div class="form-item form-datetime-wrapper">
 {% if title %}
-  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
 {% endif %}
 {{ content }}
 {% if errors %}

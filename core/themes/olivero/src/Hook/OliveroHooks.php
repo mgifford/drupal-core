@@ -345,7 +345,7 @@ class OliveroHooks {
       // @todo change this after https://www.drupal.org/node/3099026 has landed.
       $variables['table']['#header'][0]['data'] = [
         '#type' => 'html_tag',
-        '#tag' => 'span',
+        '#tag' => 'h4',
         '#value' => $variables['element']['#title'],
         '#attributes' => $header_attributes,
       ];

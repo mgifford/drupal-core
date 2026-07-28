@@ -1734,7 +1734,7 @@
        *   Markup for the warning.
        */
       tableDragChangedWarning() {
-        return `<div class="tabledrag-changed-warning messages messages--warning" role="status">${Drupal.theme(
+        return `<div class="tabledrag-changed-warning messages messages--warning" role="alert">${Drupal.theme(
           'tableDragChangedMarker',
         )} ${Drupal.t('You have unsaved changes.')}</div>`;
       },

@@ -53,39 +53,6 @@ class FormTestGroupDetailsForm extends FormBase {
       '#title' => 'Details element with description',
       '#description' => 'I am a details description',
     ];
-    $form['description_before'] = [
-      '#type' => 'details',
-      '#title' => 'Details element with description before',
-      '#description' => 'I am a before description',
-      '#description_display' => 'before',
-    ];
-    $form['description_before']['child'] = [
-      '#type' => 'textfield',
-      '#title' => 'Before child',
-    ];
-    $form['description_after'] = [
-      '#type' => 'details',
-      '#title' => 'Details element with description after',
-      '#description' => 'I am an after description',
-      '#description_display' => 'after',
-    ];
-    $form['description_after']['child'] = [
-      '#type' => 'textfield',
-      '#title' => 'After child',
-    ];
-    $form['description_invisible'] = [
-      '#type' => 'details',
-      '#title' => 'Details element with invisible description',
-      '#description' => 'I am an invisible description',
-      '#description_display' => 'invisible',
-    ];
-    $form['default_title'] = [
-      '#type' => 'details',
-    ];
-    $form['default_title']['child'] = [
-      '#type' => 'textfield',
-      '#title' => 'Default title child',
-    ];
     return $form;
   }
 

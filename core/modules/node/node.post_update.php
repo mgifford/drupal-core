@@ -20,18 +20,3 @@ function node_removed_post_updates(): array {
     'node_post_update_add_rebuild_permission_to_roles' => '12.0.0',
   ];
 }
-
-/**
- * Updates the content overview pager heading level.
- */
-function node_post_update_content_view_pager_heading_level(): void {
-  $config = \Drupal::configFactory()->getEditable('views.view.content');
-  if ($config->isNew()) {
-    return;
-  }
-
-  $pager_heading_level = 'display.default.display_options.pager.options.pagination_heading_level';
-  if ($config->get($pager_heading_level) === 'h4') {
-    $config->set($pager_heading_level, 'h2')->save();
-  }
-}

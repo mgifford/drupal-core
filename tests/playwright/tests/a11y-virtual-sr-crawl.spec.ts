@@ -15,7 +15,14 @@
 import { test, Page } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
-import { anonymousPages, adminPages, PageEntry } from '../lib/pages';
+import {
+  anonymousPages,
+  adminPages,
+  seededBenchmarkPages,
+  DEFAULT_SCAN_MODE,
+  ScanMode,
+  PageEntry,
+} from '../lib/pages';
 import { THEME_CONFIGS, ThemeConfig } from '../lib/theme-configs';
 import { AUTH_STATE_FILE } from '../lib/auth-setup';
 import {
@@ -34,6 +41,7 @@ import { VirtualSRFinding } from '../lib/virtual-sr';
 // ── Types ────────────────────────────────────────────────────────────────────
 
 interface ScanResultRecord {
+  scanMode: ScanMode;
   theme: string;
   page: string;
   path: string;
@@ -56,6 +64,7 @@ interface ScanResultRecord {
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const DEFAULT_BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
+const SCAN_MODE = resolveScanMode();
 
 /** Standard viewports — matches the axe crawl. */
 const STANDARD_VIEWPORTS = [
@@ -67,6 +76,77 @@ const STANDARD_VIEWPORTS = [
 ] as const;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+function resolveScanMode(): ScanMode {
+  const raw = (process.env.A11Y_SCAN_MODE ?? DEFAULT_SCAN_MODE).trim().toLowerCase();
+  if (raw === 'core-baseline' || raw === 'seeded-benchmark') {
+    return raw;
+  }
+
+  throw new Error(
+    `Invalid A11Y_SCAN_MODE=${raw}. Supported values: core-baseline | seeded-benchmark.`,
+  );
+}
+
+function isTruthyConfigValue(raw: string): boolean {
+  const normalized = raw.trim().toLowerCase();
+  return normalized === '1' || normalized === 'true' || normalized === 'yes' || normalized === 'on';
+}
+
+function isModuleEnabled(moduleMachineName: string): boolean {
+  const output = drush('pm:list --status=enabled --type=module --format=list');
+  return output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .includes(moduleMachineName);
+}
+
+function getGeneratedContentSeedBugsEnabled(): boolean {
+  const value = drush('config:get generated_content_a11y.settings seed_bugs --format=string');
+  return isTruthyConfigValue(value);
+}
+
+function assertScanModeRuntimePreconditions(scanMode: ScanMode): void {
+  const generatedContentA11yEnabled = isModuleEnabled('generated_content_a11y');
+  const seedBugsEnabled = generatedContentA11yEnabled ? getGeneratedContentSeedBugsEnabled() : false;
+
+  if (scanMode === 'core-baseline') {
+    if (generatedContentA11yEnabled && seedBugsEnabled) {
+      throw new Error(
+        'core-baseline scan blocked: generated_content_a11y is enabled with seed_bugs=true. ' +
+        'Disable seeded bugs before baseline crawl (for example: drush cset generated_content_a11y.settings seed_bugs false -y && drush cr), ' +
+        'or run with A11Y_SCAN_MODE=seeded-benchmark.',
+      );
+    }
+    return;
+  }
+
+  if (!generatedContentA11yEnabled) {
+    throw new Error(
+      'seeded-benchmark scan blocked: generated_content_a11y is not enabled. Enable it before running this mode.',
+    );
+  }
+  if (!seedBugsEnabled) {
+    throw new Error(
+      'seeded-benchmark scan blocked: generated_content_a11y.settings:seed_bugs is false. Enable seeded bugs for benchmark runs.',
+    );
+  }
+}
+
+function getPagesForMode(scanMode: ScanMode): { anonymous: PageEntry[]; admin: PageEntry[] } {
+  if (scanMode === 'seeded-benchmark') {
+    return {
+      anonymous: [...anonymousPages, ...seededBenchmarkPages],
+      admin: adminPages,
+    };
+  }
+
+  return {
+    anonymous: anonymousPages,
+    admin: adminPages,
+  };
+}
 
 function switchTheme(config: ThemeConfig): void {
   const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(' ');
@@ -122,6 +202,7 @@ async function scanRoute(
     // Page exists but requires permissions or is not available — skip gracefully.
     console.log(`  ⏭️  Skipping ${opts.routePath} (HTTP ${status})`);
     return {
+      scanMode: SCAN_MODE,
       theme: opts.themeId,
       page: opts.testName,
       path: opts.routePath,
@@ -155,6 +236,7 @@ async function scanRoute(
   if (bodyText && (bodyText.includes('Fatal error') || bodyText.includes('Warning:') || bodyText.includes('Failed to open stream'))) {
     console.log(`  ⏭️  Skipping ${opts.routePath} (PHP error detected)`);
     return {
+      scanMode: SCAN_MODE,
       theme: opts.themeId,
       page: opts.testName,
       path: opts.routePath,
@@ -183,6 +265,7 @@ async function scanRoute(
   const crossRef = crossReferenceAll(multiResult);
 
   const record: ScanResultRecord = {
+    scanMode: SCAN_MODE,
     theme: opts.themeId,
     page: opts.testName,
     path: opts.routePath,
@@ -233,6 +316,13 @@ function writeResultShard(shardId: string, records: ScanResultRecord[]): void {
 // ── Tests ────────────────────────────────────────────────────────────────────
 
 test.describe('Multi-Scanner Crawl — axe + IBM EA + Virtual SR', () => {
+  const pagesForMode = getPagesForMode(SCAN_MODE);
+
+  test.beforeAll(() => {
+    assertScanModeRuntimePreconditions(SCAN_MODE);
+    console.log(`🔒 Scan mode locked: ${SCAN_MODE}`);
+  });
+
   for (const themeConfig of THEME_CONFIGS) {
     const scanGroup = (
       groupLabel: string,
@@ -256,7 +346,7 @@ test.describe('Multi-Scanner Crawl — axe + IBM EA + Virtual SR', () => {
         });
 
         test.afterAll(() => {
-          writeResultShard(`multi-scanner-${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, allRecords);
+          writeResultShard(`multi-scanner-${SCAN_MODE}-${themeConfig.id}-${useAuth ? 'admin' : 'anon'}`, allRecords);
           allRecords = [];
         });
 
@@ -295,7 +385,7 @@ test.describe('Multi-Scanner Crawl — axe + IBM EA + Virtual SR', () => {
       });
     };
 
-    scanGroup('anonymous pages', themeConfig.testAnonymous ? anonymousPages : [], false);
-    scanGroup('admin pages', themeConfig.testAdmin ? adminPages : [], true);
+    scanGroup('anonymous pages', themeConfig.testAnonymous ? pagesForMode.anonymous : [], false);
+    scanGroup('admin pages', themeConfig.testAdmin ? pagesForMode.admin : [], true);
   }
 });
