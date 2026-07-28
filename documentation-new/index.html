@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -98,6 +98,50 @@
             margin-bottom: 0.5rem;
         }
 
+        .intro p + p {
+            margin-top: 1rem;
+        }
+
+        .link-key {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 0.5rem 1rem;
+            margin-top: 1rem;
+        }
+
+        .link-key dt {
+            font-weight: 700;
+        }
+
+        .link-key dd {
+            margin: 0;
+        }
+
+        .legacy-notice {
+            background: #fff7ed;
+            border: 2px solid #c2410c;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .legacy-notice h2 {
+            color: #7c2d12;
+            margin-bottom: 0.75rem;
+        }
+
+        .legacy-notice p + p {
+            margin-top: 1rem;
+        }
+
+        .legacy-notice ul {
+            margin: 1rem 0 0 1.5rem;
+        }
+
+        .legacy-notice li {
+            margin-bottom: 0.5rem;
+        }
+
         section {
             margin-bottom: 3rem;
         }
@@ -147,6 +191,12 @@
             margin-bottom: 1rem;
         }
 
+        .guide-card .card-context {
+            color: #333;
+            border-left: 3px solid #64748b;
+            padding-left: 0.75rem;
+        }
+
         .guide-card .links {
             display: flex;
             flex-direction: column;
@@ -174,21 +224,63 @@
         }
 
         .guide-card .changes-link {
-            background: #ff6b6b;
+            background: #9f1239;
         }
 
         .guide-card .changes-link:hover,
         .guide-card .changes-link:focus {
-            background: #cc5555;
+            background: #701a3a;
         }
 
         .guide-card .new-link {
-            background: #51cf66;
+            background: #166534;
         }
 
         .guide-card .new-link:hover,
         .guide-card .new-link:focus {
-            background: #40c057;
+            background: #14532d;
+        }
+
+        .guide-card .source-link {
+            background: #475569;
+        }
+
+        .guide-card .source-link:hover,
+        .guide-card .source-link:focus {
+            background: #334155;
+        }
+
+        .guide-card .legacy-link {
+            background: #9a3412;
+        }
+
+        .guide-card .legacy-link:hover,
+        .guide-card .legacy-link:focus {
+            background: #7c2d12;
+        }
+
+        .legacy-source-list {
+            margin: 1rem 0 1rem 1.25rem;
+            font-size: 0.85rem;
+        }
+
+        .legacy-source-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .legacy-source-list a {
+            display: inline;
+            padding: 0;
+            color: #7c2d12;
+            background: transparent;
+            text-align: left;
+            text-decoration: underline;
+        }
+
+        .legacy-source-list a:hover,
+        .legacy-source-list a:focus {
+            color: #fff;
+            background: #7c2d12;
         }
 
         .priority-badge {
@@ -202,18 +294,18 @@
         }
 
         .priority-1 {
-            background: #ffcccb;
-            color: #cc0000;
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .priority-2 {
-            background: #ffe8cc;
-            color: #cc6600;
+            background: #ffedd5;
+            color: #9a3412;
         }
 
         .priority-3 {
-            background: #e8f5e9;
-            color: #006600;
+            background: #dcfce7;
+            color: #166534;
         }
 
         .review-status {
@@ -247,6 +339,14 @@
             text-decoration: underline;
             outline: 2px solid #004d99;
             outline-offset: 2px;
+        }
+
+        footer p + p {
+            margin-top: 1rem;
+        }
+
+        .footer-status {
+            font-size: 0.8rem;
         }
 
         .toc-box {
@@ -306,6 +406,27 @@
             .toc-box ol {
                 columns: 1;
             }
+
+            .link-key {
+                grid-template-columns: 1fr;
+            }
+
+            .link-key dd {
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+
+            .guide-card:hover {
+                transform: none;
+            }
         }
 
         /* Keyboard navigation focus styles */
@@ -325,27 +446,54 @@
     <div class="container">
         <header>
             <h1>Drupal Accessibility Documentation</h1>
-            <p>Review Index for Proposed Updates &amp; Changes</p>
+            <p>Original sources, proposed replacements, and editorial rationale</p>
         </header>
 
-        <nav role="navigation" aria-label="Quick navigation">
+        <nav aria-label="Quick navigation">
             <a href="#foundation">Foundation</a>
-            <a href="#development">Development</a>
             <a href="#implementation">Implementation</a>
             <a href="#review">Review &amp; Testing</a>
             <a href="#resources">Resources</a>
+            <a href="#legacy-drupal-7">Legacy Drupal 7</a>
         </nav>
 
         <main>
             <section class="intro">
                 <h2>About This Review</h2>
-                <p>This page summarizes proposed updates to Drupal's accessibility documentation. The guides below are organized by recommended review priority and editorial order.</p>
+                <p>This is a working editorial index, not the current Drupal.org accessibility guide. It connects each recommendation to its Drupal.org source, local source snapshot when one was retained, proposed replacement, and change record.</p>
+                <p>A proposed draft has not been accepted until it is reviewed and published on Drupal.org. The priority numbers describe editorial review order. They are not accessibility severity, conformance status, or implementation priority.</p>
                 <ul>
-                    <li><strong>Green priority (3):</strong> Supporting resources and reference material</li>
-                    <li><strong>Orange priority (2):</strong> Important implementation guides</li>
-                    <li><strong>Red priority (1):</strong> Critical foundation and development standards</li>
+                    <li><strong>Priority 1:</strong> Foundation and development standards.</li>
+                    <li><strong>Priority 2:</strong> Implementation guides.</li>
+                    <li><strong>Priority 3:</strong> Review processes and supporting resources.</li>
                 </ul>
-                <p style="margin-top: 1rem; font-style: italic;">Each guide includes links to view the current version, proposed changes, and new content variants.</p>
+                <dl class="link-key">
+                    <dt>Original Drupal.org page</dt>
+                    <dd>The source page being revised or archived.</dd>
+                    <dt>Local source snapshot</dt>
+                    <dd>A retained copy of the source content used during review.</dd>
+                    <dt>Proposed replacement</dt>
+                    <dd>Draft content intended for a supported Drupal documentation page.</dd>
+                    <dt>Change record</dt>
+                    <dd>What was retained, changed, corrected, or removed, with reasons.</dd>
+                    <dt>Legacy Drupal 7 source</dt>
+                    <dd>Historical evidence only. Do not treat its code or advice as current practice.</dd>
+                </dl>
+            </section>
+
+            <section class="legacy-notice" id="legacy-drupal-7">
+                <h2>Legacy Drupal 7 documentation</h2>
+                <p><strong>Drupal 7 reached end of life on January 5, 2025.</strong> The Drupal 7 pages linked from this index may contain unsupported PHPTemplate code, obsolete Drupal APIs, old CSS classes, outdated Web Content Accessibility Guidelines references, and abandoned tools or modules.</p>
+                <p>The fifteen child pages in the old <a href="https://www.drupal.org/docs/7/theming/creating-accessible-themes">Creating accessible themes</a> guide are not being recreated as fifteen current pages. Their useful material is being consolidated into six maintainable guides for supported Drupal releases:</p>
+                <ul>
+                    <li><a href="#guide-themes">Creating Accessible Themes</a></li>
+                    <li><a href="#guide-forms">Building Accessible Forms</a></li>
+                    <li><a href="#guide-structure">Page Structure and Navigation</a></li>
+                    <li><a href="#guide-javascript">Accessible JavaScript and Interactive Components</a></li>
+                    <li><a href="#guide-images">Accessible Images and Media</a></li>
+                    <li><a href="#guide-color">Color, Contrast, and Typography</a></li>
+                </ul>
+                <p>The existing current pages for <a href="#guide-hide-content">hiding content</a> and <a href="#guide-contrib-modules">contributed modules</a> are revised in place. The Drupal 7 tools and resources pages receive archival pointers to maintained evaluation and resource guidance. Legacy URLs remain here for provenance and redirect planning, not as implementation recommendations.</p>
             </section>
 
             <div class="toc-box">
@@ -353,17 +501,17 @@
                 <ol>
                     <li><a href="#guide-accessibility">Drupal Accessibility Foundation</a></li>
                     <li><a href="#guide-accessibility-coding">Accessibility Coding Standards</a></li>
-                    <li><a href="#guide-features">Drupal Accessibility Features for D11</a></li>
+                    <li><a href="#guide-features">Drupal Accessibility Features</a></li>
                     <li><a href="#guide-contribution">How to Ensure Your Contribution is Accessible</a></li>
-                    <li><a href="#guide-forms">Build Accessible Forms</a></li>
+                    <li><a href="#guide-forms">Building Accessible Forms</a></li>
                     <li><a href="#guide-themes">Creating Accessible Themes</a></li>
                     <li><a href="#guide-images">Accessible Images and Media</a></li>
-                    <li><a href="#guide-javascript">Accessible JavaScript and Components</a></li>
+                    <li><a href="#guide-javascript">Accessible JavaScript and Interactive Components</a></li>
                     <li><a href="#guide-hide-content">Hide Content Properly</a></li>
-                    <li><a href="#guide-color">Color Contrast and Typography</a></li>
+                    <li><a href="#guide-color">Color, Contrast, and Typography</a></li>
                     <li><a href="#guide-structure">Page Structure and Navigation</a></li>
                     <li><a href="#guide-core-gate">Core Gate: Accessibility</a></li>
-                    <li><a href="#guide-acr">ACR Process: Accessibility Conformance Report</a></li>
+                    <li><a href="#guide-acr">Accessibility Conformance Report Process</a></li>
                     <li><a href="#guide-review">How to Do an Accessibility Review</a></li>
                     <li><a href="#guide-office-hours">Drupal A11y Office Hours</a></li>
                     <li><a href="#guide-contrib-modules">Contributed Modules</a></li>
@@ -383,10 +531,12 @@
                         <span class="priority-badge priority-1">Priority 1</span>
                         <h3>Drupal Accessibility Foundation</h3>
                         <p>Core accessibility principles, Drupal's commitment to WCAG 2.2 AA, and how accessibility is integrated into the development process.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing Drupal.org overview page revised in place.</p>
                         <div class="links">
-                            <a href="accessibility.html">View Current Page</a>
-                            <a href="accessibility-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="accessibility-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/about/features/accessibility" class="source-link">Original Drupal.org page</a>
+                            <a href="accessibility.html" class="source-link">Local source snapshot</a>
+                            <a href="accessibility-new.html" class="new-link">Proposed replacement</a>
+                            <a href="accessibility-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -397,26 +547,30 @@
                     <div class="guide-card" id="guide-accessibility-coding">
                         <span class="priority-badge priority-1">Priority 1</span>
                         <h3>Accessibility Coding Standards</h3>
-                        <p>Best practices and coding patterns for developers and contributors ensuring WCAG 2.2 AA compliance in code, markup, and interactions.</p>
+                        <p>Implementation requirements and coding patterns for accessible Drupal markup, behavior, testing, and interactions.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release page revised in place.</p>
                         <div class="links">
-                            <a href="accessibility-coding-standards.html">View Current Page</a>
-                            <a href="accessibility-coding-standards-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="accessibility-coding-standards-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards" class="source-link">Original Drupal.org page</a>
+                            <a href="accessibility-coding-standards.html" class="source-link">Local source snapshot</a>
+                            <a href="accessibility-coding-standards-new.html" class="new-link">Proposed replacement</a>
+                            <a href="accessibility-coding-standards-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
                         </div>
                     </div>
 
-                    <!-- Drupal Accessibility Features D11 -->
+                    <!-- Drupal Accessibility Features -->
                     <div class="guide-card" id="guide-features">
                         <span class="priority-badge priority-1">Priority 1</span>
-                        <h3>Drupal Accessibility Features (D11)</h3>
-                        <p>Overview of built-in accessibility features, defaults, and capabilities provided by Drupal core for D11+.</p>
+                        <h3>Drupal Accessibility Features</h3>
+                        <p>Overview of built-in accessibility features, defaults, capabilities, and limits in supported Drupal releases.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release page revised in place. The draft was verified against Drupal 11 rather than renaming the page for one release.</p>
                         <div class="links">
-                            <a href="drupal-accessibility-features.html">View Current Page</a>
-                            <a href="drupal-accessibility-features-d11-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="drupal-accessibility-features-d11-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/accessibility/drupal-accessibility-features" class="source-link">Original Drupal.org page</a>
+                            <a href="drupal-accessibility-features.html" class="source-link">Local source snapshot</a>
+                            <a href="drupal-accessibility-features-d11-new.html" class="new-link">Proposed replacement</a>
+                            <a href="drupal-accessibility-features-d11-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -428,10 +582,12 @@
                         <span class="priority-badge priority-1">Priority 1</span>
                         <h3>How to Ensure Your Contribution is Accessible</h3>
                         <p>Guidelines for contributors on accessibility requirements, testing, and review processes before submitting patches.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release contribution page revised in place.</p>
                         <div class="links">
-                            <a href="how-to-ensure-your-contribution-is-accessible.html">View Current Page</a>
-                            <a href="how-to-ensure-your-contribution-is-accessible-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="how-to-ensure-your-contribution-is-accessible-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-ensure-your-contribution-is-accessible" class="source-link">Original Drupal.org page</a>
+                            <a href="how-to-ensure-your-contribution-is-accessible.html" class="source-link">Local source snapshot</a>
+                            <a href="how-to-ensure-your-contribution-is-accessible-new.html" class="new-link">Proposed replacement</a>
+                            <a href="how-to-ensure-your-contribution-is-accessible-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -449,11 +605,13 @@
                     <!-- Accessible Forms -->
                     <div class="guide-card" id="guide-forms">
                         <span class="priority-badge priority-2">Priority 2</span>
-                        <h3>Build Accessible Forms</h3>
-                        <p>Practical patterns for creating accessible forms, labels, validation, and error handling that meet WCAG 2.2 AA.</p>
+                        <h3>Building Accessible Forms</h3>
+                        <p>Practical patterns for Drupal Form API, labels, instructions, validation, errors, dynamic forms, and testing.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide replacing one Drupal 7 page.</p>
                         <div class="links">
-                            <a href="build-accessible-forms.html">View Current Page</a>
-                            <a href="build-accessible-forms-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="https://www.drupal.org/docs/7/creating-accessible-themes/building-accessible-forms" class="legacy-link">Legacy Drupal 7 source</a>
+                            <a href="build-accessible-forms.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="build-accessible-forms-changes.html" class="changes-link">Replacement record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -465,10 +623,17 @@
                         <span class="priority-badge priority-2">Priority 2</span>
                         <h3>Creating Accessible Themes</h3>
                         <p>Guide for theme developers on building accessible Drupal themes, including semantic markup, CSS, and JavaScript best practices.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide consolidating the Drupal 7 introduction and principles. The old parent page receives a short archival pointer.</p>
+                        <ul class="legacy-source-list">
+                            <li><a href="https://www.drupal.org/docs/7/theming/creating-accessible-themes">Legacy Drupal 7 parent guide</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/accessibility-principles">Legacy: Accessibility principles</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/getting-started-with-accessibility">Legacy: Getting started with accessibility</a></li>
+                        </ul>
                         <div class="links">
-                            <a href="create-accessible-themes.html">View Current Page</a>
-                            <a href="creating-accessible-themes-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="creating-accessible-themes-new.html" class="new-link">See New Draft</a>
+                            <a href="creating-accessible-themes-d7.html" class="source-link">Local Drupal 7 source snapshot</a>
+                            <a href="create-accessible-themes.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="creating-accessible-themes-new.html" class="legacy-link">Proposed Drupal 7 archival pointer</a>
+                            <a href="creating-accessible-themes-changes.html" class="changes-link">Archival rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -480,23 +645,30 @@
                         <span class="priority-badge priority-2">Priority 2</span>
                         <h3>Accessible Images and Media</h3>
                         <p>Best practices for providing text alternatives, captions, transcripts, and audio descriptions for images and media content.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide consolidating two Drupal 7 pages.</p>
+                        <ul class="legacy-source-list">
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/managing-images-and-media-for-accessibility">Legacy: Managing images and media for accessibility</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/providing-useful-alternative-text-for-images">Legacy: Providing Useful Alternative Text for Images</a></li>
+                        </ul>
                         <div class="links">
-                            <a href="accessible-images-and-media.html">View Current Page</a>
-                            <a href="accessible-images-and-media-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="accessible-images-and-media.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="accessible-images-and-media-changes.html" class="changes-link">Replacement record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
                         </div>
                     </div>
 
-                    <!-- Accessible JavaScript and Components -->
+                    <!-- Accessible JavaScript and Interactive Components -->
                     <div class="guide-card" id="guide-javascript">
                         <span class="priority-badge priority-2">Priority 2</span>
-                        <h3>Accessible JavaScript and Components</h3>
+                        <h3>Accessible JavaScript and Interactive Components</h3>
                         <p>Patterns for building interactive components, widgets, and behaviors that are keyboard-accessible and work with assistive technologies.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide replacing one Drupal 7 page.</p>
                         <div class="links">
-                            <a href="accessible-javascript-and-components.html">View Current Page</a>
-                            <a href="accessible-javascript-and-components-change.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="https://www.drupal.org/docs/7/creating-accessible-themes/maintaining-accessibility-in-rich-internet-applications-and" class="legacy-link">Legacy Drupal 7 source</a>
+                            <a href="accessible-javascript-and-components.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="accessible-javascript-and-components-change.html" class="changes-link">Replacement record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -507,24 +679,32 @@
                     <div class="guide-card" id="guide-hide-content">
                         <span class="priority-badge priority-2">Priority 2</span>
                         <h3>Hide Content Properly</h3>
-                        <p>Technical patterns for hiding content accessibly—using CSS display, visibility, ARIA, and responsive design without breaking AT access.</p>
+                        <p>Technical patterns for controlling visual rendering, accessibility-tree exposure, focus, interaction, and layout.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing current page revised in place. Its Drupal 7 predecessor contains old class names and copied CSS.</p>
                         <div class="links">
-                            <a href="hide-content-properly.html">View Current Page</a>
-                            <a href="hide-content-properly-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/hide-content-properly" class="source-link">Original current Drupal.org page</a>
+                            <a href="https://www.drupal.org/docs/7/creating-accessible-themes/hide-content-properly" class="legacy-link">Legacy Drupal 7 source</a>
+                            <a href="hide-content-properly.html" class="new-link">Proposed replacement</a>
+                            <a href="hide-content-properly-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
                         </div>
                     </div>
 
-                    <!-- Color Contrast and Typography -->
+                    <!-- Color, Contrast, and Typography -->
                     <div class="guide-card" id="guide-color">
                         <span class="priority-badge priority-2">Priority 2</span>
-                        <h3>Color Contrast and Typography</h3>
-                        <p>Guidelines for achieving compliant color contrast ratios, readable typography, and accessible visual design across light and dark modes.</p>
+                        <h3>Color, Contrast, and Typography</h3>
+                        <p>Guidelines for meeting applicable color contrast requirements, supporting readable typography, and creating accessible visual design across light and dark modes.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide consolidating two Drupal 7 pages.</p>
+                        <ul class="legacy-source-list">
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/improving-readability-with-fonts-and-typography">Legacy: Improving readability with fonts and typography</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/specifying-colors-and-contrast-for-accessibility">Legacy: Specifying colors and contrast for accessibility</a></li>
+                        </ul>
                         <div class="links">
-                            <a href="color-contrast-and-typography.html">View Current Page</a>
-                            <a href="color-contrast-and-typography-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="color-contrast-and-typography.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="color-contrast-and-typography-changes.html" class="changes-link">Replacement record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -536,9 +716,16 @@
                         <span class="priority-badge priority-2">Priority 2</span>
                         <h3>Page Structure and Navigation</h3>
                         <p>Patterns for accessible page structure, headings, landmarks, navigation menus, and skip links that aid both users and assistive technologies.</p>
+                        <p class="card-context"><strong>Source status:</strong> New supported-release guide consolidating four Drupal 7 pages.</p>
+                        <ul class="legacy-source-list">
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/creating-accessible-site-and-page-navigation">Legacy: Creating accessible site and page navigation</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/creating-accessible-structure-and-markup">Legacy: Creating accessible structure and markup</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/providing-a-way-to-skip-navigation">Legacy: Providing a way to skip navigation</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/using-headings-to-improve-accessibility">Legacy: Using headings to improve accessibility</a></li>
+                        </ul>
                         <div class="links">
-                            <a href="page-structure-and-navigation.html">View Current Page</a>
-                            <a href="page-structure-and-navigation-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="page-structure-and-navigation.html" class="new-link">Proposed supported-release guide</a>
+                            <a href="page-structure-and-navigation-changes.html" class="changes-link">Replacement record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -557,11 +744,13 @@
                     <div class="guide-card" id="guide-core-gate">
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>Core Gate: Accessibility</h3>
-                        <p>Quality gate criteria and automated checks for ensuring accessibility compliance in Drupal core contributions and patches.</p>
+                        <p>Quality gate criteria for identifying and resolving accessibility barriers in Drupal core contributions and patches.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing Drupal core policy page revised in place.</p>
                         <div class="links">
-                            <a href="core-gate-accessibility.html">View Current Page</a>
-                            <a href="core-gate-accessibility-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="core-gate-accessibility-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility" class="source-link">Original Drupal.org page</a>
+                            <a href="core-gate-accessibility.html" class="source-link">Local source snapshot</a>
+                            <a href="core-gate-accessibility-new.html" class="new-link">Proposed replacement</a>
+                            <a href="core-gate-accessibility-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -571,11 +760,12 @@
                     <!-- ACR Process -->
                     <div class="guide-card" id="guide-acr">
                         <span class="priority-badge priority-3">Priority 3</span>
-                        <h3>ACR Process: Accessibility Conformance Reporting</h3>
-                        <p>Guide to creating and using Accessibility Conformance Reports (ACR) for documenting WCAG 2.2 compliance and accessibility testing results.</p>
+                        <h3>Accessibility Conformance Report Process</h3>
+                        <p>Process for producing evidence-based Accessibility Conformance Reports using the current VPAT template and appropriate evaluation methods.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release process page revised in place. The duplicate local file is intentionally not presented as a separate change record.</p>
                         <div class="links">
-                            <a href="acr-process.html">View Current Page</a>
-                            <a href="acr-process-change.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/accessibility-conformance-report-acr-process" class="source-link">Original Drupal.org page</a>
+                            <a href="acr-process.html" class="new-link">Proposed replacement</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -586,11 +776,13 @@
                     <div class="guide-card" id="guide-review">
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>How to Do an Accessibility Review</h3>
-                        <p>Step-by-step methodology for conducting manual and automated accessibility reviews, including tools, techniques, and reporting findings.</p>
+                        <p>Practical methodology for combining automated checks, manual review, assistive technology testing, and documented findings.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release review page revised in place.</p>
                         <div class="links">
-                            <a href="ow-to-do-an-accessibility-review.html">View Current Page</a>
-                            <a href="ow-to-do-an-accessibility-review-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="ow-to-do-an-accessibility-review-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-do-an-accessibility-review" class="source-link">Original Drupal.org page</a>
+                            <a href="ow-to-do-an-accessibility-review.html" class="source-link">Local source snapshot</a>
+                            <a href="ow-to-do-an-accessibility-review-new.html" class="new-link">Proposed replacement</a>
+                            <a href="ow-to-do-an-accessibility-review-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -602,9 +794,11 @@
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>Drupal A11y Office Hours</h3>
                         <p>Information about regular community office hours for accessibility support, questions, and collaborative problem-solving.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing community page revised in place.</p>
                         <div class="links">
-                            <a href="drupal-a11y-office-hours.html">View Current Page</a>
-                            <a href="drupal-a11y-office-hours-changes.html" class="changes-link">Review Proposed Changes</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/drupal-accessibility-a11y-office-hours" class="source-link">Original Drupal.org page</a>
+                            <a href="drupal-a11y-office-hours.html" class="new-link">Proposed replacement</a>
+                            <a href="drupal-a11y-office-hours-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -623,11 +817,14 @@
                     <div class="guide-card" id="guide-contrib-modules">
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>Contributed Modules for Accessibility</h3>
-                        <p>Overview of community-maintained Drupal modules that enhance accessibility, testing, and compliance features.</p>
+                        <p>Maintained guidance for evaluating community modules that support accessibility, content authoring, testing, and remediation workflows.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing current page revised in place. Its Drupal 7 predecessor is retained only as a legacy source.</p>
                         <div class="links">
-                            <a href="contributed-modules.html">View Current Page</a>
-                            <a href="contributed-modules-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="contributed-modules-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/contributed-modules-for-extending-accessibility-in-drupal" class="source-link">Original current Drupal.org page</a>
+                            <a href="https://www.drupal.org/docs/7/creating-accessible-themes/contributed-modules-to-help-with-accessibility" class="legacy-link">Legacy Drupal 7 source</a>
+                            <a href="contributed-modules.html" class="source-link">Local source snapshot</a>
+                            <a href="contributed-modules-new.html" class="new-link">Proposed replacement</a>
+                            <a href="contributed-modules-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -638,11 +835,16 @@
                     <div class="guide-card" id="guide-tools">
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>Tools, Techniques &amp; Resources</h3>
-                        <p>Curated list of accessibility testing tools, techniques, browser extensions, and learning resources for the Drupal community.</p>
+                        <p>Archived Drupal 7 resource material. It receives a short pointer to maintained review and external-resource guidance, not another tool list.</p>
+                        <p class="card-context"><strong>Source status:</strong> Legacy-only page. Its old tools, links, and techniques are not republished as current recommendations.</p>
+                        <ul class="legacy-source-list">
+                            <li><a href="https://www.drupal.org/node/394094">Legacy Drupal.org page: Tools, techniques, and resources</a></li>
+                            <li><a href="https://www.drupal.org/docs/7/creating-accessible-themes/tools-for-validating-accessibility">Legacy Drupal 7 page: Tools for validating accessibility</a></li>
+                        </ul>
                         <div class="links">
-                            <a href="tools-techniques-resources.html">View Current Page</a>
-                            <a href="tools-techniques-resources-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="tools-techniques-resources-new.html" class="new-link">See New Draft</a>
+                            <a href="tools-techniques-resources.html" class="source-link">Local Drupal 7 source snapshot</a>
+                            <a href="tools-techniques-resources-new.html" class="legacy-link">Proposed archival pointer</a>
+                            <a href="tools-techniques-resources-changes.html" class="changes-link">Archival rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -653,11 +855,13 @@
                     <div class="guide-card" id="guide-external">
                         <span class="priority-badge priority-3">Priority 3</span>
                         <h3>External Accessibility Resources</h3>
-                        <p>Links to W3C/WAI standards, WCAG guidelines, accessibility best practices, and learning resources from trusted external sources.</p>
+                        <p>Selected standards, evaluation guidance, procurement resources, and learning material from maintained authoritative sources.</p>
+                        <p class="card-context"><strong>Source status:</strong> Existing supported-release resource page revised in place.</p>
                         <div class="links">
-                            <a href="external-accessibility-resources.html">View Current Page</a>
-                            <a href="external-accessibility-resources-changes.html" class="changes-link">Review Proposed Changes</a>
-                            <a href="external-accessibility-resources-new.html" class="new-link">See New Draft</a>
+                            <a href="https://www.drupal.org/docs/getting-started/accessibility/external-accessibility-resources" class="source-link">Original Drupal.org page</a>
+                            <a href="external-accessibility-resources.html" class="source-link">Local source snapshot</a>
+                            <a href="external-accessibility-resources-new.html" class="new-link">Proposed replacement</a>
+                            <a href="external-accessibility-resources-changes.html" class="changes-link">Change record and rationale</a>
                         </div>
                         <div class="review-status">
                             <strong>Status:</strong> Awaiting editorial review
@@ -671,12 +875,12 @@
             <p>
                 <strong>Drupal Accessibility Documentation Review Index</strong>
             </p>
-            <p style="margin-top: 1rem;">
+            <p>
                 For more information, visit the <a href="https://www.drupal.org/docs/getting-started/accessibility">Drupal Accessibility documentation</a>
                 or the <a href="https://www.drupal.org/project/issues/drupal?component=accessibility">Drupal accessibility issue queue</a>.
             </p>
-            <p style="margin-top: 1rem; font-size: 0.8rem;">
-                Last updated: 2026-07-28 | Status: Documentation review in progress
+            <p class="footer-status">
+                Last updated: 2026-07-28 | Status: Source mapping and documentation review in progress
             </p>
         </footer>
     </div>
