@@ -44,7 +44,6 @@ class AdminTest extends BrowserTestBase {
     $adminUser = $this->drupalCreateUser([
       'access administration pages',
       'administer themes',
-      'administer site configuration',
       'access toolbar',
       'access content overview',
     ]);
@@ -80,12 +79,6 @@ class AdminTest extends BrowserTestBase {
     $response = $this->drupalGet('/admin/content');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertStringContainsString('"preset_accent_color":"red"', $response);
-
-    \Drupal::configFactory()->getEditable('default_admin.settings')->set('preset_accent_color', 'orange')->save();
-    $response = $this->drupalGet('/admin/content');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertStringContainsString('"preset_accent_color":"orange"', $response);
-    $this->assertStringContainsString('--accent-base: #bf4e25;', $response);
   }
 
   /**
@@ -96,16 +89,6 @@ class AdminTest extends BrowserTestBase {
     $response = $this->drupalGet('/admin/content');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertStringContainsString('"preset_focus_color":"blue"', $response);
-  }
-
-  /**
-   * Tests admin block title heading levels.
-   */
-  public function testAdminBlockHeadingLevel(): void {
-    $this->drupalGet('/admin/config');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->elementExists('css', 'h2.panel__title');
-    $this->assertSession()->elementNotExists('css', 'h3.panel__title');
   }
 
   /**

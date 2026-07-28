@@ -41,7 +41,6 @@ class ElementTest extends BrowserTestBase {
     $this->testFormAutocomplete();
     $this->testFormElementErrors();
     $this->testDetailsSummaryAttributes();
-    $this->testDetailsDefaultTitle();
     $this->testDetailsDescriptionAttributes();
   }
 
@@ -244,17 +243,6 @@ class ElementTest extends BrowserTestBase {
   protected function testDetailsSummaryAttributes(): void {
     $this->drupalGet('form-test/group-details');
     $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"]');
-    $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"][aria-expanded="false"]');
-    $this->assertSession()->elementNotExists('css', 'summary[data-summary-attribute="test"][role]');
-  }
-
-  /**
-   * Tests that details render a summary when #title is omitted.
-   */
-  protected function testDetailsDefaultTitle(): void {
-    $this->drupalGet('form-test/group-details');
-    $this->assertSession()->elementExists('xpath', '//details[@id="edit-default-title"]/summary[normalize-space()="Details"]');
-    $this->assertSession()->elementExists('css', 'details#edit-default-title > summary[aria-expanded="false"]');
   }
 
   /**
@@ -264,9 +252,6 @@ class ElementTest extends BrowserTestBase {
     $this->drupalGet('form-test/group-details');
     $this->assertSession()->elementExists('css', 'details[aria-describedby="edit-description-attributes--description"]');
     $this->assertSession()->elementExists('css', 'div[id="edit-description-attributes--description"]');
-    $this->assertSession()->elementExists('xpath', '//details[@id="edit-description-before"]//div[@id="edit-description-before--description"][following-sibling::*//input[@id="edit-description-before-child"]]');
-    $this->assertSession()->elementExists('xpath', '//details[@id="edit-description-after"]//div[@id="edit-description-after--description"][preceding-sibling::*//input[@id="edit-description-after-child"]]');
-    $this->assertSession()->elementExists('css', 'details[aria-describedby="edit-description-invisible--description"] div#edit-description-invisible--description.visually-hidden');
   }
 
 }

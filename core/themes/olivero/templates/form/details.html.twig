@@ -49,27 +49,15 @@
         {{ errors }}
       </div>
     {% endif %}
-    {%- if description and description_display == 'before' -%}
+    {%- if description -%}
       {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
-      {% set description_classes = [
-        'olivero-details__description',
-        description_display == 'invisible' ? 'visually-hidden',
-      ] %}
-      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
+      <div{{ description_attributes.addClass(['olivero-details__description']) }}>{{ description }}</div>
     {%- endif -%}
     {%- if children -%}
       {{ children }}
     {%- endif -%}
     {%- if value -%}
       {{ value }}
-    {%- endif -%}
-    {%- if description and description_display in ['after', 'invisible'] -%}
-      {% set description_attributes = create_attribute({id: attributes['aria-describedby']}) %}
-      {% set description_classes = [
-        'olivero-details__description',
-        description_display == 'invisible' ? 'visually-hidden',
-      ] %}
-      <div{{ description_attributes.addClass(description_classes) }}>{{ description }}</div>
     {%- endif -%}
   </div>
 </details>

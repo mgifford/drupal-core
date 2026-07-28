@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Changes to the Drupal Core Accessibility Gate</title>
+</head>
+<body>
+	<main>
+		<h1>Changes to the Drupal Core Accessibility Gate</h1>
+
+		<p>This document explains the redraft of the <a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">Drupal core accessibility gate</a>. The original page mixed policy requirements, historical notes, examples, and tool recommendations. The revised page defines the gate’s scope, required evidence, review triggers, and outcome.</p>
+
+		<h2>Summary</h2>
+
+		<p>The revision keeps the page focused on decisions contributors need to make during a core issue. It updates the target from Web Content Accessibility Guidelines (WCAG) 2.1 to WCAG 2.2, clarifies when Authoring Tool Accessibility Guidelines (ATAG) 2.0 applies, and distinguishes a gate decision from a product conformance claim.</p>
+
+		<p>The original body contained approximately 909 words. The revised body contains 985 words, an increase of 8.4 percent. The revised structure replaces repeated advice and historical examples with testable requirements and evidence.</p>
+
+		<p>The revision:</p>
+
+		<ul>
+			<li>Defines when the gate applies and when an issue can mark it not applicable.</li>
+			<li>States the current WCAG 2.2 Level AA target.</li>
+			<li>Applies ATAG 2.0 separately to authoring interfaces and generated content.</li>
+			<li>Organizes checks around structure, keyboard access, visual presentation, forms, dynamic content, and authoring.</li>
+			<li>Specifies what testing evidence belongs in an issue.</li>
+			<li>Defines a pass, an acceptable follow-up, and reasons to postpone a change.</li>
+			<li>Retains automated testing as one source of evidence rather than treating it as proof of conformance.</li>
+		</ul>
+
+		<h2>Detailed changes</h2>
+
+		<table>
+			<caption>Changes grouped by original section or topic</caption>
+			<thead>
+				<tr>
+					<th scope="col">Original area</th>
+					<th scope="col">Change</th>
+					<th scope="col">Reason</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Page purpose</th>
+					<td>Added an introduction that identifies the gate’s scope and limits.</td>
+					<td>The original page moved directly into standards and checks. It did not explain what passing the gate means or distinguish a change review from a conformance claim for Drupal or a completed site.</td>
+				</tr>
+				<tr>
+					<th scope="row">“Conforms to WCAG 2.1 and ATAG 2.0”</th>
+					<td>Replaced the combined conformance statement with separate WCAG 2.2 Level AA and ATAG 2.0 Level AA targets, including an explanation of ATAG Parts A and B.</td>
+					<td>WCAG 2.2 is the current W3C Recommendation. WCAG applies to web content and interfaces. ATAG adds requirements for accessible authoring interfaces and support for producing accessible content. Passing one issue gate is not a full conformance evaluation.</td>
+				</tr>
+				<tr>
+					<th scope="row">Level AAA</th>
+					<td>Described Level AAA success criteria and advisory techniques as encouraged rather than gate requirements, unless another policy or established pattern requires them.</td>
+					<td>A Level AA policy should not silently turn selected Level AAA outcomes into undefined blockers.</td>
+				</tr>
+				<tr>
+					<th scope="row">When the gate is needed</th>
+					<td>Replaced scattered “when needed” notes with one applicability section covering interface, markup, styling, JavaScript, forms, authoring, and new patterns.</td>
+					<td>Contributors need a predictable way to decide whether the gate applies before implementation and review.</td>
+				</tr>
+				<tr>
+					<th scope="row">HTML structure</th>
+					<td>Expanded the check to cover native HTML, accessible names, roles, states, relationships, reading order, language information, and text alternatives.</td>
+					<td>A single automated scan cannot establish that HTML structure meets WCAG. The revised checks identify the outcomes that reviewers need to inspect.</td>
+				</tr>
+				<tr>
+					<th scope="row">Color contrast</th>
+					<td>Placed contrast within a broader visual-presentation section that also covers non-color cues, zoom, reflow, text spacing, forced colors, dragging alternatives, and target size.</td>
+					<td>Contrast is necessary but does not cover the visual and input requirements affected by modern responsive interfaces or the WCAG 2.2 additions.</td>
+				</tr>
+				<tr>
+					<th scope="row">Form labels</th>
+					<td>Retained labels and added accessible names, required states, input formats, instructions, errors, and correction guidance.</td>
+					<td>Label association is only one part of an accessible form workflow.</td>
+				</tr>
+				<tr>
+					<th scope="row">“Unplug your mouse”</th>
+					<td>Replaced the instruction with explicit keyboard and focus checks.</td>
+					<td>The original shortcut did not cover focus placement, restoration, visible focus, keyboard traps, or expected component behavior. It also assumed that every contributor uses a detachable mouse.</td>
+				</tr>
+				<tr>
+					<th scope="row">JavaScript accessibility</th>
+					<td>Replaced historical examples with requirements for keyboard behavior, predictable focus, dynamic announcements, and context changes. Linked the current <code>Drupal.announce()</code> API.</td>
+					<td>Examples such as older drag-and-drop tables, vertical tabs, and jQuery interactions do not define a stable gate and may no longer represent current implementations.</td>
+				</tr>
+				<tr>
+					<th scope="row">Authoring tools</th>
+					<td>Added a specific check for both the authoring interface and its output.</td>
+					<td>ATAG Part A concerns authors with disabilities. Part B concerns accessible generated content and the support authors need to create it. The original page named ATAG but did not turn that distinction into a review step.</td>
+				</tr>
+				<tr>
+					<th scope="row">Automated checks</th>
+					<td>Removed the fixed list of browser extensions and services. Described how automation contributes evidence and cited Drupal core’s current axe-core Nightwatch practice.</td>
+					<td>Tool lists age quickly. Automated checks find only some deterministic failures and cannot determine conformance. The policy should define the result required, not prescribe a temporary browser extension.</td>
+				</tr>
+				<tr>
+					<th scope="row">Disabled automated rules</th>
+					<td>Added a requirement that exceptions be narrow, documented, and linked to a follow-up issue.</td>
+					<td>Current Drupal core accessibility tests use targeted rule exceptions with issue references. Broad suppression can hide regressions.</td>
+				</tr>
+				<tr>
+					<th scope="row">Issue evidence</th>
+					<td>Added a repeatable evidence checklist covering tasks, steps, states, themes, viewports, automated results, manual checks, assistive technology, and limitations.</td>
+					<td>The original page recommended before-and-after checks but did not say what a reviewer needs in order to reproduce or evaluate them.</td>
+				</tr>
+				<tr>
+					<th scope="row">Existing patterns</th>
+					<td>Retained the preference for established patterns, with the qualification that the pattern must fit the task and have no relevant known accessibility problem.</td>
+					<td>Reusing a pattern reduces unnecessary variation, but precedent does not prove accessibility.</td>
+				</tr>
+				<tr>
+					<th scope="row"><code>needs accessibility review</code></th>
+					<td>Kept the issue tag and added concrete triggers for applying it early.</td>
+					<td>The original page associated the tag mainly with new patterns and jQuery. Complex interactions and unresolved cross-disability effects also warrant review.</td>
+				</tr>
+				<tr>
+					<th scope="row">Gate decision</th>
+					<td>Added explicit pass, follow-up, and postpone conditions.</td>
+					<td>A gate that lists practices without a decision rule cannot be applied consistently.</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2>Content removed or consolidated</h2>
+
+		<ul>
+			<li><strong>Drupal 8 gate discussion:</strong> Removed from the main guidance because it is historical context rather than a current requirement.</li>
+			<li><strong>WCAG 2.0 links under WCAG 2.1 headings:</strong> Replaced with the WCAG 2.2 Recommendation.</li>
+			<li><strong>Repeated “When needed,” “Details,” and “Resources” blocks:</strong> Consolidated into applicability, required checks, evidence, and related guidance.</li>
+			<li><strong>WAVE, Functional Accessibility Evaluator, Accessibility Developer Tools, and Tanaguru tool list:</strong> Removed as a fixed policy list. Contributors may use suitable tools, while the gate specifies the evidence required.</li>
+			<li><strong>Old contrast issue and browser-extension links:</strong> Removed because they do not define the current requirement.</li>
+			<li><strong>Drupal 6 history for <code>#title</code> and <code>#title_display</code>:</strong> Removed because current form behavior belongs in coding standards and API documentation, not in the gate policy.</li>
+			<li><strong>jQuery-specific “problem pattern” language:</strong> Replaced with implementation-independent review triggers.</li>
+			<li><strong>Historical JavaScript examples:</strong> Replaced with required interaction outcomes and a current core API reference.</li>
+		</ul>
+
+		<h2>Claims not added</h2>
+
+		<p>The revision does not claim that:</p>
+
+		<ul>
+			<li>Passing the issue gate establishes WCAG or ATAG conformance for Drupal core, a feature, or a completed site.</li>
+			<li>An automated checker can find every accessibility barrier.</li>
+			<li>Every change needs testing with every browser and assistive-technology combination.</li>
+			<li>Every user-interface change requires approval from an accessibility maintainer.</li>
+			<li>Level AAA success criteria are blockers under a Level AA policy.</li>
+			<li>A legal accessibility obligation can be determined from this engineering gate.</li>
+		</ul>
+
+		<h2>Sources checked</h2>
+
+		<ul>
+			<li><a href="https://www.w3.org/TR/WCAG22/">Web Content Accessibility Guidelines (WCAG) 2.2</a></li>
+			<li><a href="https://www.w3.org/TR/ATAG20/">Authoring Tool Accessibility Guidelines (ATAG) 2.0</a></li>
+			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards">Drupal Accessibility Coding Standards</a></li>
+			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-ensure-your-contribution-is-accessible">How to ensure your contribution is accessible</a></li>
+			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-do-an-accessibility-review">How to perform an accessibility review</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/misc/announce.js"><code>Drupal.announce()</code> in Drupal 11.x</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/misc/tabbingmanager.js"><code>TabbingManager</code> in Drupal 11.x</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestDefault.js">Default-theme axe-core Nightwatch tests</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestAdmin.js">Administration-theme axe-core Nightwatch tests</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/modules/navigation/tests/src/Nightwatch/Tests/a11yTest.js">Navigation axe-core Nightwatch tests</a></li>
+		</ul>
+	</main>
+</body>
+</html>

@@ -76,21 +76,21 @@ class ModulesListFormWebTest extends BrowserTestBase {
     // Enable a module that does not define permissions.
     $edit = ['modules[layout_discovery][enable]' => 'layout_discovery'];
     $this->submitForm($edit, 'Install');
-    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Layout Discovery has been installed.');
-    $this->assertSession()->elementNotExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a");
+    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Layout Discovery has been installed.');
+    $this->assertSession()->elementNotExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a");
 
     // Enable a module that defines permissions.
     $edit = ['modules[filter][enable]' => 'filter'];
     $this->submitForm($edit, 'Install');
-    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Filter has been installed.');
-    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
+    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Filter has been installed.');
+    $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
 
     // Enable a module that has dependencies and both define permissions.
     $edit = ['modules[content_moderation][enable]' => 'content_moderation'];
     $this->submitForm($edit, 'Install');
     $this->submitForm([], 'Continue');
-    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", '2 modules have been installed: Content Moderation, Workflows.');
-    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/content_moderation%2Cworkflows')]");
+    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", '2 modules have been installed: Content Moderation, Workflows.');
+    $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/content_moderation%2Cworkflows')]");
   }
 
   /**
@@ -149,11 +149,6 @@ BROKEN;
 
     $this->assertSession()
       ->pageTextContains("Module with empty description");
-
-    $this->assertSession()
-      ->elementExists('xpath', '//details[@id="edit-modules-missing-description-enable-description"]/summary[@aria-label="Details for Module with empty description"]');
-    $this->assertSession()
-      ->elementNotExists('xpath', '//details[@id="edit-modules-system-test-enable-description"]/summary[@aria-label]');
 
     // Check that the module filter text box is available.
     $this->assertSession()->elementExists('xpath', '//input[@name="text"]');

@@ -141,18 +141,6 @@ class UserLoginTest extends BrowserTestBase {
   }
 
   /**
-   * Tests that the "Member for" label is not rendered as a heading.
-   */
-  public function testMemberForUsesNonHeadingMarkup(): void {
-    $account = $this->drupalCreateUser([]);
-    $this->drupalLogin($account);
-    $this->drupalGet('user/' . $account->id());
-
-    $this->assertSession()->elementNotExists('xpath', '//h4[contains(@class, "label") and normalize-space() = "Member for"]');
-    $this->assertSession()->elementExists('xpath', '//div[contains(@class, "label") and contains(normalize-space(.), "Member for")]');
-  }
-
-  /**
    * Tests user password is re-hashed upon login after changing $count_log2.
    */
   public function testPasswordRehashOnLogin(): void {

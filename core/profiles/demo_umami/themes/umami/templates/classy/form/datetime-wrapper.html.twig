@@ -21,8 +21,7 @@
   ]
 %}
 {% if title %}
-<div{{ attributes }}>
-  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
 {% endif %}
 {{ content }}
 {% if errors %}
@@ -34,7 +33,4 @@
   <div{{ description_attributes.addClass('description') }}>
     {{ description }}
   </div>
-{% endif %}
-{% if title %}
-</div>
 {% endif %}
