@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Changes to How to Ensure Your Contribution Is Accessible</title>
+</head>
+<body>
+	<main>
+		<h1>Changes to “How to Ensure Your Contribution Is Accessible”</h1>
+
+		<p>This document explains the redraft of <a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-ensure-your-contribution-is-accessible">How to Ensure Your Contribution Is Accessible</a>. The original page was last updated on September 22, 2023. It described an accessibility-champion model and a four-stage sign-off process. The revision makes the guidance applicable to ordinary contributions as well as large initiatives and aligns it with the proposed revision of the Drupal core accessibility gate.</p>
+
+		<h2>Summary</h2>
+
+		<p>The revised page treats accessibility as a shared contribution responsibility. It retains the option of naming an accessibility lead or champion, but makes that a coordination role rather than the person responsible for accessibility. It replaces mandatory review at design, alpha, beta, and stable stages with risk-based review triggers.</p>
+
+		<p>The original body contained approximately 711 words. The revised body contains 768 words, an increase of 8.0 percent. The additional detail defines practical work products, including user impact, acceptance criteria, tests, and issue evidence.</p>
+
+		<p>The revision:</p>
+
+		<ul>
+			<li>Updates the standard from WCAG 2.1 to WCAG 2.2 Level AA.</li>
+			<li>Explains ATAG 2.0 Parts A and B in the context of Drupal authoring features.</li>
+			<li>Separates guidance for all Drupal projects from the formal Drupal core gate.</li>
+			<li>Replaces universal maintainer sign-off with review based on the risk and complexity of a change.</li>
+			<li>Requires contributors to describe affected people and tasks, not only technical failures.</li>
+			<li>Adds manual, automated, assistive-technology, and disabled-user testing guidance.</li>
+			<li>Defines the evidence another contributor needs to repeat a test.</li>
+		</ul>
+
+		<h2>Detailed changes</h2>
+
+		<table>
+			<caption>Changes grouped by original section or claim</caption>
+			<thead>
+				<tr>
+					<th scope="col">Original area</th>
+					<th scope="col">Change</th>
+					<th scope="col">Reason</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Introduction</th>
+					<td>Replaced the conversational opening with a direct statement that accessibility is part of contribution quality throughout planning, design, implementation, review, and testing.</td>
+					<td>The original opening described good intentions but did not say what contributors need to do.</td>
+				</tr>
+				<tr>
+					<th scope="row">BBC Accessibility Champions</th>
+					<td>Removed the external case study as the basis for Drupal’s process.</td>
+					<td>A single organization’s model does not define current Drupal governance. The useful part of the model, naming someone to coordinate accessibility, is retained without making it mandatory.</td>
+				</tr>
+				<tr>
+					<th scope="row">“Find an A11y Champion”</th>
+					<td>Replaced the section with “Make accessibility a shared responsibility.” An accessibility lead or champion remains optional.</td>
+					<td>Assigning accessibility to one person creates a predictable ownership gap. Designers, developers, reviewers, and maintainers each control different accessibility outcomes.</td>
+				</tr>
+				<tr>
+					<th scope="row">WCAG 2.1 and ATAG 2.0 essentials</th>
+					<td>Updated the target to WCAG 2.2 Level AA and explained the distinct purpose of ATAG Parts A and B. Added Drupal’s coding standards as the implementation reference.</td>
+					<td>The original standard was outdated and the term “essentials” did not identify a testable target.</td>
+				</tr>
+				<tr>
+					<th scope="row">Level AAA</th>
+					<td>Added a short statement that Level AAA and advisory techniques are useful goals but are not Level AA requirements.</td>
+					<td>This keeps aspirational improvements visible without misclassifying them as mandatory failures under an AA target.</td>
+				</tr>
+				<tr>
+					<th scope="row">Accessibility planning</th>
+					<td>Added requirements to identify affected people and tasks, applicable standards, and accessibility acceptance criteria before implementation.</td>
+					<td>The original page recommended early involvement but did not define what an early review should produce.</td>
+				</tr>
+				<tr>
+					<th scope="row">Existing patterns</th>
+					<td>Added guidance to reuse an established Drupal pattern only when it fits the task and has no relevant known accessibility defect.</td>
+					<td>Consistency helps, but existing code is not proof that a pattern is accessible.</td>
+				</tr>
+				<tr>
+					<th scope="row">Authoring workflows</th>
+					<td>Added separate consideration of the interface used by disabled authors and the accessibility of generated content.</td>
+					<td>This turns the ATAG reference into a concrete design and review decision.</td>
+				</tr>
+				<tr>
+					<th scope="row">Design, alpha, beta, and stable reviews</th>
+					<td>Removed the four-stage minimum review schedule and replaced it with continuous testing plus risk-based review triggers.</td>
+					<td>The staged model may fit a large initiative, but it adds unnecessary process to small changes and does not match the core-gates principle that gates should not add work for the responsible team.</td>
+				</tr>
+				<tr>
+					<th scope="row">Accessibility Topic Maintainer sign-off</th>
+					<td>Removed the claim that every core contribution needs Topic Maintainer sign-off and the recommendation to obtain official sign-off at every stage.</td>
+					<td>The core gate is a checklist for developers, reviewers, and committers. Topic Maintainer review is important for new, complex, high-impact, or unresolved work, but should not be represented as a universal approval step without a supporting governance policy.</td>
+				</tr>
+				<tr>
+					<th scope="row">Testing</th>
+					<td>Added a concise set of manual, automated, responsive, assistive-technology, regression, and disabled-user testing expectations.</td>
+					<td>The original page said to perform reviews regularly but did not explain the minimum shape of a useful review.</td>
+				</tr>
+				<tr>
+					<th scope="row">Issue evidence</th>
+					<td>Added requirements for reproducible steps, relevant configurations and states, expected and actual results, affected people, and known limitations.</td>
+					<td>Reviewers need evidence they can repeat. A request for sign-off is not evidence.</td>
+				</tr>
+				<tr>
+					<th scope="row"><code>needs accessibility review</code></th>
+					<td>Added the core issue tag and concrete conditions for using it early.</td>
+					<td>The tag connects process guidance to the accessibility gate and makes review needs visible in the issue queue.</td>
+				</tr>
+				<tr>
+					<th scope="row">Core and contributed projects</th>
+					<td>Clarified that the formal core gate applies to Drupal core. Contributed projects should define their own review and release requirements.</td>
+					<td>The original page grouped core, modules, themes, initiatives, and patches together, then described a core-only approval process as if it applied to all of them.</td>
+				</tr>
+				<tr>
+					<th scope="row">Work already underway</th>
+					<td>Replaced the question-and-answer section with direct steps for assessing and correcting work in progress.</td>
+					<td>The revised wording tells contributors what to do without reassurance, repetition, or dependence on finding a champion.</td>
+				</tr>
+				<tr>
+					<th scope="row">Getting help</th>
+					<td>Retained the issue queue and Drupal Slack channel, and added the current accessibility office-hours page.</td>
+					<td>Decisions should remain documented with the contribution. Community channels remain useful for broader questions and early advice.</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2>Content removed or altered</h2>
+
+		<ul>
+			<li><strong>“A11y” in the main heading:</strong> Replaced with “accessibility.” The abbreviation remains only where it is part of a channel or page name.</li>
+			<li><strong>BBC success claim:</strong> Removed because the page did not provide evidence needed to evaluate the claim and Drupal’s process should stand on its own policy.</li>
+			<li><strong>Monthly office-hours promise:</strong> Replaced with a link to the maintained office-hours page. The contribution guide should not contain a schedule that can become stale.</li>
+			<li><strong>Mandatory four-stage sign-off:</strong> Removed because it is disproportionate for routine contributions and unsupported as a universal policy.</li>
+			<li><strong>“Here to help, not judge” and similar reassurance:</strong> Removed in favor of direct instructions and current support routes.</li>
+			<li><strong>Legal-obligation claim:</strong> Removed because obligations vary by organization and jurisdiction and do not define Drupal’s engineering process.</li>
+			<li><strong>Claim that late remediation can make a theme “ugly”:</strong> Removed as subjective and unnecessary.</li>
+			<li><strong>Claims that accessible work is always easier, cheaper, or more elegant:</strong> Replaced with the narrower and defensible point that prevention is usually easier than correcting an established design and implementation.</li>
+		</ul>
+
+		<h2>Claims not added</h2>
+
+		<p>The revision does not claim that:</p>
+
+		<ul>
+			<li>One accessibility champion can assure the accessibility of a contribution.</li>
+			<li>Every contribution requires Accessibility Topic Maintainer approval.</li>
+			<li>Passing an automated test establishes WCAG conformance.</li>
+			<li>Testing with one screen reader represents all disabled users.</li>
+			<li>Testing with disabled users replaces standards-based review.</li>
+			<li>Every contributed project uses the Drupal core accessibility gate.</li>
+			<li>Following the page establishes legal compliance.</li>
+		</ul>
+
+		<h2>Sources checked</h2>
+
+		<ul>
+			<li><a href="https://www.w3.org/TR/WCAG22/">Web Content Accessibility Guidelines (WCAG) 2.2</a></li>
+			<li><a href="https://www.w3.org/TR/ATAG20/">Authoring Tool Accessibility Guidelines (ATAG) 2.0</a></li>
+			<li><a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates">Drupal core gates policy</a></li>
+			<li><a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">Current Drupal core accessibility gate</a></li>
+			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards">Drupal Accessibility Coding Standards</a></li>
+			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-do-an-accessibility-review">How to perform an accessibility review</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestDefault.js">Default-theme axe-core Nightwatch tests in Drupal 11.x</a></li>
+			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestAdmin.js">Administration-theme axe-core Nightwatch tests in Drupal 11.x</a></li>
+		</ul>
+	</main>
+</body>
+</html>
