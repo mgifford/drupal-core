@@ -57,3 +57,24 @@ sites/simpletest
 # Manual analysis artifacts
 reports/Gin-issues.xlsx
 
+# Test output and scan logs (temporary)
+tests/playwright/results/
+drupal_scan.log
+test_gouv.csv
+
+# Temporary crawl and cache directories
+reports/.tmp-crawl/
+
+# Node data exports (testing artifacts)
+/node/
+
+# Contrib modules managed by Composer
+# (do not commit; install via composer.json)
+# These are listed for reference only:
+# modules/contrib/devel/
+# modules/contrib/generated_content/
+
+# Core module changes are for testing only
+# Use patches/ for any core modifications intended for upstream
+# core/modules/**/*.php changes must use patch files, not direct commits
+
