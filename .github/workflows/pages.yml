@@ -35,6 +35,10 @@ jobs:
         run: |
           # Create a directory for the Pages deployment
           mkdir -p _site
+          # Disable Jekyll processing so Drupal .html.twig files are not
+          # rendered as Liquid templates (which would fail on Twig tags like
+          # {% set %}).
+          touch _site/.nojekyll
           # Copy documentation-new to docs/ subdirectory
           cp -r documentation-new/ _site/docs/
           # Copy reports to root
