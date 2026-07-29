@@ -6,6 +6,10 @@
   "scripts": {
     "test": "playwright test",
     "test:virtual-sr": "playwright test --grep 'Virtual SR'",
+    "test:menu:devel": "playwright test tests/a11y-menu-devel-sr.spec.ts",
+    "test:menu:devel:headed": "playwright test tests/a11y-menu-devel-sr.spec.ts --headed",
+    "test:menu:devel:reorder-proof": "playwright test tests/a11y-menu-devel-reorder-proof.spec.ts",
+    "test:menu:devel:reorder-proof:headed": "playwright test tests/a11y-menu-devel-reorder-proof.spec.ts --headed",
     "test:modal": "playwright test --grep 'Virtual SR.*modal'",
     "test:multi-scanner:core-baseline": "A11Y_SCAN_MODE=core-baseline playwright test --grep 'Multi-Scanner Crawl'",
     "test:multi-scanner:seeded-benchmark": "A11Y_SCAN_MODE=seeded-benchmark playwright test --grep 'Multi-Scanner Crawl'"

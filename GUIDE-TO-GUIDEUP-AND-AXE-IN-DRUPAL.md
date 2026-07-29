@@ -21,6 +21,8 @@ Guidepup provides JavaScript-based screen reader automation. The **virtual scree
 
 This guide focuses on `@guidepup/virtual-screen-reader` + `@axe-core/playwright` — the combination that works on any OS without requiring a real screen reader.
 
+> **Want to test with real VoiceOver/NVDA?** See [Guidepup Real Screen Reader Testing](GUIDEUP-REAL-SCREEN-READER-TESTING.md) for driving actual assistive technology through Playwright.
+
 ---
 
 ## Setup
@@ -412,3 +414,35 @@ Virtual SR results are written to:
 - `tests/playwright/reports/virtual-sr-results.json` — always the latest scan
 
 Each result includes the full spoken phrase log, findings, axe violations, and cross-reference analysis.
+
+---
+
+## Virtual SR vs. Real VoiceOver
+
+This guide covers the **virtual screen reader** approach. For driving actual VoiceOver/NVDA, see [Guidepup Real Screen Reader Testing](GUIDEUP-REAL-SCREEN-READER-TESTING.md).
+
+| Aspect | Virtual SR (This Guide) | Real VoiceOver (Other Guide) |
+|--------|-------------------------|------------------------------|
+| **Speed** | Fast (milliseconds) | Slower (seconds per action) |
+| **OS Requirement** | Any OS | macOS (VoiceOver) or Windows (NVDA) |
+| **Browser Mode** | Headless or headed | Must be headed |
+| **What it tests** | Semantic structure (W3C specs) | Actual AT behavior |
+| **Keyboard traps** | Cannot detect | Can detect |
+| **CI/CD friendly** | Yes | No (requires real AT) |
+
+**Recommendation:** Use virtual SR for fast CI/CD regression checks. Use real VoiceOver for critical user flows and pre-release validation.
+
+### Example Tests
+
+- **Virtual SR**: `tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts`
+- **Real VoiceOver**: `tests/playwright/guidepup-drupal-admin.spec.ts`
+
+### Running Both Approaches
+
+```bash
+# Virtual SR (fast, any OS)
+npx playwright test --grep "Virtual SR"
+
+# Real VoiceOver (slow, macOS only, headed mode required)
+npx playwright test guidepup-drupal-admin --headed
+```

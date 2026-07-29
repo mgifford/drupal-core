@@ -339,4 +339,71 @@ errors; tableselect should too.
 - Optional: add a Kernel/Functional render test for the assistive-technology
   output (the Unit test already asserts the `aria-describedby` association).
 
+---
+
+## Draft 10 — #2279111 non-labelable elements: standards-compliant label semantics
+
+- **Project:** drupal (core)
+- **Category:** Bug report / patch follow-up
+- **Component:** forms system
+- **Priority:** Normal
+- **Tags:** `Accessibility`, `Forms`, `WCAG`
+- **Issue:** https://www.drupal.org/project/drupal/issues/2279111
+- **Related source patch credit:** intrafusion re-roll on #3082011 comment #16669292 (attached `3082011-22.patch`)
+
+### What to keep from intrafusion's patch (`3082011-22.patch`)
+
+1. Add `#title_tag` support in preprocess so label rendering can switch tags.
+2. Keep `for` output only when the rendered tag is actually `label`.
+3. Use a single template pattern (`<{{ tag }}>`) across core and core themes.
+
+### What this consolidation adds on top
+
+1. Explicit `#non_labelable` metadata for wrappers like `#type => item`.
+2. Programmatic association for non-labelable wrappers via:
+    - wrapper: `id="<base>-wrapper"` + `aria-describedby="<base>-label"`
+    - title: `<span id="<base>-label">...` (or custom `#title_tag`)
+3. Regression coverage proving the relationship (no invalid `label[for]` targeting `div`, no orphan title text).
+
+### Ready-to-post comment for #2279111
+
+Credit first: this approach builds directly on intrafusion's re-roll in #3082011 comment #16669292 (`3082011-22.patch`). Thank you, @intrafusion, for pushing the `#title_tag` + template simplification pattern forward.
+
+I think the strongest path for #2279111 is to keep the architectural core of that patch and apply it with explicit non-labelable semantics.
+
+#### 1. W3C / HTML spec compliance
+Per HTML spec, `label[for]` is for labelable controls only (`input`, `select`, `textarea`, `button`, etc.). Pointing `for` at a `div` fails validation and creates noisy false positives in scanners.
+
+#### 2. Accessible association via ARIA
+Removing invalid `for` references is necessary, but not sufficient. We still need a programmatic relationship between wrapper and title for assistive tech.
+
+This patch path does that by:
+- marking elements as non-labelable (`#non_labelable => TRUE`),
+- rendering wrapper ids as `<base>-wrapper`,
+- rendering title ids as `<base>-label`,
+- wiring wrapper `aria-describedby` to the title id.
+
+So we get valid HTML and preserved accessibility semantics.
+
+#### 3. Flexible rendering API (`#title_tag`)
+Instead of hardcoding special-case markup in Twig, preprocess determines the tag:
+- default labelable behavior: `<label for="...">`
+- non-labelable default: `<span id="...">` (no `for`)
+- explicit override: `#title_tag` (for heading/semantic needs)
+
+This keeps Form API extensible for site builders and contrib.
+
+#### 4. Clean template architecture
+Templates in core/themes can stay simple and uniform:
+
+```twig
+{% if title is not empty or required -%}
+   <{{ tag }}{{ attributes.addClass(classes) }}>{{ title }}</{{ tag }}>
+{%- endif %}
+```
+
+That removes nested conditionals from Twig and keeps behavior centralized in preprocess.
+
+If folks agree, the follow-up is to keep this minimal, standards-compliant API shape and continue tightening regression coverage around non-labelable wrappers.
+
 
