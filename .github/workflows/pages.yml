@@ -7,6 +7,7 @@ on:
     paths:
       - 'reports/**'
       - 'documentation-new/**'
+      - '.nojekyll'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -43,6 +44,11 @@ jobs:
           cp -r documentation-new/ _site/docs/
           # Copy reports to root
           cp -r reports/* _site/
+
+      - name: Verify no-Jekyll markers
+        run: |
+          test -f .nojekyll
+          test -f _site/.nojekyll
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
