@@ -5,6 +5,8 @@
   "description": "Guidepup virtual screen reader tests for Drupal Core",
   "scripts": {
     "test": "playwright test",
+    "test:issue:2848307:baseline": "EXPECT_INLINE_ERROR=0 node scripts/issue-2848307-mcp-check.js",
+    "test:issue:2848307:patched": "EXPECT_INLINE_ERROR=1 node scripts/issue-2848307-mcp-check.js",
     "test:virtual-sr": "playwright test --grep 'Virtual SR'",
     "test:menu:devel": "playwright test tests/a11y-menu-devel-sr.spec.ts",
     "test:menu:devel:headed": "playwright test tests/a11y-menu-devel-sr.spec.ts --headed",
