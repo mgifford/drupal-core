@@ -17,7 +17,9 @@
 	<li>Browsers and assistive technologies required by the project or affected behavior.</li>
 </ul>
 
-<p>For a proposed change, record the behavior before and after applying it. Test every state introduced or changed, including loading, empty, error, expanded, selected, disabled, and completed states where relevant.</p>
+<p>Select the checks that apply to the affected task and surfaces. Record what is included, what is excluded, and why. Do not exclude a task, surface, or state known to be affected by the change. For Drupal core, state whether the accessibility gate applies to all or part of the change, or is not applicable. Resolve a disputed applicability decision before passing the gate. For a contributed project, follow any project-specific review and release requirements and use this guide to select relevant evidence.</p>
+
+<p>For a proposed change, record the behavior before and after applying it. If no comparable baseline exists, record why and define the expected result. Test every state introduced or changed, including loading, empty, error, expanded, selected, disabled, and completed states where relevant.</p>
 
 <p>A stable preview makes a review easier to repeat. Drupal core, Drupal CMS, and many contributed projects provide <a href="https://www.drupal.org/docs/develop/git/using-git-to-contribute-to-drupal/using-tugboat-previews-on-drupal-core-and-contrib-merge-requests">Tugboat previews for merge requests</a>. A local environment is also acceptable when the configuration and steps are documented.</p>
 
@@ -51,7 +53,7 @@
 
 <p>Drupal core uses axe-core with Nightwatch on representative public and administration pages. New or substantially changed interactive behavior should receive automated regression coverage where practical.</p>
 
-<p>A failed automated rule may block a build only when the result is deterministic and consistently represents a defect in the tested environment. Keep rule exceptions narrow, explain why each rule is disabled, and link to an issue that tracks the underlying problem. Do not suppress an entire rule set to remove inconvenient results.</p>
+<p>A failed automated rule may block a build only when the result is deterministic and consistently represents a defect in the tested environment. Keep rule exceptions narrow, explain why each rule is disabled, link to an issue that tracks the underlying problem, and state when the exception should be rechecked. Do not suppress an entire rule set to remove inconvenient results.</p>
 
 <h2>4. Perform manual checks</h2>
 
@@ -95,6 +97,7 @@
 <ul>
 	<li>Confirm that the page title and headings describe the content and that heading levels reflect the structure. WCAG does not require exactly one <code>h1</code>.</li>
 	<li>Check landmarks, lists, tables, reading order, page language, and changes in language.</li>
+  <li>Inspect the final rendered document object model and accessibility tree when the result depends on generated semantics, names, states, properties, or relationships.</li>
 	<li>Confirm that every control has an accessible name and that it includes the visible label.</li>
 	<li>Review link and button text in context.</li>
 	<li>Check meaningful images, icons, charts, and other non-text content for an appropriate text alternative. Confirm that decorative images are ignored.</li>
@@ -137,6 +140,8 @@
 
 <p>For editors, layout tools, media tools, and other authoring features, review both the interface used by authors and the content it produces.</p>
 
+<p>Record separate outcomes for whether disabled authors can complete the task and whether the feature preserves accessibility information and helps authors produce accessible output. Assess the rendered output against the relevant WCAG target.</p>
+
 <ul>
 	<li>Complete the authoring task by keyboard and with the relevant assistive technology.</li>
 	<li>Check whether disabled authors receive the same instructions, validation, previews, and repair options.</li>
@@ -148,7 +153,7 @@
 
 <h2>5. Test with assistive technology</h2>
 
-<p>Select browser and assistive-technology combinations based on the project’s support policy, the affected users, and the behavior being reviewed. Record the exact combinations. Testing every available combination is neither possible nor necessary.</p>
+<p>Select browser and assistive-technology combinations based on the project’s support policy, the affected users, and the behavior being reviewed. Record the exact browser, operating system, and assistive-technology versions, the task and state tested, and the test date. Testing every available combination is neither possible nor necessary.</p>
 
 <p>Complete the defined tasks rather than exploring the page without a goal. Check:</p>
 
@@ -164,9 +169,9 @@
 
 <h2>6. Test with disabled users</h2>
 
-<p>Include disabled users when reviewing new, complex, high-impact, or unfamiliar patterns where possible. Ask participants to complete defined tasks using their usual technologies and strategies. Fix obvious standards failures before user testing so the session can focus on problems that technical review is less likely to find.</p>
+<p>Include disabled users when reviewing new, complex, high-impact, or unfamiliar patterns where possible. Participation should be voluntary and informed. Ask participants to complete defined tasks using their usual technologies and strategies. Fix obvious standards failures before user testing so the session can focus on problems that technical review is less likely to find.</p>
 
-<p>Record the test scope, participant characteristics relevant to the task, technologies used, and observed barriers without identifying participants unnecessarily. Do not generalize one person’s result to an entire disability group.</p>
+<p>Record the test scope, access method and environment relevant to the finding, observed barriers, and limitations. Default to an anonymized, task-based summary. Do not require a diagnosis, treat participants as approvers or representatives of a group, or generalize one person’s result to an entire disability group. Do not attach recordings, names, contact details, or uniquely identifying participant details to a public issue without explicit permission.</p>
 
 <p>User testing can identify barriers that WCAG evaluation misses. It does not establish WCAG conformance and does not replace standards-based review.</p>
 
@@ -182,12 +187,15 @@
 	<li>Tool rules and versions, when a tool contributed evidence.</li>
 	<li>Browsers, assistive technologies, and user preferences used.</li>
 	<li>Whether the result is new, pre-existing, intermittent, or dependent on a particular condition.</li>
-	<li>Relevant screenshots, recordings, markup, or console output, with text descriptions where needed.</li>
+  <li>Relevant screenshots, recordings, markup, or console output. Describe information in images in text, and provide captions or a transcript for recordings needed to understand the result.</li>
+  <li>Relevant checks not performed and why, and any limits on what the evaluation can establish.</li>
 </ul>
 
 <p>Raw tool output is not a complete bug report. Explain the user impact and the evidence needed to reproduce the result.</p>
 
 <p>After a fix, repeat the failed task and the relevant automated and manual checks. Also test adjacent states and components that use the same pattern. Record the successful retest rather than closing the issue from code inspection alone.</p>
+
+<p>Record the review disposition and rationale, including whether a result blocks approval, needs manual review, belongs in a follow-up issue, or is an accepted narrow exception. For a follow-up or exception, record the condition for rechecking it.</p>
 
 <h2>8. Determine the review outcome</h2>
 
@@ -231,6 +239,6 @@
 	</tbody>
 </table>
 
-<p>For Drupal core, apply the <a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">accessibility gate</a> and add the <code>needs accessibility review</code> issue tag when the change introduces a new or substantially revised pattern, creates a complex interaction, affects several disability groups, or leaves an accessibility question unresolved.</p>
+<p>For Drupal core, apply the <a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">accessibility gate</a>. The gate defines the indicators for adding the <a href="https://www.drupal.org/docs/develop/issues/fields-and-other-parts-of-an-issue/issue-tags-special-tags"><code>Needs accessibility review</code> issue tag</a> and records its Topic Maintainer signoff requirement. Routine changes using established patterns still need applicable evidence, but do not automatically require the tag.</p>
 
 <p>See also the guidance on <a href="https://www.drupal.org/docs/getting-started/accessibility/how-to-ensure-your-contribution-is-accessible">ensuring a contribution is accessible</a>.</p>

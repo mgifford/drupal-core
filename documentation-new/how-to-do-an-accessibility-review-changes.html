@@ -13,9 +13,9 @@
 
 		<h2>Summary</h2>
 
-		<p>The revised page is organized as an eight-step review workflow. It begins with people, tasks, scope, and test conditions. Automated results are treated as evidence from limited rules. Manual testing, assistive-technology testing, and disabled-user testing are separate evidence sources. The final section classifies what blocks approval, what requires review, and what remains aspirational.</p>
+      <p>The revised page is organized as an eight-step review workflow. It begins with people, tasks, proportionate scope, and test conditions. Automated results are treated as evidence from limited rules. Manual testing, assistive-technology testing, and disabled-user testing are separate evidence sources. The final sections require accessible artifacts and classify what blocks approval, what requires review, and what remains aspirational.</p>
 
-		<p>The original body contained approximately 2,559 words. The revised body contains 1,973 words, a decrease of 22.9 percent. Product lists, outdated tutorials, duplicated standards, and inaccurate requirements were removed while the review workflow and evidence requirements were expanded.</p>
+      <p>The original body contained approximately 2,559 words. The revised body contains 2,257 words, a decrease of 11.8 percent. Product lists, outdated tutorials, duplicated standards, and inaccurate requirements were removed while the review workflow and evidence requirements were expanded.</p>
 
 		<p>The revision:</p>
 
@@ -23,11 +23,12 @@
 			<li>Defines the difference between a contribution review and a conformance audit.</li>
 			<li>Starts with the affected people and task instead of an automated tool.</li>
 			<li>Separates accessibility barriers, requirements, test rules, and deterministic automated gates.</li>
-			<li>Adds repeatable scope, environment, state, and evidence requirements.</li>
+        <li>Adds proportionate scope, environment, state, baseline, and evidence requirements.</li>
 			<li>Updates manual checks for WCAG 2.2.</li>
 			<li>Replaces unlimited assistive-technology testing with a documented, risk-based matrix.</li>
-			<li>Adds disabled-user testing without presenting it as a conformance claim.</li>
-			<li>Defines review outcomes for blockers, manual review, follow-ups, aspirational findings, and false positives.</li>
+        <li>Adds disabled-user testing with consent, privacy, representation, and approval-role boundaries.</li>
+        <li>Requires accessible review artifacts and disclosure of checks not performed.</li>
+        <li>Defines review outcomes and rationale for blockers, manual review, follow-ups, accepted exceptions, aspirational findings, and false positives.</li>
 		</ul>
 
 		<h2>Detailed changes</h2>
@@ -49,8 +50,8 @@
 				</tr>
 				<tr>
 					<th scope="row">Review scope</th>
-					<td>Added user tasks, workflows, versions, configuration, roles, content, states, viewports, preferences, browsers, and assistive technologies.</td>
-					<td>A result cannot be reproduced or interpreted without knowing what was tested and under which conditions.</td>
+          <td>Added user tasks, workflows, versions, configuration, roles, content, states, viewports, preferences, browsers, assistive technologies, applicable checks, and explained exclusions.</td>
+          <td>A result cannot be reproduced or interpreted without knowing what was tested, under which conditions, and why the scope is proportionate.</td>
 				</tr>
 				<tr>
 					<th scope="row">Tugboat previews</th>
@@ -74,8 +75,8 @@
 				</tr>
 				<tr>
 					<th scope="row">Rule suppression</th>
-					<td>Added requirements for narrow exceptions, written reasons, and linked follow-up issues.</td>
-					<td>Current Drupal core Nightwatch tests use targeted disabled rules with issue references. Broad suppression can hide regressions.</td>
+          <td>Added requirements for narrow exceptions, written reasons, linked follow-up issues, and conditions for rechecking.</td>
+          <td>Current Drupal core Nightwatch tests use targeted disabled rules with issue references. Broad or indefinite suppression can hide regressions.</td>
 				</tr>
 				<tr>
 					<th scope="row">Keyboard navigation</th>
@@ -108,6 +109,11 @@
 					<td>One <code>h1</code> and unbroken levels can be useful conventions, but they are not universal WCAG conformance requirements. Tools cannot judge whether headings describe the structure well.</td>
 				</tr>
 				<tr>
+          <th scope="row">Rendered semantics</th>
+          <td>Added inspection of the final rendered document object model and accessibility tree when generated names, roles, states, properties, or relationships affect the result.</td>
+          <td>Source templates and screenshots do not establish what browsers and assistive technologies receive after rendering.</td>
+        </tr>
+        <tr>
 					<th scope="row">Color contrast</th>
 					<td>Added the large-text exception and non-text contrast for controls, focus indicators, states, and essential graphics.</td>
 					<td>The original statement that text should always meet 4.5:1 was incomplete.</td>
@@ -134,8 +140,8 @@
 				</tr>
 				<tr>
 					<th scope="row">Authoring workflows</th>
-					<td>Added review steps for disabled authors, generated output, preservation of accessibility information, defaults, prompts, and repair options.</td>
-					<td>Drupal is an authoring tool. Reviewing only public-facing output omits ATAG Part A and Part B concerns.</td>
+          <td>Added separate outcomes for disabled authors, support for producing accessible content, generated output, preservation of accessibility information, defaults, prompts, and repair options.</td>
+          <td>Drupal is an authoring tool. Reviewing only the editor or only public-facing output omits distinct ATAG Part A, ATAG Part B, and WCAG concerns.</td>
 				</tr>
 				<tr>
 					<th scope="row">Dynamic content</th>
@@ -154,8 +160,8 @@
 				</tr>
 				<tr>
 					<th scope="row">“Test on as many as you can”</th>
-					<td>Replaced unlimited combinations with a documented matrix based on project support, affected users, and technical risk.</td>
-					<td>Unbounded testing is not achievable or repeatable. A defined matrix produces evidence reviewers can compare.</td>
+          <td>Replaced unlimited combinations with a documented matrix of exact browser, operating-system, assistive-technology, task, state, and date information based on project support, affected users, and technical risk.</td>
+          <td>Unbounded testing is not achievable or repeatable. A defined matrix produces evidence reviewers can compare without generalizing one combination.</td>
 				</tr>
 				<tr>
 					<th scope="row">Link purpose</th>
@@ -164,13 +170,23 @@
 				</tr>
 				<tr>
 					<th scope="row">Disabled-user testing</th>
-					<td>Added a separate section with scope, task, reporting, and generalization limits.</td>
-					<td>Disabled-user testing can find barriers missed by conformance evaluation. It does not establish conformance or represent every disabled person.</td>
+          <td>Added a separate section with scope, task, voluntary participation, privacy, diagnosis, approval-role, public-evidence, reporting, and generalization limits.</td>
+          <td>Disabled-user testing can find barriers missed by conformance evaluation. It does not establish conformance, turn participants into approvers, represent every disabled person, or justify publishing identifying details without permission.</td>
+        </tr>
+        <tr>
+          <th scope="row">Review artifacts</th>
+          <td>Requires descriptions for information in images and captions or transcripts for recordings needed to understand a result.</td>
+          <td>Reviewers should not need visual-only evidence to understand or reproduce an accessibility result.</td>
 				</tr>
 				<tr>
 					<th scope="row">Review outcome</th>
-					<td>Added explicit treatments for confirmed failures, deterministic regressions, review-needed results, pre-existing problems, aspirational findings, false positives, and barriers without a WCAG mapping.</td>
-					<td>A review process needs a decision model. A list of checks alone does not determine whether a change is ready.</td>
+          <td>Added explicit treatments and rationale for confirmed failures, deterministic regressions, review-needed results, pre-existing problems, accepted exceptions, aspirational findings, false positives, and barriers without a WCAG mapping.</td>
+          <td>A review process needs a decision model and a recheck condition for follow-ups or exceptions. A list of checks alone does not determine whether a change is ready.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>Needs accessibility review</code></th>
+          <td>Links to the core gate for the canonical issue-tag indicators and retains the Topic Maintainer signoff meaning.</td>
+          <td>The gate owns the escalation decision, while this page owns the review procedure and evidence. Linking avoids duplicated policy text that could drift.</td>
 				</tr>
 			</tbody>
 		</table>
@@ -215,11 +231,11 @@
 			<li><a href="https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/">WCAG Evaluation Methodology overview</a></li>
 			<li><a href="https://www.w3.org/TR/act-rules-format/">Accessibility Conformance Testing Rules Format 1.1</a></li>
 			<li><a href="https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards">Current Drupal Accessibility Coding Standards</a></li>
-			<li><a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">Current Drupal core accessibility gate</a></li>
+        <li><a href="https://www.drupal.org/about/core/policies/core-change-policies/core-gates/accessibility">Current Drupal core accessibility gate</a></li>
+        <li><a href="https://www.drupal.org/docs/develop/issues/fields-and-other-parts-of-an-issue/issue-tags-special-tags">Drupal issue tags: special tags</a></li>
 			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestDefault.js">Default-theme axe-core Nightwatch tests</a></li>
 			<li><a href="https://github.com/drupal/core/blob/11.x/tests/Drupal/Nightwatch/Tests/a11yTestAdmin.js">Administration-theme axe-core Nightwatch tests</a></li>
 		</ul>
 	</main>
 </body>
 </html>
-
