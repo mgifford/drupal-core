@@ -105,6 +105,16 @@ class FormErrorHandlerTest extends UnitTestCase {
       '#array_parents' => ['test6'],
       '#id' => 'edit-test6',
     ];
+    $this->testForm['tableselect'] = [
+      '#type' => 'tableselect',
+      '#title' => 'Tableselect test',
+      '#parents' => ['tableselect'],
+      '#array_parents' => ['tableselect'],
+      '#id' => 'edit-tableselect',
+      '#options' => [],
+      '#header' => [],
+      '#attributes' => [],
+    ];
   }
 
   /**

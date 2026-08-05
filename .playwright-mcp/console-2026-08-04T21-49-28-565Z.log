@@ -1,0 +1,3 @@
+[     824ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://drupal-core.ddev.site/admin/modules:0
+[     861ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://drupal-core.ddev.site/favicon.ico:0
+[ 1418639ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://drupal-core.ddev.site/admin/modules:0

@@ -1,0 +1,52 @@
+- generic [ref=f1e1]:
+  - link "Skip to main content ➔" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=f1e5]:
+    - banner [ref=f1e6]:
+      - generic [ref=f1e7]:
+        - generic [ref=f1e8]:
+          - switch "Sticky header"
+        - generic [ref=f1e10]:
+          - link "Drush Site-Install" [ref=f1e15] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f1e16]:
+            - navigation [ref=f1e17]:
+              - heading "Main navigation" [level=2] [ref=f1e18]
+              - list [ref=f1e19]:
+                - listitem [ref=f1e20]:
+                  - link "Home" [ref=f1e21] [cursor=pointer]:
+                    - /url: /
+            - navigation "User account menu" [ref=f1e24]:
+              - list [ref=f1e26]:
+                - listitem [ref=f1e27]:
+                  - link "Log in" [ref=f1e28] [cursor=pointer]:
+                    - /url: /user/login
+    - generic [ref=f1e32]:
+      - generic [ref=f1e35]:
+        - heading "Primary tabs" [level=2] [ref=f1e36]
+        - navigation "Primary tabs" [ref=f1e37]:
+          - list [ref=f1e38]:
+            - listitem [ref=f1e39]:
+              - link "Log in" [ref=f1e40] [cursor=pointer]:
+                - /url: /user/login
+            - listitem [ref=f1e41]:
+              - link "Reset your password" [ref=f1e42] [cursor=pointer]:
+                - /url: /user/password
+      - main [ref=f1e43]:
+        - heading "Log in" [level=1] [ref=f1e46]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]:
+            - generic [ref=f1e52] [cursor=pointer]: Username
+            - textbox "Username" [active] [ref=f1e53]
+          - generic [ref=f1e54]:
+            - generic [ref=f1e55] [cursor=pointer]: Password
+            - textbox "Password" [ref=f1e56]
+          - button "Log in" [ref=f1e58] [cursor=pointer]
+    - contentinfo [ref=f1e60]:
+      - generic [ref=f1e64]:
+        - text: Powered by
+        - link "Drupal" [ref=f1e65] [cursor=pointer]:
+          - /url: https://www.drupal.org
+        - img "Drupal Logo" [ref=f1e66]
+- Playwright MCP accessibility snapshot for Drupal issue #2848307.
+- Use this artifact with the matching console log to compare baseline vs. patched inline-error behavior.
