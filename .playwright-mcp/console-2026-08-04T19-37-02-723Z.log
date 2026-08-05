@@ -1,0 +1,3 @@
+[     303ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://drupal-core.ddev.site/admin/modules/uninstall:0
+# Playwright MCP console log for Drupal issue #2848307 reproduction and verification.
+# Pair with the matching page snapshot to see the failure path and confirm the fix.

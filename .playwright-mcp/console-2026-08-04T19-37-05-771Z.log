@@ -1,0 +1,4 @@
+# Playwright MCP console log for Drupal issue #2848307 reproduction and verification.
+# Pair with the matching page snapshot to see the failure path and confirm the fix.
+[   16749ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://drupal-core.ddev.site/contextual/render?theme=olivero:0
+[   16749ms] [WARNING] SyntaxError: Unexpected token 'I', "Invalid co"... is not valid JSON @ https://drupal-core.ddev.site/sites/default/files/js/js_trVQCeh4uPz_mWr0NbGcd6tBzHedrVpUC-xh4uSxg5s.js?scope=footer&language=en&theme=olivero&libraries=eJxLzs8rSa0oKU3M0U8pKi1IzNFLhovo5mTmZRcDAPIfDcI:1

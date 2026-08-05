@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content ➔" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - switch "Sticky header"
+        - generic [ref=e10]:
+          - link "Drush Site-Install" [ref=e15] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e16]:
+            - navigation [ref=e17]:
+              - heading "Main navigation" [level=2] [ref=e18]
+              - list [ref=e19]:
+                - listitem [ref=e20]:
+                  - link "Home" [ref=e21] [cursor=pointer]:
+                    - /url: /
+            - navigation "User account menu" [ref=e24]:
+              - list [ref=e26]:
+                - listitem [ref=e27]:
+                  - link "Log in" [ref=e28] [cursor=pointer]:
+                    - /url: /user/login
+    - generic [ref=e32]:
+      - navigation [ref=e36]:
+        - heading "Breadcrumb" [level=2] [ref=e37]
+        - list [ref=e39]:
+          - listitem [ref=e40]:
+            - link "Home" [ref=e41] [cursor=pointer]:
+              - /url: /
+      - main [ref=e42]:
+        - heading "Access denied" [level=1] [ref=e45]
+        - generic [ref=e46]: You are not authorized to access this page.
+    - contentinfo [ref=e50]:
+      - generic [ref=e54]:
+        - text: Powered by
+        - link "Drupal" [ref=e55] [cursor=pointer]:
+          - /url: https://www.drupal.org
+        - img "Drupal Logo" [ref=e56]
+- Playwright MCP accessibility snapshot for Drupal issue #2848307.
+- Use this artifact with the matching console log to compare baseline vs. patched inline-error behavior.
