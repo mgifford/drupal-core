@@ -13,6 +13,9 @@ concurrency:
   group: pages-check-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   check-pages:
     runs-on: ubuntu-latest

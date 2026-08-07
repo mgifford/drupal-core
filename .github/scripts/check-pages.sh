@@ -59,19 +59,31 @@ fi
 echo ""
 echo "Step 2: Checking live GitHub Pages URLs..."
 
+# Dynamically construct base URL from GitHub environment variables to support forks
+OWNER="${GITHUB_REPOSITORY_OWNER:-mgifford}"
+if [ -n "$GITHUB_REPOSITORY" ]; then
+  REPO_NAME="${GITHUB_REPOSITORY#*/}"
+else
+  REPO_NAME="drupal-core"
+fi
+# Convert owner and repo name to lowercase for standard GitHub Pages domain/path structure
+OWNER_LOWER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+REPO_LOWER=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
+BASE_URL="https://${OWNER_LOWER}.github.io/${REPO_LOWER}"
+
 LIVE_URLS=(
-  "https://mgifford.github.io/drupal-core/"
-  "https://mgifford.github.io/drupal-core/docs/"
-  "https://mgifford.github.io/drupal-core/docs/how-to-ensure-your-contribution-is-accessible-new.html"
-  "https://mgifford.github.io/drupal-core/docs/how-to-ensure-your-contribution-is-accessible-changes.html"
+  "${BASE_URL}/"
+  "${BASE_URL}/docs/"
+  "${BASE_URL}/docs/how-to-ensure-your-contribution-is-accessible-new.html"
+  "${BASE_URL}/docs/how-to-ensure-your-contribution-is-accessible-changes.html"
 )
 
 for URL in "${LIVE_URLS[@]}"; do
   echo "Checking $URL..."
   # Allow command to fail (e.g. DNS failure) without crashing the script
-  HTTP_STATUS=$(curl -L -s -o /dev/null -w "%{http_code}" "$URL" || echo "000")
+  HTTP_STATUS=$(curl -L -s -o /dev/null -w "%{http_code}" "$URL" || true)
   
-  if [ "$HTTP_STATUS" -eq 0 ]; then
+  if [ -z "$HTTP_STATUS" ] || [ "$HTTP_STATUS" = "000" ] || [ "$HTTP_STATUS" = "0" ]; then
     HTTP_STATUS="000"
   fi
 
