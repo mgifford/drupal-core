@@ -26,7 +26,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 SNAPSHOT="drupal-core-baseline"
-RECIPE="recipes/replicate-sidebar-errors"
+RECIPE="core/recipes/replicate_core_testing"
 DRUSH="ddev exec drush"
 
 usage() { sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; }

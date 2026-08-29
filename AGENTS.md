@@ -19,3 +19,43 @@ Treat this server as read-only research data; inspect the local repository for
 project-specific behavior. Distinguish MCP findings from conclusions based on
 the local codebase, and mention the relevant core version when making API
 recommendations.
+
+## Local dev environment: reset & test recipes
+
+This ddev site tests Drupal core patches. Start each patch from a clean, reproducible
+baseline **without losing code** — the working tree / patches are never touched.
+
+### Reset
+- `ddev reset-site` — restore the saved `drupal-core-baseline` database snapshot
+  (complete reset: config + content). Fast (~15s).
+- `ddev reset-site --capture` — rebuild the baseline from scratch (standard install +
+  the test recipe) and re-save the snapshot. Run after intentionally changing the baseline
+  (e.g. adding a recipe).
+- `ddev reset-site --recipe` — force a rebuild from the recipe, ignoring the snapshot.
+- After reset, log in with `ddev drush uli`.
+- Implementation: `scripts/reset-site.sh`; ddev wrapper `.ddev/commands/host/reset-site`
+  (force-added because `.ddev` is gitignored — on a fresh clone run
+  `bash scripts/reset-site.sh` if the wrapper is missing).
+
+### Test recipe (baseline is NOT a blank install)
+Baseline = `standard` profile + the composite recipe `core/recipes/replicate_core_testing`,
+which exposes site elements for robust UI/form testing and sets Default Admin as the
+administration theme. It layers these core recipes (see `core/recipes/`): `comment_base`,
+`tags_taxonomy`, `editorial_workflow`, `image_media_type`, `audio_media_type`,
+`document_media_type`, `remote_video_media_type`, `local_video_media_type`, `user_picture`,
+`basic_html_format_editor`, `full_html_format_editor`, `restricted_html_format`,
+`basic_block_type`, `standard_responsive_images`.
+
+### Add more surface area for a test
+Layer another core recipe on the baseline:
+`ddev exec drush recipe core/recipes/<name>`
+or add it to the `recipes:` list in `core/recipes/replicate_core_testing/recipe.yml`
+(dependencies are unprefixed because the recipe lives inside `core/recipes/`) and re-run
+`ddev reset-site --capture`. A composite recipe that reuses core recipes MUST live in
+`core/recipes/` — the recipe resolver only searches `core/recipes/` for dependencies, so a
+project-level `recipes/` file cannot resolve `core:*` deps.
+
+### Progress artifacts
+Review artifacts (full patch, interdiff, issue comment, Guidepup harness, bundle) are
+committed under `testing/<issue>/`; see `testing/README.md` for the daily loop
+(develop → test → produce artifacts → `ddev reset-site` → push to `origin`).

@@ -36,7 +36,7 @@ ddev exec bash ./core/scripts/dev/commit-code-check.sh
 ## Reproduce the environment
 ```bash
 ddev exec drush site:install standard -y
-ddev exec drush recipe recipes/replicate-sidebar-errors
+ddev exec drush recipe core/recipes/replicate_core_testing
 ddev drush uli
 # Add an Article, set URL alias to an invalid value, save -> sidebar shows has-error.
 ```

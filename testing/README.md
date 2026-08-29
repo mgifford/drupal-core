@@ -15,7 +15,7 @@ testing/<issue-id>-<short-title>/
   guidepup/                     # before/after VoiceOver harness + analysis
   src/                          # copies of changed source files for direct review
   README.md                     # what this issue changed + how to verify
-recipes/replicate-<issue>/      # Drupal recipe that builds the test environment
+core/recipes/replicate_core_testing/   # composite Drupal recipe that builds the test environment
 scripts/reset-site.sh           # reset the dev site to a clean baseline
 .dddev/commands/host/reset-site  # `ddev reset-site` wrapper
 ```
@@ -49,12 +49,14 @@ scripts/reset-site.sh           # reset the dev site to a clean baseline
 
 ## Building the test environment (recipe, not a blank slate)
 The baseline is **not** a bare install. It is a standard profile plus the
-`recipes/replicate-<issue>` recipe, which enables the Default Admin theme and sets it as
-the administration theme so the sidebar / advanced-group behavior can be reproduced.
+`core/recipes/replicate_core_testing` recipe, which layers comments, taxonomy, media
+types, editorial workflow, multiple text formats, user pictures and responsive images,
+and sets Default Admin as the administration theme so the sidebar / advanced-group
+behavior can be reproduced.
 
 ```bash
 ddev exec drush site:install standard -y
-ddev exec drush recipe recipes/replicate-<issue>
+ddev exec drush recipe core/recipes/replicate_core_testing
 ddev drush uli
 ```
 
