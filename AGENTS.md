@@ -61,6 +61,16 @@ or add it to the `recipes:` list in `core/recipes/replicate_core_testing/recipe.
 `core/recipes/` — the recipe resolver only searches `core/recipes/` for dependencies, so a
 project-level `recipes/` file cannot resolve `core:*` deps.
 
+`scripts/apply-recipe.sh` wraps the Core Recipe PHP API (`Drupal\Core\Recipe\Recipe` /
+`RecipeRunner`) so core recipes can be discovered and applied without knowing Drush internals,
+and without pulling in Drupal CMS recipes. It exposes core functionality only:
+- `bash scripts/apply-recipe.sh list` — enumerate recipes in `core/recipes`, `recipes`, and
+  `core/tests/fixtures/recipes` (name, type, description, direct dependencies).
+- `bash scripts/apply-recipe.sh apply <name-or-path>` — apply one core recipe and its
+  dependencies (e.g. `apply comment_base`, `apply core/recipes/tags_taxonomy`,
+  `apply replicate_core_testing`). Apply changes the live site only; `ddev reset-site`
+  restores the baseline.
+
 ### Progress artifacts
 Review artifacts (full patch, interdiff, issue comment, Guidepup harness, bundle) are
 committed under `testing/<issue>/`; see `testing/README.md` for the daily loop
