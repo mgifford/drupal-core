@@ -4,6 +4,8 @@ type: 'Site'
 install:
   - default_admin
 recipes:
+  - article_content_type
+  - page_content_type
   - comment_base
   - tags_taxonomy
   - editorial_workflow

@@ -44,7 +44,13 @@ administration theme. It layers these core recipes (see `core/recipes/`): `comme
 `tags_taxonomy`, `editorial_workflow`, `image_media_type`, `audio_media_type`,
 `document_media_type`, `remote_video_media_type`, `local_video_media_type`, `user_picture`,
 `basic_html_format_editor`, `full_html_format_editor`, `restricted_html_format`,
-`basic_block_type`, `standard_responsive_images`.
+`basic_block_type`, `standard_responsive_images`, `article_content_type`, `page_content_type`.
+
+Note: in this core version `standard` does NOT ship node types, so the baseline would have
+no Article/Page. `article_content_type` and `page_content_type` are copied from
+`core/tests/fixtures/recipes/` into `core/recipes/` (the only directory the recipe resolver
+searches for dependencies) and layered in so the baseline has Article + Page with the
+advanced group (URL alias, menu, etc.) needed to reproduce sidebar/form errors.
 
 ### Add more surface area for a test
 Layer another core recipe on the baseline:
