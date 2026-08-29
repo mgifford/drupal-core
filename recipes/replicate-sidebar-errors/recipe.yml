@@ -1,0 +1,11 @@
+name: 'Replicate issue 3619387 (sidebar errors)'
+description: 'Enables the Default Admin theme and sets it as the administration theme so the sidebar / advanced-group error behavior (issue #3619387) can be reproduced and tested. Apply this on top of a standard install.'
+type: 'Themes'
+install:
+  - default_admin
+config:
+  strict: false
+  actions:
+    system.theme:
+      simpleConfigUpdate:
+        admin: default_admin
