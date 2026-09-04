@@ -156,6 +156,7 @@ class TwigExtension extends AbstractExtension {
       new TwigFilter('format_date', [$this->dateFormatter, 'format']),
       // Add new theme hook suggestions directly from a Twig template.
       new TwigFilter('add_suggestion', [$this, 'suggestThemeHook']),
+      new TwigFilter('stripped_length', [$this, 'strippedLength'], ['needs_environment' => true]),
     ];
   }
 
@@ -596,6 +597,31 @@ class TwigExtension extends AbstractExtension {
     }
     $arg['#printed'] = FALSE;
     return $this->renderer->render($arg);
+  }
+
+  /**
+   * Provides a shorthand for |render|striptags('<img>')|trim|length.
+   *
+   * @param \Twig\Environment $env
+   *   A Twig Environment instance.
+   * @param $arg
+   *   String, Object or Render Array.
+   *
+   * @return int
+   * @throws \Exception
+   */
+  public function strippedLength(Environment $env, $arg) {
+   // |render.
+   $thing = $this->renderVar($arg);
+
+   // |striptags('<img>').
+   $thing = strip_tags($thing);
+
+   // |trim.
+   $thing = twig_trim_filter($thing);
+
+   // |length.
+   return twig_length_filter($env, $thing);
   }
 
   /**
