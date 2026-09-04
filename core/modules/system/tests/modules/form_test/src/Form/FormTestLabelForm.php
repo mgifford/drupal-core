@@ -120,6 +120,17 @@ class FormTestLabelForm extends FormBase {
     $form['form_textfield_test_title_no_show'] = [
       '#type' => 'textfield',
     ];
+    $form['form_item_test_title'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Item test title'),
+      '#markup' => $this->t('Item test value'),
+    ];
+    $form['form_item_test_title_invisible'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Item test invisible title'),
+      '#title_display' => 'invisible',
+      '#markup' => $this->t('Item test invisible value'),
+    ];
     // Checkboxes & radios with title as attribute.
     $form['form_checkboxes_title_attribute'] = [
       '#type' => 'checkboxes',

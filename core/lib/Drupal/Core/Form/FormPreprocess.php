@@ -50,9 +50,9 @@ class FormPreprocess {
    *
    * Default template: form-element.html.twig.
    *
-   * In addition to the element itself, the DIV contains a label for the element
+   * In addition to the element itself, the DIV contains a title for the element
    * based on the optional #title_display property, and an optional
-   * #description.
+   * #description. The title is rendered as a label unless #labelable is FALSE.
    *
    * The optional #title_display property can have these values:
    * - before: The label is output before the element. This is the default.
@@ -85,7 +85,7 @@ class FormPreprocess {
    *   An associative array containing:
    *   - element: An associative array containing the properties of the element.
    *     Properties used: #title, #title_display, #description, #id, #required,
-   *     #children, #type, #name, #label_for.
+   *     #children, #type, #name, #label_for, #labelable.
    */
   public function preprocessFormElement(array &$variables): void {
     $element = &$variables['element'];
@@ -98,6 +98,7 @@ class FormPreprocess {
       '#wrapper_attributes' => [],
       '#label_attributes' => [],
       '#label_for' => NULL,
+      '#labelable' => TRUE,
     ];
     $variables['attributes'] = $element['#wrapper_attributes'];
 
@@ -144,7 +145,8 @@ class FormPreprocess {
     // Add label_display and label variables to template.
     $variables['label_display'] = $element['#title_display'];
     $variables['label'] = ['#theme' => 'form_element_label'];
-    $variables['label'] += array_intersect_key($element, array_flip(['#id', '#required', '#title', '#title_display']));
+    $properties = ['#id', '#labelable', '#required', '#title', '#title_display'];
+    $variables['label'] += array_intersect_key($element, array_flip($properties));
     $variables['label']['#attributes'] = $element['#label_attributes'];
     if (!empty($element['#label_for'])) {
       $variables['label']['#for'] = $element['#label_for'];
@@ -159,19 +161,19 @@ class FormPreprocess {
   /**
    * Prepares variables for form label templates.
    *
-   * Form element labels include the #title and a #required marker. The label is
-   * associated with the element itself by the element #id. Labels may appear
-   * before or after elements, depending on form-element.html.twig and
-   * #title_display.
+   * Form element titles include the #title and a #required marker. For a
+   * labelable element, the title is rendered as a label associated with the
+   * element itself by the element #id. Titles may appear before or after
+   * elements, depending on form-element.html.twig and #title_display.
    *
-   * This function will not be called for elements with no labels, depending on
+   * This function will not be called for elements with no titles, depending on
    * #title_display. For elements that have an empty #title and are not
-   * required, this function will output no label (''). For required elements
+   * required, this function will output no title (''). For required elements
    * that have an empty #title, this will output the required marker alone
-   * within the label.
-   * The label will use the #id to associate the marker with the field that is
-   * required. That is especially important for screen reader users to know
-   * which field is required.
+   * within the title element.
+   * For labelable elements, the label will use the #id to associate the marker
+   * with the field that is required. That is especially important for screen
+   * reader users to know which field is required.
    *
    * To associate the label with a different field, set the #for property to the
    * ID of the desired field.
@@ -179,7 +181,8 @@ class FormPreprocess {
    * @param array $variables
    *   An associative array containing:
    *   - element: An associative array containing the properties of the element.
-   *     Properties used: #required, #title, #id, #value, #description, #for.
+   *     Properties used: #required, #title, #id, #value, #description, #for,
+   *     #labelable.
    */
   public function preprocessFormElementLabel(array &$variables): void {
     $element = $variables['element'];
@@ -188,11 +191,14 @@ class FormPreprocess {
       $variables['title'] = ['#markup' => $element['#title']];
     }
 
+    // Pass whether the element can be associated with a label to the template.
+    $variables['labelable'] = $element['#labelable'] ?? TRUE;
+
     // Pass elements title_display to template.
     $variables['title_display'] = $element['#title_display'];
 
     // A #for property of a dedicated #type 'label' element as precedence.
-    if (!empty($element['#for'])) {
+    if ($variables['labelable'] && !empty($element['#for'])) {
       $variables['attributes']['for'] = $element['#for'];
       // A custom #id allows the referenced form input element to refer back to
       // the label element; e.g., in the 'aria-labelledby' attribute.
@@ -201,7 +207,7 @@ class FormPreprocess {
       }
     }
     // Otherwise, point to the #id of the form input element.
-    elseif (!empty($element['#id'])) {
+    elseif ($variables['labelable'] && !empty($element['#id'])) {
       $variables['attributes']['for'] = $element['#id'];
     }
 
