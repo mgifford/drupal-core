@@ -98,6 +98,18 @@ td.module-list__description {
   padding-inline-end: 0;
 }
 
+.module-list__operations {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.module-list__operations .module-details__links {
+  display: flex;
+  gap: var(--admin-space-s);
+  flex-wrap: wrap;
+}
+
 .gin-details.module-list__module-details {
   margin: 0;
 }
