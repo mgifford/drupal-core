@@ -7,9 +7,7 @@
  * - title: The label's text.
  * - title_display: Elements title_display setting.
  * - required: An indicator for whether the associated form element is required.
- * - attributes: A list of HTML attributes for the title element.
- * - labelable: Whether the title labels a labelable form control. If false, the
- *   title is rendered in a span instead of a label.
+ * - attributes: A list of HTML attributes for the label.
  *
  * @see \Drupal\Core\Form\FormPreprocess::preprocessFormElementLabel()
  */
@@ -23,9 +21,5 @@
   ]
 %}
 {% if title is not empty or required -%}
-  {%- if labelable -%}
-    <label{{ attributes.addClass(classes) }}>{{ title }}</label>
-  {%- else -%}
-    <span{{ attributes.addClass(classes) }}>{{ title }}</span>
-  {%- endif -%}
+  <label{{ attributes.addClass(classes) }}>{{ title }}</label>
 {%- endif %}
