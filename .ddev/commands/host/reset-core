@@ -15,35 +15,59 @@ cd "$PROJECT_DIR"
 echo "=== Drupal Core Reset ==="
 echo ""
 
-# 1. Git clean — reset to HEAD, remove untracked files (preserve key dirs)
-echo "[1/6] Cleaning git working tree..."
-git checkout -- .
-git clean -fd --exclude=.ddev --exclude=test-results --exclude='*.patch' --exclude='*.md' --exclude=953034-patches --exclude=.playwright-mcp --exclude=.gc-src
+# 1. Archive untracked files before cleaning
+echo "[1/7] Archiving untracked files..."
+ARCHIVE_DIR="archive/$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$ARCHIVE_DIR"
+# Find untracked files, skip excluded dirs and Drupal internals
+git ls-files --others --exclude-standard \
+  -- ':!.ddev' \
+  -- ':!test-results' \
+  -- ':!.playwright-mcp' \
+  -- ':!.gc-src' \
+  -- ':!core' \
+  -- ':!sites' \
+  -- ':!vendor' \
+  -- ':!tests' \
+  | while IFS= read -r f; do
+    dir="$ARCHIVE_DIR/$(dirname "$f")"
+    mkdir -p "$dir"
+    mv "$f" "$ARCHIVE_DIR/$f" 2>/dev/null || true
+done
+# Clean empty dirs left behind
+find "$ARCHIVE_DIR" -empty -type d -delete 2>/dev/null || true
+ARCHIVED=$(find "$ARCHIVE_DIR" -type f 2>/dev/null | wc -l | tr -d ' ')
+echo "  Archived $ARCHIVED file(s) to $ARCHIVE_DIR/"
 
-# 2. Composer install
-echo "[2/6] Running composer install..."
+# 2. Git clean — reset to HEAD, remove untracked files (preserve key dirs)
+echo "[2/7] Cleaning git working tree..."
+git checkout -- .
+git clean -fd --exclude=.ddev --exclude=test-results --exclude='*.patch' --exclude='*.md' --exclude=953034-patches --exclude=.playwright-mcp --exclude=.gc-src --exclude=archive
+
+# 3. Composer install
+echo "[3/7] Running composer install..."
 ddev exec composer install --no-interaction --quiet
 
-# 3. Ensure ddev is running
-echo "[3/6] Ensuring ddev is running..."
+# 4. Ensure ddev is running
+echo "[4/7] Ensuring ddev is running..."
 ddev start
 
-# 4. Install Drupal with recipes
-echo "[4/6] Installing Drupal with recipes..."
+# 5. Install Drupal with recipes
+echo "[5/7] Installing Drupal with recipes..."
 ddev exec drush site:install standard \
   --account-name=admin \
   --account-pass=admin \
   -y
 
-# 5. Enable additional recipes not included by standard
-echo "[5/6] Enabling additional recipes for test coverage..."
+# 6. Enable additional recipes not included by standard
+echo "[6/7] Enabling additional recipes for test coverage..."
 ddev exec drush recipe editorial_workflow
 ddev exec drush recipe comment_base
 ddev exec drush recipe image_media_type
 ddev exec drush recipe tags_taxonomy
 
-# 6. Finalize
-echo "[6/6] Rebuilding cache and verifying..."
+# 7. Finalize
+echo "[7/7] Rebuilding cache and verifying..."
 ddev exec drush cache:rebuild
 ddev exec drush status --fields=drupal-version,site,db-driver,php
 
@@ -53,7 +77,7 @@ echo "=== Site ready at ${SITE_URL} ==="
 echo "  User: admin / Pass: admin"
 echo ""
 
-# 7. Apply patch if provided
+# Apply patch if provided
 if [ -n "$PATCH_FILE" ]; then
   if [ -f "$PATCH_FILE" ]; then
     echo "[patch] Applying $PATCH_FILE..."
