@@ -165,15 +165,21 @@ Run from the repository root. Verified against upstream `main` with DDEV
    `https://drupal-core.ddev.site` (some embedded browsers block it), swap
    the host for the `127.0.0.1` port shown by `ddev describe`.
 
-4. **Full reinstall (destroys the site database).** Take a snapshot first:
+4. **Full reinstall (destroys the site database).** `dr install` only
+   supports SQLite, so it cannot reinstall into DDEV's MariaDB. Use the
+   installer script instead. Take a snapshot first:
 
    ```bash
    ddev snapshot --name before-reinstall
-   ddev exec php core/scripts/dr install standard --password=admin
+   ddev mysql -e "drop database db; create database db"
+   rm -rf sites/default/files sites/default/settings.php
+   ddev restart                  # regenerates settings.php
+   SITE_NAME="My site" ddev exec php .agents/scripts/site-install.php
    ddev exec php core/scripts/dr cache:rebuild
    ```
 
-   Restore with `ddev snapshot restore before-reinstall`.
+   This creates `admin` / `admin`. Restore with
+   `ddev snapshot restore before-reinstall`.
 
 5. **Browser (FunctionalJavascript) tests** need a headless Chrome:
 
