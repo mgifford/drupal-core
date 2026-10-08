@@ -127,6 +127,78 @@ Always apply:
 Run the narrowest relevant checks for changed behavior. If full validation is
 not run, state what was not verified.
 
+## Resetting the local environment (DDEV)
+
+Run from the repository root. Verified against upstream `main` with DDEV
+1.25 and PHP 8.5. Use the lightest step that fixes the problem.
+
+1. **Containers and dependencies.** Make sure DDEV is running and that
+   `vendor/` matches `composer.lock` (do this after every branch switch):
+
+   ```bash
+   ddev start
+   ddev composer install --no-interaction
+   ddev composer validate --no-check-publish
+   ```
+
+   Do not run `composer update` or `composer require` here. The fork uses
+   upstream's `composer.lock` on purpose, so lock-file drift would make
+   branches impossible to compare.
+
+2. **Clear caches.** Drush is not a dependency of Drupal core, so
+   `ddev drush` will fail with "drush is not available". Use core's own CLI:
+
+   ```bash
+   ddev exec php core/scripts/dr cache:rebuild
+   ```
+
+   If you have installed Drush yourself, `ddev drush cache:rebuild` is
+   equivalent. Do not add Drush to `composer.json` in this repository.
+
+3. **Log in without knowing the password.**
+
+   ```bash
+   ddev exec php core/scripts/dr user:login --name admin
+   ```
+
+   The link uses the DDEV hostname. If a browser cannot load CSS/JS from
+   `https://drupal-core.ddev.site` (some embedded browsers block it), swap
+   the host for the `127.0.0.1` port shown by `ddev describe`.
+
+4. **Full reinstall (destroys the site database).** `dr install` only
+   supports SQLite, so it cannot reinstall into DDEV's MariaDB. Use the
+   installer script instead. Take a snapshot first:
+
+   ```bash
+   ddev snapshot --name before-reinstall
+   ddev mysql -e "drop database db; create database db"
+   rm -rf sites/default/files sites/default/settings.php
+   ddev restart                  # regenerates settings.php
+   SITE_NAME="My site" ddev exec php .agents/scripts/site-install.php
+   ddev exec php core/scripts/dr cache:rebuild
+   ```
+
+   This creates `admin` / `admin`. Restore with
+   `ddev snapshot restore before-reinstall`.
+
+5. **Browser (FunctionalJavascript) tests** need a headless Chrome:
+
+   ```bash
+   ddev add-on get ddev/ddev-selenium-standalone-chrome && ddev restart
+   cp -n core/phpunit.xml.dist core/phpunit.xml
+   ddev exec 'cd /var/www/html && BROWSERTEST_OUTPUT_DIRECTORY=/tmp \
+     vendor/bin/phpunit -c core <path-to-test>'
+   ```
+
+Known problems with the helper commands in `.ddev/commands/host/`:
+
+- `ddev reset-core` calls `drush` throughout, so it fails until it is
+  switched to `core/scripts/dr` (or Drush is available).
+- `ddev reset-site` calls `scripts/reset-site.sh`, which is not in this
+  repository.
+
+Treat both as unreliable until fixed. Use the steps above instead.
+
 ## Quick commands (low-noise)
 
 Use `rtk`-prefixed commands for token-efficient output.

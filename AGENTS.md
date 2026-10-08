@@ -1,77 +1,132 @@
-## Drupal Code Query MCP
+# AGENTS.md
 
-When working on Drupal projects, use the `drupal-code-query` MCP server
-(`https://mcp.tresbien.tech/mcp`) for questions about Drupal core and contributed
-module APIs, change records, symbol usage, upgrade compatibility, and ecosystem
-patterns.
+## What this repository is
 
-Prefer these tools before giving Drupal API guidance:
+This is a **testing environment for Drupal core**, not a site to build. It
+tracks upstream Drupal core (`git.drupalcode.org/project/drupal`, branch
+`main`) with a thin fork-only layer (`.agents/`, `.ddev/commands/`, `.github/`,
+`core/recipes/` additions). No upstream file is modified on this repository's
+`main`.
 
-- `lookup_core_symbol` for whether a core symbol is safe to use
-- `find_core_symbol` when the exact symbol name is unknown
-- `get_change_record` for Drupal core API changes
-- `what_changed` when comparing core versions
-- `search_contrib_code` for examples from core and contributed projects
-- `project_upgrade_report` for upgrade-readiness questions
+The job here is to **evaluate a change against upstream**: reproduce a problem
+on pristine upstream, apply an issue fork's branch or a patch, and compare the
+two under the same conditions. Findings feed drupal.org issue comments.
 
-Use the project's actual Drupal and PHP versions when interpreting results.
-Treat this server as read-only research data; inspect the local repository for
-project-specific behavior. Distinguish MCP findings from conclusions based on
-the local codebase, and mention the relevant core version when making API
-recommendations.
+Instruction precedence is in `.agents/DRUPAL_AGENTS.md`. Accessibility
+evidence rules are in `.agents/skills/` (start with `drupal-a11y-patch-eval`
+if available, else `.agents/skills/ai_best_practices/skills/patch-evaluation`).
 
-## Local dev environment: reset & test recipes
+## Two environments, side by side
 
-This ddev site tests Drupal core patches. Start each patch from a clean, reproducible
-baseline **without losing code** — the working tree / patches are never touched.
+Never switch one checkout back and forth between "before" and "after".
+Run two DDEV projects from two checkouts of the same repository:
 
-### Reset
-- `ddev reset-site` — restore the saved `drupal-core-baseline` database snapshot
-  (complete reset: config + content). Fast (~15s).
-- `ddev reset-site --capture` — rebuild the baseline from scratch (standard install +
-  the test recipe) and re-save the snapshot. Run after intentionally changing the baseline
-  (e.g. adding a recipe).
-- `ddev reset-site --recipe` — force a rebuild from the recipe, ignoring the snapshot.
-- After reset, log in with `ddev drush uli`.
-- Implementation: `scripts/reset-site.sh`; ddev wrapper `.ddev/commands/host/reset-site`
-  (force-added because `.ddev` is gitignored — on a fresh clone run
-  `bash scripts/reset-site.sh` if the wrapper is missing).
+| | Directory | DDEV project | Code | Purpose |
+|---|---|---|---|---|
+| **Baseline** | `../drupal-core-baseline` | `drupal-core-baseline` | detached at `upstream/main`, never edited | "before" |
+| **Patched** | this directory | `drupal-core` | issue branch or patch applied | "after" |
 
-### Test recipe (baseline is NOT a blank install)
-Baseline = `standard` profile + the composite recipe `core/recipes/replicate_core_testing`,
-which exposes site elements for robust UI/form testing and sets Default Admin as the
-administration theme. It layers these core recipes (see `core/recipes/`): `comment_base`,
-`tags_taxonomy`, `editorial_workflow`, `image_media_type`, `audio_media_type`,
-`document_media_type`, `remote_video_media_type`, `local_video_media_type`, `user_picture`,
-`basic_html_format_editor`, `full_html_format_editor`, `restricted_html_format`,
-`basic_block_type`, `standard_responsive_images`, `article_content_type`, `page_content_type`.
+Both use the same PHP, MariaDB, theme and installed modules, so the only
+difference between them is the code under test.
 
-Note: in this core version `standard` does NOT ship node types, so the baseline would have
-no Article/Page. `article_content_type` and `page_content_type` are copied from
-`core/tests/fixtures/recipes/` into `core/recipes/` (the only directory the recipe resolver
-searches for dependencies) and layered in so the baseline has Article + Page with the
-advanced group (URL alias, menu, etc.) needed to reproduce sidebar/form errors.
+### One-time setup of the baseline
 
-### Add more surface area for a test
-Layer another core recipe on the baseline:
-`ddev exec drush recipe core/recipes/<name>`
-or add it to the `recipes:` list in `core/recipes/replicate_core_testing/recipe.yml`
-(dependencies are unprefixed because the recipe lives inside `core/recipes/`) and re-run
-`ddev reset-site --capture`. A composite recipe that reuses core recipes MUST live in
-`core/recipes/` — the recipe resolver only searches `core/recipes/` for dependencies, so a
-project-level `recipes/` file cannot resolve `core:*` deps.
+```bash
+git fetch upstream main
+git worktree add --detach ../drupal-core-baseline upstream/main
+mkdir -p ../drupal-core-baseline/.ddev
+cp .ddev/config.yaml .ddev/*selenium* ../drupal-core-baseline/.ddev/
+```
 
-`scripts/apply-recipe.sh` wraps the Core Recipe PHP API (`Drupal\Core\Recipe\Recipe` /
-`RecipeRunner`) so core recipes can be discovered and applied without knowing Drush internals,
-and without pulling in Drupal CMS recipes. It exposes core functionality only:
-- `bash scripts/apply-recipe.sh list` — enumerate recipes in `core/recipes`, `recipes`, and
-  `core/tests/fixtures/recipes` (name, type, description, direct dependencies).
-- `bash scripts/apply-recipe.sh apply <name-or-path>` — apply one core recipe and its
-  dependencies (e.g. `apply comment_base`, `apply core/recipes/tags_taxonomy`,
-  `apply replicate_core_testing`). Apply changes the live site only; `ddev reset-site`
-  restores the baseline.
+Then set `name: drupal-core-baseline` on the first line of
+`../drupal-core-baseline/.ddev/config.yaml` and bring it up:
 
-### Progress artifacts
-Review artifacts (full patch, interdiff, issue comment, Guidepup harness, bundle) are
-committed under `testing/<issue>/`; see `testing/README.md` for the daily loop
-(develop → test → produce artifacts → `ddev reset-site` → push to `origin`).
+```bash
+cd ../drupal-core-baseline
+ddev start
+ddev composer install --no-interaction
+mkdir -p .agents/scripts && cp ../drupal-core/.agents/scripts/site-install.php .agents/scripts/
+rm -rf sites/default/files sites/default/settings.php && ddev restart
+SITE_NAME="Baseline (upstream main)" ddev exec php .agents/scripts/site-install.php
+ddev exec php core/scripts/dr cache:rebuild
+cp -n core/phpunit.xml.dist core/phpunit.xml
+```
+
+(`.ddev/`, `vendor/`, `sites/default/settings.php` and `sites/default/files/`
+are untracked and local to each checkout.)
+
+### Putting a change under test in the patched checkout
+
+```bash
+# An issue fork branch:
+git remote add issue-NNNNNNN https://git.drupalcode.org/issue/drupal-NNNNNNN.git
+git fetch issue-NNNNNNN BRANCH
+git checkout -B test-NNNNNNN issue-NNNNNNN/BRANCH
+git rebase upstream/main            # so only the issue's own changes differ
+
+# Or a patch file:
+git checkout -B test-NNNNNNN upstream/main && git apply path/to.patch
+
+ddev composer install --no-interaction
+ddev exec php core/scripts/dr cache:rebuild
+```
+
+If the branch's `composer.lock` differs from upstream, run
+`composer install` in that checkout only. Never commit lock-file changes
+here.
+
+### Giving both sites the same state
+
+Enable the same modules in both before comparing (example for Inline Form
+Errors). Run in each directory:
+
+```bash
+ddev exec php -r '$a=require "autoload.php"; $r=Symfony\Component\HttpFoundation\Request::create("/"); $k=Drupal\Core\DrupalKernel::createFromRequest($r,$a,"prod"); $k->boot(); $k->preHandle($r); \Drupal::service("module_installer")->install(["inline_form_errors"]);'
+```
+
+Log in with `admin` / `admin`, or `ddev exec php core/scripts/dr user:login
+--name admin`.
+
+### Running the same test against both
+
+Automated JavaScript tests run per checkout, so the before/after result is:
+
+```bash
+# baseline: copy the test file in without the fix, expect a failure
+# patched:  run it with the fix, expect a pass
+ddev exec 'cd /var/www/html && BROWSERTEST_OUTPUT_DIRECTORY=/tmp \
+  vendor/bin/phpunit -c core <path-to-test>'
+```
+
+For a manual (keyboard, screen reader) comparison, open both sites in two
+browser windows at the same size and follow the same steps in each. URLs and
+ports: run `ddev describe` in each directory. Ports change after a restart.
+Use the `127.0.0.1:<port>` HTTP port if a browser cannot load CSS/JS from
+`*.ddev.site`.
+
+## Rules for agents working here
+
+1. **Do not edit the baseline.** It must stay identical to `upstream/main`.
+   If its `git status` shows tracked changes, stop and say so.
+2. **Record which checkout and commit every result came from** (`git rev-parse
+   --short HEAD` in each) so a result can be reproduced.
+3. **Snapshot before anything destructive** on a site database:
+   `ddev snapshot --name <label>`.
+4. **Do not post to drupal.org or push to any remote** without the user's
+   explicit approval. Draft issue comments for the user to review.
+5. **Do not add Drush or other dependencies** to `composer.json`. Use
+   `core/scripts/dr` for cache rebuilds and login links.
+6. Use AI-assisted disclosure on commits and comments (see the repository's
+   contribution notes).
+7. Say what was **not** verified. Automated results are not a substitute for a
+   keyboard and screen-reader pass on accessibility changes.
+
+## Teardown
+
+```bash
+cd ../drupal-core-baseline && ddev delete --omit-snapshot
+cd ../drupal-core && git worktree remove ../drupal-core-baseline --force
+```
+
+`ddev delete` removes that project's database. The patched project is not
+affected.
