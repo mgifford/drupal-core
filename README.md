@@ -1,5 +1,22 @@
 <img alt="Drupal Logo" src="https://www.drupal.org/files/Wordmark_blue_RGB.png" height="60px">
 
+> **This fork is an accessibility & sustainability test harness for Drupal
+> core** — a Playwright + axe-core multi-theme crawl with pattern-level bug
+> tracking, WSG/CO2 measurement, and accessibility-tree snapshots.
+> Published reports: **<https://mgifford.github.io/drupal-core/>**
+>
+> | Start here | |
+> | :--- | :--- |
+> | [SETUP.md](SETUP.md) | Install the test environment (DDEV, modules, browsers) |
+> | [A11Y-PROCESS.md](A11Y-PROCESS.md) | Running crawls, analyzing, filing issues |
+> | [TOOLING-ROADMAP.md](TOOLING-ROADMAP.md) | Executable work orders (linked to [issues](https://github.com/mgifford/drupal-core/issues)) |
+> | [NIGHTLY-PIPELINE.md](NIGHTLY-PIPELINE.md) | Nightly regression + commit attribution + OpenACR design |
+> | [WSG-ALIGNMENT.md](WSG-ALIGNMENT.md) · [WSG-STAR-AUTOMATION.md](WSG-STAR-AUTOMATION.md) | Web Sustainability Guidelines work |
+>
+> It is **not** the canonical Drupal repository — that is
+> [git.drupalcode.org/project/drupal](https://git.drupalcode.org/project/drupal).
+> Stock Drupal README follows.
+
 Drupal is an open source content management platform supporting a variety of
 websites ranging from personal weblogs to large community-driven websites. For
 more information, visit the Drupal website, [Drupal.org][Drupal.org], and join

@@ -1,0 +1,6 @@
+name: 'My Module'
+type: module
+description: 'Test description_display positioning'
+package: Custom
+version: VERSION
+core_version_requirement: ^12

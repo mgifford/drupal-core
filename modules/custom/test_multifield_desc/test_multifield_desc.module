@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Demonstrates #description_display for multi-value fields.
+ *
+ * This module moves field descriptions from below the field table
+ * to above it, making help text more visible.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for field-multiple-value-form templates.
+ *
+ * Note: FieldPreprocess::preprocessFieldMultipleValueForm runs first as the
+ * 'initial preprocess'. It sets $variables['description_display'] from
+ * $element['#description_display'] (defaulting to 'after'). We override it
+ * here after that has run.
+ */
+function test_multifield_desc_preprocess_field_multiple_value_form(&$variables) {
+  if (!empty($variables['description']['content'])) {
+    $variables['description_display'] = 'before';
+  }
+}
