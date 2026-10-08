@@ -132,7 +132,10 @@ class ModulesUninstallForm extends FormBase {
       ],
     ];
 
-    $form['modules'] = [];
+    $form['modules'] = [
+      '#type' => 'table',
+      '#header' => ['Uninstall', 'Name', 'Description'],
+    ];
 
     // Only build the rest of the form if there are any modules available to
     // uninstall.
@@ -225,7 +228,7 @@ class ModulesUninstallForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Form submitted, but no modules selected.
     if (!array_filter($form_state->getValue('uninstall'))) {
-      $form_state->setErrorByName('', $this->t('No modules selected.'));
+      $form_state->setErrorByName('modules', $this->t('No modules selected.'));
       $form_state->setRedirect('system.modules_uninstall');
     }
   }

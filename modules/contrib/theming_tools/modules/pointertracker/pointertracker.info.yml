@@ -1,0 +1,11 @@
+name: 'Pointer tracker'
+type: module
+description: 'A crosshair that tracks the pointer'
+package: 'Theming tools'
+dependencies: {  }
+core_version_requirement: ^10.3 || ^11 || ^12
+
+# Information added by Drupal.org packaging script on 2026-04-09
+version: '1.0.0'
+project: 'theming_tools'
+datestamp: 1775754224

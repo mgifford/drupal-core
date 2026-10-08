@@ -1,0 +1,13 @@
+name: 'Sidebar Test'
+type: module
+description: 'Tests entity meta sidebar by making node/add routes accessible by anonymous users'
+package: 'Theming tools'
+theming_test: true
+dependencies:
+  - theming_tools:tt_node
+core_version_requirement: ^10.3 || ^11 || ^12
+
+# Information added by Drupal.org packaging script on 2026-04-09
+version: '1.0.0'
+project: 'theming_tools'
+datestamp: 1775754224

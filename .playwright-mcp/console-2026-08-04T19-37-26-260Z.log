@@ -1,0 +1,175 @@
+[  108745ms] [LOG] Total buttons: 20 @ :2
+[  108745ms] [LOG] 0 
+
+      
+  
+
+
+  
+              Collapse sidebar
+   button  @ :3
+[  108745ms] [LOG] 1 
+
+      
+  
+
+
+  
+              Back
+      
+  
+ submit  @ :3
+[  108745ms] [LOG] 2 
+
+      
+  
+  
+
+
+  
+      Collapse sidebar
+        button  @ :3
+[  108745ms] [LOG] 3 
+
+      
+  
+
+
+  
+      Extend
+              Create submit  @ :3
+[  108745ms] [LOG] 4 
+
+      
+  
+
+
+  
+      Extend
+              Struct submit  @ :3
+[  108745ms] [LOG] 5 
+
+  
+              Display modes
+      
+      
+  
+ submit  @ :3
+[  108745ms] [LOG] 6 
+
+      
+  
+
+
+  
+      Extend
+              Config submit  @ :3
+[  108745ms] [LOG] 7 
+
+  
+              People
+      
+      
+  
+
+
+  
+ submit  @ :3
+[  108745ms] [LOG] 8 
+
+  
+              System
+      
+      
+  
+
+
+  
+ submit  @ :3
+[  108745ms] [LOG] 9 
+
+  
+              Content authoring
+      
+       submit  @ :3
+[  108745ms] [LOG] 10 
+
+  
+              User interface
+      
+      
+   submit  @ :3
+[  108745ms] [LOG] 11 
+
+  
+              Development
+      
+      
+  
+
+
+ submit  @ :3
+[  108745ms] [LOG] 12 
+
+  
+              Media
+      
+      
+  
+
+
+  
+ submit  @ :3
+[  108745ms] [LOG] 13 
+
+  
+              Search and metadata
+      
+     submit  @ :3
+[  108745ms] [LOG] 14 
+
+  
+              Region and language
+      
+     submit  @ :3
+[  108745ms] [LOG] 15 
+
+  
+              Web services
+      
+      
+  
+
+ submit  @ :3
+[  108745ms] [LOG] 16 
+
+      
+  
+
+
+  
+      Extend
+              Report submit  @ :3
+[  108745ms] [LOG] 17 
+
+      
+  
+
+
+  
+      Extend
+              admin
+ submit  @ :3
+[  108745ms] [LOG] 18 
+        
+  
+
+
+        Collapse sidebar
+       button  @ :3
+[  108745ms] [LOG] 19 
+      
+      
+     button  @ :3
+# Playwright MCP console log for Drupal issue #2848307 reproduction and verification.
+# Pair with the matching page snapshot to see the failure path and confirm the fix.

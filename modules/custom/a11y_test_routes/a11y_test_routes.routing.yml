@@ -1,0 +1,33 @@
+a11y_test_routes.action_link:
+  path: '/action-link'
+  defaults:
+    _controller: '\Drupal\a11y_test_routes\Controller\A11yTestRoutesController::actionLink'
+    _title: 'Action links'
+  requirements:
+    _permission: 'access content'
+  options:
+    _theme: default_admin
+
+a11y_test_routes.buttons:
+  path: '/buttons'
+  defaults:
+    _controller: '\Drupal\a11y_test_routes\Controller\A11yTestRoutesController::buttons'
+    _title: 'Buttons'
+  requirements:
+    _permission: 'access content'
+
+a11y_test_routes.file_widget:
+  path: '/a11y-file-widget'
+  defaults:
+    _form: '\Drupal\a11y_test_routes\Form\FileWidgetTestForm'
+    _title: 'File widget'
+  requirements:
+    _permission: 'access content'
+
+a11y_test_routes.empty_headers:
+  path: '/a11y-empty-headers'
+  defaults:
+    _controller: '\Drupal\a11y_test_routes\Controller\A11yTestRoutesController::emptyHeaders'
+    _title: 'Empty headers'
+  requirements:
+    _permission: 'access content'

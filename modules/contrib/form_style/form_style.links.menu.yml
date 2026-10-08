@@ -1,0 +1,11 @@
+form_style.settings:
+  title: 'Form Style'
+  description: 'Settings for the Form Style module.'
+  route_name: form_style.settings
+  parent: system.admin_config_development
+form_style.form:
+  title: 'Form Style'
+  description: 'Demonstrates (all) common form elements.'
+  route_name: form_style.form
+  parent: system.admin
+  weight: 100

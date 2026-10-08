@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# ddev host command: reset the local Drupal site to the default-config baseline.
+# Delegates to scripts/reset-site.sh (see that file for full docs).
+exec "$(dirname "$0")/../../../scripts/reset-site.sh" "$@"

@@ -1,0 +1,11 @@
+# Form element missing-#title baseline (known debt).
+#
+# Format: form_id | element_path | element_type
+# element_path is #array_parents joined by "][".
+#
+# This is a NON-GROWING baseline (a ratchet): a form element missing an
+# accessible name may only appear here if it was already known. Adding a new
+# missing-#title element to core MUST be fixed, not added to this file.
+#
+# To regenerate after an intentional change, run the test with
+# FORM_TITLE_BASELINE_SEED=1; it writes the current violations here.
