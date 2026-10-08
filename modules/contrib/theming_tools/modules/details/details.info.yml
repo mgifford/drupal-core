@@ -1,0 +1,13 @@
+name: 'Details Test'
+type: module
+description: 'Makes site configure form accessible by anonymous users for testing details element'
+package: 'Theming tools'
+theming_test: true
+dependencies:
+  - drupal:user
+core_version_requirement: ^10.3 || ^11 || ^12
+
+# Information added by Drupal.org packaging script on 2026-04-09
+version: '1.0.0'
+project: 'theming_tools'
+datestamp: 1775754224

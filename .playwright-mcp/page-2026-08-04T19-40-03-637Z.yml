@@ -1,0 +1,608 @@
+- Playwright MCP accessibility snapshot for Drupal issue #2848307.
+- Use this artifact with the matching console log to compare baseline vs. patched inline-error behavior.
+- generic [active] [ref=f4e1]:
+  - link "Skip to main content" [ref=f4e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=f4e3]:
+    - heading "Administrative sidebar" [level=2] [ref=f4e4]
+    - generic [ref=f4e5]:
+      - link "Home page" [ref=f4e7] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f4e12]:
+        - heading "Content" [level=3] [ref=f4e13]
+        - list [ref=f4e14]:
+          - listitem [ref=f4e15]:
+            - button "Extend Create" [ref=f4e16] [cursor=pointer]:
+              - generic [ref=f4e19]: Extend
+              - generic [ref=f4e20]: Create
+            - generic [ref=f4e23]:
+              - link "Create" [ref=f4e24] [cursor=pointer]:
+                - /url: /node/add
+              - list [ref=f4e26]:
+                - listitem [ref=f4e27]:
+                  - link "A11Y Test Fields" [ref=f4e28] [cursor=pointer]:
+                    - /url: /node/add/a11y_test
+          - listitem [ref=f4e30]:
+            - link "Blocks" [ref=f4e31] [cursor=pointer]:
+              - /url: /admin/content/block
+          - listitem [ref=f4e35]:
+            - link "Content" [ref=f4e36] [cursor=pointer]:
+              - /url: /admin/content
+          - listitem [ref=f4e40]:
+            - link "Files" [ref=f4e41] [cursor=pointer]:
+              - /url: /admin/content/files
+      - generic [ref=f4e45]:
+        - heading "Administration" [level=3] [ref=f4e46]
+        - list [ref=f4e47]:
+          - listitem [ref=f4e48]:
+            - button "Extend Structure" [ref=f4e49] [cursor=pointer]:
+              - generic [ref=f4e52]: Extend
+              - generic [ref=f4e53]: Structure
+            - generic [ref=f4e56]:
+              - link "Structure" [ref=f4e57] [cursor=pointer]:
+                - /url: /admin/structure
+              - list [ref=f4e59]:
+                - listitem [ref=f4e60]:
+                  - link "Block layout" [ref=f4e61] [cursor=pointer]:
+                    - /url: /admin/structure/block
+                - listitem [ref=f4e63]:
+                  - link "Block types" [ref=f4e64] [cursor=pointer]:
+                    - /url: /admin/structure/block-content
+                - listitem [ref=f4e66]:
+                  - link "Comment types" [ref=f4e67] [cursor=pointer]:
+                    - /url: /admin/structure/comment
+                - listitem [ref=f4e69]:
+                  - link "Content types" [ref=f4e70] [cursor=pointer]:
+                    - /url: /admin/structure/types
+                - listitem [ref=f4e72]:
+                  - button "Display modes" [ref=f4e73] [cursor=pointer]
+                - listitem [ref=f4e77]:
+                  - link "Menus" [ref=f4e78] [cursor=pointer]:
+                    - /url: /admin/structure/menu
+                - listitem [ref=f4e80]:
+                  - link "Taxonomy" [ref=f4e81] [cursor=pointer]:
+                    - /url: /admin/structure/taxonomy
+                - listitem [ref=f4e83]:
+                  - link "Views" [ref=f4e84] [cursor=pointer]:
+                    - /url: /admin/structure/views
+          - listitem [ref=f4e86]:
+            - link "Appearance" [ref=f4e87] [cursor=pointer]:
+              - /url: /admin/appearance
+          - listitem [ref=f4e91]:
+            - link "Extend" [ref=f4e92] [cursor=pointer]:
+              - /url: /admin/modules
+          - listitem [ref=f4e96]:
+            - button "Extend Configuration" [ref=f4e97] [cursor=pointer]:
+              - generic [ref=f4e100]: Extend
+              - generic [ref=f4e101]: Configuration
+            - generic [ref=f4e104]:
+              - link "Configuration" [ref=f4e105] [cursor=pointer]:
+                - /url: /admin/config
+              - list [ref=f4e107]:
+                - listitem [ref=f4e108]:
+                  - button "People" [ref=f4e109] [cursor=pointer]
+                - listitem [ref=f4e113]:
+                  - button "System" [ref=f4e114] [cursor=pointer]
+                - listitem [ref=f4e118]:
+                  - button "Content authoring" [ref=f4e119] [cursor=pointer]
+                - listitem [ref=f4e123]:
+                  - button "User interface" [ref=f4e124] [cursor=pointer]
+                - listitem [ref=f4e128]:
+                  - button "Development" [ref=f4e129] [cursor=pointer]
+                - listitem [ref=f4e133]:
+                  - button "Media" [ref=f4e134] [cursor=pointer]
+                - listitem [ref=f4e138]:
+                  - button "Search and metadata" [ref=f4e139] [cursor=pointer]
+                - listitem [ref=f4e143]:
+                  - button "Region and language" [ref=f4e144] [cursor=pointer]
+                - listitem [ref=f4e148]:
+                  - button "Web services" [ref=f4e149] [cursor=pointer]
+          - listitem [ref=f4e153]:
+            - link "People" [ref=f4e154] [cursor=pointer]:
+              - /url: /admin/people
+          - listitem [ref=f4e158]:
+            - button "Extend Reports" [ref=f4e159] [cursor=pointer]:
+              - generic [ref=f4e162]: Extend
+              - generic [ref=f4e163]: Reports
+            - generic [ref=f4e166]:
+              - link "Reports" [ref=f4e167] [cursor=pointer]:
+                - /url: /admin/reports
+              - list [ref=f4e169]:
+                - listitem [ref=f4e170]:
+                  - link "Status report" [ref=f4e171] [cursor=pointer]:
+                    - /url: /admin/reports/status
+                - listitem [ref=f4e173]:
+                  - link "Available updates" [ref=f4e174] [cursor=pointer]:
+                    - /url: /admin/reports/updates
+                - listitem [ref=f4e176]:
+                  - link "Recent log messages" [ref=f4e177] [cursor=pointer]:
+                    - /url: /admin/reports/dblog
+                - listitem [ref=f4e179]:
+                  - link "Field list" [ref=f4e180] [cursor=pointer]:
+                    - /url: /admin/reports/fields
+                - listitem [ref=f4e182]:
+                  - link "Top 'access denied' errors" [ref=f4e183] [cursor=pointer]:
+                    - /url: /admin/reports/access-denied
+                - listitem [ref=f4e185]:
+                  - link "Top 'page not found' errors" [ref=f4e186] [cursor=pointer]:
+                    - /url: /admin/reports/page-not-found
+                - listitem [ref=f4e188]:
+                  - link "Views plugins" [ref=f4e189] [cursor=pointer]:
+                    - /url: /admin/reports/views-plugins
+          - listitem [ref=f4e191]:
+            - link "Announcements" [ref=f4e192] [cursor=pointer]:
+              - /url: /admin/announcements_feed
+    - generic [ref=f4e198]:
+      - generic [ref=f4e199]:
+        - heading "Help" [level=3] [ref=f4e200]
+        - list [ref=f4e201]:
+          - listitem [ref=f4e202]:
+            - link "Help" [ref=f4e203] [cursor=pointer]:
+              - /url: /admin/help
+      - generic [ref=f4e207]:
+        - heading "User" [level=3] [ref=f4e208]
+        - list [ref=f4e209]:
+          - listitem [ref=f4e210]:
+            - button "Extend admin" [ref=f4e211] [cursor=pointer]:
+              - generic [ref=f4e214]: Extend
+              - generic [ref=f4e215]: admin
+            - generic [ref=f4e218]:
+              - link "admin" [ref=f4e219] [cursor=pointer]:
+                - /url: /user
+              - list [ref=f4e221]:
+                - listitem [ref=f4e222]:
+                  - link "View profile" [ref=f4e223] [cursor=pointer]:
+                    - /url: /user
+                - listitem [ref=f4e225]:
+                  - link "Edit profile" [ref=f4e226] [cursor=pointer]:
+                    - /url: /user/edit
+                - listitem [ref=f4e228]:
+                  - link "Log out" [ref=f4e229] [cursor=pointer]:
+                    - /url: /user/logout?token=1t1kAOhMTxObL-Fj9V_xTu1ICS2v_OxbpYj9Cq9j4ds
+      - button "Collapse sidebar" [expanded] [ref=f4e231] [cursor=pointer]
+  - main [ref=f4e236]:
+    - generic [ref=f4e239]:
+      - navigation [ref=f4e242]:
+        - heading "Breadcrumb" [level=2] [ref=f4e243]
+        - list [ref=f4e244]:
+          - listitem [ref=f4e245]:
+            - link "Home" [ref=f4e246] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f4e247]:
+            - link "Administration" [ref=f4e248] [cursor=pointer]:
+              - /url: /admin
+          - listitem [ref=f4e249]:
+            - link "Extend" [ref=f4e250] [cursor=pointer]:
+              - /url: /admin/modules
+      - generic [ref=f4e251]:
+        - heading "Uninstall" [level=1] [ref=f4e253]
+        - generic [ref=f4e254]:
+          - heading "Primary tabs" [level=2] [ref=f4e255]
+          - navigation "Primary tabs" [ref=f4e256]:
+            - list [ref=f4e257]:
+              - listitem [ref=f4e258]:
+                - link "List" [ref=f4e259] [cursor=pointer]:
+                  - /url: /admin/modules
+              - listitem [ref=f4e260]:
+                - link "Uninstall" [ref=f4e261] [cursor=pointer]:
+                  - /url: /admin/modules/uninstall
+    - generic [ref=f4e263]:
+      - contentinfo [ref=f4e267]:
+        - alert [ref=f4e268]:
+          - heading "Error message" [level=2] [ref=f4e270]
+          - generic [ref=f4e271]: No modules selected.
+      - complementary [ref=f4e274]:
+        - paragraph [ref=f4e275]: The uninstall process removes all data related to a module.
+      - generic [ref=f4e278]:
+        - generic [ref=f4e280]:
+          - generic [ref=f4e281] [cursor=pointer]: Filter modules
+          - searchbox "Filter modules" [ref=f4e282]
+          - generic [ref=f4e283]: Enter a part of the module name or description
+        - table [ref=f4e284]:
+          - rowgroup [ref=f4e285]:
+            - row [ref=f4e286]:
+              - columnheader "Uninstall" [ref=f4e287]
+              - columnheader "Name" [ref=f4e288]
+              - columnheader "Description" [ref=f4e289]
+          - rowgroup [ref=f4e290]:
+            - row [ref=f4e291]:
+              - cell [ref=f4e292]:
+                - generic [ref=f4e293]:
+                  - generic [ref=f4e294] [cursor=pointer]: Uninstall Announcements module
+                  - checkbox "Uninstall Announcements module Announcements" [ref=f4e295]
+              - cell "Announcements" [ref=f4e296]
+              - cell "Displays announcements from the Drupal community." [ref=f4e297]
+            - row [ref=f4e298]:
+              - cell [ref=f4e299]:
+                - generic [ref=f4e300]:
+                  - generic [ref=f4e301] [cursor=pointer]: Uninstall Automated Cron module
+                  - checkbox "Uninstall Automated Cron module Automated Cron" [ref=f4e302]
+              - cell "Automated Cron" [ref=f4e303]
+              - cell "Provides an automated way to run cron jobs, by executing them at the end of a server response." [ref=f4e304]
+            - row [ref=f4e305]:
+              - cell [ref=f4e306]:
+                - generic [ref=f4e307]:
+                  - generic [ref=f4e308] [cursor=pointer]: Uninstall BigPipe module
+                  - checkbox "Uninstall BigPipe module BigPipe" [ref=f4e309]
+              - cell "BigPipe" [ref=f4e310]
+              - cell "Sends pages using the BigPipe technique that allows browsers to show them much faster." [ref=f4e311]
+            - row [ref=f4e312]:
+              - cell [ref=f4e313]:
+                - generic [ref=f4e314]:
+                  - generic [ref=f4e315]: Uninstall Block module
+                  - checkbox "Uninstall Block module Block" [disabled] [ref=f4e316]
+              - cell "Block" [ref=f4e317]
+              - cell [ref=f4e318]:
+                - text: Allows users to configure blocks (containing content, forms, etc.) and to place them in the regions of a theme.
+                - generic [ref=f4e319]:
+                  - text: "The following reason prevents Block from being uninstalled:"
+                  - list [ref=f4e321]:
+                    - listitem [ref=f4e322]: "Required by: Block Content, Layout Builder, Navigation"
+            - row [ref=f4e323]:
+              - cell [ref=f4e324]:
+                - generic [ref=f4e325]:
+                  - generic [ref=f4e326] [cursor=pointer]: Uninstall Block Content module
+                  - checkbox "Uninstall Block Content module Block Content" [ref=f4e327]
+              - cell "Block Content" [ref=f4e328]
+              - cell "Allows the creation of content blocks and block types." [ref=f4e329]
+            - row [ref=f4e330]:
+              - cell [ref=f4e331]:
+                - generic [ref=f4e332]:
+                  - generic [ref=f4e333] [cursor=pointer]: Uninstall Breakpoint module
+                  - checkbox "Uninstall Breakpoint module Breakpoint" [ref=f4e334]
+              - cell "Breakpoint" [ref=f4e335]
+              - cell "Manages breakpoints and breakpoint groups for responsive designs." [ref=f4e336]
+            - row [ref=f4e337]:
+              - cell [ref=f4e338]:
+                - generic [ref=f4e339]:
+                  - generic [ref=f4e340] [cursor=pointer]: Uninstall CKEditor 5 module
+                  - checkbox "Uninstall CKEditor 5 module CKEditor 5" [ref=f4e341]
+              - cell "CKEditor 5" [ref=f4e342]
+              - cell "Provides the CKEditor 5 rich text editor." [ref=f4e343]
+            - row [ref=f4e344]:
+              - cell [ref=f4e345]:
+                - generic [ref=f4e346]:
+                  - generic [ref=f4e347]: Uninstall Comment module
+                  - checkbox "Uninstall Comment module Comment" [disabled] [ref=f4e348]
+              - cell "Comment" [ref=f4e349]
+              - cell [ref=f4e350]:
+                - text: Allows users to comment on content.
+                - generic [ref=f4e351]:
+                  - text: "The following reasons prevent Comment from being uninstalled:"
+                  - list [ref=f4e353]:
+                    - listitem [ref=f4e354]:
+                      - text: "There is content for the entity type: Comment."
+                      - link "Remove comments" [ref=f4e355] [cursor=pointer]:
+                        - /url: /admin/modules/uninstall/entity/comment
+                      - text: .
+                    - listitem [ref=f4e356]:
+                      - text: The
+                      - emphasis [ref=f4e357]: Comments
+                      - text: "field type is used in the following field: node.field_comment"
+            - row [ref=f4e358]:
+              - cell [ref=f4e359]:
+                - generic [ref=f4e360]:
+                  - generic [ref=f4e361] [cursor=pointer]: Uninstall Configuration Manager module
+                  - checkbox "Uninstall Configuration Manager module Configuration Manager" [ref=f4e362]
+              - cell "Configuration Manager" [ref=f4e363]
+              - cell "Allows importing and exporting configuration changes." [ref=f4e364]
+            - row [ref=f4e365]:
+              - cell [ref=f4e366]:
+                - generic [ref=f4e367]:
+                  - generic [ref=f4e368]: Uninstall Contextual Links module
+                  - checkbox "Uninstall Contextual Links module Contextual Links" [disabled] [ref=f4e369]
+              - cell "Contextual Links" [ref=f4e370]
+              - cell [ref=f4e371]:
+                - text: Provides contextual links to directly access tasks related to page elements.
+                - generic [ref=f4e372]:
+                  - text: "The following reason prevents Contextual Links from being uninstalled:"
+                  - list [ref=f4e374]:
+                    - listitem [ref=f4e375]: "Required by: Layout Builder, Navigation"
+            - row [ref=f4e376]:
+              - cell [ref=f4e377]:
+                - generic [ref=f4e378]:
+                  - generic [ref=f4e379]: Uninstall Custom Menu Links module
+                  - checkbox "Uninstall Custom Menu Links module Custom Menu Links" [disabled] [ref=f4e380]
+              - cell "Custom Menu Links" [ref=f4e381]
+              - cell [ref=f4e382]:
+                - text: Allows users to create menu links.
+                - generic [ref=f4e383]:
+                  - text: "The following reason prevents Custom Menu Links from being uninstalled:"
+                  - list [ref=f4e385]:
+                    - listitem [ref=f4e386]: "Required by: Menu UI"
+            - row [ref=f4e387]:
+              - cell [ref=f4e388]:
+                - generic [ref=f4e389]:
+                  - generic [ref=f4e390] [cursor=pointer]: Uninstall Database Logging module
+                  - checkbox "Uninstall Database Logging module Database Logging" [ref=f4e391]
+              - cell "Database Logging" [ref=f4e392]
+              - cell "Logs system events in the database." [ref=f4e393]
+            - row [ref=f4e394]:
+              - cell [ref=f4e395]:
+                - generic [ref=f4e396]:
+                  - generic [ref=f4e397]: Uninstall Datetime module
+                  - checkbox "Uninstall Datetime module Datetime" [disabled] [ref=f4e398]
+              - cell "Datetime" [ref=f4e399]
+              - cell [ref=f4e400]:
+                - text: Defines field types for storing dates and times.
+                - generic [ref=f4e401]:
+                  - text: "The following reasons prevent Datetime from being uninstalled:"
+                  - list [ref=f4e403]:
+                    - listitem [ref=f4e404]:
+                      - text: The
+                      - emphasis [ref=f4e405]: Datetime
+                      - text: "field type is used in the following field: node.field_date_datetime"
+                    - listitem [ref=f4e406]: "Required by: Datetime Range"
+            - row [ref=f4e407]:
+              - cell [ref=f4e408]:
+                - generic [ref=f4e409]:
+                  - generic [ref=f4e410]: Uninstall Datetime Range module
+                  - checkbox "Uninstall Datetime Range module Datetime Range" [disabled] [ref=f4e411]
+              - cell "Datetime Range" [ref=f4e412]
+              - cell [ref=f4e413]:
+                - text: Provides the ability to store end dates.
+                - generic [ref=f4e414]:
+                  - text: "The following reason prevents Datetime Range from being uninstalled:"
+                  - list [ref=f4e416]:
+                    - listitem [ref=f4e417]:
+                      - text: The
+                      - emphasis [ref=f4e418]: Datetime range
+                      - text: "field type is used in the following field: node.field_date_daterange"
+            - row [ref=f4e419]:
+              - cell [ref=f4e420]:
+                - generic [ref=f4e421]:
+                  - generic [ref=f4e422]: Uninstall Field module
+                  - checkbox "Uninstall Field module Field" [disabled] [ref=f4e423]
+              - cell "Field" [ref=f4e424]
+              - cell [ref=f4e425]:
+                - text: Provides the capabilities to add fields to entities.
+                - generic [ref=f4e426]:
+                  - text: "The following reason prevents Field from being uninstalled:"
+                  - list [ref=f4e428]:
+                    - listitem [ref=f4e429]: "Required by: Text, Block Content, File, Text Editor (editor), CKEditor 5 (ckeditor5), Comment, Datetime, Datetime Range, Field UI, Image, Link, Custom Menu Links (menu_link_content), Menu UI, Navigation, Node, Options, Taxonomy"
+            - row [ref=f4e430]:
+              - cell [ref=f4e431]:
+                - generic [ref=f4e432]:
+                  - generic [ref=f4e433] [cursor=pointer]: Uninstall Field UI module
+                  - checkbox "Uninstall Field UI module Field UI" [ref=f4e434]
+              - cell "Field UI" [ref=f4e435]
+              - cell "Provides a user interface for the Field module." [ref=f4e436]
+            - row [ref=f4e437]:
+              - cell [ref=f4e438]:
+                - generic [ref=f4e439]:
+                  - generic [ref=f4e440]: Uninstall File module
+                  - checkbox "Uninstall File module File" [disabled] [ref=f4e441]
+              - cell "File" [ref=f4e442]
+              - cell [ref=f4e443]:
+                - text: Provides a field type for files and defines a "managed_file" Form API element.
+                - generic [ref=f4e444]:
+                  - text: "The following reason prevents File from being uninstalled:"
+                  - list [ref=f4e446]:
+                    - listitem [ref=f4e447]: "Required by: Text Editor (editor), CKEditor 5 (ckeditor5), Image, Navigation"
+            - row [ref=f4e448]:
+              - cell [ref=f4e449]:
+                - generic [ref=f4e450]:
+                  - generic [ref=f4e451]: Uninstall Filter module
+                  - checkbox "Uninstall Filter module Filter" [disabled] [ref=f4e452]
+              - cell "Filter" [ref=f4e453]
+              - cell [ref=f4e454]:
+                - text: Filters text content in preparation for display.
+                - generic [ref=f4e455]:
+                  - text: "The following reasons prevent Filter from being uninstalled:"
+                  - list [ref=f4e457]:
+                    - listitem [ref=f4e458]:
+                      - text: "Provides a filter plugin that is in use in the following filter formats:"
+                      - emphasis [ref=f4e459]: Basic HTML, Full HTML, Plain text, Restricted HTML
+                    - listitem [ref=f4e460]: "Required by: Text, Block Content, Text Editor (editor), CKEditor 5 (ckeditor5), Comment, Views, Node, Options, Taxonomy, Views UI"
+            - row [ref=f4e461]:
+              - cell [ref=f4e462]:
+                - generic [ref=f4e463]:
+                  - generic [ref=f4e464] [cursor=pointer]: Uninstall Help module
+                  - checkbox "Uninstall Help module Help" [ref=f4e465]
+              - cell "Help" [ref=f4e466]
+              - cell "Generates help pages and provides a Help block with page-level help." [ref=f4e467]
+            - row [ref=f4e468]:
+              - cell [ref=f4e469]:
+                - generic [ref=f4e470]:
+                  - generic [ref=f4e471]: Uninstall Image module
+                  - checkbox "Uninstall Image module Image" [disabled] [ref=f4e472]
+              - cell "Image" [ref=f4e473]
+              - cell [ref=f4e474]:
+                - text: Defines a field type for image media and provides display configuration tools.
+                - generic [ref=f4e475]:
+                  - text: "The following reason prevents Image from being uninstalled:"
+                  - list [ref=f4e477]:
+                    - listitem [ref=f4e478]:
+                      - text: The
+                      - emphasis [ref=f4e479]: Image
+                      - text: "field type is used in the following field: user.user_picture"
+            - row [ref=f4e480]:
+              - cell [ref=f4e481]:
+                - generic [ref=f4e482]:
+                  - generic [ref=f4e483] [cursor=pointer]: Uninstall Inline Form Errors module
+                  - checkbox "Uninstall Inline Form Errors module Inline Form Errors" [ref=f4e484]
+              - cell "Inline Form Errors" [ref=f4e485]
+              - cell "Places error messages adjacent to form inputs, for improved usability and accessibility." [ref=f4e486]
+            - row [ref=f4e487]:
+              - cell [ref=f4e488]:
+                - generic [ref=f4e489]:
+                  - generic [ref=f4e490] [cursor=pointer]: Uninstall Internal Dynamic Page Cache module
+                  - checkbox "Uninstall Internal Dynamic Page Cache module Internal Dynamic Page Cache" [ref=f4e491]
+              - cell "Internal Dynamic Page Cache" [ref=f4e492]
+              - cell "Caches pages, including those with dynamic content, for all users." [ref=f4e493]
+            - row [ref=f4e494]:
+              - cell [ref=f4e495]:
+                - generic [ref=f4e496]:
+                  - generic [ref=f4e497] [cursor=pointer]: Uninstall Internal Page Cache module
+                  - checkbox "Uninstall Internal Page Cache module Internal Page Cache" [ref=f4e498]
+              - cell "Internal Page Cache" [ref=f4e499]
+              - cell "Caches pages for anonymous users and can be used when external page cache is not available." [ref=f4e500]
+            - row [ref=f4e501]:
+              - cell [ref=f4e502]:
+                - generic [ref=f4e503]:
+                  - generic [ref=f4e504]: Uninstall Layout Builder module
+                  - checkbox "Uninstall Layout Builder module Layout Builder" [disabled] [ref=f4e505]
+              - cell "Layout Builder" [ref=f4e506]
+              - cell [ref=f4e507]:
+                - text: Allows users to add and arrange blocks and content fields directly on the content.
+                - generic [ref=f4e508]:
+                  - text: "The following reason prevents Layout Builder from being uninstalled:"
+                  - list [ref=f4e510]:
+                    - listitem [ref=f4e511]: "Required by: Navigation"
+            - row [ref=f4e512]:
+              - cell [ref=f4e513]:
+                - generic [ref=f4e514]:
+                  - generic [ref=f4e515]: Uninstall Layout Discovery module
+                  - checkbox "Uninstall Layout Discovery module Layout Discovery" [disabled] [ref=f4e516]
+              - cell "Layout Discovery" [ref=f4e517]
+              - cell [ref=f4e518]:
+                - text: Provides a way for modules or themes to register layouts.
+                - generic [ref=f4e519]:
+                  - text: "The following reason prevents Layout Discovery from being uninstalled:"
+                  - list [ref=f4e521]:
+                    - listitem [ref=f4e522]: "Required by: Layout Builder, Navigation"
+            - row [ref=f4e523]:
+              - cell [ref=f4e524]:
+                - generic [ref=f4e525]:
+                  - generic [ref=f4e526]: Uninstall Link module
+                  - checkbox "Uninstall Link module Link" [disabled] [ref=f4e527]
+              - cell "Link" [ref=f4e528]
+              - cell [ref=f4e529]:
+                - text: Provides a field type for internal and external URLs.
+                - generic [ref=f4e530]:
+                  - text: "The following reason prevents Link from being uninstalled:"
+                  - list [ref=f4e532]:
+                    - listitem [ref=f4e533]: "Required by: Custom Menu Links (menu_link_content), Menu UI"
+            - row [ref=f4e534]:
+              - cell [ref=f4e535]:
+                - generic [ref=f4e536]:
+                  - generic [ref=f4e537] [cursor=pointer]: Uninstall Menu UI module
+                  - checkbox "Uninstall Menu UI module Menu UI" [ref=f4e538]
+              - cell "Menu UI" [ref=f4e539]
+              - cell "Provides a user interface for managing menus." [ref=f4e540]
+            - row [ref=f4e541]:
+              - cell [ref=f4e542]:
+                - generic [ref=f4e543]:
+                  - generic [ref=f4e544]: Uninstall MySQL module
+                  - checkbox "Uninstall MySQL module MySQL" [disabled] [ref=f4e545]
+              - cell "MySQL" [ref=f4e546]
+              - cell [ref=f4e547]:
+                - text: Provides the MySQL database driver.
+                - generic [ref=f4e548]:
+                  - text: "The following reason prevents MySQL from being uninstalled:"
+                  - list [ref=f4e550]:
+                    - listitem [ref=f4e551]: The module 'MySQL' is providing the database driver 'mysql'.
+            - row [ref=f4e552]:
+              - cell [ref=f4e553]:
+                - generic [ref=f4e554]:
+                  - generic [ref=f4e555] [cursor=pointer]: Uninstall Navigation module
+                  - checkbox "Uninstall Navigation module Navigation" [ref=f4e556]
+              - cell "Navigation" [ref=f4e557]
+              - cell "Provides a sidebar navigation for site administration." [ref=f4e558]
+            - row [ref=f4e559]:
+              - cell [ref=f4e560]:
+                - generic [ref=f4e561]:
+                  - generic [ref=f4e562]: Uninstall Node module
+                  - checkbox "Uninstall Node module Node" [disabled] [ref=f4e563]
+              - cell "Node" [ref=f4e564]
+              - cell [ref=f4e565]:
+                - text: Manages the creation, configuration, and display of the main site content.
+                - generic [ref=f4e566]:
+                  - text: "The following reasons prevent Node from being uninstalled:"
+                  - list [ref=f4e568]:
+                    - listitem [ref=f4e569]:
+                      - text: "There is content for the entity type: Content."
+                      - link "Remove content items" [ref=f4e570] [cursor=pointer]:
+                        - /url: /admin/modules/uninstall/entity/node
+                      - text: .
+                    - listitem [ref=f4e571]: "Required by: Taxonomy"
+            - row [ref=f4e572]:
+              - cell [ref=f4e573]:
+                - generic [ref=f4e574]:
+                  - generic [ref=f4e575] [cursor=pointer]: Uninstall Options module
+                  - checkbox "Uninstall Options module Options" [ref=f4e576]
+              - cell "Options" [ref=f4e577]
+              - cell "Defines field types with select lists, checkboxes, and radio buttons to select values from fixed lists of options." [ref=f4e578]
+            - row [ref=f4e579]:
+              - cell [ref=f4e580]:
+                - generic [ref=f4e581]:
+                  - generic [ref=f4e582] [cursor=pointer]: Uninstall Path module
+                  - checkbox "Uninstall Path module Path" [ref=f4e583]
+              - cell "Path" [ref=f4e584]
+              - cell "Allows users to create custom URLs for existing paths on the site." [ref=f4e585]
+            - row [ref=f4e586]:
+              - cell [ref=f4e587]:
+                - generic [ref=f4e588]:
+                  - generic [ref=f4e589] [cursor=pointer]: Uninstall Standard module
+                  - checkbox "Uninstall Standard module Standard" [ref=f4e590]
+              - cell "Standard" [ref=f4e591]
+              - cell "Install with commonly used features pre-configured." [ref=f4e592]
+            - row [ref=f4e593]:
+              - cell [ref=f4e594]:
+                - generic [ref=f4e595]:
+                  - generic [ref=f4e596] [cursor=pointer]: Uninstall Taxonomy module
+                  - checkbox "Uninstall Taxonomy module Taxonomy" [ref=f4e597]
+              - cell "Taxonomy" [ref=f4e598]
+              - cell "Enables the categorization of content." [ref=f4e599]
+            - row [ref=f4e600]:
+              - cell [ref=f4e601]:
+                - generic [ref=f4e602]:
+                  - generic [ref=f4e603]: Uninstall Text module
+                  - checkbox "Uninstall Text module Text" [disabled] [ref=f4e604]
+              - cell "Text" [ref=f4e605]
+              - cell [ref=f4e606]:
+                - text: Defines field types for short and long text with optional summaries.
+                - generic [ref=f4e607]:
+                  - text: "The following reasons prevent Text from being uninstalled:"
+                  - list [ref=f4e609]:
+                    - listitem [ref=f4e610]:
+                      - text: The
+                      - emphasis [ref=f4e611]: Long text
+                      - text: "field type is used in the following fields: block_content.body, comment.comment_body, node.field_formatted_long"
+                    - listitem [ref=f4e612]:
+                      - text: The
+                      - emphasis [ref=f4e613]: Long text with summary
+                      - text: "field type is used in the following field: node.field_formatted_summary"
+                    - listitem [ref=f4e614]: "Required by: Block Content, Comment, Node, Options, Taxonomy"
+            - row [ref=f4e615]:
+              - cell [ref=f4e616]:
+                - generic [ref=f4e617]:
+                  - generic [ref=f4e618]: Uninstall Text Editor module
+                  - checkbox "Uninstall Text Editor module Text Editor" [disabled] [ref=f4e619]
+              - cell "Text Editor" [ref=f4e620]
+              - cell [ref=f4e621]:
+                - text: Provides a framework to associate text editors (like WYSIWYGs) and toolbars with text formats.
+                - generic [ref=f4e622]:
+                  - text: "The following reasons prevent Text Editor from being uninstalled:"
+                  - list [ref=f4e624]:
+                    - listitem [ref=f4e625]:
+                      - text: "Provides a filter plugin that is in use in the following filter formats:"
+                      - emphasis [ref=f4e626]: Basic HTML, Full HTML
+                    - listitem [ref=f4e627]: "Required by: CKEditor 5 (ckeditor5)"
+            - row [ref=f4e628]:
+              - cell [ref=f4e629]:
+                - generic [ref=f4e630]:
+                  - generic [ref=f4e631] [cursor=pointer]: Uninstall Update Status module
+                  - checkbox "Uninstall Update Status module Update Status" [ref=f4e632]
+              - cell "Update Status" [ref=f4e633]
+              - cell "Checks for updates and can notify users if there are new releases available." [ref=f4e634]
+            - row [ref=f4e635]:
+              - cell [ref=f4e636]:
+                - generic [ref=f4e637]:
+                  - generic [ref=f4e638]: Uninstall Views module
+                  - checkbox "Uninstall Views module Views" [disabled] [ref=f4e639]
+              - cell "Views" [ref=f4e640]
+              - cell [ref=f4e641]:
+                - text: Provides a framework to fetch information from the database and to display it in different formats.
+                - generic [ref=f4e642]:
+                  - text: "The following reason prevents Views from being uninstalled:"
+                  - list [ref=f4e644]:
+                    - listitem [ref=f4e645]: "Required by: Views UI"
+            - row [ref=f4e646]:
+              - cell [ref=f4e647]:
+                - generic [ref=f4e648]:
+                  - generic [ref=f4e649] [cursor=pointer]: Uninstall Views UI module
+                  - checkbox "Uninstall Views UI module Views UI" [ref=f4e650]
+              - cell "Views UI" [ref=f4e651]
+              - cell "Provides a user interface for creating and managing views." [ref=f4e652]
+        - button "Uninstall" [ref=f4e654] [cursor=pointer]

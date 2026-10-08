@@ -1,0 +1,10 @@
+name: Form Style
+description: This module gives an overview of all form elements and helps testing usability and accessibility.
+core_version_requirement: ^11 || ^12
+type: module
+configure: form_style.settings
+
+# Information added by Drupal.org packaging script on 2026-04-22
+version: '2.0.0'
+project: 'form_style'
+datestamp: 1776819509

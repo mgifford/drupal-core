@@ -51,6 +51,57 @@ class FormErrorHandler extends CoreFormErrorHandler {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function handleFormErrors(array &$form, FormStateInterface $form_state): static {
+    parent::handleFormErrors($form, $form_state);
+
+    if (!empty($form_state->getErrors()) && empty($form['#disable_inline_form_errors'])) {
+      $this->setTableElementInlineErrors($form);
+    }
+    return $this;
+  }
+
+  /**
+   * Sets inline errors on table and tableselect elements.
+   *
+   * The parent FormErrorHandler does not set inline errors on table and
+   * tableselect elements because they are compound elements. This method
+   * ensures they display inline errors via aria-describedby.
+   *
+   * @param array $elements
+   *   An associative array of form elements.
+   */
+  protected function setTableElementInlineErrors(array &$elements): void {
+    foreach ($elements as $key => &$element) {
+      if (!is_array($element)) {
+        continue;
+      }
+
+      if (in_array($element['#type'] ?? NULL, ['table', 'tableselect'], TRUE)
+        && !empty($element['#errors'])
+        && empty($element['#error_no_message'])
+      ) {
+        $error_id = ($element['#id'] ?? ('inline-form-errors-table-' . $key)) . '--error';
+        $existing_prefix = (string) ($element['#prefix'] ?? '');
+
+        $error_markup = '<div id="' . $error_id . '" class="form-item--error-message">' . $element['#errors'] . '</div>';
+        $element['#prefix'] = $error_markup . $existing_prefix;
+
+        if (empty($element['#attributes']['aria-describedby'])) {
+          $element['#attributes']['aria-describedby'] = $error_id;
+        }
+        else {
+          $element['#attributes']['aria-describedby'] .= ' ' . $error_id;
+        }
+      }
+      else {
+        $this->setTableElementInlineErrors($element);
+      }
+    }
+  }
+
+  /**
    * Loops through and displays all form errors.
    *
    * To disable inline form errors for an entire form set the
