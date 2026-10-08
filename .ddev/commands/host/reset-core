@@ -61,10 +61,10 @@ ddev exec drush site:install standard \
 
 # 6. Enable additional recipes not included by standard
 echo "[6/7] Enabling additional recipes for test coverage..."
-ddev exec drush recipe editorial_workflow
-ddev exec drush recipe comment_base
-ddev exec drush recipe image_media_type
-ddev exec drush recipe tags_taxonomy
+ddev exec drush recipe core/recipes/editorial_workflow
+ddev exec drush recipe core/recipes/comment_base
+ddev exec drush recipe core/recipes/image_media_type
+ddev exec drush recipe core/recipes/tags_taxonomy
 
 # 7. Finalize
 echo "[7/7] Rebuilding cache and verifying..."
