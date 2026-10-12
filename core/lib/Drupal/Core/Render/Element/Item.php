@@ -25,6 +25,9 @@ class Item extends FormElementBase {
       // Therefore, we allow #type 'item' to receive input, which is internally
       // assigned by Form API based on the #default_value or #value properties.
       '#input' => TRUE,
+      // An item does not render a labelable form control. Its title is rendered
+      // as text instead of a label element.
+      '#labelable' => FALSE,
       '#markup' => '',
       '#theme_wrappers' => ['form_element'],
     ];
