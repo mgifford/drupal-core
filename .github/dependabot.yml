@@ -38,6 +38,12 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 0
+    # open-pull-requests-limit only stops version updates. `ignore` also
+    # applies to security updates (it is marked as such in GitHub's Dependabot
+    # options reference), so this stops security PRs that edit core/yarn.lock
+    # and then conflict with the weekly upstream merge. Upstream fixes these.
+    ignore:
+      - dependency-name: "*"
     labels:
       - "javascript"
       - "build-tools"
