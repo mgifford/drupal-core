@@ -60,9 +60,11 @@ Planned work:
 1. Choose one Playwright version. The root lock already pins 1.59.1, so align
    `tests/playwright/package.json` to it. Check `@guidepup/virtual-screen-reader`
    and `@axe-core/playwright` compatibility before changing other versions.
-2. Declare `@guidepup/playwright` as an optional dependency. Move
-   `guidepup-drupal-admin.spec.ts` under `tests/` with an opt-in tag (it needs
-   macOS and VoiceOver).
+2. Declare `@guidepup/playwright`. Run `guidepup-drupal-admin.spec.ts`
+   through an opt-in Playwright project (`VOICEOVER=1`), because it needs
+   macOS and VoiceOver. Done in Phase 1: the file kept its documented path,
+   and `@guidepup/playwright` 0.19.x was chosen because 0.20 needs Playwright
+   1.62 or later.
 3. Fix `playwright.config.ts`: move `timeout` out of `use`, fix the stale
    comment, and keep screenshots and traces on failure.
 4. Add a smoke suite: home page, login form, admin navigation, create a

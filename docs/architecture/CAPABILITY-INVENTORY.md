@@ -2,6 +2,8 @@
 
 Audit date: 2026-11-19. Audited commit: `3f097f790a`.
 Evidence and commands are in [CURRENT-STATE.md](CURRENT-STATE.md).
+Updated for Phase 1 on 2026-11-19: the reset-core and weekly-sync fixes merged (PR #78), and the
+Playwright rows reflect the Phase 1 branch. See [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md).
 
 ## Status values
 
@@ -23,7 +25,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
-| Weekly upstream sync of fork `main` | `.github/workflows/weekly-sync.yml` | GitHub Actions, git.drupalcode.org | BROKEN | Silent failure since 2026-10-05. `main` is at upstream 2026-09-16. | Fixed in a separate, unmerged pull request (opens a PR, never pushes `main`). Replace with a source fetch in Phase 2. |
+| Weekly upstream sync of fork `main` | `.github/workflows/weekly-sync.yml` | GitHub Actions, git.drupalcode.org | IMPLEMENTED_UNVERIFIED | Failed silently from 2026-10-05 until PR #78. The repaired workflow opens one PR and never pushes `main`. It passed stub tests but has not run on GitHub. | Watch the first run. Replace with a source fetch in Phase 2. |
 | Thin fork layer over upstream | AGENTS.md, commit `7e501b72cf` | Discipline on `main` | BROKEN | PR #66 reintroduced old history and 27 modified upstream files (26 plus README.md). | Owner decision D1 (MIGRATION-PLAN). |
 | Publish reports and docs to GitHub Pages | `.github/workflows/pages.yml` | `reports/`, `documentation-new/` | IMPLEMENTED_UNVERIFIED | Workflow and `reports/index.html` exist. Run history not checked. | Keep URLs. Move new runs to `reports/runs/` in Phase 8. |
 | Pages health check | `.github/workflows/pages-check.yml`, `.github/scripts/check-pages.sh` | `curl` to the live site | PARTIAL | Runs the live-site check on every PR, which says nothing about the PR. | Restrict the live check to `main` (Phase 1 cleanup). |
@@ -34,7 +36,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
 | DDEV project definition | SETUP.md (`ddev config --project-type=drupal12 ...`) | DDEV, Docker | DOCUMENTATION_ONLY | `.ddev/config.yaml` is gitignored and absent here. | Phase 3: generate config per profile under `workspaces/installations/`. |
-| Reset core and reinstall with recipes | `ddev reset-core [patch]` (`.ddev/commands/host/reset-core`) | DDEV, Drush, Composer | BROKEN | Always exits with status 1 at step 1, before any clean-up or `ddev` call (reproduced with a stub `ddev`). Calls Drush, which is not installed. | Fixed in a separate, unmerged pull request. Replace with `env reset` in Phase 3. |
+| Reset core and reinstall with recipes | `ddev reset-core [patch]` (`.ddev/commands/host/reset-core`) | DDEV, Drush, Composer | IMPLEMENTED_UNVERIFIED | Exited at step 1 until PR #78. Fixed and tested with a stub `ddev`, but not yet run against real DDEV. Calls Drush, which is not installed. | Run once on a DDEV machine. Replace with `env reset` in Phase 3. |
 | Reset site from snapshot or recipe | `ddev reset-site`, `scripts/reset-site.sh` | DDEV snapshots, Drush, `core/recipes/replicate_core_testing` | IMPLEMENTED_UNVERIFIED | `bash -n` passes. Uses Drush. The comment names a stale recipe path. | Reuse its snapshot logic in Phase 3. |
 | List and apply core recipes without Drush | `scripts/apply-recipe.sh`, `scripts/recipe-cli.php` | DDEV, Core Recipe API | IMPLEMENTED_UNVERIFIED | `php -l` passes. | Reuse as the recipe applier in Phases 3 and 6. |
 | Test recipes added by the fork | `core/recipes/{article_content_type,page_content_type,core_recommended_front_end_theme,replicate_core_testing}` | Drupal core | IMPLEMENTED_UNVERIFIED | Not applied in this audit. They sit inside `core/`, so they conflict with the upstream tree. | Move to `fixtures/recipes/` in Phase 3. |
@@ -44,15 +46,19 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
-| Root npm test scripts (12) | `package.json` scripts | `core/tests/playwright/` | BROKEN | All 12 targets are missing. | Phase 1: remove or repoint, and record each script in this inventory. |
+| Root npm test scripts (12) | `package.json` scripts | `core/tests/playwright/` | SUPERSEDED | Removed in Phase 1, because all 12 targets were missing: `test:accessibility-workflows`, `test:a11y-headed`, `test:a11y-debug`, `a11y:evaluate-patch`, `a11y:evaluate-all-patches`, `a11y:coverage`, `a11y:sustainability`, `a11y:known-issues`, `a11y:discover-modules`, `a11y:test-module`, `a11y:analyze-modules`, `a11y:triage-modules`. | Replaced by `doctor`, `test:unit`, `test:list`, `test:smoke` and `test:playwright`. The old code is in `d8a45b3fe0`. |
 | Removed core-path suite (48 files): axe crawl, keyboard review and contracts, color-contrast matrix, label-in-name, Lighthouse, regressions, module and patch evaluators, pattern and sustainability analysis, RTL and plain-language reports | `core/tests/playwright/` in commit `d8a45b3fe0` | Playwright, axe-core, DDEV | HISTORICAL | Deleted by `47c539d692`. Most of it has no equivalent in `tests/playwright/`. | Phase 1: restore the crawl and contract tests to `tests/playwright/` one at a time, with tests. Do not restore patch evaluators (see section 6). |
-| Guidepup virtual screen reader specs | `tests/playwright/tests/a11y-*-sr.spec.ts`, `lib/virtual-sr.ts` | `@guidepup/virtual-screen-reader`, DDEV site, Devel for the menu tests | IMPLEMENTED_UNVERIFIED | `node_modules` not installed. Browsers not installed. | Phase 1: install, then run against a site. |
+| Guidepup virtual screen reader specs | `tests/playwright/tests/a11y-*-sr.spec.ts`, `lib/virtual-sr.ts` | `@guidepup/virtual-screen-reader`, DDEV site, Devel for the menu tests | IMPLEMENTED_UNVERIFIED | Dependencies installed and specs discovered by `npm run test:list`. Not run: no site and no browser. | Run against a site. |
 | Multi-scanner crawl (axe plus IBM Equal Access) | `tests/playwright/tests/a11y-virtual-sr-crawl.spec.ts`, `lib/multi-scanner.ts`, `npm run test:multi-scanner:*` | `@axe-core/playwright`, `accessibility-checker`, Drush | IMPLEMENTED_UNVERIFIED | Switches themes globally through Drush, which is not installed. | Phase 1: run. Phase 5: isolate theme changes. |
 | Login spec | `tests/playwright/tests/drupal-login.spec.ts` | DDEV site, `admin`/`admin` default | IMPLEMENTED_UNVERIFIED | Not run. | Phase 1 smoke base. |
-| Real VoiceOver admin tests (9 tests) | `tests/playwright/guidepup-drupal-admin.spec.ts` | `@guidepup/playwright` (undeclared), macOS VoiceOver | BROKEN | Outside `testDir`, so never discovered. Dependency not declared. | Phase 1: move into `tests/`, declare the dependency, keep it opt-in. |
-| Shared login state | `tests/playwright/lib/auth-setup.ts` (global setup) | Env `DRUPAL_ADMIN_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Writes `tests/playwright/reports/auth-state.json`, which is gitignored. | Phase 1: use isolated test users, not uid 1. |
+| Real VoiceOver admin tests (9 tests) | `tests/playwright/guidepup-drupal-admin.spec.ts`, `npm run test:voiceover` | `@guidepup/playwright` 0.19.1, macOS VoiceOver | IMPLEMENTED_UNVERIFIED | Opt-in `voiceover` project (`VOICEOVER=1`). The file stays at its documented path, and all 9 tests are discovered. | Run on macOS with VoiceOver set up. |
+| Shared login state | `tests/playwright/lib/auth-setup.ts` (global setup) | Env `DRUPAL_ADMIN_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Writes `tests/playwright/reports/auth-state.json`, which is gitignored. | Kept for the older specs. The smoke suite uses a dedicated `DRUPAL_TEST_USER` instead. |
 | Issue 2848307 MCP check | `tests/playwright/scripts/issue-2848307-mcp-check.js` | DDEV site | HISTORICAL | Issue-specific. | Core Lab territory. Keep as history. |
-| Playwright MCP | none (no `.mcp.json`) | `@playwright/mcp` | DOCUMENTATION_ONLY | `.playwright-mcp/` holds 10 logs from 2026-08-04 only. | Phase 1: add a pinned config. Stop committing its logs. |
+| Playwright MCP | `.mcp.json` | `@playwright/mcp` 0.0.86 | IMPLEMENTED_UNVERIFIED | Pinned, isolated, `devtools` caps, one allowed origin, output in gitignored `tests/playwright/reports/mcp`. Not yet connected to a site. `browser_run_code_unsafe` cannot be disabled by config. | Connect from a DDEV machine. Add a client deny rule for the unsafe tool. |
+| Smoke suite (6 scenarios) | `tests/playwright/tests/smoke/`, `npm run test:smoke` | DDEV site with Basic page, `DRUPAL_TEST_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Discovered. Locators come from the Drupal source. Logged-in tests skip, not pass, without credentials. | Run against a site. |
+| axe scan with baseline | `tests/playwright/tests/accessibility/login-axe.spec.ts`, `baselines/axe/user-login.json`, `lib/axe-baseline.mjs` | `@axe-core/playwright` | IMPLEMENTED_UNVERIFIED | The baseline helper passes 4 unit tests. The scan itself has not run. | Run against a site. |
+| Run record (tested commit) | `tests/playwright/lib/run-info.ts` (global setup) | Git | VERIFIED | Wrote `reports/run-info.json` with the commit and dirty flag in a run without a site. | Extend into the run manifest in Phase 8. |
+| Environment doctor | `scripts/drupal-test.mjs doctor`, `npm run doctor` | Node | VERIFIED | 16 checks, read-only. Exit codes 0, 2, 3 and 4. Unit tests pass, and it reported this machine accurately. | Add `sources` and `env` commands in Phases 2 and 3. |
 | Root `node_modules/` committed | `node_modules/` (1,991 files, 30 MB) | | BROKEN (hygiene) | Not in `.gitignore`. Includes a macOS-only `fsevents`. | Owner decision D2. |
 
 ## 4. Accessibility analysis tools
@@ -96,7 +102,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 These are needed by the specification and have no code at this commit:
 
-- a single CLI (`scripts/drupal-test.mjs`) and `doctor`
+- CLI commands beyond `doctor`
 - a source registry with pinned-commit checkouts and provenance records
 - environment profiles
 - fixtures beyond the recipes listed above

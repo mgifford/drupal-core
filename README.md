@@ -8,6 +8,8 @@
 > | Start here | |
 > | :--- | :--- |
 > | [SETUP.md](SETUP.md) | Install the test environment (DDEV, modules, browsers) |
+> | [docs/testing/PLAYWRIGHT.md](docs/testing/PLAYWRIGHT.md) | Run the browser tests, `npm run doctor`, Playwright MCP |
+> | [docs/architecture/](docs/architecture/CURRENT-STATE.md) | Current state, capability inventory, migration plan |
 > | [A11Y-PROCESS.md](A11Y-PROCESS.md) | Running crawls, analyzing, filing issues |
 > | [TOOLING-ROADMAP.md](TOOLING-ROADMAP.md) | Executable work orders (linked to [issues](https://github.com/mgifford/drupal-core/issues)) |
 > | [NIGHTLY-PIPELINE.md](NIGHTLY-PIPELINE.md) | Nightly regression + commit attribution + OpenACR design |

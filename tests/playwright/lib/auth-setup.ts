@@ -12,6 +12,11 @@ import * as path from 'path';
 export const AUTH_STATE_FILE = path.join(__dirname, '../reports/auth-state.json');
 
 export default async function globalSetup(config: FullConfig) {
+  // The smoke and axe suites log in with their own test account, so they
+  // set SKIP_ADMIN_LOGIN=1 and do not depend on the admin credentials.
+  if (process.env.SKIP_ADMIN_LOGIN === '1') {
+    return;
+  }
   const baseURL = config.projects[0].use.baseURL ?? 'https://drupal-core.ddev.site';
 
   // Read credentials from env, falling back to DDEV defaults.
