@@ -41,12 +41,12 @@ class ConditionTest extends UnitTestCase {
   /**
    * Tests simple condition.
    *
-   * @legacy-covers ::compile
+   * @see ::compile
    */
   #[DataProvider('providerSimpleCondition')]
   public function testSimpleCondition(string $expected, string $field_name): void {
     $connection = $this->createStub(Connection::class);
-    $connection->method('escapeField')->willReturnCallback(function (string $field): string|array|null {
+    $connection->method('escapeField')->willReturnCallback(function (string $field): ?string {
       return preg_replace('/[^A-Za-z0-9_.]+/', '', $field);
     });
     $connection->method('mapConditionOperator')->willReturn(['operator' => '=']);
@@ -86,7 +86,7 @@ class ConditionTest extends UnitTestCase {
   #[DataProvider('dataProviderTestCompileWithKnownOperators')]
   public function testCompileWithKnownOperators($expected, $field, $value, $operator, $expected_arguments = NULL): void {
     $connection = $this->createStub(Connection::class);
-    $connection->method('escapeField')->willReturnCallback(function (string $field): string|array|null {
+    $connection->method('escapeField')->willReturnCallback(function (string $field): ?string {
       return preg_replace('/[^A-Za-z0-9_.]+/', '', $field);
     });
     $connection->method('mapConditionOperator')->willReturn(NULL);
@@ -185,11 +185,11 @@ class ConditionTest extends UnitTestCase {
   /**
    * Tests compile with an operator that appends a suffix to the field.
    *
-   * @legacy-covers ::compile
+   * @see ::compile
    */
   public function testCompileWithFieldSuffixOperator(): void {
     $connection = $this->createStub(Connection::class);
-    $connection->method('escapeField')->willReturnCallback(function (string $field): string|array|null {
+    $connection->method('escapeField')->willReturnCallback(function (string $field): ?string {
       return preg_replace('/[^A-Za-z0-9_.]+/', '', $field);
     });
     $connection->method('mapConditionOperator')->willReturn(['operator' => 'ILIKE', 'field_suffix' => '::text']);
@@ -218,7 +218,7 @@ class ConditionTest extends UnitTestCase {
   #[DataProvider('providerTestCompileWithSqlInjectionForOperator')]
   public function testCompileWithSqlInjectionForOperator($operator): void {
     $connection = $this->createStub(Connection::class);
-    $connection->method('escapeField')->willReturnCallback(function (string $field): string|array|null {
+    $connection->method('escapeField')->willReturnCallback(function (string $field): ?string {
       return preg_replace('/[^A-Za-z0-9_.]+/', '', $field);
     });
     $connection->method('mapConditionOperator')->willReturn(NULL);

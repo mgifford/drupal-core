@@ -49,7 +49,7 @@ class AttributeRouteDiscoveryTest extends UnitTestCase {
   }
 
   /**
-   * @legacy-covers ::onRouteBuild
+   * @see ::onRouteBuild
    */
   public function testOnRouteBuildWithArrayNamespaceDirectories(): void {
     $event = new RouteBuildEvent(new RouteCollection());
@@ -69,7 +69,7 @@ class AttributeRouteDiscoveryTest extends UnitTestCase {
   }
 
   /**
-   * @legacy-covers ::onRouteBuild
+   * @see ::onRouteBuild
    */
   public function testOnRouteBuild(): void {
     $this->assertNotEmpty($this->routeCollection);
@@ -166,8 +166,8 @@ EOF
   /**
    * Tests all supported route properties.
    *
-   * @legacy-covers ::onRouteBuild
-   * @legacy-covers ::addRoute
+   * @see ::onRouteBuild
+   * @see ::addRoute
    */
   #[IgnoreDeprecations]
   public function testAllRouteProperties(): void {
@@ -217,7 +217,7 @@ EOF
    */
   public function testTitleConflictsWithTitleDefault(): void {
     $this->expectException(\AssertionError::class);
-    $this->expectExceptionMessage('The "title" property cannot be used together with a "_title" default on the Route attribute.');
+    $this->expectExceptionMessageIs('The "title" property cannot be used together with a "_title" default on the Route attribute.');
     new Route(
       path: '/test',
       name: 'router_test.title_conflict',

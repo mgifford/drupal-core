@@ -15,28 +15,27 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CurrentPathStack {
 
   /**
-   * Static cache of paths.
+   * Static cache of paths, keyed by request.
    *
-   * @var \SplObjectStorage
+   * Weak, so that a request nothing else references any more is released
+   * together with its path. Code that matches many synthetic requests in one
+   * process, such as a long-running command resolving URLs, would otherwise
+   * keep every one of them.
+   *
+   * @var \WeakMap<\Symfony\Component\HttpFoundation\Request, string>
    */
   protected $paths;
 
   /**
-   * The request stack.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected $requestStack;
-
-  /**
    * Constructs a new CurrentPathStack instance.
    *
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
-  public function __construct(RequestStack $request_stack) {
-    $this->requestStack = $request_stack;
-    $this->paths = new \SplObjectStorage();
+  public function __construct(
+    protected RequestStack $requestStack,
+  ) {
+    $this->paths = new \WeakMap();
   }
 
   /**

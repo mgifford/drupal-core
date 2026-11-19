@@ -195,7 +195,7 @@ class ThemeInstallerTest extends KernelTestBase {
   /**
    * Tests trying to install a deprecated theme.
    *
-   * @legacy-covers \Drupal\Core\Extension\ThemeInstaller::install
+   * @see \Drupal\Core\Extension\ThemeInstaller::install
    */
   #[IgnoreDeprecations]
   public function testInstallDeprecated(): void {
@@ -413,11 +413,11 @@ class ThemeInstallerTest extends KernelTestBase {
   /**
    * Tests that theme info can be altered by a module.
    *
-   * @see module_test_system_info_alter()
+   * @see \Drupal\module_test\Hook\ModuleTestThemeHooks::extensionInfoAlter()
    */
   public function testThemeInfoAlter(): void {
     $name = 'stark';
-    $this->container->get('state')->set('module_test.hook_system_info_alter', TRUE);
+    $this->container->get('state')->set('module_test.hook_extension_info_alter', TRUE);
 
     $this->themeInstaller()->install([$name]);
 

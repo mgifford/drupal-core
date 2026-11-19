@@ -7,6 +7,7 @@ namespace Drupal\Tests\Component\FrontMatter;
 use Drupal\Component\FrontMatter\Exception\FrontMatterParseException;
 use Drupal\Component\FrontMatter\FrontMatter;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\TestTools\PhpUnitCompatibility\ForwardCompatibilityTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(FrontMatter::class)]
 #[Group('FrontMatter')]
 class FrontMatterTest extends TestCase {
+
+  use ForwardCompatibilityTrait;
 
   /**
    * A basic source string.
@@ -48,26 +51,26 @@ class FrontMatterTest extends TestCase {
   /**
    * Tests when a passed serializer doesn't implement the proper interface.
    *
-   * @legacy-covers ::__construct
-   * @legacy-covers ::create
+   * @see ::__construct
+   * @see ::create
    */
   public function testFrontMatterSerializerException(): void {
     $this->expectException(\AssertionError::class);
-    $this->expectExceptionMessage('The $serializer parameter must reference a class that implements Drupal\Component\Serialization\SerializationInterface.');
+    $this->expectExceptionMessageIs('The $serializer parameter must reference a class that implements Drupal\Component\Serialization\SerializationInterface.');
     FrontMatter::create('', '');
   }
 
   /**
    * Tests broken front matter.
    *
-   * @legacy-covers ::__construct
-   * @legacy-covers ::create
-   * @legacy-covers ::parse
-   * @legacy-covers \Drupal\Component\FrontMatter\Exception\FrontMatterParseException
+   * @see ::__construct
+   * @see ::create
+   * @see ::parse
+   * @see \Drupal\Component\FrontMatter\Exception\FrontMatterParseException
    */
   public function testFrontMatterBroken(): void {
     $this->expectException(FrontMatterParseException::class);
-    $this->expectExceptionMessage('An error occurred when attempting to parse front matter data on line 4');
+    $this->expectExceptionMessageIs('An error occurred when attempting to parse front matter data on line 4');
     $source = "---\ncollection:\n-  key: foo\n  foo: bar\n---\n";
     FrontMatter::create($source)->getData();
   }
@@ -82,12 +85,12 @@ class FrontMatterTest extends TestCase {
    * @param string $content
    *   The content to use for testing purposes.
    *
-   * @legacy-covers ::__construct
-   * @legacy-covers ::getContent
-   * @legacy-covers ::getData
-   * @legacy-covers ::getLine
-   * @legacy-covers ::create
-   * @legacy-covers ::parse
+   * @see ::__construct
+   * @see ::getContent
+   * @see ::getData
+   * @see ::getLine
+   * @see ::create
+   * @see ::parse
    */
   #[DataProvider('providerFrontMatterData')]
   public function testFrontMatterData(?array $yaml, $line, $content = self::SOURCE): void {

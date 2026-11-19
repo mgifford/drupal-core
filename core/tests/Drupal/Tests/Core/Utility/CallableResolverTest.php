@@ -108,7 +108,7 @@ class CallableResolverTest extends UnitTestCase {
   /**
    * Tests callback resolver exception handling.
    *
-   * @legacy-covers ::getCallableFromDefinition
+   * @see ::getCallableFromDefinition
    */
   #[DataProvider('callableResolverExceptionHandlingTestCases')]
   public function testCallbackResolverExceptionHandling(string|array $definition, string $exception_class, string $exception_message): void {
@@ -134,6 +134,11 @@ class CallableResolverTest extends UnitTestCase {
       ],
       'Missing method on class, array notation' => [
         [\stdClass::class, 'method_not_exists'],
+        \InvalidArgumentException::class,
+        'The callable definition provided "[stdClass,method_not_exists]" is not a valid callable.',
+      ],
+      'Missing method on object, array notation' => [
+        [new \stdClass(), 'method_not_exists'],
         \InvalidArgumentException::class,
         'The callable definition provided "[stdClass,method_not_exists]" is not a valid callable.',
       ],

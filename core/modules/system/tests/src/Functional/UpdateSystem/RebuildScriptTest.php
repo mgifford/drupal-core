@@ -10,6 +10,7 @@ use Drupal\Tests\BrowserTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests the rebuild script access and functionality.
@@ -34,13 +35,39 @@ class RebuildScriptTest extends BrowserTestBase {
   public function testRebuild(): void {
     $cache = $this->container->get('cache.default');
 
+    // Without $settings['rebuild_access'] should do nothing.
     $cache->set('rebuild_test', TRUE);
     $this->drupalGet(Url::fromUri('base:core/rebuild.php'));
     $this->assertSession()->addressEquals(new Url('<front>'));
     $this->assertInstanceOf(\stdClass::class, $cache->get('rebuild_test'));
 
+    // Now grant access.
     $settings['settings']['rebuild_access'] = (object) [
       'value' => TRUE,
+      'required' => TRUE,
+    ];
+
+    // But setup a trusted host pattern that doesn't match.
+    self::assertNotEquals($this->baseUrl, 'https://example.com');
+    $settings['settings']['trusted_host_patterns'] = (object) [
+      'value' => ['https://example.com'],
+      'required' => TRUE,
+    ];
+
+    $this->writeSettings($settings);
+    $this->rebuildAll();
+
+    // Non-matching trusted host pattern should yield a 400 status code and do
+    // nothing.
+    $cache->set('rebuild_test', TRUE);
+    $this->drupalGet(Url::fromUri('base:core/rebuild.php'));
+    $this->assertSession()->statusCodeEquals(Response::HTTP_BAD_REQUEST);
+    $this->assertInstanceOf(\stdClass::class, $cache->get('rebuild_test'));
+
+    // Now set a trusted host pattern that matches.
+    $trusted_hosts = [\preg_quote(\parse_url($this->baseUrl, \PHP_URL_HOST))];
+    $settings['settings']['trusted_host_patterns'] = (object) [
+      'value' => $trusted_hosts,
       'required' => TRUE,
     ];
 
@@ -54,9 +81,10 @@ class RebuildScriptTest extends BrowserTestBase {
     $this->assertFalse($cache->get('rebuild_test'));
     $this->refreshVariables();
     $this->assertSame(1, \Drupal::state()->get('container_rebuild_test.count', 0));
-    $this->drupalGet('/container_rebuild_test/module_test/system_info_alter');
+    self::assertEquals(\array_map(static fn ($host_pattern) => \sprintf('{%s}i', $host_pattern), $trusted_hosts), \Drupal::state()->get('container_rebuild.trusted_hosts', []));
+    $this->drupalGet('/container_rebuild_test/module_test/extension_info_alter');
     $this->assertSession()->pageTextContains('module_test: core/modules/system/tests/modules/module_test');
-    $this->assertSession()->pageTextContains('system_info_alter: true');
+    $this->assertSession()->pageTextContains('extension_info_alter: true');
 
     // Move a module to ensure it does not break the rebuild.
     $file_system = new Filesystem();
@@ -66,9 +94,9 @@ class RebuildScriptTest extends BrowserTestBase {
     $this->assertSession()->addressEquals(new Url('<front>'));
     $this->refreshVariables();
     $this->assertSame(1, \Drupal::state()->get('container_rebuild_test.count', 0));
-    $this->drupalGet('/container_rebuild_test/module_test/system_info_alter');
+    $this->drupalGet('/container_rebuild_test/module_test/extension_info_alter');
     $this->assertSession()->pageTextContains('module_test: ' . $this->siteDirectory . '/modules/module_test');
-    $this->assertSession()->pageTextContains('system_info_alter: true');
+    $this->assertSession()->pageTextContains('extension_info_alter: true');
 
     // Disable a module by writing to the core.extension list.
     $this->config('core.extension')->clear('module.module_test')->save();
@@ -77,9 +105,9 @@ class RebuildScriptTest extends BrowserTestBase {
     $this->assertSession()->addressEquals(new Url('<front>'));
     $this->refreshVariables();
     $this->assertSame(1, \Drupal::state()->get('container_rebuild_test.count', 0));
-    $this->drupalGet('/container_rebuild_test/module_test/system_info_alter');
+    $this->drupalGet('/container_rebuild_test/module_test/extension_info_alter');
     $this->assertSession()->pageTextContains('module_test: not installed');
-    $this->assertSession()->pageTextContains('system_info_alter: false');
+    $this->assertSession()->pageTextContains('extension_info_alter: false');
 
     // Enable a module by writing to the core.extension list.
     $modules = $this->config('core.extension')->get('module');
@@ -90,9 +118,9 @@ class RebuildScriptTest extends BrowserTestBase {
     $this->assertSession()->addressEquals(new Url('<front>'));
     $this->refreshVariables();
     $this->assertSame(1, \Drupal::state()->get('container_rebuild_test.count', 0));
-    $this->drupalGet('/container_rebuild_test/module_test/system_info_alter');
+    $this->drupalGet('/container_rebuild_test/module_test/extension_info_alter');
     $this->assertSession()->pageTextContains('module_test: ' . $this->siteDirectory . '/modules/module_test');
-    $this->assertSession()->pageTextContains('system_info_alter: true');
+    $this->assertSession()->pageTextContains('extension_info_alter: true');
 
     // Test how many container rebuild occur when there is no cached container.
     \Drupal::state()->set('container_rebuild_test.count', 0);

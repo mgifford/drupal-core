@@ -6,13 +6,13 @@ namespace Drupal\Tests\Core\Form;
 
 use Drupal\Core\Form\ConfigFormBaseTrait;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Drupal\Core\Form\ConfigFormBaseTrait.
  */
-#[CoversClass(ConfigFormBaseTrait::class)]
+#[CoversTrait(ConfigFormBaseTrait::class)]
 #[Group('Form')]
 class ConfigFormBaseTraitTest extends UnitTestCase {
 
@@ -81,7 +81,7 @@ class ConfiguredTrait {
   /**
    * The configuration factory.
    *
-   * @var null
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   public $configFactory;
 

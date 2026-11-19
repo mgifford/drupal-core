@@ -25,23 +25,18 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 class WebAssert extends MinkWebAssert {
 
   /**
-   * The absolute URL of the site under test.
-   *
-   * @var string
-   */
-  protected $baseUrl = '';
-
-  /**
    * Constructor.
    *
    * @param \Behat\Mink\Session $session
    *   The Behat session object.
-   * @param string $base_url
+   * @param string $baseUrl
    *   The base URL of the site under test.
    */
-  public function __construct(Session $session, $base_url = '') {
+  public function __construct(
+    Session $session,
+    protected $baseUrl = '',
+  ) {
     parent::__construct($session);
-    $this->baseUrl = $base_url;
   }
 
   /**
@@ -778,9 +773,6 @@ class WebAssert extends MinkWebAssert {
    *
    * @param string|\Drupal\Core\Url $page
    *   A url string, or object.
-   *
-   * @return void
-   *   No return value.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */

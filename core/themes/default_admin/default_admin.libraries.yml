@@ -1,8 +1,5 @@
 global-styling:
   version: VERSION
-  fonts:
-    font/inter.woff2:
-      preload: true
   css:
     base:
       css/_variables/variables-color-primitive.css: {}
@@ -11,7 +8,6 @@ global-styling:
       css/_variables/variables-typography.css: {}
       css/_variables/variables-misc.css: {}
       css/_variables/variables-components.css: {}
-      css/base/font.css: {}
       css/base/icons.css: {}
       css/base/elements.css: {}
       css/base/typography.css: {}
@@ -32,6 +28,7 @@ global-styling:
       css/components/dropbutton.css: {}
       css/components/details.css: {}
       css/components/divider.css: {}
+      css/components/field.css: {}
       css/components/messages.css: {}
       css/components/entity-meta.css: {}
       css/components/fieldset.css: {}
@@ -66,6 +63,7 @@ global-styling:
       css/layout/layout.css: {}
   dependencies:
     - system/admin
+    - core/font
     - core/jquery
     - core/drupal
     # Admin has small and extra small variation for most control elements
@@ -311,7 +309,7 @@ media_library:
       css/components/media-library-item.css: {}
       css/components/media-library-vertical-tabs.css: {}
   js:
-    js/media-library.ui.js: { weight: -1 }
+    js/media-library.ui.js: {}
   dependencies:
     - core/drupal
     - core/jquery
@@ -352,7 +350,7 @@ tableselect:
 init:
   header: true
   js:
-    migration/js/init.js: { minified: false, preprocess: false, weight: -99 }
+    migration/js/init.js: { minified: false, preprocess: false }
   dependencies:
     - core/drupalSettings
 
@@ -410,7 +408,7 @@ escape_admin:
 
 scroll_sync:
   js:
-    migration/js/scroll_sync.js: { minified: true, weight: -1 }
+    migration/js/scroll_sync.js: { minified: true }
 
 # Overrides
 

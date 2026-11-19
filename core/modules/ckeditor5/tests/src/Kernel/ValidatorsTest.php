@@ -12,10 +12,8 @@ use Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemConstraintValidator
 use Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemDependencyConstraintValidator;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Entity\EntityViewMode;
-use Drupal\editor\EditorInterface;
 use Drupal\editor\Entity\Editor;
 use Drupal\filter\Entity\FilterFormat;
-use Drupal\filter\FilterFormatInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\SchemaCheckTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,7 +23,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\Yaml\Yaml;
 
-// cspell:ignore onhover baguette
+// cspell:ignore onhover
 
 /**
  * Tests Validators.
@@ -87,9 +85,9 @@ class ValidatorsTest extends KernelTestBase {
    *   All expected violations for the given CKEditor 5 settings, with property
    *   path as keys and message as values.
    *
-   * @legacy-covers \Drupal\ckeditor5\Plugin\Validation\Constraint\CKEditor5ElementConstraintValidator
-   * @legacy-covers \Drupal\ckeditor5\Plugin\Validation\Constraint\StyleSensibleElementConstraintValidator
-   * @legacy-covers \Drupal\ckeditor5\Plugin\Validation\Constraint\UniqueLabelInListConstraintValidator
+   * @see \Drupal\ckeditor5\Plugin\Validation\Constraint\CKEditor5ElementConstraintValidator
+   * @see \Drupal\ckeditor5\Plugin\Validation\Constraint\StyleSensibleElementConstraintValidator
+   * @see \Drupal\ckeditor5\Plugin\Validation\Constraint\UniqueLabelInListConstraintValidator
    */
   #[DataProvider('provider')]
   public function test(array $ckeditor5_settings, array $expected_violations): void {
@@ -517,6 +515,27 @@ class ValidatorsTest extends KernelTestBase {
         'settings.plugins.ckeditor5_style.styles.1.element' => 'The <code>&lt;br&gt;</code> tag is not yet supported by the Style plugin.',
       ],
     ];
+    $data['VALID: Style plugin configured to add class to <hr>'] = [
+      'ckeditor5_settings' => [
+        'toolbar' => [
+          'items' => [
+            'horizontalLine',
+            'style',
+          ],
+        ],
+        'plugins' => [
+          'ckeditor5_style' => [
+            'styles' => [
+              [
+                'label' => 'Fancy rule',
+                'element' => '<hr class="fancy">',
+              ],
+            ],
+          ],
+        ],
+      ],
+      'expected_violations' => [],
+    ];
     $data['INVALID: Style plugin has multiple styles with same label'] = [
       'ckeditor5_settings' => [
         'toolbar' => [
@@ -679,7 +698,7 @@ class ValidatorsTest extends KernelTestBase {
    * @param array $expected_violations
    *   All expected violations for the pair.
    *
-   * @legacy-covers \Drupal\ckeditor5\Plugin\Validation\Constraint\SourceEditingPreventSelfXssConstraintValidator
+   * @see \Drupal\ckeditor5\Plugin\Validation\Constraint\SourceEditingPreventSelfXssConstraintValidator
    */
   #[DataProvider('providerPair')]
   public function testPair(array $ckeditor5_settings, array $editor_image_upload_settings, array $filters, array $expected_violations): void {
@@ -703,11 +722,9 @@ class ValidatorsTest extends KernelTestBase {
       'enabled' => TRUE,
       'label' => 'View Mode 2',
     ])->save();
-    assert($text_editor instanceof EditorInterface);
     $text_format = FilterFormat::create([
       'filters' => $filters,
     ]);
-    assert($text_format instanceof FilterFormatInterface);
     // TRICKY: because we're validating using `editor.editor.*` as the config
     // name, TextEditorObjectDependentValidatorTrait will load the stored
     // filter format. That has not yet been updated at this point, so in order
@@ -1611,7 +1628,7 @@ class ValidatorsTest extends KernelTestBase {
   /**
    * Tests that validation works with >1 enabled HTML restrictor filters.
    *
-   * @legacy-covers \Drupal\ckeditor5\Plugin\Validation\Constraint\FundamentalCompatibilityConstraintValidator::checkHtmlRestrictionsMatch
+   * @see \Drupal\ckeditor5\Plugin\Validation\Constraint\FundamentalCompatibilityConstraintValidator::checkHtmlRestrictionsMatch
    */
   public function testMultipleHtmlRestrictingFilters(): void {
     $this->container->get('module_installer')->install(['filter_test']);

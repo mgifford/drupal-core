@@ -17,10 +17,10 @@ use Drupal\Tests\BrowserTestBase;
  * files we fetch say is available. We have dummy XML files (in the
  * core/modules/update/tests directory) that describe various scenarios of
  * what's available for different test projects, and we have dummy .info file
- * data (specified via hook_system_info_alter() in the update_test helper
+ * data (specified via hook_extension_info_alter() in the update_test helper
  * module) describing what's currently installed. Each test case defines a set
  * of projects to install, their current state (via the
- * 'update_test_system_info' variable) and the desired available update data
+ * 'update_test_extension_info' variable) and the desired available update data
  * (via the 'update_test_xml_map' variable), and then performs a series of
  * assertions that the report matches our expectations given the specific
  * initial state and availability scenario.
@@ -71,19 +71,29 @@ abstract class UpdateTestBase extends BrowserTestBase {
    * @param string $url
    *   (optional) A string containing the URL to fetch update data from.
    *   Defaults to 'update-test'.
+   * @param bool $ui_only
+   *   Whether to refresh the update status data entirely via the user
+   *   interface.
    *
    * @see \Drupal\update_test\Controller\UpdateTestController::updateTest()
    */
-  protected function refreshUpdateStatus(array $xml_map, string $url = 'update-test') {
+  protected function refreshUpdateStatus(array $xml_map, string $url = 'update-test', bool $ui_only = FALSE) {
     // Tell the Update Status module to fetch from the URL provided by
     // update_test module.
     $this->config('update.settings')->set('fetch.url', Url::fromUri('base:' . $url, ['absolute' => TRUE])->toString())->save();
     // Save the map for UpdateTestController::updateTest() to use.
     $this->mockReleaseHistory($xml_map);
-    // Manually check the update status.
-    $this->drupalGet('admin/reports/updates');
-    $this->clickLink('Check manually');
-    $this->checkForMetaRefresh();
+
+    if ($ui_only) {
+      $this->drupalGet('admin/reports/updates');
+      $this->clickLink('Check manually');
+      $this->checkForMetaRefresh();
+    }
+    else {
+      \Drupal::service('update.manager')->refreshUpdateData();
+      \Drupal::service('update.processor')->fetchData();
+      $this->drupalGet('admin/reports/updates');
+    }
   }
 
   /**
