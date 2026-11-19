@@ -2,8 +2,9 @@
 
 Audit date: 2026-11-19. Audited commit: `3f097f790a`.
 Evidence and commands are in [CURRENT-STATE.md](CURRENT-STATE.md).
-Updated for Phase 1 on 2026-11-19: the reset-core and weekly-sync fixes merged (PR #78), and the
-Playwright rows reflect the Phase 1 branch. See [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md).
+Updated for Phases 1 and 2 on 2026-11-19. PR #78 (reset-core and weekly-sync fixes) and
+PR #81 (Phase 1) are merged, and the sources row covers Phase 2. See
+[PLAYWRIGHT.md](../testing/PLAYWRIGHT.md) and [SOURCES.md](../testing/SOURCES.md).
 
 ## Status values
 
@@ -25,6 +26,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
+| Upstream source registry, fetch and pinned checkouts | `config/sources.yml`, `node scripts/drupal-test.mjs sources list\|fetch\|checkout\|status\|updates` | Git, git.drupalcode.org | VERIFIED | Against git.drupalcode.org: fetched Drupal core, pinned `92e5c3a304`, and reproduced `bb01ac050c` with the same tree hash as local history. A blocked network gave exit 4 with no pin. 40 unit and integration tests pass. The CMS project type is not handled yet. | Phase 3 builds sites from checkouts. Phase 8 adds run history. |
 | Weekly upstream sync of fork `main` | `.github/workflows/weekly-sync.yml` | GitHub Actions, git.drupalcode.org | IMPLEMENTED_UNVERIFIED | Failed silently from 2026-10-05 until PR #78. The repaired workflow opens one PR and never pushes `main`. It passed stub tests but has not run on GitHub. | Watch the first run. Replace with a source fetch in Phase 2. |
 | Thin fork layer over upstream | AGENTS.md, commit `7e501b72cf` | Discipline on `main` | BROKEN | PR #66 reintroduced old history and 27 modified upstream files (26 plus README.md). | Owner decision D1 (MIGRATION-PLAN). |
 | Publish reports and docs to GitHub Pages | `.github/workflows/pages.yml` | `reports/`, `documentation-new/` | IMPLEMENTED_UNVERIFIED | Workflow and `reports/index.html` exist. Run history not checked. | Keep URLs. Move new runs to `reports/runs/` in Phase 8. |
@@ -102,7 +104,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 These are needed by the specification and have no code at this commit:
 
-- CLI commands beyond `doctor`
+- CLI commands beyond `doctor` and `sources`
 - a source registry with pinned-commit checkouts and provenance records
 - environment profiles
 - fixtures beyond the recipes listed above
