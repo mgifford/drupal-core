@@ -19,38 +19,56 @@ echo ""
 echo "[1/7] Archiving untracked files..."
 ARCHIVE_DIR="archive/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$ARCHIVE_DIR"
-# Find untracked files, skip excluded dirs and Drupal internals
-git ls-files --others --exclude-standard \
-  -- ':!.ddev' \
-  -- ':!test-results' \
-  -- ':!.playwright-mcp' \
-  -- ':!.gc-src' \
-  -- ':!core' \
-  -- ':!sites' \
-  -- ':!vendor' \
-  -- ':!tests' \
-  | while IFS= read -r f; do
+# Find untracked files, skip excluded dirs and Drupal internals.
+# All pathspecs must follow a single "--": a second "--" is read as a literal
+# path, which makes git match nothing. The *.patch, *.md, 953034-patches and
+# archive excludes mirror what `git clean` keeps below, so those files stay in
+# place (a patch-file argument must not be moved before it is applied).
+git ls-files -z --others --exclude-standard -- \
+  ':!.ddev' \
+  ':!test-results' \
+  ':!.playwright-mcp' \
+  ':!.gc-src' \
+  ':!core' \
+  ':!sites' \
+  ':!vendor' \
+  ':!tests' \
+  ':!*.patch' \
+  ':!*.md' \
+  ':!953034-patches' \
+  ':!archive' \
+  | while IFS= read -r -d '' f; do
     dir="$ARCHIVE_DIR/$(dirname "$f")"
     mkdir -p "$dir"
     mv "$f" "$ARCHIVE_DIR/$f" 2>/dev/null || true
 done
-# Clean empty dirs left behind
+# Save unstaged edits to tracked files; `git checkout -- .` below discards them.
+if ! git diff --quiet; then
+  git diff --binary > "$ARCHIVE_DIR/tracked-changes.diff"
+  echo "  Saved unstaged tracked changes to $ARCHIVE_DIR/tracked-changes.diff"
+fi
+# Clean empty dirs left behind (this removes ARCHIVE_DIR itself if nothing
+# was archived, so only count files when it still exists; a failing find
+# here would end the script under `set -euo pipefail`).
 find "$ARCHIVE_DIR" -empty -type d -delete 2>/dev/null || true
-ARCHIVED=$(find "$ARCHIVE_DIR" -type f 2>/dev/null | wc -l | tr -d ' ')
-echo "  Archived $ARCHIVED file(s) to $ARCHIVE_DIR/"
+ARCHIVED=0
+if [ -d "$ARCHIVE_DIR" ]; then
+  ARCHIVED=$(find "$ARCHIVE_DIR" -type f ! -path "$ARCHIVE_DIR/tracked-changes.diff" | wc -l | tr -d ' ')
+fi
+echo "  Archived $ARCHIVED untracked file(s) to $ARCHIVE_DIR/"
 
 # 2. Git clean — reset to HEAD, remove untracked files (preserve key dirs)
 echo "[2/7] Cleaning git working tree..."
 git checkout -- .
 git clean -fd --exclude=.ddev --exclude=test-results --exclude='*.patch' --exclude='*.md' --exclude=953034-patches --exclude=.playwright-mcp --exclude=.gc-src --exclude=archive
 
-# 3. Composer install
-echo "[3/7] Running composer install..."
-ddev exec composer install --no-interaction --quiet
-
-# 4. Ensure ddev is running
-echo "[4/7] Ensuring ddev is running..."
+# 3. Ensure ddev is running (ddev exec needs a running project)
+echo "[3/7] Ensuring ddev is running..."
 ddev start
+
+# 4. Composer install
+echo "[4/7] Running composer install..."
+ddev exec composer install --no-interaction --quiet
 
 # 5. Install Drupal with recipes
 echo "[5/7] Installing Drupal with recipes..."
@@ -83,6 +101,7 @@ if [ -n "$PATCH_FILE" ]; then
     echo "[patch] Applying $PATCH_FILE..."
     git apply "$PATCH_FILE"
     ddev exec composer install --no-interaction --quiet
+    ddev exec drush cache:rebuild
     echo "[patch] Done. Patch applied on top of clean install."
   else
     echo "[patch] WARNING: File '$PATCH_FILE' not found. Skipping."
