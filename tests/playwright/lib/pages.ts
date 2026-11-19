@@ -33,17 +33,16 @@ export type ScanMode = 'core-baseline' | 'seeded-benchmark';
 
 export const DEFAULT_SCAN_MODE: ScanMode = 'core-baseline';
 
-/** Core pages rendered by the default (Olivero) theme — no authentication. */
+/** Core pages rendered by the default (front-end) theme — no authentication. */
 export const anonymousPages: PageEntry[] = [
   { name: 'Homepage', path: '/', requiresAuth: false },
   { name: 'User login', path: '/user/login', requiresAuth: false },
   { name: 'User register', path: '/user/register', requiresAuth: false },
   { name: 'User password reset', path: '/user/password', requiresAuth: false },
-  { name: 'Search results', path: '/search/node', requiresAuth: false },
   { name: '404 page', path: '/this-page-does-not-exist', requiresAuth: false, expectedStatus: 404 },
 ];
 
-/** Core pages rendered by the admin (Claro) theme — requires authentication. */
+/** Core pages rendered by the admin theme — requires authentication. */
 export const adminPages: PageEntry[] = [
   { name: 'Admin dashboard', path: '/admin', requiresAuth: true },
   { name: 'Content list', path: '/admin/content', requiresAuth: true },

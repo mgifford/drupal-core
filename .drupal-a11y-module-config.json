@@ -5,8 +5,6 @@
     "drupal_root": "/Users/mike.gifford/drupal-core",
     "drupal_version": "12.0-dev",
     "themes": [
-      "olivero",
-      "claro",
       "default_admin"
     ],
     "languages": [
