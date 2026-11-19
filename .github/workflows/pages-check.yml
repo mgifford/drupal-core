@@ -7,10 +7,16 @@ on:
   pull_request:
     branches:
       - '**'
+  # Daily live-site check, an hour after the nightly Pages redeploy (02:00 UTC
+  # in pages.yml). Pushes and pull requests only check the repository files.
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
-# Allow only one concurrent run of this workflow per branch/PR
+# Allow only one concurrent run of this workflow per event type and
+# branch/PR, so a push to main cannot cancel the scheduled live check.
 concurrency:
-  group: pages-check-${{ github.ref }}
+  group: pages-check-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -24,6 +30,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Pages Integrity and Health Check
+        env:
+          CHECK_LIVE_SITE: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
           chmod +x .github/scripts/check-pages.sh
           ./.github/scripts/check-pages.sh
