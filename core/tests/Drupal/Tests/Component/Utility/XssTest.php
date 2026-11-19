@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
-// cspell:ignore ascript barbaz ckers cript CVEs dynsrc fooÿñ msgbox ncript
+// cspell:ignore ascript barbaz cript dynsrc fooÿñ msgbox ncript
 // cspell:ignore nfocus nmedi nosuchscheme nosuchtag onmediaerror scrscriptipt
 // cspell:ignore tascript vbscript
 /**
@@ -440,6 +440,18 @@ class XssTest extends TestCase {
         'HTML filter attributes removal -- srcdoc attribute.',
         ['iframe'],
       ],
+      [
+        '<a href="foo" data-hx-on-click="alert(document.domain)">Click me!</a>',
+        'alert',
+        'HTML filter attributes removal -- data-hx-* attributes.',
+        ['a'],
+      ],
+      [
+        '<a href="foo" hx-on-click="alert(document.domain)">Click me!</a>',
+        'alert',
+        'HTML filter attributes removal -- hx-* attributes.',
+        ['a'],
+      ],
     ];
   }
 
@@ -488,7 +500,7 @@ class XssTest extends TestCase {
   /**
    * Check that strings in HTML attributes are correctly processed.
    *
-   * @legacy-covers ::attributes
+   * @see ::attributes
    */
   #[DataProvider('providerTestAttributes')]
   public function testAttribute(string $value, string $expected_non_normalized, string $expected_normalized, string $message, ?array $allowed_tags = NULL): void {

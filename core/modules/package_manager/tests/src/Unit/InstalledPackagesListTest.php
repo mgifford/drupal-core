@@ -21,10 +21,10 @@ class InstalledPackagesListTest extends UnitTestCase {
   /**
    * Tests immutability.
    *
-   * @legacy-covers ::offsetSet
-   * @legacy-covers ::offsetUnset
-   * @legacy-covers ::append
-   * @legacy-covers ::exchangeArray
+   * @see ::offsetSet
+   * @see ::offsetUnset
+   * @see ::append
+   * @see ::exchangeArray
    */
   #[TestWith(["offsetSet", ["new", "thing"]])]
   #[TestWith(["offsetUnset", ["existing"]])]
@@ -40,8 +40,8 @@ class InstalledPackagesListTest extends UnitTestCase {
   /**
    * Tests package comparison.
    *
-   * @legacy-covers ::getPackagesNotIn
-   * @legacy-covers ::getPackagesWithDifferentVersionsIn
+   * @see ::getPackagesNotIn
+   * @see ::getPackagesWithDifferentVersionsIn
    */
   public function testPackageComparison(): void {
     $active = new InstalledPackagesList([
@@ -98,7 +98,7 @@ class InstalledPackagesListTest extends UnitTestCase {
   /**
    * Tests core packages.
    *
-   * @legacy-covers ::getCorePackages
+   * @see ::getCorePackages
    */
   public function testCorePackages(): void {
     $data = [
@@ -110,12 +110,6 @@ class InstalledPackagesListTest extends UnitTestCase {
       ]),
       'drupal/core-dev' => InstalledPackage::createFromArray([
         'name' => 'drupal/core-dev',
-        'version' => \Drupal::VERSION,
-        'type' => 'metapackage',
-        'path' => NULL,
-      ]),
-      'drupal/core-dev-pinned' => InstalledPackage::createFromArray([
-        'name' => 'drupal/core-dev-pinned',
         'version' => \Drupal::VERSION,
         'type' => 'metapackage',
         'path' => NULL,
@@ -153,7 +147,6 @@ class InstalledPackagesListTest extends UnitTestCase {
     // include_dev is set to FALSE.
     $core_packages_no_dev = $list->getCorePackages(FALSE);
     $this->assertArrayNotHasKey('drupal/core-dev', $core_packages_no_dev);
-    $this->assertArrayNotHasKey('drupal/core-dev-pinned', $core_packages_no_dev);
     // We still get other packages as intended.
     $this->assertArrayHasKey('drupal/core', $core_packages_no_dev);
 

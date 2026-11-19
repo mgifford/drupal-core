@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\Component\Datetime;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\TestTools\PhpUnitCompatibility\ForwardCompatibilityTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DateTimePlus::class)]
 #[Group('Datetime')]
 class DateTimePlusTest extends TestCase {
+
+  use ForwardCompatibilityTrait;
 
   /**
    * Tests creating dates from string and array input.
@@ -90,7 +93,7 @@ class DateTimePlusTest extends TestCase {
   #[DataProvider('providerTestInvalidDateDiff')]
   public function testInvalidDateDiff(DateTimePlus $input1, ?string $input2, bool $absolute): void {
     $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage('Method Drupal\Component\Datetime\DateTimePlus::diff expects parameter 1 to be a \DateTime or \Drupal\Component\Datetime\DateTimePlus object');
+    $this->expectExceptionMessageIs('Method Drupal\Component\Datetime\DateTimePlus::diff expects parameter 1 to be a \DateTime or \Drupal\Component\Datetime\DateTimePlus object');
     $input1->diff($input2, $absolute);
   }
 
@@ -166,9 +169,9 @@ class DateTimePlusTest extends TestCase {
    * @param string $input
    *   Input argument for DateTimePlus().
    * @param array $initial
-   *   @see testTimestamp()
+   *   See ::testTimestamp().
    * @param array $transform
-   *   @see testTimestamp()
+   *   See ::testTimestamp().
    */
   #[DataProvider('providerTestDateTimestamp')]
   public function testDateTimestamp(string $input, array $initial, array $transform): void {
@@ -185,9 +188,9 @@ class DateTimePlusTest extends TestCase {
    * @param string|int $input
    *   The original input passed to the test method.
    * @param array $initial
-   *   @see testTimestamp()
+   *   See ::testTimestamp().
    * @param array $transform
-   *   @see testTimestamp()
+   *   See ::testTimestamp().
    *
    * @internal
    */
@@ -927,7 +930,7 @@ class DateTimePlusTest extends TestCase {
    * @param string[] $errors
    *   An array of error messages.
    *
-   * @legacy-covers ::__construct
+   * @see ::__construct
    */
   #[DataProvider('providerTestInvalidConstructor')]
   public function testInvalidConstructor(string $time, array $errors): void {
@@ -1041,7 +1044,7 @@ class DateTimePlusTest extends TestCase {
   /**
    * Tests that object methods are chainable.
    *
-   * @legacy-covers ::__call
+   * @see ::__call
    */
   public function testChainable(): void {
     $date = new DateTimePlus('now', 'Australia/Sydney');
@@ -1065,7 +1068,7 @@ class DateTimePlusTest extends TestCase {
   /**
    * Tests that non-chainable methods work.
    *
-   * @legacy-covers ::__call
+   * @see ::__call
    */
   public function testChainableNonChainable(): void {
     $datetime1 = new DateTimePlus('2009-10-11 12:00:00');
@@ -1078,11 +1081,11 @@ class DateTimePlusTest extends TestCase {
   /**
    * Tests that chained calls to non-existent functions throw an exception.
    *
-   * @legacy-covers ::__call
+   * @see ::__call
    */
   public function testChainableNonCallable(): void {
     $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage('Call to undefined method Drupal\Component\Datetime\DateTimePlus::nonexistent()');
+    $this->expectExceptionMessageIs('Call to undefined method Drupal\Component\Datetime\DateTimePlus::nonexistent()');
     $date = new DateTimePlus('now', 'Australia/Sydney');
     $date->setTimezone(new \DateTimeZone('America/New_York'))->nonexistent();
   }
@@ -1110,6 +1113,15 @@ class DateTimePlusTest extends TestCase {
     $this->assertEquals('Europe/Berlin', $datetime->getTimezone()->getName());
     $this->assertEquals(1500000000, $date_time_plus->getTimestamp());
     $this->assertEquals('America/New_York', $date_time_plus->getTimezone()->getName());
+  }
+
+  /**
+   * Tests unserializing a payload whose $dateTimeObject is not a date.
+   */
+  public function testUnserializeWithInvalidDateTimeObject(): void {
+    $serialized = "O:38:\"Drupal\\Component\\Datetime\\DateTimePlus\":3:{s:11:\"\0*\0langcode\";N;s:9:\"\0*\0errors\";a:0:{}s:17:\"\0*\0dateTimeObject\";s:8:\"not-date\";}";
+    $this->expectException(\TypeError::class);
+    unserialize($serialized);
   }
 
 }

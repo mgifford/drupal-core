@@ -4,7 +4,7 @@
  * https://www.drupal.org/node/3084859
  * @preserve
  */
-/* cspell:ignore csvg cpath wght */
+/* cspell:ignore wght */
 /**
  * @file
  * Toolbar button styles.
@@ -27,6 +27,7 @@
   /* Icon */
   --toolbar-button-icon-size: var(--admin-toolbar-space-20);
 }
+
 :is(#extra-specificity-hack, [data-drupal-admin-styles]) {
   .toolbar-button {
     z-index: 1;

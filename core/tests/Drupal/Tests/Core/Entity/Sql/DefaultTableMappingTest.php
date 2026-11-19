@@ -65,13 +65,13 @@ class DefaultTableMappingTest extends UnitTestCase {
   /**
    * Tests DefaultTableMapping::getAllColumns().
    *
-   * @legacy-covers ::__construct
-   * @legacy-covers ::getAllColumns
-   * @legacy-covers ::getFieldNames
-   * @legacy-covers ::getColumnNames
-   * @legacy-covers ::setFieldNames
-   * @legacy-covers ::getExtraColumns
-   * @legacy-covers ::setExtraColumns
+   * @see ::__construct
+   * @see ::getAllColumns
+   * @see ::getFieldNames
+   * @see ::getColumnNames
+   * @see ::setFieldNames
+   * @see ::getExtraColumns
+   * @see ::setExtraColumns
    */
   public function testGetAllColumns(): void {
     // Set up single-column and multi-column definitions.
@@ -176,8 +176,8 @@ class DefaultTableMappingTest extends UnitTestCase {
   /**
    * Tests DefaultTableMapping::getFieldNames().
    *
-   * @legacy-covers ::getFieldNames
-   * @legacy-covers ::setFieldNames
+   * @see ::getFieldNames
+   * @see ::setFieldNames
    */
   public function testGetFieldNames(): void {
     // The storage definitions are only used in getColumnNames() so we do not
@@ -206,8 +206,8 @@ class DefaultTableMappingTest extends UnitTestCase {
   /**
    * Tests DefaultTableMapping::getColumnNames().
    *
-   * @legacy-covers ::__construct
-   * @legacy-covers ::getColumnNames
+   * @see ::__construct
+   * @see ::getColumnNames
    */
   public function testGetColumnNames(): void {
     $definitions['test'] = $this->setUpDefinition('test', []);
@@ -238,8 +238,8 @@ class DefaultTableMappingTest extends UnitTestCase {
   /**
    * Tests DefaultTableMapping::getExtraColumns().
    *
-   * @legacy-covers ::getExtraColumns
-   * @legacy-covers ::setExtraColumns
+   * @see ::getExtraColumns
+   * @see ::setExtraColumns
    */
   public function testGetExtraColumns(): void {
     // The storage definitions are only used in getColumnNames() so we do not
@@ -441,8 +441,8 @@ class DefaultTableMappingTest extends UnitTestCase {
   /**
    * Tests get dedicated table name.
    *
-   * @legacy-covers ::getDedicatedDataTableName
-   * @legacy-covers ::getDedicatedRevisionTableName
+   * @see ::getDedicatedDataTableName
+   * @see ::getDedicatedRevisionTableName
    */
   #[DataProvider('providerTestGetDedicatedTableName')]
   public function testGetDedicatedTableName(array $info, $expected_data_table, $expected_revision_table): void {
@@ -595,19 +595,4 @@ class DefaultTableMappingTest extends UnitTestCase {
  * Extends DefaultTableMapping to allow calling its protected methods.
  */
 class TestDefaultTableMapping extends DefaultTableMapping {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setFieldNames($table_name, array $field_names) {
-    return parent::setFieldNames($table_name, $field_names);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setExtraColumns($table_name, array $column_names) {
-    return parent::setExtraColumns($table_name, $column_names);
-  }
-
 }

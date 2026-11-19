@@ -248,17 +248,9 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
    * @param int $getLanguagesCallsCount
    *   The number of expected calls to the
    *   LanguageManagerInterface::getLanguages() method.
-   * @param int $getEnglishLanguageCallsCount
-   *   The number of expected calls to the
-   *   LanguageManagerInterface::getLanguage() method.
-   * @param int $getUnspecifiedLanguageCallsCount
-   *   The number of expected calls to the
-   *   LanguageManagerInterface::getLanguage() method.
    */
   protected function setUpMockLanguageManager(
     int $getLanguagesCallsCount,
-    int $getEnglishLanguageCallsCount,
-    int $getUnspecifiedLanguageCallsCount,
   ): void {
     $english = new Language(['id' => 'en']);
     $not_specified = new Language(['id' => LanguageInterface::LANGCODE_NOT_SPECIFIED, 'locked' => TRUE]);
@@ -269,14 +261,6 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
         'en' => $english,
         LanguageInterface::LANGCODE_NOT_SPECIFIED => $not_specified,
       ]);
-    $this->languageManager->expects($this->exactly($getEnglishLanguageCallsCount))
-      ->method('getLanguage')
-      ->with('en')
-      ->willReturn($english);
-    $this->languageManager->expects($this->exactly($getUnspecifiedLanguageCallsCount))
-      ->method('getLanguage')
-      ->with(LanguageInterface::LANGCODE_NOT_SPECIFIED)
-      ->willReturn($not_specified);
     \Drupal::getContainer()->set('language_manager', $this->languageManager);
   }
 
@@ -291,8 +275,8 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
   /**
    * Tests is new revision.
    *
-   * @legacy-covers ::isNewRevision
-   * @legacy-covers ::setNewRevision
+   * @see ::isNewRevision
+   * @see ::setNewRevision
    */
   public function testIsNewRevision(): void {
     $this->commonSetUp(1, 2);
@@ -374,7 +358,7 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
    */
   public function testIsTranslatable(): void {
     $this->commonSetUp(0, 2);
-    $this->setUpMockLanguageManager(2, 0, 0);
+    $this->setUpMockLanguageManager(2);
 
     $this->entityTypeBundleInfo
       ->method('getBundleInfo')
@@ -457,7 +441,7 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
   /**
    * Tests each condition in EntityBase::getTypedData().
    *
-   * @legacy-covers ::getTypedData
+   * @see ::getTypedData
    */
   #[DataProvider('providerTestTypedData')]
   public function testTypedData(bool $bundle_typed_data_definition, bool $entity_type_typed_data_definition): void {
@@ -518,11 +502,11 @@ class ContentEntityBaseUnitTest extends UnitTestCase {
   /**
    * Tests required validation.
    *
-   * @legacy-covers ::validate
-   * @legacy-covers ::isValidationRequired
-   * @legacy-covers ::setValidationRequired
-   * @legacy-covers ::save
-   * @legacy-covers ::preSave
+   * @see ::validate
+   * @see ::isValidationRequired
+   * @see ::setValidationRequired
+   * @see ::save
+   * @see ::preSave
    */
   public function testRequiredValidation(): void {
     $this->commonSetUp(0, 2);

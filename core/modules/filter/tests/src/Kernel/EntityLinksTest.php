@@ -125,7 +125,7 @@ class EntityLinksTest extends KernelTestBase {
   }
 
   /**
-   * @legacy-covers ::process
+   * @see ::process
    */
   public function test(): void {
     $expected_aliases = [
@@ -193,8 +193,8 @@ class EntityLinksTest extends KernelTestBase {
   }
 
   /**
-   * @legacy-covers ::getUrl
-   * @legacy-covers \Drupal\file\Entity\FileLinkTarget
+   * @see ::getUrl
+   * @see \Drupal\file\Entity\FileLinkTarget
    */
   public function testFileEntity(): void {
     $file = File::create([
@@ -218,8 +218,8 @@ class EntityLinksTest extends KernelTestBase {
   }
 
   /**
-   * @legacy-covers ::getUrl
-   * @legacy-covers \Drupal\media\Entity\MediaLinkTarget
+   * @see ::getUrl
+   * @see \Drupal\media\Entity\MediaLinkTarget
    *
    * @param bool $standalone_url_setting
    *   Whether the standalone_url setting is off (Drupal's default) or on.
@@ -302,8 +302,8 @@ class EntityLinksTest extends KernelTestBase {
   }
 
   /**
-   * @legacy-covers ::getUrl
-   * @legacy-covers \Drupal\menu_link_content\Entity\MenuLinkContentLinkTarget
+   * @see ::getUrl
+   * @see \Drupal\menu_link_content\Entity\MenuLinkContentLinkTarget
    */
   public function testMenuLinkContentEntity(): void {
     $link = 'https://nl.wikipedia.org/wiki/Llama';
@@ -327,6 +327,22 @@ class EntityLinksTest extends KernelTestBase {
         ->setCacheContexts([])
         ->setCacheMaxAge(Cache::PERMANENT)
     );
+  }
+
+  /**
+   * Tests that an unresolvable entity link does not throw a fatal error.
+   */
+  public function testProcessLogsExceptionForUnresolvableEntityLink(): void {
+    $input = '<a data-entity-type="true" data-entity-uuid="not-a-real-uuid" href="/original">Link text</a>';
+
+    $result = $this->filter->process($input, 'en');
+
+    $this->assertInstanceOf(FilterProcessResult::class, $result);
+    $this->assertTrue($this->logger->hasRecords());
+    $processed = $result->getProcessedText();
+    $this->assertStringContainsString('data-entity-type="true"', $processed);
+    $this->assertStringContainsString('data-entity-uuid="not-a-real-uuid"', $processed);
+    $this->assertStringContainsString('href="/original"', $processed);
   }
 
   /**

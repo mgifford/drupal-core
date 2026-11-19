@@ -37,70 +37,29 @@ use Twig\Runtime\EscaperRuntime;
 class TwigExtension extends AbstractExtension {
 
   /**
-   * The URL generator.
-   *
-   * @var \Drupal\Core\Routing\UrlGeneratorInterface
-   */
-  protected $urlGenerator;
-
-  /**
-   * The renderer.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
-
-  /**
-   * The theme manager.
-   *
-   * @var \Drupal\Core\Theme\ThemeManagerInterface
-   */
-  protected $themeManager;
-
-  /**
-   * The date formatter.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
-   * The file URL generator.
-   *
-   * @var \Drupal\Core\File\FileUrlGeneratorInterface
-   */
-  protected $fileUrlGenerator;
-
-  /**
-   * The render visibility resolver.
-   *
-   * @var \Drupal\Core\Render\RenderVisibilityResolver
-   */
-  protected $visibilityResolver;
-
-  /**
    * Constructs \Drupal\Core\Template\TwigExtension.
    *
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
-   * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
+   * @param \Drupal\Core\Routing\UrlGeneratorInterface $urlGenerator
    *   The URL generator.
-   * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $themeManager
    *   The theme manager.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date formatter.
-   * @param \Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
    *   The file URL generator.
-   * @param \Drupal\Core\Render\RenderVisibilityResolver $visibility_resolver
+   * @param \Drupal\Core\Render\RenderVisibilityResolver $visibilityResolver
    *   The render visibility resolver.
    */
-  public function __construct(RendererInterface $renderer, UrlGeneratorInterface $url_generator, ThemeManagerInterface $theme_manager, DateFormatterInterface $date_formatter, FileUrlGeneratorInterface $file_url_generator, RenderVisibilityResolver $visibility_resolver) {
-    $this->renderer = $renderer;
-    $this->urlGenerator = $url_generator;
-    $this->themeManager = $theme_manager;
-    $this->dateFormatter = $date_formatter;
-    $this->fileUrlGenerator = $file_url_generator;
-    $this->visibilityResolver = $visibility_resolver;
+  public function __construct(
+    protected RendererInterface $renderer,
+    protected UrlGeneratorInterface $urlGenerator,
+    protected ThemeManagerInterface $themeManager,
+    protected DateFormatterInterface $dateFormatter,
+    protected FileUrlGeneratorInterface $fileUrlGenerator,
+    protected RenderVisibilityResolver $visibilityResolver,
+  ) {
   }
 
   /**
@@ -127,6 +86,10 @@ class TwigExtension extends AbstractExtension {
    * {@inheritdoc}
    */
   public function getFilters(): array {
+    $escape_options = [
+      'needs_environment' => TRUE,
+      'is_safe_callback' => [static::class, 'escapeFilterIsSafe'],
+    ];
     return [
       // Translation filters.
       new TwigFilter('t', 't', ['is_safe' => ['html']]),
@@ -138,15 +101,14 @@ class TwigExtension extends AbstractExtension {
       // @see TwigNodeTrans::compileString()
       new TwigFilter('placeholder', [$this, 'escapePlaceholder'], ['is_safe' => ['html'], 'needs_environment' => TRUE]),
 
-      // Replace twig's escape filter with our own.
-      new TwigFilter(
-        'drupal_escape',
-        [$this, 'escapeFilter'],
-        [
-          'needs_environment' => TRUE,
-          'is_safe_callback' => 'twig_escape_filter_is_safe',
-        ]
-      ),
+      // Replace Twig's escape filters with our own MarkupInterface-aware
+      // filter. Filters registered by later extensions override those with
+      // the same name, and this extension is always added after Twig's
+      // EscaperExtension. Twig's auto-escaping always uses the filter
+      // named 'escape'.
+      new TwigFilter('escape', [$this, 'escapeFilter'], $escape_options),
+      new TwigFilter('e', [$this, 'escapeFilter'], $escape_options),
+      new TwigFilter('drupal_escape', [$this, 'escapeFilter'], $escape_options),
 
       // Implements safe joining.
       // @todo Make that the default for |join? Upstream issue:
@@ -409,6 +371,25 @@ class TwigExtension extends AbstractExtension {
     $return = $this->escapeFilter($env, $string);
 
     return $return ? '<em class="placeholder">' . $return . '</em>' : NULL;
+  }
+
+  /**
+   * Determines which strategies the output of the escape filter is safe for.
+   *
+   * @param \Twig\Node\Node $filter_args
+   *   The arguments passed to the escape filter.
+   *
+   * @return string[]
+   *   The escaping strategies the output is safe for.
+   */
+  public static function escapeFilterIsSafe(Node $filter_args): array {
+    foreach ($filter_args as $arg) {
+      if ($arg instanceof ConstantExpression) {
+        return [$arg->getAttribute('value')];
+      }
+      return [];
+    }
+    return ['html'];
   }
 
   /**

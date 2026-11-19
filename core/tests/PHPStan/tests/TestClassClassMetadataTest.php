@@ -56,6 +56,14 @@ class TestClassClassMetadataTest extends RuleTestCase {
           'Test class Drupal\Tests\Core\Foo\ConcreteWithAnnotationTest must have attribute \PHPUnit\Framework\Attributes\Group.',
           35,
         ],
+        [
+          'Test class Drupal\Tests\Core\Foo\TraitInClassAttributeTest must use attribute \PHPUnit\Framework\Attributes\CoversTrait, not \PHPUnit\Framework\Attributes\CoversClass, for trait Drupal\Tests\Core\Foo\FooTrait.',
+          48,
+        ],
+        [
+          'Test class Drupal\Tests\Core\Foo\TraitInClassAttributeTest must use attribute \PHPUnit\Framework\Attributes\UsesTrait, not \PHPUnit\Framework\Attributes\UsesClass, for trait Drupal\Tests\Core\Foo\FooTrait.',
+          48,
+        ],
       ]
     );
 
@@ -65,7 +73,7 @@ class TestClassClassMetadataTest extends RuleTestCase {
       [__DIR__ . '/../fixtures/test-classes-missing-attributes.php'],
       [
         [
-          'Test class Drupal\Tests\Core\Foo\MissingAttributes must have attribute \PHPUnit\Framework\Attributes\RunInSeparateProcesses.',
+          'Test class Drupal\Tests\Core\Foo\MissingAttributes must have attribute \PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses.',
           18,
         ],
         [
@@ -77,7 +85,7 @@ class TestClassClassMetadataTest extends RuleTestCase {
           21,
         ],
         [
-          'Test class Drupal\Tests\Core\Foo\MissingRunTestsInSeparateProcesses must have attribute \PHPUnit\Framework\Attributes\RunInSeparateProcesses.',
+          'Test class Drupal\Tests\Core\Foo\MissingRunTestsInSeparateProcesses must have attribute \PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses.',
           25,
         ],
       ]

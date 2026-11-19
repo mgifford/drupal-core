@@ -34,7 +34,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
   name: 'ex:install',
   description: 'Installs one or more modules or themes.',
   aliases: ['exin', 'pm:install', 'pm:enable', 'enable', 'en'],
-  usages: ['views,views_ui', 'claro']
+  usages: ['views,views_ui', 'default_admin']
 )]
 class ExtensionInstallCommand {
 
@@ -102,7 +102,7 @@ class ExtensionInstallCommand {
       return Command::FAILURE;
     }
 
-    // Installing modules and themes together would require interleaving two
+    // Installing modules and themes together would require combining two
     // different dependency-resolution and install processes (a theme may even
     // depend on a module being installed first). Keep each invocation to a
     // single extension type rather than guessing at the correct ordering.

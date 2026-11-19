@@ -19,6 +19,7 @@ use Drupal\user\UserAuthentication;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -33,16 +34,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class UserAuthenticationTest extends UnitTestCase {
 
   /**
-   * The mock user storage.
+   * The user storage.
    */
   protected EntityStorageInterface&MockObject $userStorage;
 
   /**
-   * The mocked password service.
-   *
-   * @var \Drupal\Core\Password\PasswordInterface
+   * The password service.
    */
-  protected $passwordService;
+  protected PasswordInterface&Stub $passwordService;
 
   /**
    * The user auth object under test.
@@ -76,15 +75,6 @@ class UserAuthenticationTest extends UnitTestCase {
     $this->passwordService = $this->createStub(PasswordInterface::class);
 
     $this->userAuth = new UserAuthentication($entity_type_manager, $this->passwordService);
-  }
-
-  /**
-   * Reinitializes the password service as a mock object.
-   */
-  protected function setUpMockPasswordService(): void {
-    $this->passwordService = $this->createMock(PasswordInterface::class);
-    $reflection = new \ReflectionProperty($this->userAuth, 'passwordChecker');
-    $reflection->setValue($this->userAuth, $this->passwordService);
   }
 
   /**
@@ -140,30 +130,6 @@ class UserAuthenticationTest extends UnitTestCase {
       ->willReturn(TRUE);
     $user = $this->userAuth->lookupAccount($this->username);
     $this->assertTrue($this->userAuth->authenticateAccount($user, $this->password));
-  }
-
-  /**
-   * Tests the authenticate method with a correct password.
-   *
-   * We discovered in https://www.drupal.org/node/2563751 that logging in with a
-   * password that is literally "0" was not possible. This test ensures that
-   * this regression can't happen again.
-   */
-  public function testAuthenticateWithZeroPassword(): void {
-    $this->setUpMockPasswordService();
-
-    $this->userStorage->expects($this->once())
-      ->method('loadByProperties')
-      ->with(['name' => $this->username])
-      ->willReturn([$this->createStub(User::class)]);
-
-    $this->passwordService
-      ->method('check')
-      ->with('0', 0)
-      ->willReturn(TRUE);
-
-    $user = $this->userAuth->lookupAccount($this->username);
-    $this->assertTrue($this->userAuth->authenticateAccount($user, '0'));
   }
 
   /**

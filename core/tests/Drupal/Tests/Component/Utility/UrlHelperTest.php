@@ -113,7 +113,7 @@ class UrlHelperTest extends TestCase {
    * @param string $scheme
    *   The scheme to test.
    *
-   * @legacy-covers ::isValid
+   * @see ::isValid
    */
   #[DataProvider('providerTestValidAbsoluteData')]
   public function testValidAbsolute(string $url, string $scheme): void {
@@ -153,6 +153,16 @@ class UrlHelperTest extends TestCase {
   }
 
   /**
+   * Tests decompressing a query parameter with data over the length limit.
+   */
+  public function testUncompressExceededLengthLimit(): void {
+    $data = str_repeat('a', 20000);
+    $compressed = UrlHelper::compressQueryParameter($data);
+
+    $this->assertSame($compressed, UrlHelper::uncompressQueryParameter($compressed));
+  }
+
+  /**
    * Tests passing an invalid string as a compressed query parameter.
    */
   public function testUncompressInvalidString(): void {
@@ -169,7 +179,7 @@ class UrlHelperTest extends TestCase {
    * @param string $scheme
    *   The scheme to test.
    *
-   * @legacy-covers ::isValid
+   * @see ::isValid
    */
   #[DataProvider('providerTestInvalidAbsolute')]
   public function testInvalidAbsolute(string $url, string $scheme): void {
@@ -204,7 +214,7 @@ class UrlHelperTest extends TestCase {
    * @param string $prefix
    *   The prefix to test.
    *
-   * @legacy-covers ::isValid
+   * @see ::isValid
    */
   #[DataProvider('providerTestValidRelativeData')]
   public function testValidRelative(string $url, string $prefix): void {
@@ -237,7 +247,7 @@ class UrlHelperTest extends TestCase {
    * @param string $prefix
    *   The prefix to test.
    *
-   * @legacy-covers ::isValid
+   * @see ::isValid
    */
   #[DataProvider('providerTestInvalidRelativeData')]
   public function testInvalidRelative(string $url, string $prefix): void {
@@ -508,8 +518,8 @@ class UrlHelperTest extends TestCase {
    * @param array $protocols
    *   Protocols to allow.
    *
-   * @legacy-covers ::setAllowedProtocols
-   * @legacy-covers ::filterBadProtocol
+   * @see ::setAllowedProtocols
+   * @see ::filterBadProtocol
    */
   #[DataProvider('providerTestFilterBadProtocol')]
   #[RunInSeparateProcess]
@@ -549,8 +559,8 @@ class UrlHelperTest extends TestCase {
    * @param array $protocols
    *   Protocols to allow.
    *
-   * @legacy-covers ::setAllowedProtocols
-   * @legacy-covers ::stripDangerousProtocols
+   * @see ::setAllowedProtocols
+   * @see ::stripDangerousProtocols
    */
   #[DataProvider('providerTestStripDangerousProtocols')]
   #[RunInSeparateProcess]

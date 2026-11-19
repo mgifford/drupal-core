@@ -19,88 +19,10 @@ use PHPUnit\Framework\Attributes\Group;
 class InstallTasksTest extends UnitTestCase {
 
   /**
-   * Creates a Tasks object for testing.
-   *
-   * @param \Drupal\mysql\Driver\Database\mysql\Connection $connection
-   *   The database connection.
-   *
-   * @return \Drupal\mysql\Driver\Database\mysql\Install\Tasks
-   *   A Tasks object.
-   */
-  private function createTasks(Connection $connection): Tasks {
-    return new class($connection) extends Tasks {
-
-      /**
-       * The database connection.
-       */
-      private Connection $connection;
-
-      public function __construct(Connection $connection) {
-        $this->connection = $connection;
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function isConnectionActive(): bool {
-        return TRUE;
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function getConnection(): Connection {
-        return $this->connection;
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function t($string, array $args = [], array $options = []) {
-        return $string;
-      }
-
-    };
-  }
-
-  /**
-   * Creates a Tasks object for testing, without connection.
-   *
-   * @return \Drupal\mysql\Driver\Database\mysql\Install\Tasks
-   *   A Tasks object.
-   */
-  private function createTasksNoConnection(): Tasks {
-    return new class() extends Tasks {
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function isConnectionActive(): bool {
-        return FALSE;
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function getConnection(): null {
-        return NULL;
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      protected function t($string, array $args = [], array $options = []) {
-        return $string;
-      }
-
-    };
-  }
-
-  /**
    * Tests name and minimum version.
    *
-   * @legacy-covers ::minimumVersion
-   * @legacy-covers ::name
+   * @see ::minimumVersion
+   * @see ::name
    */
   #[DataProvider('providerNameAndMinimumVersion')]
   public function testNameAndMinimumVersion(bool $is_mariadb, string $expected_name, string $expected_minimum_version): void {
@@ -109,7 +31,19 @@ class InstallTasksTest extends UnitTestCase {
       ->expects($this->exactly(2))
       ->method('isMariaDb')
       ->willReturn($is_mariadb);
-    $tasks = $this->createTasks($connection);
+
+    $tasks = $this->getMockBuilder(Tasks::class)
+      ->onlyMethods(['getConnection', 't', 'isConnectionActive'])
+      ->getMock();
+    $tasks->expects($this->once())
+      ->method('isConnectionActive')
+      ->willReturn(TRUE);
+    $tasks->expects($this->exactly(3))
+      ->method('getConnection')
+      ->willReturn($connection);
+    $tasks->expects($this->once())
+      ->method('t')
+      ->willReturnArgument(0);
 
     $minimum_version = $tasks->minimumVersion();
     $name = $tasks->name();
@@ -143,10 +77,19 @@ class InstallTasksTest extends UnitTestCase {
   /**
    * Tests name with no connection.
    *
-   * @legacy-covers ::name
+   * @see ::name
    */
   public function testNameWithNoConnection(): void {
-    $tasks = $this->createTasksNoConnection();
+    $tasks = $this->getMockBuilder(Tasks::class)
+      ->onlyMethods(['t', 'isConnectionActive'])
+      ->getMock();
+    $tasks->expects($this->once())
+      ->method('isConnectionActive')
+      ->willReturn(FALSE);
+    $tasks->expects($this->once())
+      ->method('t')
+      ->willReturnArgument(0);
+
     $this->assertSame('MySQL, MariaDB, or equivalent', $tasks->name());
   }
 

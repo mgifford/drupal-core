@@ -18,7 +18,6 @@ use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
-// cspell:ignore outro
 // cspell:ignore toolongdomainexampledomainexampledomainexampledomainexampledomain
 /**
  * Tests Filter module filters individually.
@@ -420,10 +419,10 @@ class FilterKernelTest extends KernelTestBase {
     // cSpell:disable
     // phpcs:disable Drupal.Arrays.Array.ArrayClosingIndentation, Drupal.Arrays.Array.ArrayIndentation
     $tests = [
-      // Single line breaks should be changed to <br /> tags, while paragraphs
+      // Single line breaks should be changed to <br> tags, while paragraphs
       // separated with double line breaks should be enclosed with <p></p> tags.
       "aaa\nbbb\n\nccc" => [
-        "<p>aaa<br />\nbbb</p>\n<p>ccc</p>" => TRUE,
+        "<p>aaa<br>\nbbb</p>\n<p>ccc</p>" => TRUE,
       ],
       // Skip contents of certain block tags entirely.
       "<script>aaa\nbbb\n\nccc</script>
@@ -470,7 +469,7 @@ class FilterKernelTest extends KernelTestBase {
       ],
       "<pre>aaa\nbbb\nccc</pre>\nddd\neee" => [
         "<pre>aaa\nbbb\nccc</pre>" => TRUE,
-        "<p>ddd<br />\neee</p>" => TRUE,
+        "<p>ddd<br>\neee</p>" => TRUE,
       ],
       // Comments remain unchanged and subsequent lines/paragraphs are
       // transformed normally.
@@ -991,6 +990,50 @@ END CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
       ],
     ];
     $this->assertFilteredString($filter, $tests);
+
+    // With no maximum link text length configured, the full URL should be
+    // preserved as the anchor text instead of being truncated to an
+    // ellipsis.
+    $filter->setConfiguration([
+      'settings' => [
+        'filter_url_length' => NULL,
+      ],
+    ]);
+    $tests = [
+      'www.untrimmed.com/d/ff.ext?a=1&b=2#a1' => [
+        '<a href="http://www.untrimmed.com/d/ff.ext?a=1&amp;b=2#a1">www.untrimmed.com/d/ff.ext?a=1&amp;b=2#a1</a>' => TRUE,
+      ],
+    ];
+    $this->assertFilteredString($filter, $tests);
+
+    // An empty string, as submitted by the settings form when the field is
+    // left blank, is treated the same as an unset length.
+    $filter->setConfiguration([
+      'settings' => [
+        'filter_url_length' => '',
+      ],
+    ]);
+    $tests = [
+      'www.untrimmed.com/d/ff.ext?a=1&b=2#a1' => [
+        '<a href="http://www.untrimmed.com/d/ff.ext?a=1&amp;b=2#a1">www.untrimmed.com/d/ff.ext?a=1&amp;b=2#a1</a>' => TRUE,
+      ],
+    ];
+    $this->assertFilteredString($filter, $tests);
+
+    // A maximum link text length of 0 is distinct from an unset length: it
+    // is passed through to Unicode::truncate(), which trims the link text,
+    // and the ellipsis itself, down to nothing.
+    $filter->setConfiguration([
+      'settings' => [
+        'filter_url_length' => 0,
+      ],
+    ]);
+    $tests = [
+      'www.trimmed-to-nothing.com' => [
+        '<a href="http://www.trimmed-to-nothing.com"></a>' => TRUE,
+      ],
+    ];
+    $this->assertFilteredString($filter, $tests);
   }
 
   /**
@@ -1151,7 +1194,7 @@ END CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
     $this->assertEquals('<img src="http://example.com/test.jpg">test', $f, 'HTML corrector -- Fix self-closing single tags.');
 
     $f = Html::normalize('<br></br>');
-    $this->assertEquals('<br><br>', $f, "HTML corrector -- Transform empty tags to a self-closed tag if the tag's content model is EMPTY.");
+    $this->assertEquals('<br><br>', $f, "HTML corrector -- Transform empty tags into two br tags if the tag's content model is EMPTY.");
 
     $f = Html::normalize('<div></div>');
     $this->assertEquals('<div></div>', $f, "HTML corrector -- Do not transform empty tags to a single closed tag if the tag's content model is not EMPTY.");

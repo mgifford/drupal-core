@@ -7,8 +7,6 @@ namespace Drupal\Tests\help\Functional;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\Traits\Core\Locale\InstallerLanguageTrait;
 
-// cspell:ignore hilfetestmodul übersetzung
-
 /**
  * Provides a base class for functional help topic tests that use translation.
  *
@@ -33,16 +31,16 @@ abstract class HelpTopicTranslatedTestBase extends BrowserTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // These tests rely on some markup from the 'Claro' theme, as well as an
-    // optional block added when Claro is enabled.
-    \Drupal::service('theme_installer')->install(['claro']);
+    // These tests rely on some markup from the Default Admin theme, as well as
+    // an optional block added when Default Admin is enabled.
+    \Drupal::service('theme_installer')->install(['default_admin']);
     \Drupal::configFactory()->getEditable('system.theme')
-      ->set('admin', 'claro')
+      ->set('admin', 'default_admin')
       ->save();
 
     // Place various blocks.
     $settings = [
-      'theme' => 'claro',
+      'theme' => 'default_admin',
       'region' => 'help',
     ];
     $this->placeBlock('help_block', $settings);

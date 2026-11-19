@@ -57,6 +57,28 @@ class RegistryTest extends KernelTestBase {
   }
 
   /**
+   * Tests that runtime theme hooks remain available after registry cleanup.
+   */
+  public function testRuntimeRegistryAfterDestruct(): void {
+    \Drupal::request()->setMethod('GET');
+    $registry = $this->container->get(Registry::class);
+    $runtime_registry = $registry->getRuntime();
+    $hook = 'theme_test_template_test';
+
+    $this->assertTrue($runtime_registry->has($hook));
+    $definition = $runtime_registry->get($hook);
+    $this->assertNotEmpty($definition);
+
+    // Persistent workers may keep the service alive after cleanup.
+    $registry->destruct();
+    $next_runtime_registry = $registry->getRuntime();
+
+    $this->assertTrue($next_runtime_registry->has($hook));
+    $this->assertSame($definition, $next_runtime_registry->get($hook));
+    $this->assertNotSame($runtime_registry, $next_runtime_registry);
+  }
+
+  /**
    * Tests the theme registry with multiple subthemes.
    */
   public function testMultipleSubThemes(): void {
@@ -150,11 +172,9 @@ class RegistryTest extends KernelTestBase {
    */
   public function testThemeSuggestions(): void {
     // Mock the current page as the front page.
-    /** @var \Drupal\Core\Path\PathMatcherInterface $path_matcher */
     $path_matcher = $this->prophesize(PathMatcherInterface::class);
     $path_matcher->isFrontPage()->willReturn(TRUE);
     $this->container->set('path.matcher', $path_matcher->reveal());
-    /** @var \Drupal\Core\Path\CurrentPathStack $path_matcher */
     $path_current = $this->prophesize(CurrentPathStack::class);
     $path_current->getPath()->willReturn('/node/1');
     $this->container->set('path.current', $path_current->reveal());

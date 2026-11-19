@@ -12,7 +12,6 @@ use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Render\Element\RenderCallbackInterface;
-use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Security\DoTrustedCallbackTrait;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\Core\Utility\CallableResolver;
@@ -294,10 +293,6 @@ class Renderer implements RendererInterface {
       return '';
     }
 
-    $context = $this->getCurrentRenderContext();
-    if (!isset($context)) {
-      throw new \LogicException("Render context is empty, because render() was called outside of a renderRoot() or renderInIsolation() call. Use renderInIsolation()/renderRoot() or #lazy_builder/#pre_render instead.");
-    }
     $context->push(new BubbleableMetadata());
 
     // Set the bubbleable rendering metadata that has configurable defaults if
@@ -892,7 +887,7 @@ class Renderer implements RendererInterface {
     // - All public methods on Render elements are considered trusted.
     // - Helper classes that contain only callback methods can implement this
     //   instead of TrustedCallbackInterface.
-    return $this->doTrustedCallback($callable, $args, $message, TrustedCallbackInterface::THROW_EXCEPTION, RenderCallbackInterface::class);
+    return $this->doTrustedCallback($callable, $args, $message, RenderCallbackInterface::class);
   }
 
   /**

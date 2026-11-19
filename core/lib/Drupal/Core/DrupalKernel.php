@@ -128,13 +128,6 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
   protected $container;
 
   /**
-   * The environment, e.g. 'testing', 'install'.
-   *
-   * @var string
-   */
-  protected $environment;
-
-  /**
    * Whether the kernel has been booted.
    *
    * @var bool
@@ -180,27 +173,12 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
    */
   protected array $themeExtensions = [];
 
-
-  /**
-   * The class loader object.
-   *
-   * @var \Composer\Autoload\ClassLoader
-   */
-  protected $classLoader;
-
   /**
    * Config storage object used for reading enabled modules configuration.
    *
    * @var \Drupal\Core\Config\StorageInterface
    */
   protected $configStorage;
-
-  /**
-   * Whether the container can be dumped.
-   *
-   * @var bool
-   */
-  protected $allowDumping;
 
   /**
    * Whether the container needs to be rebuilt the next time it is initialized.
@@ -316,20 +294,22 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
    *
    * @param string $environment
    *   String indicating the environment, e.g. 'prod' or 'dev'.
-   * @param \Composer\Autoload\ClassLoader $class_loader
+   * @param \Composer\Autoload\ClassLoader $classLoader
    *   The class loader. Normally \Composer\Autoload\ClassLoader, as included by
    *   the front controller, but may also be decorated.
-   * @param bool $allow_dumping
+   * @param bool $allowDumping
    *   (optional) FALSE to stop the container from being written to or read
    *   from disk. Defaults to TRUE.
    * @param string $app_root
    *   (optional) The path to the application root as a string. If not supplied,
    *   the application root will be computed.
    */
-  public function __construct($environment, $class_loader, $allow_dumping = TRUE, $app_root = NULL) {
-    $this->environment = $environment;
-    $this->classLoader = $class_loader;
-    $this->allowDumping = $allow_dumping;
+  public function __construct(
+    protected $environment,
+    protected $classLoader,
+    protected $allowDumping = TRUE,
+    $app_root = NULL,
+  ) {
     if ($app_root === NULL) {
       $app_root = static::guessApplicationRoot();
     }
@@ -626,9 +606,6 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
     // Set the allowed protocols.
     UrlHelper::setAllowedProtocols($this->container->getParameter('filter_protocols'));
 
-    // Override of Symfony's MIME type guesser singleton.
-    MimeTypeGuesser::registerWithSymfonyGuesser($this->container);
-
     $this->prepared = TRUE;
   }
 
@@ -715,25 +692,29 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
    */
   public function terminate(Request $request, Response $response): void {
     if ($this->booted && $this->getHttpKernel() instanceof TerminableInterface) {
-      // Only run terminate() when essential services have been set up properly
-      // by preHandle() before.
-      if ($this->prepared === TRUE) {
-        $this->getHttpKernel()->terminate($request, $response);
-      }
-      // For destructable services, always call the destruct method if they were
-      // initialized during the request. Destruction is not necessary if the
-      // service was not used.
-      foreach ($this->container->getParameter('kernel.destructable_services') as $id) {
-        if ($this->container->initialized($id)) {
-          $service = $this->container->get($id);
-          $service->destruct();
+      try {
+        // Only run terminate() when essential services have been set up
+        // properly by preHandle() before.
+        if ($this->prepared === TRUE) {
+          $this->getHttpKernel()->terminate($request, $response);
+        }
+        // For destructable services, always call the destruct method if they
+        // were initialized during the request. Destruction is not necessary if
+        // the service was not used.
+        foreach ($this->container->getParameter('kernel.destructable_services') as $id) {
+          if ($this->container->initialized($id)) {
+            $service = $this->container->get($id);
+            $service->destruct();
+          }
         }
       }
-
-      // Pop the request added in \Drupal\Core\DrupalKernel::preHandle() from
-      // request stack at the end of the execution cycle.
-      if ($this->prepared === TRUE) {
-        $this->container->get('request_stack')->pop();
+      finally {
+        // Release the request even if termination fails. Subsequent requests
+        // may bypass preHandle(), for example when served from the page cache.
+        if ($this->prepared === TRUE) {
+          $this->prepared = FALSE;
+          $this->container->get('request_stack')->pop();
+        }
       }
     }
   }
@@ -1028,15 +1009,10 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
       $source_storage = $this->container->get('config.installer')->getSourceStorage();
     }
 
-    // If the module list hasn't already been set in updateModules and we are
-    // not forcing a rebuild, then try and load the container from the cache.
-    if (empty($this->moduleList) && !$this->containerNeedsRebuild) {
-      $container_definition = $this->getCachedContainerDefinition();
-    }
-
+    $container_definition = $this->getContainerFromCacheIfCacheable();
     // If there is no cached container definition, build a new container from
     // scratch.
-    if (!isset($container_definition)) {
+    if ($container_definition === NULL) {
       $container = $this->compileContainer();
 
       // Only dump the container if dumping is allowed. This is useful for
@@ -1114,6 +1090,9 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
     if ($this->containerNeedsDumping && !$this->cacheDrupalContainer($container_definition)) {
       $this->container->get('logger.factory')->get('DrupalKernel')->error('Container cannot be saved to cache.');
     }
+
+    // Override of Symfony's MIME type guesser singleton.
+    MimeTypeGuesser::registerWithSymfonyGuesser($this->container);
 
     return $this->container;
   }
@@ -1464,6 +1443,11 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
 
     // Set the class loader which was registered as a synthetic service.
     $container->set('class_loader', $this->classLoader);
+
+    // Reset any existing container in order to avoid holding on to old object
+    // references, otherwise memory usage grows exponentially with each rebuild.
+    $this->container?->reset();
+
     return $container;
   }
 
@@ -1926,6 +1910,22 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
    */
   protected function getExtensions(): array|false {
     return $this->getConfigStorage()->read('core.extension');
+  }
+
+  /**
+   * Gets the cached container definition if the cache may be used.
+   *
+   * @return array|null
+   *   The cached container definition, or NULL if the cache must not be used
+   *   or holds no definition.
+   */
+  protected function getContainerFromCacheIfCacheable(): ?array {
+    // If the module list hasn't already been set in updateModules and we are
+    // not forcing a rebuild, then try and load the container from the cache.
+    if (!$this->moduleList && !$this->containerNeedsRebuild) {
+      return $this->getCachedContainerDefinition();
+    }
+    return NULL;
   }
 
 }

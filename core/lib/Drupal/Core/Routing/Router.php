@@ -4,7 +4,6 @@ namespace Drupal\Core\Routing;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Path\CurrentPathStack;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Routing\Exception\CacheableResourceNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,19 +31,6 @@ use Symfony\Component\Routing\RouterInterface;
  *    See ::applyRouteEnhancers().
  */
 class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterface {
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * The service properties that should raise a deprecation error.
-   */
-  private array $deprecatedProperties = ['urlGenerator' => 'url_generator'];
-
-  /**
-   * The route provider responsible for the first-pass match.
-   *
-   * @var \Drupal\Core\Routing\RouteProviderInterface
-   */
-  protected $routeProvider;
 
   /**
    * The list of available enhancers.
@@ -63,14 +49,16 @@ class Router extends UrlMatcher implements RequestMatcherInterface, RouterInterf
   /**
    * Constructs a new Router.
    *
-   * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
+   * @param \Drupal\Core\Routing\RouteProviderInterface $routeProvider
    *   The route provider.
    * @param \Drupal\Core\Path\CurrentPathStack $current_path
    *   The current path stack.
    */
-  public function __construct(RouteProviderInterface $route_provider, CurrentPathStack $current_path) {
+  public function __construct(
+    protected RouteProviderInterface $routeProvider,
+    CurrentPathStack $current_path,
+  ) {
     parent::__construct($current_path);
-    $this->routeProvider = $route_provider;
   }
 
   /**

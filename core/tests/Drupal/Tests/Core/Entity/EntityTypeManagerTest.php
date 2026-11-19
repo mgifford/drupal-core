@@ -286,7 +286,7 @@ class EntityTypeManagerTest extends UnitTestCase {
   /**
    * Tests the getFormObject() method with an invalid class.
    *
-   * @legacy-covers ::getFormObject
+   * @see ::getFormObject
    */
   public function testGetFormObjectInvalidClass(): void {
     $donkey = $this->prophesize(EntityTypeInterface::class);
@@ -479,20 +479,14 @@ class TestEntityForm extends EntityForm {
 class TestEntityFormInjected extends TestEntityForm implements ContainerInjectionInterface {
 
   /**
-   * The color of the entity type.
-   *
-   * @var string
-   */
-  public $color;
-
-  /**
    * Constructs a new TestEntityFormInjected.
    *
    * @param string $color
    *   The color of the entity type.
    */
-  public function __construct($color) {
-    $this->color = $color;
+  public function __construct(
+    public $color,
+  ) {
   }
 
   /**

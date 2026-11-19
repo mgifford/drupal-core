@@ -11,6 +11,7 @@ use Drupal\Core\Extension\ModuleWeight;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
@@ -80,13 +81,13 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests dependency resolution.
    *
-   * Intentionally using fake dependencies added via hook_system_info_alter()
+   * Intentionally using fake dependencies added via hook_extension_info_alter()
    * for modules that normally do not have any dependencies.
    *
    * To simplify things further, all of the manipulated modules are either
    * purely UI-facing or live at the "bottom" of all dependency chains.
    *
-   * @see module_test_system_info_alter()
+   * @see \Drupal\module_test\Hook\ModuleTestThemeHooks::extensionInfoAlter()
    * @see https://www.drupal.org/files/issues/dep.gv__0.png
    */
   public function testDependencyResolution(): void {
@@ -350,7 +351,9 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests procedural preprocess functions.
    */
+  #[IgnoreDeprecations]
   public function testProceduralPreprocess(): void {
+    $this->expectUserDeprecationMessage('Code in module_test_procedural_preprocess.module is deprecated in drupal:11.5.0 and must be converted before drupal:13.0.0. Use classes instead. See https://www.drupal.org/node/3619765');
     $this->moduleInstaller()->install(['module_test_procedural_preprocess']);
     $preprocess_function = [];
     $preprocess_invoke = [];
@@ -424,7 +427,7 @@ class ModuleHandlerTest extends KernelTestBase {
 
     $expected_exception_message = 'Module hook_single_invoke should not implement custom_hook_invoke_string more than once.';
     $this->expectException(\LogicException::class);
-    $this->expectExceptionMessage($expected_exception_message);
+    $this->expectExceptionMessageIs($expected_exception_message);
     $this->moduleHandler()->invoke('hook_single_invoke', 'custom_hook_invoke_string', args: [TRUE]);
   }
 
@@ -436,7 +439,7 @@ class ModuleHandlerTest extends KernelTestBase {
 
     $expected_exception_message = 'Module hook_single_invoke should not implement custom_hook_invoke_class more than once.';
     $this->expectException(\LogicException::class);
-    $this->expectExceptionMessage($expected_exception_message);
+    $this->expectExceptionMessageIs($expected_exception_message);
     $this->moduleHandler()->invoke('hook_single_invoke', 'custom_hook_invoke_class', args: [TRUE]);
   }
 

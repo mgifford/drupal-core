@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\Component\Utility;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\TestTools\PhpUnitCompatibility\ForwardCompatibilityTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(NestedArray::class)]
 #[Group('Utility')]
 class NestedArrayTest extends TestCase {
+
+  use ForwardCompatibilityTrait;
 
   /**
    * Form array to check.
@@ -89,7 +92,7 @@ class NestedArrayTest extends TestCase {
     $this->assertTrue($this->form['details']['element']['#required'], 'New nested element value found.');
 
     $this->expectException(\LogicException::class);
-    $this->expectExceptionMessage('Cannot create key "child" on non-array value.');
+    $this->expectExceptionMessageIs('Cannot create key "child" on non-array value.');
     NestedArray::setValue($this->form, ['details', 'element', '#value', 'child'], $new_value);
   }
 
@@ -142,8 +145,8 @@ class NestedArrayTest extends TestCase {
   /**
    * Tests NestedArray::mergeDeepArray().
    *
-   * @legacy-covers ::mergeDeep
-   * @legacy-covers ::mergeDeepArray
+   * @see ::mergeDeep
+   * @see ::mergeDeepArray
    */
   public function testMergeDeepArray(): void {
     $link_options_1 = [
@@ -170,7 +173,7 @@ class NestedArrayTest extends TestCase {
   /**
    * Tests that arrays with implicit keys are appended, not merged.
    *
-   * @legacy-covers ::mergeDeepArray
+   * @see ::mergeDeepArray
    */
   public function testMergeImplicitKeys(): void {
     $a = [
@@ -191,7 +194,7 @@ class NestedArrayTest extends TestCase {
   /**
    * Tests that even with explicit keys, values are appended, not merged.
    *
-   * @legacy-covers ::mergeDeepArray
+   * @see ::mergeDeepArray
    */
   public function testMergeExplicitKeys(): void {
     $a = [
@@ -227,7 +230,7 @@ class NestedArrayTest extends TestCase {
    * before those in the first one, they are still appended, and the keys on
    * the first array are deleted and regenerated.
    *
-   * @legacy-covers ::mergeDeepArray
+   * @see ::mergeDeepArray
    */
   public function testMergeOutOfSequenceKeys(): void {
     $a = [

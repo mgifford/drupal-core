@@ -10,22 +10,22 @@ use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Plugin\PluginWithFormsInterface;
 use Drupal\Core\Plugin\PluginWithFormsTrait;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Drupal\Core\Plugin\PluginWithFormsTrait.
  */
-#[CoversClass(PluginWithFormsTrait::class)]
+#[CoversTrait(PluginWithFormsTrait::class)]
 #[Group('Plugin')]
 class PluginWithFormsTraitTest extends UnitTestCase {
 
   /**
    * Tests get form class.
    *
-   * @legacy-covers ::getFormClass
-   * @legacy-covers ::hasFormClass
+   * @see ::getFormClass
+   * @see ::hasFormClass
    */
   #[DataProvider('providerGetFormClass')]
   public function testGetFormClass(PluginWithFormsInterface $block_plugin, string $operation, ?string $expected_class): void {
