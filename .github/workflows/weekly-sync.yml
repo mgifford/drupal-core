@@ -1,11 +1,18 @@
-# Weekly upstream sync for the mgifford/drupal-core fork.
-# Pulls Drupal core's `main` from GitLab's canonical repo (git.drupalcode.org)
-# and fast-forwards this fork's `main` (which is upstream/main + a thin fork
-# tooling layer; see AGENTS.md). Upstream advances only files the thin layer
-# does not modify, so this is normally a clean fast-forward.
+# Weekly upstream check for the mgifford/drupal-core fork.
+# Fetches Drupal core's `main` from GitLab's canonical repo (git.drupalcode.org)
+# and compares it with this fork's `main`. Fork main carries fork-only commits,
+# so upstream can never be fast-forwarded into it. This workflow never pushes
+# to `main` and never rewrites its history; a human merges upstream via a PR.
 # - Runs weekly (Mon 05:00 UTC) and on manual dispatch.
-# - If a merge is NOT a clean fast-forward (upstream touched a thin-layer
-#   path?), it opens a sync-PR instead of force-pushing so a human reviews.
+# - Upstream main already contained in fork main: nothing to do.
+# - Otherwise: a trial merge (always aborted, never committed) records any
+#   conflicting files; the `upstream-sync` branch is force-updated to mirror
+#   upstream main; a PR from `upstream-sync` into `main` is opened, or the open
+#   one has its description refreshed.
+# - The job fails when the trial merge conflicts or any step fails, so problems
+#   show up in the Actions tab instead of being hidden.
+# - Opening the PR needs the repository setting "Allow GitHub Actions to create
+#   and approve pull requests" (Settings > Actions > General).
 name: Re-sync fork main from GitLab upstream (weekly)
 
 on:
@@ -20,6 +27,9 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SYNC_BRANCH: upstream-sync
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,30 +43,124 @@ jobs:
           git config user.name "mgifford (native via weekly sync)"
           git config user.email "mgifford@users.noreply.github.com"
 
-      - name: Fast-forward main to upstream
-        id: ff
+      - name: Compare fork main with upstream main
+        id: compare
         run: |
-          PREV=$(git rev-parse HEAD)
-          if git merge-base --is-ancestor HEAD gitlab-upstream/main; then
-            git merge --ff-only gitlab-upstream/main
-            git push origin main
-            echo "synced=yes"
-            echo "prev=$PREV"
-            echo "new=$(git rev-parse HEAD)"
-          else
-            # Upstream diverged from the thin layer: never force-push. Hand
-            # it to a human via a sync-PR.
-            git checkout -b upstream-merge/$(date +%Y%m%d)
-            git merge gitlab-upstream/main --no-edit || true
-            git push origin HEAD
-            gh pr create --base main --head "$(git branch --show-current)" \
-              --title "Weekly upstream sync needs review ($(date +%Y-%m-%d))" \
-              --body "Upstream **main** has diverged from the fork layer. Review the merge resolution before main advances." || true
-            echo "synced=pr"
+          echo "fork_main=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "upstream_main=$(git rev-parse gitlab-upstream/main)" >> "$GITHUB_OUTPUT"
+
+          if git merge-base --is-ancestor gitlab-upstream/main HEAD; then
+            echo "Upstream main is already contained in fork main."
+            echo "result=up-to-date" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: Report result
+          echo "new_commits=$(git rev-list --count HEAD..gitlab-upstream/main)" >> "$GITHUB_OUTPUT"
+
+          # Trial merge only: nothing is committed and the merge is always
+          # aborted, whether it was clean or conflicted.
+          if git merge --no-commit --no-ff gitlab-upstream/main; then
+            CONFLICTS=""
+          else
+            CONFLICTS=$(git diff --name-only --diff-filter=U)
+            if [ -z "$CONFLICTS" ]; then
+              echo "::error::Trial merge failed without reporting conflicted files."
+              exit 1
+            fi
+          fi
+          git merge --abort
+
+          if [ -n "$CONFLICTS" ]; then
+            echo "result=conflict" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=clean" >> "$GITHUB_OUTPUT"
+          fi
+          DELIM="CONFLICTS_$(openssl rand -hex 16)"
+          {
+            echo "conflicts<<$DELIM"
+            if [ -n "$CONFLICTS" ]; then
+              printf '%s\n' "$CONFLICTS"
+            fi
+            echo "$DELIM"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update upstream-sync branch and sync PR
+        id: pr
+        if: steps.compare.outputs.result == 'clean' || steps.compare.outputs.result == 'conflict'
+        env:
+          NEW_COMMITS: ${{ steps.compare.outputs.new_commits }}
+          CONFLICTS: ${{ steps.compare.outputs.conflicts }}
+          UPSTREAM_MAIN: ${{ steps.compare.outputs.upstream_main }}
         run: |
-          echo "Fast-forward result: ${{ steps.ff.outputs.synced }}"
-          [ -n "${{ steps.ff.outputs.prev }}" ] && \
-            echo "advanced ${{ steps.ff.outputs.prev }} -> ${{ steps.ff.outputs.new }}"
+          # Mirror branch only; main itself is never pushed.
+          git push --force origin "refs/remotes/gitlab-upstream/main:refs/heads/$SYNC_BRANCH"
+
+          BODY_FILE=$(mktemp)
+          {
+            echo "Upstream Drupal core \`main\` has $NEW_COMMITS commit(s) that are not in this fork's \`main\`."
+            echo
+            echo "\`$SYNC_BRANCH\` mirrors upstream main (\`$UPSTREAM_MAIN\`). The weekly workflow force-updates it and refreshes this description."
+            echo
+            if [ -n "$CONFLICTS" ]; then
+              echo "A trial merge found conflicts in:"
+              echo
+              printf '%s\n' "$CONFLICTS" | sed 's/^/- `/; s/$/`/'
+            else
+              echo "A trial merge found no conflicts."
+            fi
+            echo
+            echo "Merge with a merge commit (not squash or rebase) so upstream history is kept."
+          } > "$BODY_FILE"
+
+          PR=$(gh pr list --head "$SYNC_BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --body-file "$BODY_FILE"
+            echo "Refreshed the description of open PR #$PR."
+          else
+            PR_URL=$(gh pr create --base main --head "$SYNC_BRANCH" \
+              --title "Merge upstream Drupal core main" \
+              --body-file "$BODY_FILE")
+            PR="${PR_URL##*/}"
+            echo "Opened $PR_URL"
+          fi
+          echo "pr=$PR" >> "$GITHUB_OUTPUT"
+
+      - name: Report result
+        if: always()
+        env:
+          RESULT: ${{ steps.compare.outputs.result }}
+          FORK_MAIN: ${{ steps.compare.outputs.fork_main }}
+          UPSTREAM_MAIN: ${{ steps.compare.outputs.upstream_main }}
+          NEW_COMMITS: ${{ steps.compare.outputs.new_commits }}
+          CONFLICTS: ${{ steps.compare.outputs.conflicts }}
+          PR: ${{ steps.pr.outputs.pr }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          {
+            echo "## Weekly upstream check"
+            echo
+            echo "- Result: ${RESULT:-not determined}"
+            echo "- Fork main: \`${FORK_MAIN:-unknown}\`"
+            echo "- Upstream main: \`${UPSTREAM_MAIN:-unknown}\`"
+            if [ -n "$NEW_COMMITS" ]; then
+              echo "- Upstream commits not in fork main: $NEW_COMMITS"
+            fi
+            if [ -n "$PR" ]; then
+              echo "- Sync PR: #$PR"
+            fi
+            if [ -n "$CONFLICTS" ]; then
+              echo
+              echo "### Conflicted files"
+              echo
+              printf '%s\n' "$CONFLICTS" | sed 's/^/- /'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$JOB_STATUS" != "success" ]; then
+            echo "::error::An earlier step failed; see its log above."
+            exit 1
+          fi
+          if [ "$RESULT" = "conflict" ]; then
+            echo "::error::Upstream main conflicts with fork main in: $(printf '%s' "$CONFLICTS" | tr '\n' ' ')"
+            exit 1
+          fi
