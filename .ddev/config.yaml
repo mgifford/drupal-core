@@ -1,0 +1,21 @@
+# DDEV project for this Drupal core development checkout.
+# Committed on purpose (the rest of .ddev/ is gitignored), so `ddev start`
+# works on a fresh clone. Equivalent to the command below, plus pinned
+# webserver, database and Node.js versions:
+#   ddev config --project-type=drupal12 --docroot=. --project-name=drupal-core --php-version=8.5
+# - name: gives https://drupal-core.ddev.site, the default DRUPAL_BASE_URL for
+#   scripts/drupal-test.mjs and the Playwright tests.
+# - type drupal12: required by the reset-core host command (ProjectTypes).
+# - docroot "": this repo uses the drupal/drupal layout, with index.php at the
+#   repository root rather than in web/.
+# - php_version 8.5: core main requires PHP >= 8.5 (core/composer.json).
+# - nodejs_version 24: core/package.json requires Node.js >= 24.
+name: drupal-core
+type: drupal12
+docroot: ""
+php_version: "8.5"
+webserver_type: nginx-fpm
+database:
+  type: mariadb
+  version: "11.8"
+nodejs_version: "24"

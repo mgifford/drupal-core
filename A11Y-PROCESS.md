@@ -33,17 +33,17 @@ Automated testing catches a **subset** of issues. Manual keyboard and screen rea
 
 ### First-time setup
 
-On a fresh clone there is no `.ddev/` or `vendor/` (both are gitignored), so
-the DDEV project and the site must be created once. Note that the
-[official DDEV install guide](https://www.drupal.org/docs/getting-started/installing-drupal/install-drupal-using-ddev-for-local-development)
+On a fresh clone there is no `vendor/` (it is gitignored), and `.ddev/` holds
+only the committed `config.yaml` and host commands, so the site must be
+created once. Note that the [official DDEV install guide](https://www.drupal.org/docs/getting-started/installing-drupal/install-drupal-using-ddev-for-local-development)
 targets a *new site* built from `drupal/recommended-project` (docroot
 `web/`); this repo is a **core development checkout** (drupal/drupal layout,
 docroot at the repo root), so the flow differs:
 
 ```bash
-# 1. Create the DDEV project (docroot is the repo root, not web/).
-#    Core main requires PHP >= 8.5.
-ddev config --project-type=drupal12 --docroot=. --project-name=drupal-core --php-version=8.5
+# 1. Start the DDEV project. .ddev/config.yaml is committed (project
+#    drupal-core, type drupal12, docroot at the repo root, PHP 8.5), so no
+#    `ddev config` step is needed.
 ddev start
 
 # 2. Install PHP dependencies (drush etc.).
