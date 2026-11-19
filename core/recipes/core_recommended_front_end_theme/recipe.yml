@@ -1,8 +1,8 @@
 name: 'Front end theme'
-description: 'Sets up Olivero as the front-end theme.'
+description: 'Sets up Fork front end, a theme generated from Starterkit, as the front-end theme.'
 type: 'Themes'
 install:
-  - olivero
+  - fork_front_end
   - block
 config:
   # Leave existing blocks and menus as-is.
@@ -11,23 +11,70 @@ config:
     system:
       - system.menu.account
       - system.menu.main
-    olivero:
-      - block.block.olivero_account_menu
-      - block.block.olivero_breadcrumbs
-      - block.block.olivero_content
-      - block.block.olivero_main_menu
-      - block.block.olivero_powered
-      - block.block.olivero_primary_admin_actions
-      - block.block.olivero_primary_local_tasks
-      - block.block.olivero_secondary_local_tasks
-      - block.block.olivero_site_branding
-      - core.date_format.olivero_medium
   actions:
-    # Create these blocks dynamically so as not to conflict with the blocks created
-    # by block_theme_initialize() when Olivero is installed.
-    block.block.olivero_messages:
+    # Installing the theme copies the default theme's blocks into it (see
+    # BlockHooks::themeInitialize()). Block IDs here match those copies where
+    # they exist, so createIfNotExists adjusts a copy rather than duplicating it.
+    block.block.fork_front_end_branding:
       createIfNotExists:
-        theme: olivero
+        theme: fork_front_end
+        plugin: system_branding_block
+        settings:
+          id: system_branding_block
+          label: 'Site branding'
+          label_display: '0'
+          provider: system
+          use_site_logo: true
+          use_site_name: true
+          use_site_slogan: true
+      setRegion: header
+      setStatus: true
+      setWeight: 0
+    block.block.fork_front_end_main_menu:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: 'system_menu_block:main'
+        settings:
+          id: 'system_menu_block:main'
+          label: 'Main navigation'
+          label_display: '0'
+          provider: system
+          level: 1
+          depth: 2
+          expand_all_items: true
+      setRegion: primary_menu
+      setStatus: true
+      setWeight: 0
+    block.block.fork_front_end_account_menu:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: 'system_menu_block:account'
+        settings:
+          id: 'system_menu_block:account'
+          label: 'User account menu'
+          label_display: '0'
+          provider: system
+          level: 1
+          depth: 1
+          expand_all_items: false
+      setRegion: secondary_menu
+      setStatus: true
+      setWeight: -4
+    block.block.fork_front_end_breadcrumbs:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: system_breadcrumb_block
+        settings:
+          id: system_breadcrumb_block
+          label: Breadcrumbs
+          label_display: '0'
+          provider: system
+      setRegion: breadcrumb
+      setStatus: true
+      setWeight: 0
+    block.block.fork_front_end_messages:
+      createIfNotExists:
+        theme: fork_front_end
         plugin: system_messages_block
         settings:
           id: system_messages_block
@@ -37,18 +84,82 @@ config:
       setRegion: highlighted
       setStatus: true
       setWeight: -5
-    block.block.olivero_page_title:
+    block.block.fork_front_end_local_actions:
       createIfNotExists:
-        theme: olivero
+        theme: fork_front_end
+        plugin: local_actions_block
+        settings:
+          id: local_actions_block
+          label: 'Primary admin actions'
+          label_display: '0'
+          provider: core
+      setRegion: highlighted
+      setStatus: true
+      setWeight: -4
+    block.block.fork_front_end_primary_local_tasks:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: local_tasks_block
+        settings:
+          id: local_tasks_block
+          label: 'Primary tabs'
+          label_display: '0'
+          provider: core
+          primary: true
+          secondary: false
+      setRegion: highlighted
+      setStatus: true
+      setWeight: -3
+    block.block.fork_front_end_secondary_local_tasks:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: local_tasks_block
+        settings:
+          id: local_tasks_block
+          label: 'Secondary tabs'
+          label_display: '0'
+          provider: core
+          primary: false
+          secondary: true
+      setRegion: highlighted
+      setStatus: true
+      setWeight: -2
+    block.block.fork_front_end_page_title:
+      createIfNotExists:
+        theme: fork_front_end
         plugin: page_title_block
         settings:
           id: page_title_block
           label: 'Page title'
           label_display: '0'
           provider: core
-      setRegion: content_above
+      setRegion: content
       setStatus: true
-      setWeight: -5
+      setWeight: -10
+    block.block.fork_front_end_content:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: system_main_block
+        settings:
+          id: system_main_block
+          label: 'Main page content'
+          label_display: '0'
+          provider: system
+      setRegion: content
+      setStatus: true
+      setWeight: 0
+    block.block.fork_front_end_powered:
+      createIfNotExists:
+        theme: fork_front_end
+        plugin: system_powered_by_block
+        settings:
+          id: system_powered_by_block
+          label: 'Powered by Drupal'
+          label_display: '0'
+          provider: system
+      setRegion: footer
+      setStatus: true
+      setWeight: 0
     system.theme:
       simpleConfigUpdate:
-        default: olivero
+        default: fork_front_end

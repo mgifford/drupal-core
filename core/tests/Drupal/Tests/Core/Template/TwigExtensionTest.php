@@ -12,6 +12,7 @@ use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\GeneratedLink;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderableInterface;
+use Drupal\Core\Render\RenderVisibilityResolver;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -84,7 +85,7 @@ class TwigExtensionTest extends UnitTestCase {
     $this->dateFormatter = $this->createStub(DateFormatterInterface::class);
     $this->fileUrlGenerator = $this->createStub(FileUrlGeneratorInterface::class);
 
-    $this->systemUnderTest = new TwigExtension($this->renderer, $this->urlGenerator, $this->themeManager, $this->dateFormatter, $this->fileUrlGenerator);
+    $this->systemUnderTest = new TwigExtension($this->renderer, $this->urlGenerator, $this->themeManager, $this->dateFormatter, $this->fileUrlGenerator, $this->createStub(RenderVisibilityResolver::class));
   }
 
   /**

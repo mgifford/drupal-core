@@ -28,7 +28,7 @@ export function captureOriginalSettingsOnce(): void {
   }
 
   const defaultTheme = drush('config:get system.theme default --format=string').trim();
-  const adminTheme = drush('config:get system.theme admin --format=string').trim() || 'claro';
+  const adminTheme = drush('config:get system.theme admin --format=string').trim() || 'default_admin';
 
   const original = {
     defaultTheme,
