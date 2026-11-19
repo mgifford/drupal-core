@@ -1,0 +1,5 @@
+{
+  "page": "/user/login",
+  "policy": "Keys are 'ruleId [target]' from tests/playwright/lib/axe-baseline.mjs. A key may only be added with a reason and a link to a Drupal.org issue. Remove keys as soon as they stop occurring.",
+  "accepted": []
+}

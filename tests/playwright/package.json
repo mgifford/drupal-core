@@ -5,6 +5,10 @@
   "description": "Guidepup virtual screen reader tests for Drupal Core",
   "scripts": {
     "test": "playwright test",
+    "test:list": "playwright test --list",
+    "test:smoke": "SKIP_ADMIN_LOGIN=1 playwright test --project=chromium tests/smoke",
+    "test:a11y": "SKIP_ADMIN_LOGIN=1 playwright test --project=chromium tests/accessibility",
+    "test:voiceover": "VOICEOVER=1 playwright test --project=voiceover",
     "test:issue:2848307:baseline": "EXPECT_INLINE_ERROR=0 node scripts/issue-2848307-mcp-check.js",
     "test:issue:2848307:patched": "EXPECT_INLINE_ERROR=1 node scripts/issue-2848307-mcp-check.js",
     "test:virtual-sr": "playwright test --grep 'Virtual SR'",
@@ -18,8 +22,10 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
+    "@guidepup/guidepup": "^0.40.0",
+    "@guidepup/playwright": "~0.19.0",
     "@guidepup/virtual-screen-reader": "^0.32.0",
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.61.1",
     "accessibility-checker": "^4.0.29"
   }
 }

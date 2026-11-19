@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.86",
+        "--isolated",
+        "--caps=devtools",
+        "--allowed-origins=https://drupal-core.ddev.site",
+        "--ignore-https-errors",
+        "--output-dir=tests/playwright/reports/mcp"
+      ]
+    }
+  }
+}
