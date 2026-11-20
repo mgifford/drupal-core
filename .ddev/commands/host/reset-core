@@ -70,24 +70,24 @@ ddev start
 echo "[4/7] Running composer install..."
 ddev exec composer install --no-interaction --quiet
 
-# 5. Install Drupal with recipes
+# 5. Install Drupal with recipes. Drush 15 has no site:install, and core's
+# `dr install` only creates SQLite sites, so drop the tables and install into
+# the DDEV database with .agents/scripts/site-install.php (admin / admin).
 echo "[5/7] Installing Drupal with recipes..."
-ddev exec drush site:install standard \
-  --account-name=admin \
-  --account-pass=admin \
-  -y
+ddev exec dr sql:drop -n
+ddev exec php .agents/scripts/site-install.php
 
 # 6. Enable additional recipes not included by standard
 echo "[6/7] Enabling additional recipes for test coverage..."
-ddev exec drush recipe core/recipes/editorial_workflow
-ddev exec drush recipe core/recipes/comment_base
-ddev exec drush recipe core/recipes/image_media_type
-ddev exec drush recipe core/recipes/tags_taxonomy
+ddev exec dr recipe:apply -n core/recipes/editorial_workflow
+ddev exec dr recipe:apply -n core/recipes/comment_base
+ddev exec dr recipe:apply -n core/recipes/image_media_type
+ddev exec dr recipe:apply -n core/recipes/tags_taxonomy
 
 # 7. Finalize
 echo "[7/7] Rebuilding cache and verifying..."
-ddev exec drush cache:rebuild
-ddev exec drush status --fields=drupal-version,site,db-driver,php
+ddev exec dr cache:rebuild
+ddev exec dr status
 
 echo ""
 SITE_URL=$(ddev describe 2>/dev/null | grep -m1 'https://' | awk '{print $NF}' || echo "https://drupal-core.ddev.site")
@@ -101,7 +101,7 @@ if [ -n "$PATCH_FILE" ]; then
     echo "[patch] Applying $PATCH_FILE..."
     git apply "$PATCH_FILE"
     ddev exec composer install --no-interaction --quiet
-    ddev exec drush cache:rebuild
+    ddev exec dr cache:rebuild
     echo "[patch] Done. Patch applied on top of clean install."
   else
     echo "[patch] WARNING: File '$PATCH_FILE' not found. Skipping."

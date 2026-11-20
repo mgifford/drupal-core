@@ -15,18 +15,18 @@
 # return to the clean baseline (the working tree / patches are never touched).
 set -euo pipefail
 cd "$(dirname "$0")/.."
-DRUSH="ddev exec drush"
+DR="ddev exec dr"
 
 usage() { sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; }
 
 case "${1:-help}" in
   list)
-    $DRUSH php:script scripts/recipe-cli.php -- list
+    $DR php:script scripts/recipe-cli.php -- list
     ;;
   apply)
     shift
     if [ "$#" -eq 0 ]; then echo "Missing recipe name/path" >&2; usage; exit 2; fi
-    $DRUSH php:script scripts/recipe-cli.php -- apply "$@"
+    $DR php:script scripts/recipe-cli.php -- apply "$@"
     ;;
   -h|--help|help)
     usage

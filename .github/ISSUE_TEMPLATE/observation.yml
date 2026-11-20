@@ -43,7 +43,7 @@ body:
       options:
         - Web installer (/core/install.php)
         - core/scripts/drupal install
-        - drush site:install
+        - .agents/scripts/site-install.php (ddev reset-core or reset-site)
         - Recipe applied to an existing site
         - Not applicable
         - Other (describe in the steps)

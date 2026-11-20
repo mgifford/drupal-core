@@ -29,20 +29,25 @@ ddev start
 # including this suite (fixed in commit a42d3b6; keep the lock healthy).
 ddev composer install
 
-# Site install — admin/admin matches the crawl defaults.
-ddev drush site:install standard --account-name=admin --account-pass=admin -y
+# Drush 15 is a dev dependency. It adds its commands to core's `dr` CLI, so
+# run `ddev exec dr <command>`; `drush` and `ddev drush` only point to `dr`.
+
+# Site install — admin/admin matches the crawl defaults. Drush 15 has no
+# site:install, so this script installs into the DDEV database. On an
+# existing site, run `ddev exec dr sql:drop -n` first.
+ddev exec php .agents/scripts/site-install.php
 
 # Test-content modules the page inventory REQUIRES. Without these, 29 of 53
 # inventory routes are 404s (the crawl now fails loudly on them).
 MODS=$(ls modules/contrib/theming_tools/modules/ | grep -v "devhelp\|pointertracker\|lang_hebrew\|testfilters" | tr -d '/' | paste -sd, -)
-ddev drush en -y "theming_tools,form_style,contact,search,$MODS"
+ddev exec dr ex:install -y "theming_tools,form_style,contact,search,$MODS"
 
 # Post-install permissions/config the inventory expects (modules enabled
 # after site install don't get the standard profile's default grants):
-ddev exec "drush role:perm:add anonymous 'search content' -y \
-  && drush role:perm:add authenticated 'search content' -y \
-  && drush config:set user.settings register visitors -y"
-ddev drush cache:rebuild
+ddev exec "dr role:perm:add anonymous 'search content' \
+  && dr role:perm:add authenticated 'search content' \
+  && dr config:set -n user.settings register visitors"
+ddev exec dr cache:rebuild
 
 # Playwright browser (matches the pinned @playwright/test version)
 cd core/tests/playwright && npx playwright install chromium
@@ -57,7 +62,7 @@ Sanity check: `curl -sk -o /dev/null -w "%{http_code}" https://drupal-core.ddev.
 | Themes ×4 | automatic | Olivero, Claro, Default Admin light + dark (only Gin-based themes have dark mode) |
 | Accent presets ×10 | automatic | real `preset_accent_color` via drush; color rules only |
 | Viewports ×4 | automatic | desktop / tablet / mobile portrait + landscape |
-| RTL | opt-in | `ddev drush en language locale -y && ddev drush language:add he` then `RTL_LANG=he yarn test:a11y:playwright`. The `lang_hebrew` theming_tools submodule helps with content. |
+| RTL | opt-in | `ddev exec dr ex:install -y language,locale`, add Hebrew (command in A11Y-PROCESS.md, or `/admin/config/regional/language/add`), then `RTL_LANG=he yarn test:a11y:playwright`. The `lang_hebrew` theming_tools submodule helps with content. |
 | Base URL / creds | env | `DRUPAL_BASE_URL`, `DRUPAL_ADMIN_USER`, `DRUPAL_ADMIN_PASS` |
 | Reports dir | env | `A11Y_REPORTS_DIR` — analyzers read/write an alternate tree (used for testing and for the CMS namespace) |
 
@@ -134,5 +139,5 @@ The filing workflow (detail: bug-reporting skill + A11Y-PROCESS.md §6):
 | Whole site hangs / curl code 000 | wedged PHP-FPM workers (e.g. after parallel request bursts) | `ddev restart` |
 | Crawl "completed" but few/no records | pre-2026-07-05 code: per-worker afterAll merge wiped shards | fixed (globalTeardown, commit 7170bf5) — if it recurs, check `reports/.tmp-crawl` survived to teardown |
 | Many routes scan clean at near-zero violations | scanning themed 404s | fixed — scan now fails on HTTP ≥ 400; enable the §2 module set |
-| Crawl died mid-run (power/Docker) | external | shards survive worker restarts; re-run; site theme may need `drush config:set system.theme default olivero -y` |
+| Crawl died mid-run (power/Docker) | external | shards survive worker restarts; re-run; site theme may need `ddev exec dr config:set -n system.theme default olivero` |
 | First page load after enabling modules times out | cold caches | warm with one curl before crawling |

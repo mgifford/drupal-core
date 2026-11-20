@@ -4,9 +4,10 @@
  * List and apply Drupal Core recipes via the Core Recipe API.
  *
  * Exposes Drupal\Core\Recipe (Recipe, RecipeRunner) so core functionality can be
- * discovered and applied without Drupal CMS recipes. Run bootstrapped by Drush:
- *   drush php:script scripts/recipe-cli.php -- list
- *   drush php:script scripts/recipe-cli.php -- apply <recipe-name-or-path>
+ * discovered and applied without Drupal CMS recipes. Run bootstrapped by Drush
+ * through core's dr CLI:
+ *   dr php:script scripts/recipe-cli.php -- list
+ *   dr php:script scripts/recipe-cli.php -- apply <recipe-name-or-path>
  */
 
 // Drush's php:script passes arguments via the $extra array; the script name has
@@ -98,5 +99,5 @@ if ($command === 'apply') {
   return(0);
 }
 
-fwrite(STDOUT, "Usage:\n  drush php:script scripts/recipe-cli.php -- list\n  drush php:script scripts/recipe-cli.php -- apply <recipe-name-or-path>\n");
+fwrite(STDOUT, "Usage:\n  dr php:script scripts/recipe-cli.php -- list\n  dr php:script scripts/recipe-cli.php -- apply <recipe-name-or-path>\n");
 return(0);
