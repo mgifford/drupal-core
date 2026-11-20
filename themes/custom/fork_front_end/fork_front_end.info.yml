@@ -1,0 +1,26 @@
+name: 'Fork front end'
+type: theme
+'base theme': false
+version: 1.0.0
+libraries:
+  - fork_front_end/base
+  - fork_front_end/messages
+  - core/normalize
+libraries-extend:
+  user/drupal.user:
+    - fork_front_end/user
+  core/drupal.dropbutton:
+    - fork_front_end/dropbutton
+  core/drupal.dialog:
+    - fork_front_end/dialog
+  file/drupal.file:
+    - fork_front_end/file
+  core/drupal.item-list:
+    - fork_front_end/item-list
+  core/drupal.progress:
+    - fork_front_end/progress
+  core/drupal.tablesort:
+    - fork_front_end/drupal.tablesort
+description: "Front-end theme generated from Starterkit for this fork's test recipes."
+core_version_requirement: ^12
+generator: 'starterkit_theme:12.0-dev#6ac7c0cd13'

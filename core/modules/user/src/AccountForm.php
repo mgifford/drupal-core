@@ -26,27 +26,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class AccountForm extends ContentEntityForm implements TrustedCallbackInterface {
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected $languageManager;
-
-  /**
    * Constructs a new AccountForm object.
    *
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
    */
-  public function __construct(EntityRepositoryInterface $entity_repository, LanguageManagerInterface $language_manager, ?EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, ?TimeInterface $time = NULL) {
+  public function __construct(
+    EntityRepositoryInterface $entity_repository,
+    protected LanguageManagerInterface $languageManager,
+    ?EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL,
+    ?TimeInterface $time = NULL,
+  ) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
-    $this->languageManager = $language_manager;
   }
 
   /**
@@ -171,9 +168,12 @@ abstract class AccountForm extends ContentEntityForm implements TrustedCallbackI
           $form['account']['pass']['#required'] = TRUE;
         }
         else {
-          $form['account']['current_pass']['#description'] = $this->t('Required if you want to change the <em>Email address</em> or the <em>Password</em> field below. <a href=":request_new_url" title="Send password reset instructions via email.">Reset your password</a>.', [
-            ':request_new_url' => Url::fromRoute('user.pass')->toString(),
-          ]);
+          $pass_url = Url::fromRoute('user.pass');
+          $form['account']['current_pass']['#description'] = $pass_url->access()
+            ? $this->t('Required if you want to change the <em>Email address</em> or the <em>Password</em> field below. <a href=":request_new_url" title="Send password reset instructions via email.">Reset your password</a>.', [
+              ':request_new_url' => $pass_url->toString(),
+            ])
+            : $this->t('Required if you want to change the <em>Email address</em> or the <em>Password</em> field below.');
         }
       }
     }

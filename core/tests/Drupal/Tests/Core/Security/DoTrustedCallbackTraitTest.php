@@ -6,10 +6,11 @@ namespace Drupal\Tests\Core\Security;
 
 use Drupal\Core\Security\Attribute\TrustedCallback;
 use Drupal\Core\Security\DoTrustedCallbackTrait;
+use Drupal\Core\Security\StaticTrustedCallbackHelper;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Security\UntrustedCallbackException;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
@@ -17,7 +18,7 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 /**
  * Tests Drupal\Core\Security\DoTrustedCallbackTrait.
  */
-#[CoversClass(DoTrustedCallbackTrait::class)]
+#[CoversTrait(DoTrustedCallbackTrait::class)]
 #[Group('Security')]
 class DoTrustedCallbackTraitTest extends UnitTestCase {
   use DoTrustedCallbackTrait;
@@ -25,11 +26,35 @@ class DoTrustedCallbackTraitTest extends UnitTestCase {
   /**
    * Tests trusted callbacks.
    *
-   * @legacy-covers ::doTrustedCallback
+   * @see ::doTrustedCallback
    */
   #[DataProvider('providerTestTrustedCallbacks')]
   public function testTrustedCallbacks(callable $callback, $extra_trusted_interface = NULL): void {
-    $return = $this->doTrustedCallback($callback, [], '%s is not trusted', TrustedCallbackInterface::THROW_EXCEPTION, $extra_trusted_interface);
+    $return = $this->doTrustedCallback($callback, [], '%s is not trusted', $extra_trusted_interface);
+    $this->assertSame('test', $return);
+  }
+
+  /**
+   * Tests trusted callback argument deprecation.
+   *
+   * @see ::doTrustedCallback
+   */
+  #[DataProvider('providerTestTrustedCallbacks')]
+  #[IgnoreDeprecations]
+  public function testTrustedCallbacksWithDeprecatedArg(callable $callback, $extra_trusted_interface = NULL): void {
+    $this->expectUserDeprecationMessage('Calling Drupal\\Core\\Security\\StaticTrustedCallbackHelper::callback() with 5 arguments is deprecated in drupal:11.5.0 and is removed from drupal:13.0.0. See https://www.drupal.org/node/3627046');
+    $return = $this->doTrustedCallback($callback, [], '%s is not trusted', 'exception', $extra_trusted_interface);
+    $this->assertSame('test', $return);
+  }
+
+  /**
+   * Tests StaticTrustedCallbackHelper::callback() argument deprecation.
+   */
+  #[DataProvider('providerTestTrustedCallbacks')]
+  #[IgnoreDeprecations]
+  public function testStaticTrustedCallbackHelperWithDeprecatedArg(callable $callback, $extra_trusted_interface = NULL): void {
+    $this->expectUserDeprecationMessage('Calling Drupal\\Core\\Security\\StaticTrustedCallbackHelper::callback() with 5 arguments is deprecated in drupal:11.5.0 and is removed from drupal:13.0.0. See https://www.drupal.org/node/3627046');
+    $return = StaticTrustedCallbackHelper::callback($callback, [], '%s is not trusted', 'exception', $extra_trusted_interface);
     $this->assertSame('test', $return);
   }
 
@@ -98,12 +123,12 @@ class DoTrustedCallbackTraitTest extends UnitTestCase {
   /**
    * Tests untrusted callbacks.
    *
-   * @legacy-covers ::doTrustedCallback
+   * @see ::doTrustedCallback
    */
   #[DataProvider('providerTestUntrustedCallbacks')]
   public function testUntrustedCallbacks(callable $callback, $extra_trusted_interface = NULL): void {
     $this->expectException(UntrustedCallbackException::class);
-    $this->doTrustedCallback($callback, [], '%s is not trusted', TrustedCallbackInterface::THROW_EXCEPTION, $extra_trusted_interface);
+    $this->doTrustedCallback($callback, [], '%s is not trusted', $extra_trusted_interface);
   }
 
   /**
@@ -151,9 +176,9 @@ class DoTrustedCallbackTraitTest extends UnitTestCase {
   }
 
   /**
- * Tests exception.
+ * Tests exceptions are thrown for untrusted callbacks.
  */
-  #[DataProvider('errorTypeProvider')]
+  #[DataProvider('providerTestException')]
   public function testException(callable $callback): void {
     $this->expectException(UntrustedCallbackException::class);
     $this->expectExceptionMessageIs('Drupal\Tests\Core\Security\UntrustedObject::callback is not trusted');
@@ -161,19 +186,9 @@ class DoTrustedCallbackTraitTest extends UnitTestCase {
   }
 
   /**
- * Tests silenced deprecation.
- */
-  #[DataProvider('errorTypeProvider')]
-  #[IgnoreDeprecations]
-  public function testSilencedDeprecation(callable $callback): void {
-    $this->expectUserDeprecationMessage('Drupal\Tests\Core\Security\UntrustedObject::callback is not trusted');
-    $this->doTrustedCallback($callback, [], '%s is not trusted', TrustedCallbackInterface::TRIGGER_SILENCED_DEPRECATION);
-  }
-
-  /**
-   * Data provider for tests of ::doTrustedCallback $error_type argument.
+   * Data provider for testException().
    */
-  public static function errorTypeProvider(): array {
+  public static function providerTestException(): array {
     $tests['untrusted_object'] = [[new UntrustedObject(), 'callback']];
     $tests['untrusted_object_static_string'] = ['Drupal\Tests\Core\Security\UntrustedObject::callback'];
     $tests['untrusted_object_static_array'] = [[UntrustedObject::class, 'callback']];

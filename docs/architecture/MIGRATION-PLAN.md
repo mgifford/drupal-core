@@ -35,6 +35,8 @@ visible behaviour, so none is made by an agent.
 | D2 | Committed generated or vendor content: root `node_modules/`, `modules/contrib/`, `.playwright-mcp/` logs. | (a) Leave them. (b) Stop tracking them with `git rm --cached` and add ignore rules. History keeps the old copies. | (b), in a dedicated PR after Phase 1 proves a clean `npm ci` works. |
 | D3 | Fork edits to upstream core files (26 code, test and template files, five issues; README.md excluded). | (a) Keep them on `main`. (b) Export each as a patch under `patches/` and restore upstream versions. | (b). They are test subjects with known defects. Phase 2 checkouts will be pristine anyway. |
 | D4 | Weekly sync workflow. | (a) Repaired version (PR only, never pushes `main`). (b) Disable it once Phase 2 source fetching works. | (a) now, then (b) after Phase 2. |
+| D5 | Where the weekly scan runs (raised by the [Observatory brief](OBSERVATORY-BRIEF.md)). | (a) Local only, as in Phase 10. (b) GitHub Actions, publishing after automated checks. (c) Both: hosted structural scans, plus optional local runs for energy measurement. | None yet. Decide before Phase 10. |
+| D6 | Where raw run evidence is stored (raised by the brief). | (a) `reports/runs/` on `main`, as in Phase 8. (b) Small summaries on `main`, large raw evidence in a durable store outside `main`. | None yet. Decide before Phase 8. |
 
 ## Immediate repairs (before or with Phase 1)
 
@@ -238,6 +240,54 @@ installed automatically.
 The existing patch-evaluation docs, the root issue artifacts,
 `testing/issue-3619387-sidebar-errors/` and AGENTS.md's two-checkout workflow
 are kept as history. New issue work goes to Core Lab.
+
+This repository reads two parts of
+[Drupal Core Lab](https://github.com/mgifford/drupal-core-lab) as inputs, and
+copies neither:
+
+- [`recipes/`](https://github.com/mgifford/drupal-core-lab/tree/main/recipes):
+  53 recipes on 2026-11-20, 25 of them `repro_<issue number>`
+  reproductions. They are candidates for test profiles (Phase 3) and
+  targeted regression scenarios (Phases 5 and 8). Some of the others match
+  this repository's own fork-only recipes, such as `replicate_core_testing`.
+- [`reports/issues/`](https://github.com/mgifford/drupal-core-lab/tree/main/reports/issues):
+  40 tracked drupal.org issues on 2026-11-20. All have an EVIDENCE file,
+  39 have a REPRODUCE file and a machine-readable `status.json`
+  (drupal.org status, component, version, merge request), 31 have patch
+  branches and 23 have a STATUS file. They list the known issues to
+  recheck on newer core, so a closed issue is only called resolved after it
+  is retested (Phase 8).
+
+## Observatory brief (future work)
+
+[OBSERVATORY-BRIEF.md](OBSERVATORY-BRIEF.md), recorded on 2026-11-20, sets a
+longer-term goal: a weekly Drupal Quality Observatory for Drupal core and
+Drupal CMS, with comparable evidence over time. It is not yet part of the
+phases above. It does not change the phases in progress. This table maps its
+stages onto them.
+
+| Brief stage | Phases in this plan |
+| --- | --- |
+| 0. Confirm the foundation | Phase 0 audit and the immediate repairs |
+| 1. Reproducible Drupal core environment | Phases 2 and 3 |
+| 2. Stable representative journeys | Phases 4 and 5 |
+| 3. Immutable evidence and comparisons | Phase 8 |
+| 4. Accessible reporting dashboard | No matching phase |
+| 5. Drupal CMS | Phase 7 |
+| 6. Performance | Phase 9 |
+| 7. Sustainability | Phase 9 |
+| 8. WCAG-EM-aligned exports | No matching phase |
+| 9. External integrations | Only the Drupal Core Lab boundary |
+| 10. Production weekly operation | Phase 10, but see decision D5 |
+
+Proposed ordering change, for the owner to confirm: after Phase 5, do
+Phase 8 (comparisons) and the reporting dashboard before Phase 6
+(contributed modules) and Phase 7 (Drupal CMS). The brief argues that a
+small weekly core scan with real comparisons is worth more than wide
+coverage without them.
+
+The brief also raises decisions D5 and D6 above, and it repeats D3: the
+testing tools must not depend on changing upstream Drupal files.
 
 ## What this plan does not change
 

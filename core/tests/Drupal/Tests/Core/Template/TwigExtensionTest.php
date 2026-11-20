@@ -12,6 +12,7 @@ use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\GeneratedLink;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderableInterface;
+use Drupal\Core\Render\RenderVisibilityResolver;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -84,7 +85,7 @@ class TwigExtensionTest extends UnitTestCase {
     $this->dateFormatter = $this->createStub(DateFormatterInterface::class);
     $this->fileUrlGenerator = $this->createStub(FileUrlGeneratorInterface::class);
 
-    $this->systemUnderTest = new TwigExtension($this->renderer, $this->urlGenerator, $this->themeManager, $this->dateFormatter, $this->fileUrlGenerator);
+    $this->systemUnderTest = new TwigExtension($this->renderer, $this->urlGenerator, $this->themeManager, $this->dateFormatter, $this->fileUrlGenerator, $this->createStub(RenderVisibilityResolver::class));
   }
 
   /**
@@ -177,6 +178,46 @@ class TwigExtensionTest extends UnitTestCase {
   }
 
   /**
+   * Tests that Twig's escape filters are replaced with our own.
+   */
+  #[DataProvider('providerTestEscapeFilterOverride')]
+  public function testEscapeFilterOverride(string $template, string $expected): void {
+    $loader = new ArrayLoader(['test' => $template]);
+    $twig = new Environment($loader, [
+      'cache' => FALSE,
+      'autoescape' => 'html',
+    ]);
+    $twig->addExtension($this->systemUnderTest);
+
+    // Explicit and automatic escaping must both call our filter.
+    $source = $twig->compileSource($loader->getSourceContext('test'));
+    $this->assertStringContainsString(sprintf("\$this->extensions['%s']->escapeFilter(", TwigExtension::class), $source);
+
+    $this->assertSame($expected, $twig->render('test', [
+      'text' => '<b>',
+      'markup' => Markup::create('<b>'),
+    ]));
+  }
+
+  /**
+   * Provides test data for testEscapeFilterOverride().
+   *
+   * @return array
+   *   An array of test data, each containing a Twig template string and the
+   *   expected rendered output.
+   */
+  public static function providerTestEscapeFilterOverride(): array {
+    return [
+      'auto-escaped string' => ['{{ text }}', '&lt;b&gt;'],
+      'auto-escaped markup' => ['{{ markup }}', '<b>'],
+      'escape filter' => ['{{ text|escape }}', '&lt;b&gt;'],
+      'e filter' => ['{{ text|e }}', '&lt;b&gt;'],
+      'escape filter with html strategy' => ['{{ text|e("html") }}', '&lt;b&gt;'],
+      'filter before auto-escaping' => ['{{ text|upper }}', '&lt;B&gt;'],
+    ];
+  }
+
+  /**
    * Tests the active_theme function.
    */
   public function testActiveTheme(): void {
@@ -264,7 +305,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests the escaping of objects implementing MarkupInterface.
    *
-   * @legacy-covers ::escapeFilter
+   * @see ::escapeFilter
    */
   public function testSafeStringEscaping(): void {
     $loader = new FilesystemLoader();
@@ -359,8 +400,8 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests escape with generated link.
    *
-   * @legacy-covers ::escapeFilter
-   * @legacy-covers ::bubbleArgMetadata
+   * @see ::escapeFilter
+   * @see ::bubbleArgMetadata
    */
   public function testEscapeWithGeneratedLink(): void {
     $this->setUpMockRenderer();
@@ -396,8 +437,8 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests render var with generated link.
    *
-   * @legacy-covers ::renderVar
-   * @legacy-covers ::bubbleArgMetadata
+   * @see ::renderVar
+   * @see ::bubbleArgMetadata
    */
   public function testRenderVarWithGeneratedLink(): void {
     $this->setUpMockRenderer();
@@ -479,7 +520,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests link with overridden attributes.
    *
-   * @legacy-covers ::getLink
+   * @see ::getLink
    */
   public function testLinkWithOverriddenAttributes(): void {
     $url = Url::fromRoute('<front>', [], ['attributes' => ['class' => ['foo']]]);
@@ -492,7 +533,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests Twig 'add_suggestion' filter.
    *
-   * @legacy-covers ::suggestThemeHook
+   * @see ::suggestThemeHook
    */
   #[DataProvider('providerTestTwigAddSuggestionFilter')]
   public function testTwigAddSuggestionFilter(?array $original_render_array, string $suggestion, ?array $expected_render_array): void {
@@ -609,7 +650,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests Twig 'add_class' filter.
    *
-   * @legacy-covers ::addClass
+   * @see ::addClass
    */
   #[DataProvider('providerTestTwigAddClass')]
   public function testTwigAddClass(array $element, string|array $classes, array $expected_result): void {
@@ -660,7 +701,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests Twig 'set_attribute' filter.
    *
-   * @legacy-covers ::setAttribute
+   * @see ::setAttribute
    */
   #[DataProvider('providerTestTwigSetAttribute')]
   public function testTwigSetAttribute(array $element, string $key, ?string $value, array $expected_result): void {

@@ -332,7 +332,7 @@ class MenuLinksTest extends KernelTestBase {
   /**
    * Tests handling of pending revisions.
    *
-   * @legacy-covers \Drupal\menu_link_content\Plugin\Validation\Constraint\MenuTreeHierarchyConstraintValidator::validate
+   * @see \Drupal\menu_link_content\Plugin\Validation\Constraint\MenuTreeHierarchyConstraintValidator::validate
    */
   public function testPendingRevisions(): void {
     /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
@@ -502,7 +502,6 @@ class MenuLinksTest extends KernelTestBase {
     ];
     $link = MenuLinkContent::create($options);
     $link->save();
-    assert($link instanceof MenuLinkContent);
     $output = Link::fromTextAndUrl($link->getTitle(), $link->getUrlObject())->toString()->getGeneratedLink();
     $this->assertStringContainsString('<a href="https://www.drupal.org/" class="classy">', $output);
     $this->assertStringNotContainsString('onmouseover=', $output);

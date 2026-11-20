@@ -3,8 +3,6 @@
  * Navigation layout overrides for the admin toolbar.
  */
 
-/* cspell:ignore navigationcreate, toolsextra, xxxs */
-
 @import "../base/media-queries.pcss.css";
 
 :root {
@@ -28,18 +26,6 @@
 html.admin-toolbar-expanded {
   @media (--admin-medium) {
     --admin-theme-toolbar-x-offset: var(--drupal-displace-offset-left, 264px);
-  }
-}
-
-body.admin--navigation {
-  --admin-toolbar-sidebar-width: 4rem;
-}
-
-[data-admin-toolbar="expanded"] body.admin--navigation {
-  --admin-toolbar-sidebar-width: 16.5rem;
-
-  @media (--admin-toolbar-tablet) {
-    --admin-toolbar-sidebar-width: calc(16.5 * var(--admin-toolbar-rem));
   }
 }
 

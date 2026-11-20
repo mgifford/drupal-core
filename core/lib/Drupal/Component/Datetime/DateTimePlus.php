@@ -408,22 +408,6 @@ class DateTimePlus implements \Stringable {
   }
 
   /**
-   * Prepares the input format value.
-   *
-   * Changes the input format before trying to use it, if necessary.
-   * Can be overridden to handle special cases.
-   *
-   * @param string $format
-   *   A PHP format string.
-   *
-   * @return string
-   *   The massaged PHP format string.
-   */
-  protected function prepareFormat($format) {
-    return $format;
-  }
-
-  /**
    * Examines getLastErrors() to see what errors to report.
    *
    * Two kinds of errors are important: anything that DateTime
@@ -683,7 +667,7 @@ class DateTimePlus implements \Stringable {
    *   The string representation.
    */
   public function __toString(): string {
-    return (string) $this->render();
+    return $this->render();
   }
 
 }

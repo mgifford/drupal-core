@@ -98,8 +98,8 @@ class FilterAPITest extends EntityKernelTestBase {
   /**
    * Tests that HTML restrictions and filter types are correct.
    *
-   * @legacy-covers \Drupal\filter\Entity\FilterFormat::getHtmlRestrictions
-   * @legacy-covers \Drupal\filter\Entity\FilterFormat::getFilterTypes
+   * @see \Drupal\filter\Entity\FilterFormat::getHtmlRestrictions
+   * @see \Drupal\filter\Entity\FilterFormat::getFilterTypes
    */
   public function testFilterFormatAPI(): void {
     // Test on filtered_html.
@@ -478,7 +478,7 @@ class FilterAPITest extends EntityKernelTestBase {
    * deleted.
    *
    * @see \Drupal\filter\Entity\FilterFormat::onDependencyRemoval()
-   * @see filter_system_info_alter()
+   * @see \Drupal\filter\FilterUninstallValidator
    */
   public function testDependencyRemoval(): void {
     $this->installSchema('user', ['users_data']);

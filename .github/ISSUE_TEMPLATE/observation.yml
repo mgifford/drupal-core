@@ -1,0 +1,76 @@
+name: Observation
+description: Record a problem seen while installing or testing Drupal, even if it happened only once.
+title: "[Observation]: "
+labels: ["observation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Record what you saw and the exact environment, so the problem can be checked again later.
+        See [Recording discovered issues](https://github.com/mgifford/drupal-core/blob/main/docs/testing/recording-issues.md) for how an observation becomes a confirmed or upstream issue.
+        Raw automated scanner results stay in run evidence until a person confirms them.
+  - type: textarea
+    id: symptom
+    attributes:
+      label: What happened
+      description: The visible symptom and the exact error message.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps that led to it
+      description: Commands, URLs and actions, in order.
+    validations:
+      required: true
+  - type: input
+    id: core-commit
+    attributes:
+      label: Drupal core commit
+      description: The commit the site ran, for example from `git rev-parse --short HEAD` in the checkout DDEV serves.
+      placeholder: 92e5c3a304
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch of this repository
+      placeholder: main
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: How the site was installed
+      options:
+        - Web installer (/core/install.php)
+        - core/scripts/drupal install
+        - drush site:install
+        - Recipe applied to an existing site
+        - Not applicable
+        - Other (describe in the steps)
+    validations:
+      required: true
+  - type: input
+    id: profile
+    attributes:
+      label: Install profile or recipe
+      placeholder: standard
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Versions that might matter.
+      value: |
+        - PHP:
+        - Database:
+        - DDEV:
+        - Browser:
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, diagnostic output and screenshots. Never paste passwords, tokens or session cookies.
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround or fix found
+      description: What made the problem go away, if anything did.

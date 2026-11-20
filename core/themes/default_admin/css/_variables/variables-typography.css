@@ -4,9 +4,6 @@
  * https://www.drupal.org/node/3084859
  * @preserve
  */
-
-/* cspell:ignore blinkmacsystemfont */
-
 /**
  * @file
  * Typography custom properties — the canonical `--admin-font-*` token API.
@@ -19,10 +16,9 @@
  *
  * Sizes are authored in px; the build's px-to-rem step converts them.
  */
-
 :root {
   /* Font families. */
-  --admin-font-family: inter, "Helvetica Neue", blinkmacsystemfont, -apple-system, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, sans-serif;
+  --admin-font-family: var(--drupal-font-inter);
   --admin-font-family-serif: "Times New Roman", times, serif;
 
   /* Line heights. (Unitless ratios are not lengths; -label is a fixed 18px.) */

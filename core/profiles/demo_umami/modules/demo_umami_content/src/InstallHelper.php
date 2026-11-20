@@ -12,7 +12,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\State\StateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-// cSpell:ignore María García Gregorio Sánchez
+// cSpell:ignore María García Sánchez
 
 /**
  * Defines a helper class for importing default content.
@@ -21,34 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   This code is only for use by the Umami demo: Content module.
  */
 class InstallHelper implements ContainerInjectionInterface {
-
-  /**
-   * Entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * Module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * State.
-   *
-   * @var \Drupal\Core\State\StateInterface
-   */
-  protected $state;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
 
   /**
    * Enabled languages.
@@ -109,11 +81,12 @@ class InstallHelper implements ContainerInjectionInterface {
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, ModuleHandlerInterface $moduleHandler, StateInterface $state, FileSystemInterface $fileSystem) {
-    $this->entityTypeManager = $entityTypeManager;
-    $this->moduleHandler = $moduleHandler;
-    $this->state = $state;
-    $this->fileSystem = $fileSystem;
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected ModuleHandlerInterface $moduleHandler,
+    protected StateInterface $state,
+    protected FileSystemInterface $fileSystem,
+  ) {
     $this->termIdMap = [];
     $this->mediaImageIdMap = [];
     $this->nodeIdMap = [];

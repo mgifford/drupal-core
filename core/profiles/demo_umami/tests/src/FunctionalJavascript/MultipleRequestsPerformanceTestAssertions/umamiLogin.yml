@@ -43,6 +43,7 @@ CacheTagGroupedLookups:
   -
     - 'config:block_list'
   -
+    - 'block_content:1'
     - 'config:filter.format.basic_html'
     - 'config:system.menu.footer'
   -
@@ -77,5 +78,5 @@ CacheTagGroupedLookups:
     - 'config:user.role.authenticated'
 ScriptCount: 3
 ScriptBytes: 13345
-StylesheetCount: 7
+StylesheetCount: 10
 StylesheetBytes: 32566

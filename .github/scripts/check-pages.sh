@@ -78,6 +78,16 @@ LIVE_URLS=(
   "${BASE_URL}/docs/how-to-ensure-your-contribution-is-accessible-changes.html"
 )
 
+# The live site shows the last deployment of main, not the commit under test,
+# so only check it when asked. The workflow sets CHECK_LIVE_SITE=true for its
+# daily schedule and manual runs; pushes and pull requests check the files
+# above only, so a Pages outage cannot fail an unrelated change.
+if [ "${CHECK_LIVE_SITE:-false}" != "true" ]; then
+  echo "Skipping live URL checks (set CHECK_LIVE_SITE=true to run them)."
+  LIVE_URLS=()
+  SKIPPED_LIVE=1
+fi
+
 for URL in "${LIVE_URLS[@]}"; do
   echo "Checking $URL..."
   # Allow command to fail (e.g. DNS failure) without crashing the script
@@ -106,7 +116,11 @@ if [ "$FAILED" -eq 1 ]; then
 else
   echo ""
   echo "============================================="
-  echo "✅ All checks PASSED! GitHub Pages is healthy."
+  if [ "${SKIPPED_LIVE:-0}" -eq 1 ]; then
+    echo "✅ Repository files OK (live site not checked)."
+  else
+    echo "✅ All checks PASSED! GitHub Pages is healthy."
+  fi
   echo "============================================="
   exit 0
 fi

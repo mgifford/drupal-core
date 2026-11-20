@@ -61,7 +61,7 @@ final class MediaSourceValidationTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('media');
     $this->installSchema('file', ['file_usage']);
-    $this->installConfig(['media']);
+    $this->installConfig(['system', 'media']);
     $this->mediaType = $this->createMediaType('oembed:video');
     $this->fieldName = $this->mediaType->getSource()
       ->getSourceFieldDefinition($this->mediaType)
@@ -95,7 +95,7 @@ final class MediaSourceValidationTest extends KernelTestBase {
   /**
    * Tests existing validation constraints are respected by Media::validate.
    *
-   * @legacy-covers \Drupal\media\Entity\Media::validate
+   * @see \Drupal\media\Entity\Media::validate
    */
   public function testValidation(): void {
     $history = [];

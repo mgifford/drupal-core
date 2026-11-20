@@ -299,7 +299,7 @@ trait PerformanceTestTrait {
    *   The conditionally quoted query arguments.
    */
   protected static function quoteQueryArgs(array $args): array {
-    $conditionalQuote = function ($arg) {
+    $conditionalQuote = function ($arg): int|float|string {
       return is_int($arg) || is_float($arg) ? $arg : '"' . $arg . '"';
     };
     return array_map($conditionalQuote, $args);
@@ -643,12 +643,9 @@ trait PerformanceTestTrait {
    * @param string $message
    *   The message to display.
    *
-   * @return void
-   *   No return value.
-   *
    * @throws \PHPUnit\Framework\ExpectationFailedException
    */
-  protected function assertCountBetween(int $min, int $max, int $actual, string $message = '') {
+  protected function assertCountBetween(int $min, int $max, int $actual, string $message = ''): void {
     if (!empty($message)) {
       $message .= " ";
     }
@@ -684,9 +681,6 @@ trait PerformanceTestTrait {
    *   The expected metrics.
    * @param \Drupal\Tests\PerformanceData $performance_data
    *   An instance of the performance data value object.
-   *
-   * @return void
-   *   No return value.
    */
   protected function assertMetrics(
     array $expected,

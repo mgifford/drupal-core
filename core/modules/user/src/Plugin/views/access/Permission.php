@@ -4,7 +4,6 @@ namespace Drupal\user\Plugin\views\access;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -26,29 +25,11 @@ use Symfony\Component\Routing\Route;
   help: new TranslatableMarkup('Access will be granted to users with the specified permission string.'),
 )]
 class Permission extends AccessPluginBase implements CacheableDependencyInterface {
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * The service properties that should raise a deprecation error.
-   */
-  private array $deprecatedProperties = ['moduleHandler' => 'module_handler'];
 
   /**
    * {@inheritdoc}
    */
   protected $usesOptions = TRUE;
-
-  /**
-   * The permission handler.
-   *
-   * @var \Drupal\user\PermissionHandlerInterface
-   */
-  protected $permissionHandler;
-
-  /**
-   * Module extension list.
-   */
-  protected ModuleExtensionList $moduleExtensionList;
 
   /**
    * Constructs a Permission object.
@@ -59,22 +40,20 @@ class Permission extends AccessPluginBase implements CacheableDependencyInterfac
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\user\PermissionHandlerInterface $permission_handler
+   * @param \Drupal\user\PermissionHandlerInterface $permissionHandler
    *   The permission handler.
-   * @param \Drupal\Core\Extension\ModuleExtensionList $module_extension_list
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
    *   The module extension list.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    PermissionHandlerInterface $permission_handler,
+    protected PermissionHandlerInterface $permissionHandler,
     #[Autowire(service: 'extension.list.module')]
-    ModuleExtensionList $module_extension_list,
+    protected ModuleExtensionList $moduleExtensionList,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->permissionHandler = $permission_handler;
-    $this->moduleExtensionList = $module_extension_list;
   }
 
   /**

@@ -35,9 +35,9 @@ class ProxyBuilderTest extends UnitTestCase {
   /**
    * Tests build complex method.
    *
-   * @legacy-covers ::buildMethod
-   * @legacy-covers ::buildParameter
-   * @legacy-covers ::buildMethodBody
+   * @see ::buildMethod
+   * @see ::buildParameter
+   * @see ::buildMethodBody
    */
   public function testBuildComplexMethod(): void {
     $class = 'Drupal\Tests\Core\ProxyBuilder\TestServiceComplexMethod';
@@ -159,9 +159,8 @@ EOS;
     $expected_string = str_replace('{{ namespace }}', $namespace, $expected_string);
     $expected_string = str_replace('{{ class }}', $class, $expected_string);
     $expected_string = str_replace('{{ expected_methods_body }}', $expected_methods_body, $expected_string);
-    $expected_string = str_replace('{{ interface_string }}', $interface_string, $expected_string);
 
-    return $expected_string;
+    return str_replace('{{ interface_string }}', $interface_string, $expected_string);
   }
 
 }

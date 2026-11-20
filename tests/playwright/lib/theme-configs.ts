@@ -29,29 +29,6 @@ export interface ThemeConfig {
 }
 
 export const THEME_CONFIGS: ThemeConfig[] = [
-  // ── Olivero ───────────────────────────────────────────────────────────────
-  // No dark variant: Olivero does not implement prefers-color-scheme, so a
-  // dark scan would duplicate the light results.
-  {
-    id: 'olivero',
-    label: 'Olivero',
-    defaultTheme: 'olivero',
-    adminTheme: 'claro',
-    testAnonymous: true,
-    testAdmin: false,
-    colorScheme: 'light',
-  },
-  // ── Claro ─────────────────────────────────────────────────────────────────
-  // No dark variant: Claro has no dark mode.
-  {
-    id: 'claro',
-    label: 'Claro',
-    defaultTheme: 'claro',
-    adminTheme: 'claro',
-    testAnonymous: true,
-    testAdmin: true,
-    colorScheme: 'light',
-  },
   // ── Default admin (experimental) ──────────────────────────────────────────
   // The only core theme with real dark-mode support (Gin-based). The crawl
   // sets `default_admin.settings enable_dark_mode: auto` so the dark variant

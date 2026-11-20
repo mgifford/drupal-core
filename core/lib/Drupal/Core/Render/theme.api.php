@@ -808,47 +808,6 @@ function hook_themes_uninstalled(array $themes): void {
 }
 
 /**
- * Declare a template file extension to be used with a theme engine.
- *
- * This hook is used in a theme engine implementation in the format of
- * ENGINE_extension().
- *
- * @return string
- *   The file extension the theme engine will recognize.
- */
-function hook_extension(): string {
-  // Extension for template base names in Twig.
-  return '.html.twig';
-}
-
-/**
- * Render a template using the theme engine.
- *
- * It is the theme engine's responsibility to escape variables. The only
- * exception is if a variable implements
- * \Drupal\Component\Render\MarkupInterface. Drupal is inherently unsafe if
- * other variables are not escaped.
- *
- * @param string $template_file
- *   The path (relative to the Drupal root directory) to the template to be
- *   rendered including its extension in the format 'path/to/TEMPLATE_NAME.EXT'.
- * @param array $variables
- *   A keyed array of variables that are available for composing the output. The
- *   theme engine is responsible for passing all the variables to the template.
- *   Depending on the code in the template, all or just a subset of the
- *   variables might be used in the template.
- *
- * @return string
- *   The output generated from the template. In most cases this will be a string
- *   containing HTML markup.
- */
-function hook_render_template($template_file, $variables): string|\Stringable {
-  $twig_service = \Drupal::service('twig');
-
-  return $twig_service->loadTemplate($template_file)->render($variables);
-}
-
-/**
  * Alter the element type information returned from modules.
  *
  * A module may implement this hook in order to alter the element type defaults
@@ -857,6 +816,8 @@ function hook_render_template($template_file, $variables): string|\Stringable {
  * @param array $info
  *   An associative array with structure identical to that of the return value
  *   of \Drupal\Core\Render\ElementInfoManagerInterface::getInfo().
+ *   This array will be serialized so it should not contain closures or
+ *   anonymous functions.
  *
  * @see \Drupal\Core\Render\ElementInfoManager
  * @see \Drupal\Core\Render\Element\ElementInterface
@@ -1322,10 +1283,10 @@ function hook_theme($existing, $type, $theme, $path): array {
  *   'template' => 'entity-add-list',
  *   'initial preprocess' => 'Drupal\\system\\Hook\\SystemThemeHooks:preprocessEntityAddList',
  *   'type' => 'theme_engine',
- *   'theme path' => 'core/themes/claro',
- *   'path' => 'core/themes/claro/templates',
+ *   'theme path' => 'core/themes/my_theme',
+ *   'path' => 'core/themes/my_theme/templates',
  *   'preprocess functions' => [
- *     0 => 'claro_preprocess_entity_add_list',
+ *     0 => 'my_theme_preprocess_entity_add_list',
  *   ],
  * ];
  * @endcode
