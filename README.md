@@ -3,12 +3,14 @@
 > **This fork is an accessibility & sustainability test harness for Drupal
 > core** — a Playwright + axe-core multi-theme crawl with pattern-level bug
 > tracking, WSG/CO2 measurement, and accessibility-tree snapshots.
-> Published reports: **<https://mgifford.github.io/drupal-core/>**
+> Published reports (archived snapshot of March to July 2026 scans):
+> **<https://mgifford.github.io/drupal-core/>**
 >
 > | Start here | |
 > | :--- | :--- |
 > | [SETUP.md](SETUP.md) | Install the test environment (DDEV, modules, browsers) |
 > | [docs/testing/PLAYWRIGHT.md](docs/testing/PLAYWRIGHT.md) | Run the browser tests, `npm run doctor`, Playwright MCP |
+> | [docs/testing/recording-issues.md](docs/testing/recording-issues.md) | Record discovered problems as GitHub issues, from observation to upstream |
 > | [docs/architecture/](docs/architecture/CURRENT-STATE.md) | Current state, capability inventory, migration plan |
 > | [A11Y-PROCESS.md](A11Y-PROCESS.md) | Running crawls, analyzing, filing issues |
 > | [TOOLING-ROADMAP.md](TOOLING-ROADMAP.md) | Executable work orders (linked to [issues](https://github.com/mgifford/drupal-core/issues)) |
