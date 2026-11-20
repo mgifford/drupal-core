@@ -44,9 +44,9 @@ Create a repeatable, low-risk workflow to evaluate and fix older Drupal Core acc
 Useful commands:
 
 - `ddev launch`
-- `ddev drush cr`
-- `ddev drush uli`
-- `ddev drush status`
+- `ddev exec dr cache:rebuild`
+- `ddev exec dr user:login --url=https://drupal-core.ddev.site`
+- `ddev exec dr status`
 
 ## Quick triage checklist (generic)
 

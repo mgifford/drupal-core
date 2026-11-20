@@ -7,8 +7,8 @@
 #
 # Default behavior (no args):
 #   Restore the saved ddev database snapshot (complete reset). If no snapshot exists,
-#   rebuild the baseline from scratch via `drush site:install standard` + the issue
-#   recipe, then save a snapshot for next time.
+#   rebuild the baseline from scratch (.agents/scripts/site-install.php installs the
+#   standard profile, then the issue recipe is applied), then save a snapshot for next time.
 #
 # Usage:
 #   ddev reset-site            # restore baseline snapshot (rebuild if missing)
@@ -16,7 +16,8 @@
 #   ddev reset-site --recipe   # force rebuild from the recipe, ignoring the snapshot
 #   ddev reset-site --help     # this help
 #
-# After reset, log in with: ddev drush uli
+# After reset, log in as admin / admin, or run:
+#   ddev exec dr user:login --url=https://drupal-core.ddev.site
 #
 # Notes:
 #   - Code (git working tree / patches) is NEVER modified, stashed, or deleted.
@@ -27,7 +28,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 SNAPSHOT="drupal-core-baseline"
 RECIPE="core/recipes/replicate_core_testing"
-DRUSH="ddev exec drush"
+DR="ddev exec dr"
 
 usage() { sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; }
 
@@ -49,10 +50,11 @@ snapshot_exists() {
 rebuild() {
   echo "==> Ensuring ddev is running"
   ddev start >/dev/null
-  echo "==> Rebuilding baseline: drush site:install standard"
-  $DRUSH site:install standard -y --account-mail=admin@example.com
+  echo "==> Rebuilding baseline: install the standard profile"
+  $DR sql:drop -n
+  ddev exec php .agents/scripts/site-install.php
   echo "==> Applying recipe: $RECIPE"
-  $DRUSH recipe "$RECIPE"
+  $DR recipe:apply -n "$RECIPE"
   echo "==> Saving snapshot: $SNAPSHOT"
   ddev snapshot --cleanup --name "$SNAPSHOT" -y >/dev/null 2>&1 || true
   ddev snapshot --name "$SNAPSHOT"
@@ -71,4 +73,4 @@ else
 fi
 
 echo
-echo "==> Reset complete. Log in with: ddev drush uli"
+echo "==> Reset complete. Log in as admin / admin."

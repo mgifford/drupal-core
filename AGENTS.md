@@ -114,8 +114,9 @@ Use the `127.0.0.1:<port>` HTTP port if a browser cannot load CSS/JS from
    `ddev snapshot --name <label>`.
 4. **Do not post to drupal.org or push to any remote** without the user's
    explicit approval. Draft issue comments for the user to review.
-5. **Do not add Drush or other dependencies** to `composer.json`. Use
-   `core/scripts/dr` for cache rebuilds and login links.
+5. **Do not add dependencies** to `composer.json`. Drush 15 (`drush/drush`
+   in `require-dev`) is the one deliberate addition. It has no `drush`
+   binary, so run its commands through `core/scripts/dr`.
 6. Use AI-assisted disclosure on commits and comments (see the repository's
    contribution notes).
 7. Say what was **not** verified. Automated results are not a substitute for a
