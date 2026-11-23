@@ -1,0 +1,32 @@
+# Optional trace collection for local runs. Start DDEV first: the services
+# join DDEV's network so the Drupal container can reach the collector at
+# http://observatory-otel-collector:4318. Nothing is published on a host port
+# except the optional Jaeger UI, on 127.0.0.1 only.
+#
+#   docker compose -f observability/compose.yaml up -d
+#   COLLECTOR_CONFIG=collector-jaeger.yaml docker compose -f observability/compose.yaml --profile viewer up -d
+#   docker compose -f observability/compose.yaml down
+name: drupal-observatory
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.165.0
+    container_name: observatory-otel-collector
+    command: ["--config=/etc/observatory/${COLLECTOR_CONFIG:-collector.yaml}"]
+    volumes:
+      - ./:/etc/observatory:ro
+      - ../tests/playwright/reports/evidence/otel:/evidence
+    networks: [ddev]
+
+  jaeger:
+    profiles: [viewer]
+    image: jaegertracing/jaeger:2.23.0
+    container_name: observatory-jaeger
+    ports:
+      - "127.0.0.1:16686:16686"
+    networks: [ddev]
+
+networks:
+  ddev:
+    name: ddev_default
+    external: true

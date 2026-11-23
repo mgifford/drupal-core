@@ -7,22 +7,26 @@
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { newRunId } from './ids.mjs';
 
-export const EVIDENCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../reports/evidence');
+// No import.meta here: Playwright loads this file as CommonJS from specs.
 
 let fallbackRunId = null;
 
-/** Returns { runId, runDir } for this test process. */
-export function currentRun() {
+/**
+ * Returns { runId, runDir } for this test process.
+ *
+ * @param {string} defaultRoot  Evidence folder to use when EVIDENCE_DIR is
+ *   not set, normally tests/playwright/reports/evidence.
+ */
+export function currentRun(defaultRoot) {
   let runId = process.env.EVIDENCE_RUN_ID;
   if (!runId) {
     // Run outside the evidence runner: give this worker its own run.
     fallbackRunId ??= newRunId();
     runId = fallbackRunId;
   }
-  const runDir = path.join(process.env.EVIDENCE_DIR ?? EVIDENCE_ROOT, runId);
+  const runDir = path.join(process.env.EVIDENCE_DIR ?? defaultRoot, runId);
   return { runId, runDir };
 }
 

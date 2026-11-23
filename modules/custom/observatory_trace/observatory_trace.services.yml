@@ -1,0 +1,18 @@
+services:
+  observatory_trace.tracer:
+    class: Drupal\observatory_trace\RequestTracer
+    arguments: ['@state']
+    tags:
+      - { name: needs_destruction }
+  observatory_trace.middleware:
+    class: Drupal\observatory_trace\StackMiddleware\TraceMiddleware
+    arguments: ['@observatory_trace.tracer', '@database']
+    tags:
+      # Outside the page cache (200), so cache hits are traced too, and
+      # inside the reverse proxy middleware (300).
+      - { name: http_middleware, priority: 260 }
+  observatory_trace.subscriber:
+    class: Drupal\observatory_trace\EventSubscriber\TraceSubscriber
+    arguments: ['@observatory_trace.tracer']
+    tags:
+      - { name: event_subscriber }

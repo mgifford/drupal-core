@@ -163,8 +163,8 @@ ${table('cmp-find', 'Finding classifications', ['Occurrence', 'Rule', 'Classific
 <title>${escape(title)}</title>
 <style>
 :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+html { background: Canvas; color: CanvasText; }
 body { margin: 0 auto; max-width: 70rem; padding: 1rem; overflow-wrap: anywhere; }
-a { color: LinkText; }
 :focus-visible { outline: 3px solid; outline-offset: 2px; }
 .skip { position: absolute; left: -100vw; }
 .skip:focus { position: static; }
