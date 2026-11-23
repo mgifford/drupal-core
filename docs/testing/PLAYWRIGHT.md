@@ -89,10 +89,14 @@ From the repository root:
 
 ## Smoke suite
 
-The suite covers six scenarios. Accessible names come from the Drupal source
-at the tested revision:
+The suite covers six scenarios in five tests (scenarios 4 and 5 are one
+test). Accessible names come from the Drupal source at the tested revision:
 
-1. The home page responds and has a `main` landmark.
+1. An anonymous visitor to the home page gets "Access denied" (HTTP 403),
+   with a `main` landmark. This is upstream's design: since commit
+   `308cba9319` (drupal.org #3590882), the Standard profile's front page is
+   `/admin/welcome`, which needs the "access administration pages"
+   permission. A 200 here means upstream changed the front page.
 2. The login form has a labelled Username field, a Password field and a
    "Log in" button.
 3. The administrative navigation ("Administrative sidebar") is available
@@ -167,19 +171,34 @@ Regression runs never need MCP.
   `"permissions": { "deny": ["mcp__playwright__browser_run_code_unsafe"] }`.
 - Never give the MCP browser production or personal credentials.
 
-## Not yet verified
+## Verification
 
-The following have not been verified, because the sandbox used to write this
-had no Docker access and could not bind a local port:
+First verified against a running site on 2026-11-23:
 
-- the smoke suite and the axe scan against a running site
-- Playwright MCP against a Drupal site
+- **Code under test:** fork commit `bba11f1ede` (core merged from upstream
+  `92e5c3a304`), plus the home page test change above, which was not yet
+  committed at run time.
+- **Environment:** DDEV 1.25.5 with PHP 8.5 and MariaDB 11.8, the site
+  installed with `ddev reset-site --recipe`, and a dedicated test account
+  (uid 2, administrator role).
+- **Tools:** Playwright 1.61.1, Chromium build 1228, axe-core 4.12.1.
 
-Verified so far:
+Results:
 
-- `npm run test:list` discovers all specs
-- `npm run test:unit` passes
-- `npm run doctor` reports this machine correctly
+- `npm run test:smoke`: 5 of 5 passed.
+- `test:a11y` (axe scan of `/user/login`): passed, with 0 violations, 26
+  passed rules and 0 incomplete.
+- Playwright MCP: opened `/user/login` and wrote its accessibility snapshot
+  to `tests/playwright/reports/mcp`. A navigation to another origin was
+  blocked (`ERR_BLOCKED_BY_CLIENT`).
+- `npm run test:list` lists 252 tests in 8 files, `npm run test:unit`
+  passes 29 of 29, and `npm run doctor` reports no failures.
 
-Run the smoke suite on a machine where `ddev start` works before calling
-Phase 1 done.
+Not yet verified:
+
+- the other specs under `tests/playwright/tests/`: the login spec, the
+  Guidepup virtual screen reader specs and the multi-scanner crawl
+  (`npm run test:playwright` was not run)
+- the real VoiceOver project
+- keyboard, screen reader, zoom and reflow checks of the login form, which
+  axe cannot cover
