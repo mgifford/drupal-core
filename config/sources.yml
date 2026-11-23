@@ -1,0 +1,34 @@
+# Upstream code the testing engine can fetch and pin.
+# Validated by scripts/lib/sources.mjs. See docs/testing/SOURCES.md.
+#
+# git sources are fetched into a bare, blobless store under workspaces/ and
+# checked out per pinned commit. Only https:// and file:// URLs are accepted.
+schema_version: 1
+
+defaults:
+  # Source used when a command is not given one.
+  source: drupal-core
+  # Fetch before pinning the branch tip. --offline overrides this per command.
+  refresh_before_run: true
+
+sources:
+  drupal-core:
+    type: git
+    url: https://git.drupalcode.org/project/drupal.git
+    branch: main
+    directory: workspaces/sources/drupal-core
+
+  drupal-cms-development:
+    type: git
+    url: https://git.drupalcode.org/project/drupal_cms.git
+    # The development repository's default branch is 2.x, not main
+    # (`git ls-remote --symref <url> HEAD`, checked 2026-11-19).
+    branch: 2.x
+    directory: workspaces/sources/drupal-cms-development
+
+  drupal-cms-project:
+    # Installed with Composer from the published project template. Phase 7
+    # adds its handler; until then commands report it as not supported.
+    type: composer-project
+    package: drupal/cms
+    version_policy: latest-compatible-stable

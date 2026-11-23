@@ -186,6 +186,7 @@ More detailed information is available in the project documentation:
 - [Capability inventory](docs/architecture/CAPABILITY-INVENTORY.md)
 - [Migration and development plan](docs/architecture/MIGRATION-PLAN.md)
 - [Playwright testing](docs/testing/PLAYWRIGHT.md)
+- [Upstream sources: fetch, pin and compare](docs/testing/SOURCES.md)
 - [Accessibility testing process](A11Y-PROCESS.md)
 - [Web Sustainability Guidelines alignment](WSG-ALIGNMENT.md)
 - [Testing infrastructure roadmap](TOOLING-ROADMAP.md)
