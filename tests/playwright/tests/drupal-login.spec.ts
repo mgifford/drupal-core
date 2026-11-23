@@ -31,6 +31,6 @@ test.describe('Drupal login', () => {
     await expect(
       page.getByLabel('User account menu').getByRole('link', { name: 'Log out' }),
     ).toBeVisible();
-    await expect(page).toHaveTitle(/admin \| Drush Site-Install/);
+    await expect(page).toHaveTitle(/^admin \| /);
   });
 });

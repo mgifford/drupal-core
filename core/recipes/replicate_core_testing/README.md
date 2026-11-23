@@ -23,9 +23,10 @@ content moderation workflow, multiple text formats, user pictures, responsive im
 ## Use it
 The reset script applies this automatically. To apply manually on a fresh standard site:
 ```bash
-ddev exec drush site:install standard -y
-ddev exec drush recipe core/recipes/replicate_core_testing
-ddev drush uli
+ddev exec dr sql:drop -n
+ddev exec php .agents/scripts/site-install.php
+ddev exec dr recipe:apply -n core/recipes/replicate_core_testing
+ddev exec dr user:login --url=https://drupal-core.ddev.site
 ```
 
 ## Extend it

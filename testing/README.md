@@ -38,7 +38,7 @@ scripts/reset-site.sh           # reset the dev site to a clean baseline
    ```bash
    ddev reset-site            # restore saved snapshot
    ddev reset-site --capture  # after intentionally changing the baseline
-   ddev drush uli             # log back in
+   ddev exec dr user:login --url=https://drupal-core.ddev.site   # log back in
    ```
 5. **Push progress** to GitHub so it is not lost:
    ```bash
@@ -55,9 +55,10 @@ and sets Default Admin as the administration theme so the sidebar / advanced-gro
 behavior can be reproduced.
 
 ```bash
-ddev exec drush site:install standard -y
-ddev exec drush recipe core/recipes/replicate_core_testing
-ddev drush uli
+ddev exec dr sql:drop -n
+ddev exec php .agents/scripts/site-install.php
+ddev exec dr recipe:apply -n core/recipes/replicate_core_testing
+ddev exec dr user:login --url=https://drupal-core.ddev.site
 ```
 
 `ddev reset-site` restores a saved database snapshot (fast) and falls back to the recipe

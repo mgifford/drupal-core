@@ -13,8 +13,22 @@ export const OUT_DIR = path.resolve(__dirname, '../../../reports');
 /** Temp dir where each scan group writes its partial result shard. */
 export const TEMP_DIR = path.join(OUT_DIR, '.tmp-crawl');
 
+/**
+ * Runs a Drush command in DDEV. Drush 15 has no `drush` binary; its commands
+ * run through core's `dr` CLI.
+ */
 export function drush(cmd: string): string {
-  return execSync(`ddev drush ${cmd}`).toString();
+  return execSync(`ddev exec dr ${cmd}`).toString();
+}
+
+/**
+ * Reads one config value as a string. `dr config:get` has no plain-string
+ * format, so this reads the JSON form ({"name:key": value}).
+ */
+export function configGet(name: string, key: string): string {
+  const parsed = JSON.parse(drush(`config:get ${name} ${key} --format=json`));
+  const value = Object.values(parsed)[0];
+  return value === null || value === undefined ? '' : String(value);
 }
 
 /**
@@ -27,8 +41,8 @@ export function captureOriginalSettingsOnce(): void {
     return;
   }
 
-  const defaultTheme = drush('config:get system.theme default --format=string').trim();
-  const adminTheme = drush('config:get system.theme admin --format=string').trim() || 'default_admin';
+  const defaultTheme = configGet('system.theme', 'default');
+  const adminTheme = configGet('system.theme', 'admin') || 'default_admin';
 
   const original = {
     defaultTheme,

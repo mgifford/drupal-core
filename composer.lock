@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b494f7d0cdee5f6e3ec1902a9b12e7c",
+    "content-hash": "f10a3b7fc207421360e1edb3399b9d15",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -551,7 +551,7 @@
             "dist": {
                 "type": "path",
                 "url": "composer/Plugin/Scaffold",
-                "reference": "0fdec1a8ed622a9ed92bb80730a5337c390cc7fb"
+                "reference": "bf33e47f4cf57dfeef7b195688fe325d0ee21c67"
             },
             "require": {
                 "composer-plugin-api": "^2",
@@ -561,7 +561,7 @@
                 "drupal-composer/drupal-scaffold": "*"
             },
             "require-dev": {
-                "composer/composer": "^1.8@stable"
+                "composer/composer": "^2.9@stable"
             },
             "type": "composer-plugin",
             "extra": {
@@ -5269,6 +5269,69 @@
             "published-time": "2026-09-12T12:23:30+00:00"
         },
         {
+            "name": "chi-teck/drupal-code-generator",
+            "version": "4.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Chi-teck/drupal-code-generator.git",
+                "reference": "ee02eb9373a534ab9a426eb7c9e9b75918785694"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/ee02eb9373a534ab9a426eb7c9e9b75918785694",
+                "reference": "ee02eb9373a534ab9a426eb7c9e9b75918785694",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=8.3.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/log": "^3.0",
+                "symfony/console": "^7.4 || ^8",
+                "symfony/dependency-injection": "^7.4 || ^8",
+                "symfony/filesystem": "^7.4 || ^8",
+                "symfony/string": "^7.4 || ^8",
+                "twig/twig": "^3.4"
+            },
+            "conflict": {
+                "nikic/php-parser": "<4.17",
+                "squizlabs/php_codesniffer": "<3.6"
+            },
+            "require-dev": {
+                "chi-teck/drupal-coder-extension": "^2.0.0-rc2",
+                "drupal/coder": "8.3.24",
+                "drupal/core": "11.x-dev || 12.x-dev",
+                "ext-simplexml": "*",
+                "phpspec/prophecy-phpunit": "^2.2",
+                "phpunit/phpunit": "^10.5",
+                "squizlabs/php_codesniffer": "^3.9",
+                "symfony/var-dumper": "^7.4 || ^8",
+                "symfony/yaml": "^7.4 || ^8",
+                "vimeo/psalm": "^5.24.0"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/dcg"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DrupalCodeGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Drupal code generator",
+            "support": {
+                "issues": "https://github.com/Chi-teck/drupal-code-generator/issues",
+                "source": "https://github.com/Chi-teck/drupal-code-generator/tree/4.x"
+            },
+            "time": "2026-03-29T17:10:39+00:00",
+            "published-time": "2026-03-29T17:10:43+00:00"
+        },
+        {
             "name": "colinodell/psr-testlogger",
             "version": "v1.3.1",
             "source": {
@@ -6161,6 +6224,140 @@
             },
             "time": "2026-06-21T08:51:40+00:00",
             "published-time": "2026-06-21T09:25:03+00:00"
+        },
+        {
+            "name": "drush/drush",
+            "version": "15.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drush-ops/drush.git",
+                "reference": "7ae9ff370832be9c1d28611cf2865995e8c38e8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/7ae9ff370832be9c1d28611cf2865995e8c38e8b",
+                "reference": "7ae9ff370832be9c1d28611cf2865995e8c38e8b",
+                "shasum": ""
+            },
+            "require": {
+                "chi-teck/drupal-code-generator": "^3.6 || ^4@dev",
+                "composer-runtime-api": "^2.2",
+                "composer/semver": "^1.4 || ^3",
+                "ext-dom": "*",
+                "guzzlehttp/guzzle": "^7.8.2 || ^8.0",
+                "php": ">=8.3",
+                "symfony/filesystem": "^7 || ^8",
+                "symfony/finder": "^7 || ^8",
+                "symfony/var-dumper": "^7 || ^8",
+                "symfony/yaml": "^7 || ^8"
+            },
+            "conflict": {
+                "drupal/core": "< 11.5"
+            },
+            "require-dev": {
+                "behat/mink": "^1.11",
+                "composer/installers": "^2",
+                "cweagans/composer-patches": "~1.7.3",
+                "drupal/core-recommended": "12.x-dev",
+                "jetbrains/phpstorm-attributes": "^1.0",
+                "mglaman/phpstan-drupal": "^2",
+                "mikey179/vfsstream": "^1.6.11",
+                "phpspec/prophecy-phpunit": "^2.4",
+                "phpunit/phpunit": "^11.5 || ^12",
+                "rector/rector": "^2",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "default-branch": true,
+            "bin": [
+                "drush"
+            ],
+            "type": "library",
+            "extra": {
+                "patches-file": "composer.patches.json",
+                "installer-paths": {
+                    "sut/core": [
+                        "type:drupal-core"
+                    ],
+                    "sut/libraries/{$name}": [
+                        "type:drupal-library"
+                    ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ],
+                    "sut/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "sut/profiles/contrib/{$name}": [
+                        "type:drupal-profile"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Doctor/autoload_file.php"
+                ],
+                "psr-4": {
+                    "Drush\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                },
+                {
+                    "name": "Owen Barton",
+                    "email": "drupal@owenbarton.com"
+                },
+                {
+                    "name": "Greg Anderson",
+                    "email": "greg.1.anderson@greenknowe.org"
+                },
+                {
+                    "name": "Jonathan Araña Cruz",
+                    "email": "jonhattan@faita.net"
+                },
+                {
+                    "name": "Jonathan Hedstrom",
+                    "email": "jhedstrom@gmail.com"
+                },
+                {
+                    "name": "Christopher Gervais",
+                    "email": "chris@ergonlogic.com"
+                },
+                {
+                    "name": "Dave Reid",
+                    "email": "dave@davereid.net"
+                },
+                {
+                    "name": "Damian Lee",
+                    "email": "damiankloip@googlemail.com"
+                }
+            ],
+            "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
+            "homepage": "http://www.drush.org",
+            "support": {
+                "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
+                "issues": "https://github.com/drush-ops/drush/issues",
+                "security": "https://github.com/drush-ops/drush/security/advisories",
+                "slack": "https://drupal.slack.com/messages/C62H9CWQM",
+                "source": "https://github.com/drush-ops/drush/tree/15.x"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/weitzman",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-18T14:49:35+00:00",
+            "published-time": "2026-11-18T14:49:41+00:00"
         },
         {
             "name": "google/protobuf",
@@ -10658,7 +10855,8 @@
         "drupal/core": 20,
         "drupal/core-project-message": 20,
         "drupal/core-recipe-unpack": 20,
-        "drupal/core-vendor-hardening": 20
+        "drupal/core-vendor-hardening": 20,
+        "drush/drush": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

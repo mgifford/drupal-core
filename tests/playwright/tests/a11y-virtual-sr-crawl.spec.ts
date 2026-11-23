@@ -28,6 +28,7 @@ import { AUTH_STATE_FILE } from '../lib/auth-setup';
 import {
   TEMP_DIR,
   drush,
+  configGet,
   captureOriginalSettingsOnce,
 } from '../lib/drush-helpers';
 import {
@@ -94,16 +95,12 @@ function isTruthyConfigValue(raw: string): boolean {
 }
 
 function isModuleEnabled(moduleMachineName: string): boolean {
-  const output = drush('pm:list --status=enabled --type=module --format=list');
-  return output
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .includes(moduleMachineName);
+  const output = drush('ex:list --installed --type=module --format=json');
+  return Object.keys(JSON.parse(output)).includes(moduleMachineName);
 }
 
 function getGeneratedContentSeedBugsEnabled(): boolean {
-  const value = drush('config:get generated_content_a11y.settings seed_bugs --format=string');
+  const value = configGet('generated_content_a11y.settings', 'seed_bugs');
   return isTruthyConfigValue(value);
 }
 
@@ -115,7 +112,7 @@ function assertScanModeRuntimePreconditions(scanMode: ScanMode): void {
     if (generatedContentA11yEnabled && seedBugsEnabled) {
       throw new Error(
         'core-baseline scan blocked: generated_content_a11y is enabled with seed_bugs=true. ' +
-        'Disable seeded bugs before baseline crawl (for example: drush cset generated_content_a11y.settings seed_bugs false -y && drush cr), ' +
+        'Disable seeded bugs before baseline crawl (for example: ddev exec dr config:set -n generated_content_a11y.settings seed_bugs false && ddev exec dr cache:rebuild), ' +
         'or run with A11Y_SCAN_MODE=seeded-benchmark.',
       );
     }
@@ -149,12 +146,12 @@ function getPagesForMode(scanMode: ScanMode): { anonymous: PageEntry[]; admin: P
 }
 
 function switchTheme(config: ThemeConfig): void {
-  const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(' ');
-  drush(`theme:enable ${themesToEnable} -y`);
-  drush(`config:set system.theme default ${config.defaultTheme} -y`);
-  drush(`config:set system.theme admin ${config.adminTheme} -y`);
+  const themesToEnable = [...new Set([config.defaultTheme, config.adminTheme])].join(',');
+  drush(`ex:install ${themesToEnable} -y`);
+  drush(`config:set -n system.theme default ${config.defaultTheme}`);
+  drush(`config:set -n system.theme admin ${config.adminTheme}`);
   if (config.defaultTheme === 'default_admin' || config.adminTheme === 'default_admin') {
-    drush(`config:set default_admin.settings enable_dark_mode auto -y`);
+    drush(`config:set -n default_admin.settings enable_dark_mode auto`);
   }
   drush(`cache:rebuild`);
 }
