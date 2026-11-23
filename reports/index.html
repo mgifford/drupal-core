@@ -19,6 +19,8 @@
       --shadow: 0 10px 32px rgba(20, 35, 60, 0.08);
       --badge-bg: #e9f7ee;
       --badge-text: #0a6b3f;
+      --notice-bg: #fff4d6;
+      --notice-border: #8a5a00;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -35,6 +37,8 @@
         --shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
         --badge-bg: #0f311d;
         --badge-text: #68e0a1;
+        --notice-bg: #2a2210;
+        --notice-border: #e0a83a;
       }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -159,6 +163,16 @@
       gap: 0.5rem;
       margin-top: 0.75rem;
     }
+    .archive-notice {
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--notice-bg);
+      border: 1px solid var(--notice-border);
+      border-left-width: 0.5rem;
+      border-radius: 1rem;
+    }
+    .archive-notice h2 { margin-bottom: 0.5rem; }
+    .archive-notice p + p { margin-top: 0.6rem; }
     footer {
       margin-top: 3rem;
       padding-top: 1rem;
@@ -177,6 +191,25 @@
         This index now exposes both rendered HTML and raw source artifacts so each report family is easier to validate, diff, and reuse.
       </p>
     </header>
+
+    <section class="archive-notice" aria-labelledby="archive-notice-title">
+      <h2 id="archive-notice-title">Archived snapshot: not current</h2>
+      <p>
+        These reports come from scans run between March and July 2026 against
+        Drupal core as it was then. Core has changed a lot since: the Claro and
+        Olivero themes have been removed, and Default Admin is now the default
+        administration theme. Findings below may already be fixed or may no
+        longer apply.
+      </p>
+      <p>
+        The scripts that produced these reports were removed from this
+        repository in July 2026, so these pages are no longer updated. They are kept as historical evidence, and
+        every link on this page still works. Problems found since then are
+        tracked in the
+        <a href="https://github.com/mgifford/drupal-core/issues">mgifford/drupal-core issue tracker</a>.
+      </p>
+      <p>Notice added <time datetime="2026-11-20">20 November 2026</time>.</p>
+    </section>
 
     <section aria-labelledby="why-this-layout">
       <h2 id="why-this-layout">Artifact Layout</h2>

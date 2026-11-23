@@ -141,19 +141,20 @@ Run from the repository root. Verified against upstream `main` with DDEV
    ddev composer validate --no-check-publish
    ```
 
-   Do not run `composer update` or `composer require` here. The fork uses
-   upstream's `composer.lock` on purpose, so lock-file drift would make
-   branches impossible to compare.
+   Do not run `composer update` or `composer require` here. The fork keeps
+   upstream's `composer.lock` plus one addition, Drush (`drush/drush` in
+   `require-dev`), so any other lock-file drift would make branches
+   impossible to compare. If an upstream sync conflicts in `composer.json`
+   or `composer.lock`, take upstream's versions and re-run
+   `ddev composer require --dev drush/drush:15.x-dev`.
 
-2. **Clear caches.** Drush is not a dependency of Drupal core, so
-   `ddev drush` will fail with "drush is not available". Use core's own CLI:
+2. **Clear caches.** Drush 15 is a dev dependency of this fork, but it has
+   no `drush` binary (`ddev drush` only prints a pointer to `dr`). Its
+   commands run through core's own CLI:
 
    ```bash
    ddev exec php core/scripts/dr cache:rebuild
    ```
-
-   If you have installed Drush yourself, `ddev drush cache:rebuild` is
-   equivalent. Do not add Drush to `composer.json` in this repository.
 
 3. **Log in without knowing the password.**
 
@@ -190,14 +191,12 @@ Run from the repository root. Verified against upstream `main` with DDEV
      vendor/bin/phpunit -c core <path-to-test>'
    ```
 
-Known problems with the helper commands in `.ddev/commands/host/`:
-
-- `ddev reset-core` calls `drush` throughout, so it fails until it is
-  switched to `core/scripts/dr` (or Drush is available).
-- `ddev reset-site` calls `scripts/reset-site.sh`, which is not in this
-  repository.
-
-Treat both as unreliable until fixed. Use the steps above instead.
+The helper commands in `.ddev/commands/host/` (`ddev reset-core`, and
+`ddev reset-site`, which runs `scripts/reset-site.sh`) use `dr` and
+`.agents/scripts/site-install.php`. Both replace the site database, so take
+a snapshot first if you need the current site. `ddev reset-core` also
+discards uncommitted changes to tracked files, after saving them under
+`archive/`.
 
 ## Quick commands (low-noise)
 

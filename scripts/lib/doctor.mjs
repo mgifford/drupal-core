@@ -12,15 +12,10 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { EXIT } from './exit-codes.mjs';
+import { loadConfig } from './sources.mjs';
 
-/** Exit codes shared by every drupal-test command. */
-export const EXIT = {
-  OK: 0,
-  TEST_FAILURE: 1,
-  CONFIG: 2,
-  DEPENDENCY: 3,
-  INFRASTRUCTURE: 4,
-};
+export { EXIT };
 
 /** A failure in an earlier category decides the exit code first. */
 const PRIORITY = [EXIT.CONFIG, EXIT.DEPENDENCY, EXIT.INFRASTRUCTURE];
@@ -189,6 +184,27 @@ export function collectChecks({ root, env = process.env }) {
     const freeGb = freeKb / 1024 / 1024;
     const detail = `${freeGb.toFixed(1)} GiB free`;
     results.push(freeGb >= 10 ? ok('disk space', detail) : warn('disk space', `${detail}; 10 GiB or more is recommended`));
+  }
+
+  // Source registry and the default source's local store.
+  try {
+    const config = loadConfig(root);
+    const ids = Object.keys(config.sources);
+    results.push(ok('sources config', `config/sources.yml: ${ids.join(', ')}`));
+    const id = config.defaults?.source ?? ids[0];
+    const state = readJson(path.join(root, 'workspaces', 'state', 'sources', `${id}.json`));
+    if (!state?.last_success) {
+      results.push(warn('sources store', `${id} never fetched: run \`node scripts/drupal-test.mjs sources fetch ${id}\``));
+    }
+    else if (state.last_attempt && !state.last_attempt.ok) {
+      results.push(warn('sources store', `${id}: last fetch failed at ${state.last_attempt.at}; last success ${state.last_success.at}`));
+    }
+    else {
+      results.push(ok('sources store', `${id} fetched ${state.last_success.at} at ${state.last_success.commit.slice(0, 12)}`));
+    }
+  }
+  catch (error) {
+    results.push(fail('sources config', EXIT.CONFIG, error.message.split('\n').join(' ')));
   }
 
   // Test-runner configuration and the site under test.

@@ -5,7 +5,7 @@
  * The crawl switches the live site's theme settings via drush before each
  * group of tests so that axe results accurately reflect that theme's markup.
  *
- * Machine names must match `ddev drush config:get system.theme`.
+ * Machine names must match `ddev exec dr config:get system.theme`.
  */
 
 export interface ThemeConfig {

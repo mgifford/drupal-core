@@ -25,7 +25,7 @@ A11Y-PROCESS.md §5):
 
 ```
 1. git fetch upstream && git merge --ff-only upstream/11.x   (or main)
-2. ddev composer install && ddev drush updb -y && drush cr
+2. ddev composer install && ddev exec dr updatedb -n && ddev exec dr cache:rebuild
 3. Full crawl (yarn test:a11y:playwright)
 4. yarn a11y:analyze && npm run a11y:sustainability
 5. node scripts/attribute-new-patterns.js      ← new (below)
@@ -52,7 +52,7 @@ For each pattern in tonight's report absent from last night's:
    fast repro — one page × one rule × one theme is a ~15 s scan; a 24 h
    window is 5–15 commits → 3–4 bisect steps ≈ one minute per pattern.
    Requires the repro script to reinstall nothing (template/CSS changes
-   need only `drush cr`; abort bisect if composer/schema changes appear
+   need only `dr cache:rebuild`; abort bisect if composer/schema changes appear
    in the window and fall back to "window" attribution).
 4. **MR/issue linkage**: core commit subjects are
    `Issue #3123456 by name: summary` — parse the issue number →

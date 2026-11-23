@@ -53,8 +53,10 @@ ddev start
 #    drupal/core from the core/ path repo" commit for the fix pattern).
 ddev composer install
 
-# 3. Install the site (admin/admin matches the crawl defaults).
-ddev drush site:install standard --account-name=admin --account-pass=admin -y
+# 3. Install the site (admin/admin matches the crawl defaults). Drush 15
+#    has no site:install, so this script installs into the DDEV database.
+#    Other Drush commands run through core's CLI: `ddev exec dr <command>`.
+ddev exec php .agents/scripts/site-install.php
 
 # 4. Install Playwright's Chromium browser (once)
 cd core/tests/playwright
@@ -81,7 +83,7 @@ The crawl tests three themes that ship with Drupal core:
 | `claro` | Claro | ✅ | ✅ | — | Stable admin theme (no dark mode) |
 | `admin` | Admin (experimental) | ✅ | ✅ | ✅ | Gin-based, the future admin theme |
 
-The crawl switches themes between groups via `ddev drush` and restores the original configuration when done. **No manual theme switching is needed.**
+The crawl switches themes between groups via `ddev exec dr` and restores the original configuration when done. **No manual theme switching is needed.**
 
 Dark mode is scanned only for the Default Admin theme — the only core theme
 that supports it. The crawl sets `default_admin.settings enable_dark_mode: auto`
@@ -97,8 +99,8 @@ Drupal serves different CSS per language direction. To crawl real RTL pages,
 install an RTL language once and pass `RTL_LANG`:
 
 ```bash
-ddev drush en language locale -y
-ddev drush language:add he     # or: ar
+ddev exec dr ex:install -y language,locale
+ddev exec 'dr php:eval "\Drupal\language\Entity\ConfigurableLanguage::createFromLangcode(\"he\")->save();"'     # or: \"ar\"
 cd core
 RTL_LANG=he yarn test:a11y:playwright
 ```
