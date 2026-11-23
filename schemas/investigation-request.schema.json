@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:drupal-quality-observatory:schema:investigation-request:0.1.0",
+  "title": "Investigation request",
+  "description": "Hands one finding to another project, such as Drupal Core Lab, for reproduction and before-and-after testing. See docs/observability/interoperability.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_type", "source_project", "created_at", "run_id", "finding_id", "drupal_commit", "scenario_id", "finding", "reproduction", "evidence_manifest"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "artifact_type": { "const": "investigation-request" },
+    "source_project": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "synthetic": { "type": "boolean" },
+    "run_id": { "type": "string", "pattern": "^run-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$" },
+    "finding_id": { "type": "string", "pattern": "^fnd-[0-9a-f]{12}$" },
+    "drupal_commit": { "oneOf": [{ "type": "string", "pattern": "^[0-9a-f]{40}$" }, { "type": "null" }] },
+    "scenario_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$" },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "rule_id", "result", "url", "target", "occurrence"],
+      "properties": {
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": { "name": { "type": "string" }, "version": { "type": ["string", "null"] } }
+        },
+        "rule_id": { "type": "string" },
+        "result": { "enum": ["violation", "needs-review"] },
+        "impact": { "type": ["string", "null"] },
+        "url": { "type": "string" },
+        "target": { "type": "array", "items": { "type": "string" } },
+        "wcag_candidates": { "type": "array", "items": { "type": "string" } },
+        "occurrence": { "type": "string" },
+        "verification": { "type": "string" }
+      }
+    },
+    "reproduction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route", "steps"],
+      "properties": {
+        "route": { "type": "string" },
+        "steps": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "command": { "type": ["string", "null"] },
+        "install_profile": { "type": ["string", "null"] },
+        "recipes": { "type": "array", "items": { "type": "string" } },
+        "browser": { "type": ["string", "null"] }
+      }
+    },
+    "related_trace_ids": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" } },
+    "evidence_manifest": { "type": "string", "pattern": "^(?![/\\\\])(?!.*\\.\\.)(?![a-zA-Z][a-zA-Z0-9+.-]*:).+$" },
+    "core_lab": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "issue": { "type": ["string", "null"], "description": "drupal.org issue number Core Lab tracks, if known." },
+        "experiment": { "type": ["string", "null"], "description": "Path or URL of an existing Core Lab experiment, if any." }
+      }
+    }
+  }
+}
