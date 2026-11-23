@@ -7,9 +7,15 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Smoke: anonymous visitor', () => {
-  test('home page responds with a main landmark', async ({ page }) => {
+  test('home page is access denied, with a main landmark', async ({ page }) => {
+    // Since upstream commit 308cba9319 (drupal.org #3590882), the Standard
+    // profile's front page is /admin/welcome, which needs the "access
+    // administration pages" permission. An anonymous visitor to / therefore
+    // gets 403 by design. A 200 here means upstream changed the front page:
+    // record that change, then update this test.
     const response = await page.goto('/');
-    expect(response?.status()).toBe(200);
+    expect(response?.status()).toBe(403);
+    await expect(page.getByRole('heading', { level: 1, name: 'Access denied' })).toBeVisible();
     await expect(page.getByRole('main')).toBeVisible();
   });
 

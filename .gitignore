@@ -47,6 +47,10 @@ sites/simpletest
 # Build/generated directories
 /web/
 
+# Testing-engine workspaces: upstream source stores, disposable checkouts,
+# fetch state and provenance records (see docs/testing/SOURCES.md)
+/workspaces/
+
 # IDE and editor config
 /.vscode/
 /.idea/

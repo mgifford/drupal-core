@@ -2,8 +2,12 @@
 
 Audit date: 2026-11-19. Audited commit: `3f097f790a`.
 Evidence and commands are in [CURRENT-STATE.md](CURRENT-STATE.md).
-Updated for Phase 1 on 2026-11-19: the reset-core and weekly-sync fixes merged (PR #78), and the
-Playwright rows reflect the Phase 1 branch. See [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md).
+Updated for Phases 1 and 2 on 2026-11-19. PR #78 (reset-core and weekly-sync fixes) and
+PR #81 (Phase 1) are merged, and the sources row covers Phase 2. See
+[PLAYWRIGHT.md](../testing/PLAYWRIGHT.md) and [SOURCES.md](../testing/SOURCES.md).
+
+Updated on 2026-11-23: the smoke suite, the axe scan and Playwright MCP were run against a DDEV site
+(the "Verification" section of PLAYWRIGHT.md).
 
 ## Status values
 
@@ -25,6 +29,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
+| Upstream source registry, fetch and pinned checkouts | `config/sources.yml`, `node scripts/drupal-test.mjs sources list\|fetch\|checkout\|status\|updates` | Git, git.drupalcode.org | VERIFIED | Against git.drupalcode.org: fetched Drupal core, pinned `92e5c3a304`, and reproduced `bb01ac050c` with the same tree hash as local history. A blocked network gave exit 4 with no pin. 40 unit and integration tests pass. The CMS project type is not handled yet. | Phase 3 builds sites from checkouts. Phase 8 adds run history. |
 | Weekly upstream sync of fork `main` | `.github/workflows/weekly-sync.yml` | GitHub Actions, git.drupalcode.org | IMPLEMENTED_UNVERIFIED | Failed silently from 2026-10-05 until PR #78. The repaired workflow opens one PR and never pushes `main`. It passed stub tests but has not run on GitHub. | Watch the first run. Replace with a source fetch in Phase 2. |
 | Thin fork layer over upstream | AGENTS.md, commit `7e501b72cf` | Discipline on `main` | BROKEN | PR #66 reintroduced old history and 27 modified upstream files (26 plus README.md). | Owner decision D1 (MIGRATION-PLAN). |
 | Publish reports and docs to GitHub Pages | `.github/workflows/pages.yml` | `reports/`, `documentation-new/` | IMPLEMENTED_UNVERIFIED | Workflow and `reports/index.html` exist. Run history not checked. | Keep URLs. Move new runs to `reports/runs/` in Phase 8. |
@@ -54,9 +59,9 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 | Real VoiceOver admin tests (9 tests) | `tests/playwright/guidepup-drupal-admin.spec.ts`, `npm run test:voiceover` | `@guidepup/playwright` 0.19.1, macOS VoiceOver | IMPLEMENTED_UNVERIFIED | Opt-in `voiceover` project (`VOICEOVER=1`). The file stays at its documented path, and all 9 tests are discovered. | Run on macOS with VoiceOver set up. |
 | Shared login state | `tests/playwright/lib/auth-setup.ts` (global setup) | Env `DRUPAL_ADMIN_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Writes `tests/playwright/reports/auth-state.json`, which is gitignored. | Kept for the older specs. The smoke suite uses a dedicated `DRUPAL_TEST_USER` instead. |
 | Issue 2848307 MCP check | `tests/playwright/scripts/issue-2848307-mcp-check.js` | DDEV site | HISTORICAL | Issue-specific. | Core Lab territory. Keep as history. |
-| Playwright MCP | `.mcp.json` | `@playwright/mcp` 0.0.86 | IMPLEMENTED_UNVERIFIED | Pinned, isolated, `devtools` caps, one allowed origin, output in gitignored `tests/playwright/reports/mcp`. Not yet connected to a site. `browser_run_code_unsafe` cannot be disabled by config. | Connect from a DDEV machine. Add a client deny rule for the unsafe tool. |
-| Smoke suite (6 scenarios) | `tests/playwright/tests/smoke/`, `npm run test:smoke` | DDEV site with Basic page, `DRUPAL_TEST_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Discovered. Locators come from the Drupal source. Logged-in tests skip, not pass, without credentials. | Run against a site. |
-| axe scan with baseline | `tests/playwright/tests/accessibility/login-axe.spec.ts`, `baselines/axe/user-login.json`, `lib/axe-baseline.mjs` | `@axe-core/playwright` | IMPLEMENTED_UNVERIFIED | The baseline helper passes 4 unit tests. The scan itself has not run. | Run against a site. |
+| Playwright MCP | `.mcp.json` | `@playwright/mcp` 0.0.86 | VERIFIED | Pinned, isolated, `devtools` caps, one allowed origin, output in gitignored `tests/playwright/reports/mcp`. On 2026-11-23 it opened `/user/login` on the DDEV site and wrote an accessibility snapshot, and a navigation to another origin was blocked. `browser_run_code_unsafe` cannot be disabled by config. | Add a client deny rule for the unsafe tool. |
+| Smoke suite (6 scenarios in 5 tests) | `tests/playwright/tests/smoke/`, `npm run test:smoke` | DDEV site with Basic page, `DRUPAL_TEST_USER`/`PASS` | VERIFIED | 5 of 5 tests passed on 2026-11-23 against fork commit `bba11f1ede`. The home page test expects the 403 that upstream's `/admin/welcome` front page gives anonymous visitors. Logged-in tests skip, not pass, without credentials. | Restore the axe crawl and contract tests from `d8a45b3fe0` (Phase 1). |
+| axe scan with baseline | `tests/playwright/tests/accessibility/login-axe.spec.ts`, `baselines/axe/user-login.json`, `lib/axe-baseline.mjs` | `@axe-core/playwright` | VERIFIED | The baseline helper passes 4 unit tests. On 2026-11-23 the scan of `/user/login` passed: 0 violations, 26 passed rules, 0 incomplete (axe-core 4.12.1). | Extend to more pages and states as journeys are added (Phase 5). |
 | Run record (tested commit) | `tests/playwright/lib/run-info.ts` (global setup) | Git | VERIFIED | Wrote `reports/run-info.json` with the commit and dirty flag in a run without a site. | Extend into the run manifest in Phase 8. |
 | Environment doctor | `scripts/drupal-test.mjs doctor`, `npm run doctor` | Node | VERIFIED | 16 checks, read-only. Exit codes 0, 2, 3 and 4. Unit tests pass, and it reported this machine accurately. | Add `sources` and `env` commands in Phases 2 and 3. |
 | Root `node_modules/` committed | `node_modules/` (1,991 files, 30 MB) | | BROKEN (hygiene) | Not in `.gitignore`. Includes a macOS-only `fsevents`. | Owner decision D2. |
@@ -102,7 +107,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 These are needed by the specification and have no code at this commit:
 
-- CLI commands beyond `doctor`
+- CLI commands beyond `doctor` and `sources`
 - a source registry with pinned-commit checkouts and provenance records
 - environment profiles
 - fixtures beyond the recipes listed above

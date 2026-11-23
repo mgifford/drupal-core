@@ -115,6 +115,22 @@ The engine reads runtime requirements from the selected revision's
 After this phase, decision D4(b) can retire the weekly sync. Under decision
 D1(c), `main` stops tracking upstream.
 
+Status, 2026-11-19: implemented in `scripts/lib/sources.mjs` (see
+[SOURCES.md](../testing/SOURCES.md)). It was verified against
+git.drupalcode.org:
+
+- fetched Drupal core and pinned `main` at `92e5c3a304`
+- reproduced `bb01ac050c` with the same tree hash as local history
+- listed 238 upstream commits between the two
+- with the network blocked, the fetch exited 4 without pinning, and
+  `--offline` pinned with `is_latest_known: false`
+
+Not done:
+
+- checkout removal, which waits for Phase 3's confirmation flow
+- tags and other branches as refs
+- retiring the weekly sync, which is owner decision D4
+
 ## Phase 3: reproducible environments
 
 What to reuse:
