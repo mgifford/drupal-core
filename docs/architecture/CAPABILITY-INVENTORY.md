@@ -5,6 +5,9 @@ Evidence and commands are in [CURRENT-STATE.md](CURRENT-STATE.md).
 Updated for Phase 1 on 2026-11-19: the reset-core and weekly-sync fixes merged (PR #78), and the
 Playwright rows reflect the Phase 1 branch. See [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md).
 
+Updated on 2026-11-23: the smoke suite, the axe scan and Playwright MCP were run against a DDEV site
+(the "Verification" section of PLAYWRIGHT.md).
+
 ## Status values
 
 | Status | Meaning in this inventory |
@@ -54,9 +57,9 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 | Real VoiceOver admin tests (9 tests) | `tests/playwright/guidepup-drupal-admin.spec.ts`, `npm run test:voiceover` | `@guidepup/playwright` 0.19.1, macOS VoiceOver | IMPLEMENTED_UNVERIFIED | Opt-in `voiceover` project (`VOICEOVER=1`). The file stays at its documented path, and all 9 tests are discovered. | Run on macOS with VoiceOver set up. |
 | Shared login state | `tests/playwright/lib/auth-setup.ts` (global setup) | Env `DRUPAL_ADMIN_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Writes `tests/playwright/reports/auth-state.json`, which is gitignored. | Kept for the older specs. The smoke suite uses a dedicated `DRUPAL_TEST_USER` instead. |
 | Issue 2848307 MCP check | `tests/playwright/scripts/issue-2848307-mcp-check.js` | DDEV site | HISTORICAL | Issue-specific. | Core Lab territory. Keep as history. |
-| Playwright MCP | `.mcp.json` | `@playwright/mcp` 0.0.86 | IMPLEMENTED_UNVERIFIED | Pinned, isolated, `devtools` caps, one allowed origin, output in gitignored `tests/playwright/reports/mcp`. Not yet connected to a site. `browser_run_code_unsafe` cannot be disabled by config. | Connect from a DDEV machine. Add a client deny rule for the unsafe tool. |
-| Smoke suite (6 scenarios) | `tests/playwright/tests/smoke/`, `npm run test:smoke` | DDEV site with Basic page, `DRUPAL_TEST_USER`/`PASS` | IMPLEMENTED_UNVERIFIED | Discovered. Locators come from the Drupal source. Logged-in tests skip, not pass, without credentials. | Run against a site. |
-| axe scan with baseline | `tests/playwright/tests/accessibility/login-axe.spec.ts`, `baselines/axe/user-login.json`, `lib/axe-baseline.mjs` | `@axe-core/playwright` | IMPLEMENTED_UNVERIFIED | The baseline helper passes 4 unit tests. The scan itself has not run. | Run against a site. |
+| Playwright MCP | `.mcp.json` | `@playwright/mcp` 0.0.86 | VERIFIED | Pinned, isolated, `devtools` caps, one allowed origin, output in gitignored `tests/playwright/reports/mcp`. On 2026-11-23 it opened `/user/login` on the DDEV site and wrote an accessibility snapshot, and a navigation to another origin was blocked. `browser_run_code_unsafe` cannot be disabled by config. | Add a client deny rule for the unsafe tool. |
+| Smoke suite (6 scenarios in 5 tests) | `tests/playwright/tests/smoke/`, `npm run test:smoke` | DDEV site with Basic page, `DRUPAL_TEST_USER`/`PASS` | VERIFIED | 5 of 5 tests passed on 2026-11-23 against fork commit `bba11f1ede`. The home page test expects the 403 that upstream's `/admin/welcome` front page gives anonymous visitors. Logged-in tests skip, not pass, without credentials. | Restore the axe crawl and contract tests from `d8a45b3fe0` (Phase 1). |
+| axe scan with baseline | `tests/playwright/tests/accessibility/login-axe.spec.ts`, `baselines/axe/user-login.json`, `lib/axe-baseline.mjs` | `@axe-core/playwright` | VERIFIED | The baseline helper passes 4 unit tests. On 2026-11-23 the scan of `/user/login` passed: 0 violations, 26 passed rules, 0 incomplete (axe-core 4.12.1). | Extend to more pages and states as journeys are added (Phase 5). |
 | Run record (tested commit) | `tests/playwright/lib/run-info.ts` (global setup) | Git | VERIFIED | Wrote `reports/run-info.json` with the commit and dirty flag in a run without a site. | Extend into the run manifest in Phase 8. |
 | Environment doctor | `scripts/drupal-test.mjs doctor`, `npm run doctor` | Node | VERIFIED | 16 checks, read-only. Exit codes 0, 2, 3 and 4. Unit tests pass, and it reported this machine accurately. | Add `sources` and `env` commands in Phases 2 and 3. |
 | Root `node_modules/` committed | `node_modules/` (1,991 files, 30 MB) | | BROKEN (hygiene) | Not in `.gitignore`. Includes a macOS-only `fsevents`. | Owner decision D2. |
