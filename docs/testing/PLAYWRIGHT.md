@@ -56,7 +56,8 @@ the HTTP status. `DRUPAL_BASE_URL` must start with `http://` or `https://`.
 | `DRUPAL_TEST_USER`, `DRUPAL_TEST_PASS` | logged-in smoke tests | none. Without them those tests are reported as skipped. |
 | `DRUPAL_ADMIN_USER`, `DRUPAL_ADMIN_PASS` | the existing global login and the older specs | `admin` / `admin` |
 | `SKIP_ADMIN_LOGIN=1` | skips that global admin login. `test:smoke` and `test:a11y` set it, so they never depend on the admin password. | off |
-| `DRUPAL_SOURCE_DIR` | run record | repository root |
+| `DRUPAL_SOURCE_DIR` | run record; the folder the axe crawl runs `ddev exec dr` in | repository root |
+| `CRAWL_THEME` | axe crawl profile: a theme config id from `lib/theme-configs.ts` | none: the site's installed themes, unchanged |
 | `VOICEOVER=1` | enables the real VoiceOver project | off |
 
 Use a dedicated test account for `DRUPAL_TEST_USER`, not user 1. It needs
@@ -83,6 +84,8 @@ From the repository root:
 `tests/playwright/package.json` also has these commands:
 
 - `test:a11y`: the axe scans
+- `test:crawl`, `crawl:baseline`, `crawl:restore`: the multi-page axe crawl
+  (below)
 - `test:voiceover`: real VoiceOver. It needs macOS with VoiceOver, run
   `npx @guidepup/setup` once, and it runs headed.
 - the older Guidepup and multi-scanner commands
@@ -131,6 +134,84 @@ The test compares the results with
 
 An axe pass is not WCAG conformance. Keyboard and screen reader testing are
 still needed.
+
+## Multi-page axe crawl
+
+`tests/crawl/a11y-axe-crawl.spec.ts` scans every page in `lib/pages.ts` with
+axe-core: 5 anonymous pages and 19 that need a login. It was restored from
+commit `d8a45b3fe0`. Run it through the evidence runner, which gives the run
+one id and builds the evidence manifest afterwards:
+
+```bash
+cd tests/playwright && export DRUPAL_TEST_USER=smoketest DRUPAL_TEST_PASS="$(openssl rand -base64 18)" && (cd ../.. && ddev exec dr user:password "$DRUPAL_TEST_USER" "$DRUPAL_TEST_PASS") && npm run test:crawl
+```
+
+Run any other way, for example with `npm run test:playwright`, its tests are
+reported as skipped. Run it from a worktree with `DRUPAL_SOURCE_DIR` set to
+the checkout the site runs from.
+
+**What it checks on each page:**
+- The HTTP status. A page that should return 200 but gives 4xx or 5xx is not
+  scanned and fails, so an error page is never recorded as a clean page. Two
+  pages are expected to give 403 to anonymous visitors, by upstream design:
+  the front page and `/user/register`. That expectation lives in
+  `lib/crawl.mjs`, not `lib/pages.ts`, because the multi-scanner spec skips
+  403 pages. The not-found page gives 404.
+- axe-core with the old crawl's tag set: `wcag2a`, `wcag2aa`, `wcag21a`,
+  `wcag21aa`, `wcag22a`, `wcag22aa` and `best-practice`. Findings keep their
+  tags, so best practices stay distinguishable from WCAG failures.
+- New violations. A violation is keyed by rule and element
+  (`lib/axe-baseline.mjs`). The test fails on keys that are not in
+  `baselines/axe/crawl-<profile>.json`. Baseline keys that no longer occur
+  are reported as resolved. Incomplete results ("needs review") are recorded
+  but do not fail the test.
+
+**What it keeps** (in `tests/playwright/reports/evidence/<run id>/`, which is
+gitignored):
+- `artifacts/axe-*.json`: the unmodified axe results, one file per page.
+  Private: they include HTML snippets and form tokens.
+- `scenarios/*.json` and `manifest.json`: one scenario per page, with the
+  stable id `crawl-<profile>-<page id>`, such as `crawl-installed-user-login`.
+  Every violation and needs-review result is a finding, including those in
+  the baseline. `node scripts/evidence.mjs compare <earlier manifest> <later
+  manifest>` classes them as new, recurring, resolved or unverified.
+- `crawl-coverage.json`: every planned page with its status: `scanned`,
+  `skipped` (with the reason, for example no test credentials), `not-scanned`
+  (with the error) or `not-run` (filtered out, or the run stopped).
+
+**The baseline** is different from the login form's. It is recorded from one
+complete run with `npm run crawl:baseline -- reports/evidence/<run id>`,
+which refuses a run in which any page was not scanned. Its keys were found by
+axe and have not been reviewed by a person: a listed key is not an accepted
+barrier. It only lets the crawl fail on what is new. The file records the
+run, Drupal commit, axe-core version, themes, color scheme and tags. If the
+themes, color scheme or tags of a run differ, nothing counts as accepted and
+the test says why. A different axe-core version only adds a warning. Review
+the diff before committing a new baseline, and remove keys reported as
+resolved. Findings become GitHub issues only after a person confirms them
+([recording-issues.md](recording-issues.md)).
+
+**Profiles.** One profile per run:
+- `installed` (default): the site's themes as they are. The crawl reads them
+  with `ddev exec dr` and changes nothing.
+- `CRAWL_THEME=<id>`, with an id from `lib/theme-configs.ts` (today `admin`
+  and `admin-dark`). The crawl saves the theme settings to
+  `reports/crawl-site-state.json` with the run id, then switches themes with
+  Drush. The global teardown (`lib/crawl-finalize.ts`) restores them and
+  deletes the file, also when tests fail or the run is stopped with Ctrl-C.
+  It only restores state its own run saved, so another Playwright run cannot
+  undo a crawl that is still running. A run can still end
+  before its teardown: when it is killed, or interrupted while its output is
+  piped to another command. Then the next crawl restores the saved state
+  before it starts, or run `npm run crawl:restore`. Only `installed` has a
+  baseline so far.
+
+**Not restored from the old crawl yet:** the other four viewports, Default
+Admin accent presets, RTL scans, page resource metrics and accessibility-tree
+snapshots. The old file's extra pages stay out of `lib/pages.ts` on purpose:
+the contrib and theming_tools pages were removed in `5f833efe4c` to keep the
+crawl to core, and `/search/node` in `0f71edfc68` after upstream removed the
+search module.
 
 ## Run records and failure evidence
 
@@ -193,6 +274,30 @@ Results:
   blocked (`ERR_BLOCKED_BY_CLIENT`).
 - `npm run test:list` lists 252 tests in 8 files, `npm run test:unit`
   passes 29 of 29, and `npm run doctor` reports no failures.
+
+The multi-page axe crawl was verified on 2026-11-24:
+
+- **Code under test:** site checkout `a12cb08647` (the observability pilot
+  branch, merged into `main` by PR #99), DDEV with PHP 8.5 and MariaDB 11.8,
+  Default Admin as both themes, server tracing on.
+- **Tools:** Playwright 1.61.1, axe-core 4.12.1.
+- **First run:** 23 of 24 pages scanned. `/user/register` gave 403: upstream
+  makes registration administrators-only by default (drupal.org #3453676),
+  so the crawl now expects 403 there.
+- **Second run:** 24 of 24 pages scanned, 4 violations, all axe best-practice
+  rules: `label-title-only` on the select-all checkboxes of `/admin/content`
+  and `/admin/people`, `empty-table-header` on `/admin/content`, and
+  `heading-order` on `/admin/config`. Also 374 needs-review results, 363 of
+  them `color-contrast`. `baselines/axe/crawl-installed.json` was recorded
+  from this run.
+- **Third run:** 24 passed, 0 new, exit 0. `evidence.mjs compare` with the
+  second run: comparable, all 378 findings recurring.
+- **Site state:** with `enable_dark_mode` set to `light` beforehand, a
+  `CRAWL_THEME=admin-dark` run with failing tests restored it to `light`, and
+  so did a run stopped with Ctrl-C. An earlier Ctrl-C, with the output piped
+  to `grep`, ended before the teardown and left the state file; the next
+  crawl restored it before scanning. The site was then set back to its
+  original `auto`.
 
 Not yet verified:
 

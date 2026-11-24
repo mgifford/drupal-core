@@ -91,7 +91,10 @@ time, each with its own check:
 
 - the axe crawl (`a11y-axe-crawl.spec.ts` and `lib/crawl-finalize.ts`).
   Merge its `lib/pages.ts` with the existing `tests/playwright/lib/pages.ts`;
-  do not overwrite it.
+  do not overwrite it. Done on 2026-11-24: see "Multi-page axe crawl" in
+  [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md). The old file's extra pages stay
+  out (contrib pages were removed on purpose, and search was removed
+  upstream).
 - the keyboard contracts
 - the label-in-name contract
 
