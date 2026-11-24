@@ -47,6 +47,9 @@ export default defineConfig({
     // Log in as admin once and save session cookies for admin page tests.
     path.resolve(__dirname, './lib/auth-setup.ts'),
   ],
+  // Restores site state the axe crawl changed and writes its coverage
+  // summary, also when tests failed. Does nothing for other runs.
+  globalTeardown: path.resolve(__dirname, './lib/crawl-finalize.ts'),
   reporter: [
     ['list'],
     ['json', { outputFile: './reports/playwright-results.json' }],

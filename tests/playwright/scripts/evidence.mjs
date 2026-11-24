@@ -17,6 +17,8 @@
  *   --baseline <manifest>  Compare with this earlier run in the report
  *   --install-profile <name>, --recipes <a,b>  What the runner installed (run only;
  *                          recorded as declared, not checked)
+ *   --tests <path>         Specs to run (run only; default tests/observability,
+ *                          tests/crawl for the axe crawl)
  *
  * Exit codes: 0 success, 1 tests failed, no scenario passed, or invalid
  * file, 2 usage error.
@@ -125,7 +127,7 @@ async function run(options) {
   const runId = newRunId();
   const runDir = path.join(EVIDENCE_ROOT, runId);
   fs.mkdirSync(runDir, { recursive: true });
-  const result = spawnSync('npx', ['playwright', 'test', 'tests/observability', '--project=chromium', ...options.extra], {
+  const result = spawnSync('npx', ['playwright', 'test', options.tests ?? 'tests/observability', '--project=chromium', ...options.extra], {
     cwd: PLAYWRIGHT_DIR,
     stdio: 'inherit',
     env: {

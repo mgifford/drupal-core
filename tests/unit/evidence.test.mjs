@@ -291,6 +291,24 @@ test('buildManifest works with tracing disabled', () => {
   assert.ok(manifest.measurements.every((m) => !m.instrumented));
 });
 
+test('buildManifest keys occurrences by the scan test profile when one is given', () => {
+  const { runDir, runId, dir } = syntheticRun({ instrumentation: 'disabled' });
+  const plain = buildManifest({ runDir, runId, traceStore: null, sourceDir: dir, synthetic: true }).findings[0].fingerprint;
+  const file = path.join(runDir, 'scenarios/s.json');
+  const record = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const occurrenceFor = (profile) => {
+    record.scans[0].test_profile = profile;
+    fs.writeFileSync(file, JSON.stringify(record));
+    return buildManifest({ runDir, runId, traceStore: null, sourceDir: dir, synthetic: true }).findings[0].fingerprint;
+  };
+  const a = occurrenceFor('axe-crawl:default_admin+default_admin');
+  const b = occurrenceFor('axe-crawl:stark+default_admin');
+  assert.equal(a.pattern, plain.pattern);
+  assert.notEqual(a.occurrence, plain.occurrence);
+  assert.notEqual(a.occurrence, b.occurrence);
+  assert.equal(occurrenceFor(undefined).occurrence, plain.occurrence);
+});
+
 test('schema rejects invented trace ids, unsafe paths and unverified artifacts', () => {
   const { runDir, runId, store, dir } = syntheticRun();
   const good = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true });

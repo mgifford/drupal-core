@@ -1,0 +1,129 @@
+{
+  "profile": "installed",
+  "themes": {
+    "default": "default_admin",
+    "admin": "default_admin"
+  },
+  "color_scheme": "light",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22a",
+    "wcag22aa",
+    "best-practice"
+  ],
+  "policy": "Recorded from one complete crawl run with scripts/crawl-baseline.mjs. Every key was found in that run. No key has been reviewed by a person, and a listed key is not an accepted barrier: the baseline only lets the crawl fail on findings that are new since the recording. Remove keys the crawl reports as resolved. Re-record only from a complete run, and review the diff before committing it.",
+  "recorded_from": {
+    "run_id": "run-20261124T192523Z-74616be3",
+    "drupal_commit": "a12cb08647be810da140f727a41dd51f118c9610",
+    "axe_core": "4.12.1",
+    "recorded_at": "2026-11-24T19:30:02.554Z"
+  },
+  "pages": {
+    "front": {
+      "path": "/",
+      "accepted": []
+    },
+    "user-login": {
+      "path": "/user/login",
+      "accepted": []
+    },
+    "user-register": {
+      "path": "/user/register",
+      "accepted": []
+    },
+    "user-password": {
+      "path": "/user/password",
+      "accepted": []
+    },
+    "not-found": {
+      "path": "/this-page-does-not-exist",
+      "accepted": []
+    },
+    "admin": {
+      "path": "/admin",
+      "accepted": []
+    },
+    "admin-content": {
+      "path": "/admin/content",
+      "accepted": [
+        "empty-table-header [\".views-table > thead > tr > .select-all.views-field-node-bulk-form.sticky-bulk-select\"]",
+        "label-title-only [\".form-checkbox\"]"
+      ]
+    },
+    "node-add-article": {
+      "path": "/node/add/article",
+      "accepted": []
+    },
+    "node-add-page": {
+      "path": "/node/add/page",
+      "accepted": []
+    },
+    "structure": {
+      "path": "/admin/structure",
+      "accepted": []
+    },
+    "content-types": {
+      "path": "/admin/structure/types",
+      "accepted": []
+    },
+    "content-type-add": {
+      "path": "/admin/structure/types/add",
+      "accepted": []
+    },
+    "taxonomy": {
+      "path": "/admin/structure/taxonomy",
+      "accepted": []
+    },
+    "vocabulary-add": {
+      "path": "/admin/structure/taxonomy/add",
+      "accepted": []
+    },
+    "block-layout": {
+      "path": "/admin/structure/block",
+      "accepted": []
+    },
+    "appearance": {
+      "path": "/admin/appearance",
+      "accepted": []
+    },
+    "modules": {
+      "path": "/admin/modules",
+      "accepted": []
+    },
+    "people": {
+      "path": "/admin/people",
+      "accepted": [
+        "label-title-only [\"input[title=\\\"Select all rows in this table\\\"]\"]"
+      ]
+    },
+    "user-1-edit": {
+      "path": "/user/1/edit",
+      "accepted": []
+    },
+    "config": {
+      "path": "/admin/config",
+      "accepted": [
+        "heading-order [\".layout-column.layout-column--half:nth-child(1) > .panel.layer-wrapper:nth-child(1) > .panel__title\"]"
+      ]
+    },
+    "text-formats": {
+      "path": "/admin/config/content/formats",
+      "accepted": []
+    },
+    "text-format-restricted-html": {
+      "path": "/admin/config/content/formats/manage/restricted_html",
+      "accepted": []
+    },
+    "site-information": {
+      "path": "/admin/config/system/site-information",
+      "accepted": []
+    },
+    "reports": {
+      "path": "/admin/reports",
+      "accepted": []
+    }
+  }
+}
