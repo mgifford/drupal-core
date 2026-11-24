@@ -41,8 +41,11 @@ sites/simpletest
 # Ignore multi-site test environment.
 # simpletest
 
-# Local dev environment config
-/.ddev/
+# Local dev environment config. The project's .ddev/config.yaml is committed;
+# everything else DDEV writes here stays ignored. A bare `/.ddev/` rule would
+# stop the exception below from working.
+/.ddev/*
+!/.ddev/config.yaml
 
 # Build/generated directories
 /web/

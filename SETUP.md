@@ -19,7 +19,7 @@ twice.
 ```bash
 git clone git@github.com:mgifford/drupal-core.git && cd drupal-core
 
-# DDEV project — .ddev/config.yaml is committed (project drupal-core,
+# DDEV project: .ddev/config.yaml is committed (project drupal-core,
 # type drupal12, PHP 8.5, Node.js 24, docroot at the repo root: core dev
 # checkout, NOT the recommended-project layout from the official DDEV
 # guide). Do not run `ddev config`; it would rewrite that file.

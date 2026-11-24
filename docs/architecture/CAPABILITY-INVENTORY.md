@@ -9,6 +9,8 @@ PR #81 (Phase 1) are merged, and the sources row covers Phase 2. See
 Updated on 2026-11-23: the smoke suite, the axe scan and Playwright MCP were run against a DDEV site
 (the "Verification" section of PLAYWRIGHT.md).
 
+Updated on 2026-11-24: the DDEV project definition row, now that `.ddev/config.yaml` is committed.
+
 ## Status values
 
 | Status | Meaning in this inventory |
@@ -40,7 +42,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
-| DDEV project definition | SETUP.md (`ddev config --project-type=drupal12 ...`) | DDEV, Docker | DOCUMENTATION_ONLY | `.ddev/config.yaml` is gitignored and absent here. | Phase 3: generate config per profile under `workspaces/installations/`. |
+| DDEV project definition | `.ddev/config.yaml` (committed), SETUP.md (`ddev start`) | DDEV, Docker | IMPLEMENTED_UNVERIFIED | Project drupal-core, type drupal12, PHP 8.5, MariaDB 11.8, Node.js 24. Its settings match the local DDEV site used for the 2026-11-23 run, but `ddev start` from a fresh clone has not been run. | Phase 3: generate config per profile under `workspaces/installations/`. |
 | Reset core and reinstall with recipes | `ddev reset-core [patch]` (`.ddev/commands/host/reset-core`) | DDEV, Drush, Composer | IMPLEMENTED_UNVERIFIED | Exited at step 1 until PR #78. Fixed and tested with a stub `ddev`, but not yet run against real DDEV. Calls Drush, which is not installed. | Run once on a DDEV machine. Replace with `env reset` in Phase 3. |
 | Reset site from snapshot or recipe | `ddev reset-site`, `scripts/reset-site.sh` | DDEV snapshots, Drush, `core/recipes/replicate_core_testing` | IMPLEMENTED_UNVERIFIED | `bash -n` passes. Uses Drush. The comment names a stale recipe path. | Reuse its snapshot logic in Phase 3. |
 | List and apply core recipes without Drush | `scripts/apply-recipe.sh`, `scripts/recipe-cli.php` | DDEV, Core Recipe API | IMPLEMENTED_UNVERIFIED | `php -l` passes. | Reuse as the recipe applier in Phases 3 and 6. |

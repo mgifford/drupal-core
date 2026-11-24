@@ -167,7 +167,7 @@ export function collectChecks({ root, env = process.env }) {
   results.push(ddev.ok ? ok('ddev', ddev.out.split('\n')[0]) : fail('ddev', EXIT.DEPENDENCY, 'not found'));
   results.push(fs.existsSync(path.join(root, '.ddev', 'config.yaml'))
     ? ok('ddev project config', '.ddev/config.yaml present')
-    : fail('ddev project config', EXIT.CONFIG, '.ddev/config.yaml missing: see SETUP.md for `ddev config`'));
+    : fail('ddev project config', EXIT.CONFIG, '.ddev/config.yaml missing: restore it with `git checkout -- .ddev/config.yaml`'));
   if (docker.ok && ddev.ok) {
     const list = run('ddev', ['list', '--json-output'], 20000);
     const raw = list.ok ? readJsonText(list.out)?.raw : null;
