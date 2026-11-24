@@ -1,0 +1,46 @@
+{
+  "self": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=1&limit=50&page=0&sort=nid&direction=ASC",
+  "first": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=1&limit=50&page=0&sort=nid&direction=ASC",
+  "last": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=1&limit=50&page=1&sort=nid&direction=ASC",
+  "next": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=1&limit=50&page=1&sort=nid&direction=ASC",
+  "list": [
+    {
+      "nid": "3540337",
+      "vid": "14416155",
+      "type": "project_issue",
+      "title": "Improve visibility of More actions menu button",
+      "language": "en",
+      "url": "https://www.drupal.org/project/drupal/issues/3540337",
+      "status": "1",
+      "created": "1754598002",
+      "changed": "1795461705",
+      "field_issue_status": "1",
+      "field_issue_priority": "200",
+      "field_issue_category": "1",
+      "field_issue_component": "navigation.module",
+      "field_issue_version": "main",
+      "field_project": {
+        "uri": "https://www.drupal.org/api-d7/node/3060",
+        "id": "3060",
+        "resource": "node"
+      },
+      "taxonomy_vocabulary_9": [
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/1101",
+          "id": "1101",
+          "resource": "taxonomy_term"
+        },
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/317",
+          "id": "317",
+          "resource": "taxonomy_term"
+        }
+      ],
+      "body": {
+        "value": "<p>Fixture text. The &lt;button&gt; has low contrast &amp; no focus ring.</p>",
+        "summary": "",
+        "format": "1"
+      }
+    }
+  ]
+}

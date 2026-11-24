@@ -1,0 +1,95 @@
+{
+  "self": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=13&limit=50&page=0&sort=nid&direction=ASC",
+  "first": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=13&limit=50&page=0&sort=nid&direction=ASC",
+  "last": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=13&limit=50&page=0&sort=nid&direction=ASC",
+  "list": [
+    {
+      "nid": "3088500",
+      "vid": "13254007",
+      "type": "project_issue",
+      "title": "sticky table not passing aria (WCAG2) validation",
+      "language": "en",
+      "url": "https://www.drupal.org/project/drupal/issues/3088500",
+      "status": "1",
+      "created": "1571292968",
+      "changed": "1696251359",
+      "field_issue_status": "13",
+      "field_issue_priority": "200",
+      "field_issue_category": "1",
+      "field_issue_component": "javascript",
+      "field_issue_version": "main",
+      "field_project": {
+        "uri": "https://www.drupal.org/api-d7/node/3060",
+        "id": "3060",
+        "resource": "node",
+        "machine_name": "drupal"
+      },
+      "taxonomy_vocabulary_9": [
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/1101",
+          "id": "1101",
+          "resource": "taxonomy_term"
+        }
+      ],
+      "body": {
+        "value": "<p>Fixture text. On /admin/content the duplicated <code>table.sticky-table-header</code> fails the axe rule <code>th-has-data-cells</code>.</p>",
+        "summary": "",
+        "format": "1"
+      }
+    },
+    {
+      "nid": "3084554",
+      "vid": "14497548",
+      "type": "project_issue",
+      "title": "Change the way the + before the Add Content link is presented on admin/content so that NVDA on Firefox doesn't bury the link",
+      "language": "en",
+      "url": "https://www.drupal.org/project/claro/issues/3084554",
+      "status": "1",
+      "created": "1569795362",
+      "changed": "1790003160",
+      "field_issue_status": "13",
+      "field_issue_priority": "300",
+      "field_issue_category": "1",
+      "field_issue_component": "Code",
+      "field_issue_version": "3.0.x-dev",
+      "field_project": {
+        "uri": "https://www.drupal.org/api-d7/node/3020054",
+        "id": "3020054",
+        "resource": "node",
+        "machine_name": "claro"
+      },
+      "taxonomy_vocabulary_9": [
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/1101",
+          "id": "1101",
+          "resource": "taxonomy_term"
+        },
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/5496",
+          "id": "5496",
+          "resource": "taxonomy_term"
+        },
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/44613",
+          "id": "44613",
+          "resource": "taxonomy_term"
+        },
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/194077",
+          "id": "194077",
+          "resource": "taxonomy_term"
+        },
+        {
+          "uri": "https://www.drupal.org/api-d7/taxonomy_term/199427",
+          "id": "199427",
+          "resource": "taxonomy_term"
+        }
+      ],
+      "body": {
+        "value": "<p>Fixture text. The Add content action link on /admin/content.</p>",
+        "summary": "",
+        "format": "1"
+      }
+    }
+  ]
+}

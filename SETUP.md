@@ -115,20 +115,15 @@ append-only `sustainability/history.json`, and `ax-tree/latest/*.yml`
 
 ## 6. Known bugs vs. discovered bugs
 
-The filing workflow (detail: bug-reporting skill + A11Y-PROCESS.md §6):
-
-1. `npm run a11y:known-issues` — pulls open `Accessibility`-tagged core
-   issues from the d.o API into `reports/known-issues.json` and writes
-   `KNOWN-ISSUES-RECONCILIATION-latest.md`:
-   - **Likely already filed** — keyword-matched candidates. Confirm by
-     hand, record in `openacr/issue-map.json`, and use the generated
-     **draft comment** to retrofit the issue with a pattern ID and
-     fresh still-reproducible evidence (issues filed by others won't
-     follow the bug-reporting schema — the comment adds the tracking
-     data without demanding they rewrite).
-   - **No match** — filing candidates. Run the confidence rubric; the
-     per-pattern manual search link is the double-check on the matcher.
-2. Nothing posts to drupal.org automatically. Drafts are for human review.
+The filing workflow is in
+[docs/testing/recording-issues.md](docs/testing/recording-issues.md).
+`npm run known-issues -- match` lists drupal.org issues that may describe
+a run's findings, with draft text for a GitHub observation issue, and
+`npm run known-issues -- recheck` checks findings already linked to
+drupal.org. Nothing is posted anywhere. The `a11y:known-issues` script
+this section used to describe was removed in Phase 1; its old output
+(`reports/known-issues.json`, `KNOWN-ISSUES-RECONCILIATION-latest.md`) is
+historical.
 
 ## 7. Troubleshooting (all field-tested)
 

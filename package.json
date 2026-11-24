@@ -1,6 +1,7 @@
 {
   "scripts": {
     "doctor": "node scripts/drupal-test.mjs doctor",
+    "known-issues": "node tools/known-issues.mjs",
     "test:unit": "node --test \"tests/unit/*.test.mjs\" \"tools/*.test.js\"",
     "test:list": "npm --prefix tests/playwright run test:list",
     "test:smoke": "npm --prefix tests/playwright run test:smoke",
