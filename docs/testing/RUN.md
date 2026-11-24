@@ -74,8 +74,10 @@ Exit codes follow the other commands:
 
 ## Where things live
 
-Everything is under gitignored folders. Owner decision D6 (where raw
-evidence is stored) is still open.
+Everything is under gitignored folders, on the machine that ran the scan.
+Owner decision D6 (b) keeps raw evidence there, outside Git. Publishing
+sanitized summaries to `main` is later work; this command publishes
+nothing.
 
 | Path | What it is |
 | --- | --- |
