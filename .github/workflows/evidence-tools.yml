@@ -1,0 +1,72 @@
+name: Unit tests and evidence schema
+
+# Runs the Observatory's unit tests (no Drupal site or browser needed) and
+# validates the committed example evidence manifest against its schema.
+# See docs/observability/README.md and docs/observability/evidence-schema.md.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/evidence-tools.yml'
+      - 'package.json'
+      - 'config/**'
+      - 'schemas/**'
+      - 'scripts/**'
+      - 'tests/unit/**'
+      - 'tests/playwright/lib/**'
+      - 'tests/playwright/scripts/**'
+      - 'tests/playwright/package.json'
+      - 'tests/playwright/package-lock.json'
+      - 'tools/**'
+      - 'node_modules/**'
+  pull_request:
+    paths:
+      - '.github/workflows/evidence-tools.yml'
+      - 'package.json'
+      - 'config/**'
+      - 'schemas/**'
+      - 'scripts/**'
+      - 'tests/unit/**'
+      - 'tests/playwright/lib/**'
+      - 'tests/playwright/scripts/**'
+      - 'tests/playwright/package.json'
+      - 'tests/playwright/package-lock.json'
+      - 'tools/**'
+      - 'node_modules/**'
+  workflow_dispatch:
+
+concurrency:
+  group: evidence-tools-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/playwright/package-lock.json
+
+      # The unit tests need only JavaScript packages (Ajv for the schemas).
+      # --ignore-scripts skips the install scripts of puppeteer, chromedriver
+      # and accessibility-checker, which download browsers the tests do not use.
+      - name: Install the Playwright package's dependencies
+        run: npm ci --prefix tests/playwright --ignore-scripts
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Validate the example evidence manifest
+        run: node tests/playwright/scripts/evidence.mjs validate schemas/examples/quality-evidence-run.example.json

@@ -241,6 +241,7 @@ missing credentials) or a file is invalid; 2 for a usage error.
 | 2026-11-23 | `run-20261123T172501Z-e4faaff8` | on | PASS; every expected request correlated and exported (37 of 37) |
 | 2026-11-23 | `run-20261123T180548Z-bdd13047` | on | PASS; 7 of 7 and 2 of 2 correlated and exported |
 | 2026-11-24 | `run-20261124T130035Z-76493305` | off | PASS; all 116 requests `instrumentation-disabled`; smoke suite 5 of 5 passed afterwards |
+| 2026-11-24 | `run-20261124T134220Z-1ca3d340` | on | PASS; 5 of 5 and 2 of 2 correlated and exported; committed as the example manifest |
 
 The tracing-off run used Drupal 12.0-dev at commit `43361ae9f9`, PHP 8.5.12,
 Chromium 149, Playwright 1.61.1 and axe-core 4.12.1, with the module
