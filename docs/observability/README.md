@@ -449,6 +449,11 @@ samples were in the intended mode, and all returned 200.
 | `/user/login` (page cache hit) | off | 4.48 ms | 4.35 to 4.76 ms | 4.18 to 5.18 ms |
 | `/user/login` (page cache hit) | on | 5.12 ms | 4.91 to 5.38 ms | 4.73 to 6.14 ms |
 
+Quartiles and percentiles were computed with Python's
+`statistics.quantiles` (its default, exclusive method). Other methods give
+slightly different 10th and 90th percentiles from the same CSV files; the
+medians do not change.
+
 Difference in median TTFB, tracing on minus off, with a bootstrap 95%
 interval (5,000 resamples):
 
