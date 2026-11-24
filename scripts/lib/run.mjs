@@ -415,16 +415,6 @@ function gitIn(dir, args) {
   return { ok: !r.error && r.status === 0, out: (r.stdout ?? '').trim(), raw: r.stdout ?? '', err: `${r.error?.message ?? ''} ${r.stderr ?? ''}`.trim() };
 }
 
-/** Fresh JSON: written at or after `since` (ms). */
-function freshJson(file, since) {
-  try {
-    return fs.statSync(file).mtimeMs >= since ? readJson(file) : null;
-  }
-  catch {
-    return null;
-  }
-}
-
 /** Every run record of a source. */
 export function readRunRecords(root, sourceId) {
   const dir = path.join(root, 'workspaces', 'runs', sourceId);
@@ -845,10 +835,16 @@ async function performRun(options, deps, record, runDir) {
   };
   const reports = path.join(root, 'tests', 'playwright', 'reports');
   await stage('smoke', async (entry) => {
-    const t0 = Date.now();
+    // Remove the previous run's results first, so whatever exists afterwards
+    // was written by this run. (File times are too coarse to tell: Linux can
+    // stamp a fresh file a little before the stage started.)
+    const resultsFile = path.join(reports, 'playwright-results.json');
+    const runInfoFile = path.join(reports, 'run-info.json');
+    fs.rmSync(resultsFile, { force: true });
+    fs.rmSync(runInfoFile, { force: true });
     const r = await exec('npm', ['run', 'test:smoke'], { cwd: root, env: testEnv, logFile: logFile('smoke') });
-    const report = freshJson(path.join(reports, 'playwright-results.json'), t0);
-    const runInfo = freshJson(path.join(reports, 'run-info.json'), t0);
+    const report = readJson(resultsFile);
+    const runInfo = readJson(runInfoFile);
     if (report) {
       writeJson(path.join(runDir, 'playwright-results.json'), report);
     }

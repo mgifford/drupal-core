@@ -187,6 +187,12 @@ function fakes(root, { fail = null, outer = false, smoke = { expected: 5 }, ddev
       const stats = { expected: 0, unexpected: 0, skipped: 0, flaky: 0, ...smoke };
       fs.writeFileSync(path.join(reports, 'playwright-results.json'), JSON.stringify({ stats, errors: [] }));
       fs.writeFileSync(path.join(reports, 'run-info.json'), JSON.stringify({ source: { resolved_commit: execFileSync('git', ['-C', opts.env.DRUPAL_SOURCE_DIR, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim() } }));
+      // Coarse file clocks (Linux) can stamp a fresh file a little before
+      // the moment the stage started; the run must not depend on mtimes.
+      const earlier = new Date(Date.now() - 5000);
+      for (const file of ['playwright-results.json', 'run-info.json']) {
+        fs.utimesSync(path.join(reports, file), earlier, earlier);
+      }
       return { code: stats.unexpected ? 1 : 0, error: null, output: '' };
     }
     if (line.includes('evidence.mjs run')) {
@@ -321,6 +327,26 @@ test('a failed Composer install is an infrastructure error and nothing is tested
     }
     assert.ok(!calls.some((c) => c.command === 'npm'));
     assert.equal(ddevCalls(calls).at(-1), `stop ${record.installation.ddev_project}`);
+  }
+  finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('a stale passing report from an earlier run is never counted', async () => {
+  const { tmp, root, config } = fixture();
+  try {
+    const reports = path.join(root, 'tests/playwright/reports');
+    fs.mkdirSync(reports, { recursive: true });
+    fs.writeFileSync(path.join(reports, 'playwright-results.json'), JSON.stringify({ stats: { expected: 5, unexpected: 0, skipped: 0, flaky: 0 }, errors: [] }));
+    const { deps } = fakes(root);
+    const exec = deps.exec;
+    // Playwright fails to start and writes nothing.
+    deps.exec = async (command, args, opts) => (command === 'npm' ? { code: 1, error: null, output: 'npm ERR!\n' } : exec(command, args, opts));
+    const record = await runObservatory({ root, config, sourceId: 'core' }, deps);
+    assert.equal(record.suites.smoke.status, 'INFRASTRUCTURE_ERROR');
+    assert.equal(record.suites.smoke.reason, 'no Playwright report from this run');
+    assert.equal(record.status, 'INFRASTRUCTURE_ERROR');
   }
   finally {
     fs.rmSync(tmp, { recursive: true, force: true });
