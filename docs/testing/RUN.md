@@ -227,7 +227,7 @@ exit 0, 80.7 seconds in all.
 | composer-install | 8.6 s | ok. DDEV's Composer cache was already warm. |
 | site-install, fixtures, test-account, site-check | 7.6 s | Standard and `observatory_smoke`; uid 2; HTTP 200 |
 | smoke | 8.2 s | 5 of 5 passed |
-| evidence | 3.4 s | PASS: tracing disabled, 2 axe findings on `/admin/content` (`color-contrast`, `th-has-data-cells`, unreviewed) |
+| evidence | 3.4 s | PASS: tracing disabled. axe found no violations on `/admin/content`. It left 2 results needing review: `color-contrast`, where axe could not parse a CSS color and skipped the rule on that page, and `th-has-data-cells` on the Default Admin theme's duplicated sticky header table (drupal.org #3583518). |
 | ddev-stop | 3.7 s | ok |
 
 - **Disk:** installation 272 MB, checkout 124 MB, source store 119 MB.
