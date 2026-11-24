@@ -19,9 +19,10 @@ twice.
 ```bash
 git clone git@github.com:mgifford/drupal-core.git && cd drupal-core
 
-# DDEV project — docroot is the repo root (core dev checkout, NOT the
-# recommended-project layout from the official DDEV guide). PHP >= 8.5.
-ddev config --project-type=drupal12 --docroot=. --project-name=drupal-core --php-version=8.5
+# DDEV project: .ddev/config.yaml is committed (project drupal-core,
+# type drupal12, PHP 8.5, Node.js 24, docroot at the repo root: core dev
+# checkout, NOT the recommended-project layout from the official DDEV
+# guide). Do not run `ddev config`; it would rewrite that file.
 ddev start
 
 # PHP deps. composer.lock pins drupal/core to the core/ path repository —
@@ -134,7 +135,7 @@ The filing workflow (detail: bug-reporting skill + A11Y-PROCESS.md §6):
 | Symptom | Cause | Fix |
 | :--- | :--- | :--- |
 | `composer install` rewrites/deletes `core/` | lock resolving drupal/core from packages.drupal.org | restore from git; ensure lock's drupal/core entry has `dist.type: path, url: core` (commit a42d3b6) |
-| drush fatals: PHP >= 8.5 required | container on older PHP | `ddev config --php-version=8.5 && ddev restart` |
+| drush fatals: PHP >= 8.5 required | container on older PHP | check `php_version: "8.5"` in the committed `.ddev/config.yaml`, then `ddev restart` |
 | Playwright: "Executable doesn't exist … chromium_headless_shell" | browser cache from another Playwright version | `cd core/tests/playwright && npx playwright install chromium` |
 | Whole site hangs / curl code 000 | wedged PHP-FPM workers (e.g. after parallel request bursts) | `ddev restart` |
 | Crawl "completed" but few/no records | pre-2026-07-05 code: per-worker afterAll merge wiped shards | fixed (globalTeardown, commit 7170bf5) — if it recurs, check `reports/.tmp-crawl` survived to teardown |
