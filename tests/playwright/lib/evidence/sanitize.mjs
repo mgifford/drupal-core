@@ -74,6 +74,10 @@ export function sanitizeRepository(input) {
   if (typeof input !== 'string' || input === '') {
     return null;
   }
+  if (/^[A-Za-z]:[\\/]/.test(input)) {
+    // A Windows path, such as C:\checkouts\drupal.
+    return input;
+  }
   if (!input.includes('://')) {
     return input.replace(/^[^@/\s]*:[^@/\s]*@/, '');
   }

@@ -56,6 +56,7 @@ test('sanitizeRepository drops credentials from URL remotes only', () => {
   assert.equal(sanitizeRepository('git@github.com:o/r.git'), 'git@github.com:o/r.git');
   assert.equal(sanitizeRepository('/srv/checkouts/drupal'), '/srv/checkouts/drupal');
   assert.equal(sanitizeRepository('C:\\checkouts\\drupal'), 'C:\\checkouts\\drupal');
+  assert.equal(sanitizeRepository('C:\\Users\\a@b\\repo'), 'C:\\Users\\a@b\\repo');
   assert.equal(sanitizeRepository(null), null);
 });
 
