@@ -1,0 +1,77 @@
+{
+  "self": "https://www.drupal.org/api-d7/taxonomy_term?name=Accessibility",
+  "first": "https://www.drupal.org/api-d7/taxonomy_term?name=Accessibility&page=0",
+  "last": "https://www.drupal.org/api-d7/taxonomy_term?name=Accessibility&page=0",
+  "list": [
+    {
+      "tid": "1101",
+      "name": "Accessibility",
+      "url": "https://www.drupal.org/project/issues/search?issue_tags=Accessibility",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/9",
+        "id": "9",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "25754",
+      "name": "Accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/25754",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/48",
+        "id": "48",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "34810",
+      "name": "accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/34810",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/54",
+        "id": "54",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "167565",
+      "name": "accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/167565",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/65",
+        "id": "65",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "185733",
+      "name": "accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/185733",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/67",
+        "id": "67",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "193884",
+      "name": "Accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/193884",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/3",
+        "id": "3",
+        "resource": "taxonomy_vocabulary"
+      }
+    },
+    {
+      "tid": "194161",
+      "name": "Accessibility",
+      "url": "https://www.drupal.org/taxonomy/term/194161",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/71",
+        "id": "71",
+        "resource": "taxonomy_vocabulary"
+      }
+    }
+  ]
+}

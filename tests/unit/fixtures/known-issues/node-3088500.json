@@ -1,0 +1,34 @@
+{
+  "nid": "3088500",
+  "vid": "13254007",
+  "type": "project_issue",
+  "title": "sticky table not passing aria (WCAG2) validation",
+  "language": "en",
+  "url": "https://www.drupal.org/project/drupal/issues/3088500",
+  "status": "1",
+  "created": "1571292968",
+  "changed": "1696251359",
+  "field_issue_status": "13",
+  "field_issue_priority": "200",
+  "field_issue_category": "1",
+  "field_issue_component": "javascript",
+  "field_issue_version": "main",
+  "field_project": {
+    "uri": "https://www.drupal.org/api-d7/node/3060",
+    "id": "3060",
+    "resource": "node",
+    "machine_name": "drupal"
+  },
+  "taxonomy_vocabulary_9": [
+    {
+      "uri": "https://www.drupal.org/api-d7/taxonomy_term/1101",
+      "id": "1101",
+      "resource": "taxonomy_term"
+    }
+  ],
+  "body": {
+    "value": "<p>Fixture text. On /admin/content the duplicated <code>table.sticky-table-header</code> fails the axe rule <code>th-has-data-cells</code>.</p>",
+    "summary": "",
+    "format": "1"
+  }
+}
