@@ -5,7 +5,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { newId, newRunId } from '../playwright/lib/evidence/ids.mjs';
 import { parseTraceHeader } from '../playwright/lib/evidence/trace-context.mjs';
-import { sanitizeUrl, sanitizeHtmlSnippet } from '../playwright/lib/evidence/sanitize.mjs';
+import { sanitizeUrl, sanitizeHtmlSnippet, sanitizeRepository } from '../playwright/lib/evidence/sanitize.mjs';
 import { classifyRequestTrace, summarizeCorrelation, EvidenceRecorder } from '../playwright/lib/evidence/recorder.mjs';
 import { spansFromExport, summarizeTrace } from '../playwright/lib/evidence/otlp.mjs';
 import { buildManifest, wcagCandidates } from '../playwright/lib/evidence/manifest.mjs';
@@ -45,6 +45,18 @@ test('sanitizeUrl redacts one-time login links and token-like segments', () => {
   assert.equal(sanitizeUrl('https://site.test/user/reset/2/1700000000/AbCdEf123/login'), '/user/reset/:uid/:timestamp/:hash/login');
   assert.equal(sanitizeUrl(`https://site.test/batch/${'a'.repeat(43)}`), '/batch/:token');
   assert.equal(sanitizeUrl('not a url'), '[unparseable url]');
+});
+
+test('sanitizeRepository drops credentials from URL remotes only', () => {
+  assert.equal(sanitizeRepository('https://x-access-token:secret@github.com/o/r.git'), 'https://github.com/o/r.git');
+  assert.equal(sanitizeRepository('https://secret@github.com/o/r.git'), 'https://github.com/o/r.git');
+  assert.equal(sanitizeRepository('https://github.com/o/r.git?token=secret#x'), 'https://github.com/o/r.git');
+  assert.equal(sanitizeRepository('ssh://git:secret@host.test:2222/o/r.git'), 'ssh://host.test:2222/o/r.git');
+  assert.equal(sanitizeRepository('user:secret@host.test:o/r.git'), 'host.test:o/r.git');
+  assert.equal(sanitizeRepository('git@github.com:o/r.git'), 'git@github.com:o/r.git');
+  assert.equal(sanitizeRepository('/srv/checkouts/drupal'), '/srv/checkouts/drupal');
+  assert.equal(sanitizeRepository('C:\\checkouts\\drupal'), 'C:\\checkouts\\drupal');
+  assert.equal(sanitizeRepository(null), null);
 });
 
 test('sanitizeHtmlSnippet removes value attributes and truncates', () => {
@@ -247,6 +259,16 @@ test('buildManifest links findings to the server trace of the page load', () => 
   const raw = fs.readFileSync(path.join(runDir, 'private/otlp-traces.jsonl'), 'utf8');
   assert.ok(raw.includes(TRACE));
   assert.equal(manifest.artifacts.find((a) => a.kind === 'otlp-traces').visibility, 'private');
+});
+
+test('buildManifest removes credentials from the recorded repository', () => {
+  const { runDir, runId, store, dir } = syntheticRun();
+  fs.writeFileSync(path.join(runDir, 'run-info.json'), JSON.stringify({
+    source: { repository: 'https://user:hunter2@example.test/r.git', requested_ref: 'main', resolved_commit: 'a'.repeat(40), dirty: false },
+  }));
+  const manifest = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true });
+  assert.equal(manifest.target.source.repository, 'https://example.test/r.git');
+  assert.ok(!JSON.stringify(manifest).includes('hunter2'));
 });
 
 test('buildManifest records returned trace ids with no exported spans', () => {

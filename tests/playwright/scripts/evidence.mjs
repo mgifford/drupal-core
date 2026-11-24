@@ -18,7 +18,8 @@
  *   --install-profile <name>, --recipes <a,b>  What the runner installed (run only;
  *                          recorded as declared, not checked)
  *
- * Exit codes: 0 success, 1 tests failed or invalid file, 2 usage error.
+ * Exit codes: 0 success, 1 tests failed, no scenario passed, or invalid
+ * file, 2 usage error.
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -146,8 +147,10 @@ async function run(options) {
     fs.copyFileSync(runInfo, path.join(runDir, 'run-info.json'));
   }
   await waitForTraces(runDir, traceStoreOption(options));
-  build(runDir, options);
-  process.exit(result.status === 0 ? 0 : 1);
+  const manifest = build(runDir, options);
+  // Playwright exits 0 when every test was skipped; a run with nothing
+  // passed (NOT_RUN, SKIPPED) is not a success.
+  process.exit(result.status === 0 && manifest.run.status === 'PASS' ? 0 : 1);
 }
 
 function validateFiles(files) {
@@ -203,7 +206,9 @@ switch (command) {
     console.log(out);
     break;
   }
-  default:
-    console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(2, 23).map((l) => l.replace(/^ \* ?/, '')).join('\n'));
+  default: {
+    const lines = fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n');
+    console.log(lines.slice(2, lines.indexOf(' */')).map((l) => l.replace(/^ \* ?/, '')).join('\n'));
     process.exit(command ? 2 : 0);
+  }
 }

@@ -62,6 +62,36 @@ export function sanitizeOrigin(input) {
 }
 
 /**
+ * Returns a Git remote with no credentials, or null.
+ *
+ * - A URL remote (scheme://...) loses its user name, password, query and
+ *   fragment: an HTTPS token can sit in any of them.
+ * - An scp-style remote loses a password before the @, so user:pw@host:path
+ *   becomes host:path; git@host:owner/repo.git is kept.
+ * - Anything else, such as a local path, is returned unchanged.
+ */
+export function sanitizeRepository(input) {
+  if (typeof input !== 'string' || input === '') {
+    return null;
+  }
+  if (!input.includes('://')) {
+    return input.replace(/^[^@/\s]*:[^@/\s]*@/, '');
+  }
+  let url;
+  try {
+    url = new URL(input);
+  }
+  catch {
+    return '[unparseable remote]';
+  }
+  url.username = '';
+  url.password = '';
+  url.search = '';
+  url.hash = '';
+  return url.href;
+}
+
+/**
  * Sanitizes a path or URL that may be relative ("/node/1?x=y"), returning
  * the same form as sanitizeUrl().
  */

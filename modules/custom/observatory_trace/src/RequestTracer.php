@@ -38,12 +38,13 @@ use Symfony\Component\HttpFoundation\Response;
  * - the state value observatory_trace.otlp_endpoint.
  * OTEL_SDK_DISABLED=true turns it off whatever the endpoint.
  *
- * Never recorded: the URL path (one-time login links carry tokens in it;
- * the route pattern is recorded instead), request or response headers,
- * cookies, bodies, query strings, or database statement arguments. Spans do
- * hold statement text with placeholders, exception messages and code
- * locations, so the trace store is private test evidence, not something to
- * publish.
+ * Never recorded as attributes: the URL path (one-time login links carry
+ * tokens in it; the route pattern is recorded instead), request or response
+ * headers, cookies, bodies, query strings, or database statement arguments.
+ * Spans do hold statement text with placeholders, exception messages and
+ * code locations, so the trace store is private test evidence, not something
+ * to publish. Exception messages can contain URLs: Symfony's 404 message
+ * names the request URL and the Referer header.
  */
 class RequestTracer implements DestructableInterface {
 

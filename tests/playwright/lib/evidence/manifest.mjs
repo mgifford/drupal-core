@@ -16,7 +16,7 @@ import { createRequire } from 'node:module';
 import { newId } from './ids.mjs';
 import { readTraceStore, groupByTrace, summarizeTrace } from './otlp.mjs';
 import { summarizeCorrelation } from './recorder.mjs';
-import { sanitizeHtmlSnippet, sanitizePath } from './sanitize.mjs';
+import { sanitizeHtmlSnippet, sanitizePath, sanitizeRepository } from './sanitize.mjs';
 import { validate } from './validate.mjs';
 
 const require = createRequire(import.meta.url);
@@ -261,7 +261,7 @@ export function buildManifest(options) {
     target: {
       product: 'drupal-core',
       source: {
-        repository: runInfo?.source?.repository ?? null,
+        repository: sanitizeRepository(runInfo?.source?.repository ?? null),
         requested_ref: runInfo?.source?.requested_ref ?? null,
         commit: runInfo?.source?.resolved_commit ?? null,
         dirty: runInfo?.source?.dirty ?? null,
