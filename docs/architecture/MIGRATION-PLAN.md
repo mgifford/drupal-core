@@ -36,7 +36,7 @@ visible behaviour, so none is made by an agent.
 | D3 | Fork edits to upstream core files (26 code, test and template files, five issues; README.md excluded). | (a) Keep them on `main`. (b) Export each as a patch under `patches/` and restore upstream versions. | (b). They are test subjects with known defects. Phase 2 checkouts will be pristine anyway. |
 | D4 | Weekly sync workflow. | (a) Repaired version (PR only, never pushes `main`). (b) Disable it once Phase 2 source fetching works. | (a) now, then (b) after Phase 2. |
 | D5 | Where the weekly scan runs (raised by the [Observatory brief](OBSERVATORY-BRIEF.md)). | (a) Local only, as in Phase 10. (b) GitHub Actions, publishing after automated checks. (c) Both: hosted structural scans, plus optional local runs for energy measurement. | **Decided by the owner on 2026-11-24: (a), local only.** Scheduling stays opt-in and is never installed automatically (Phase 10). |
-| D6 | Where raw run evidence is stored (raised by the brief). | (a) `reports/runs/` on `main`, as in Phase 8. (b) Small summaries on `main`, large raw evidence in a durable store outside `main`. | None yet. Decide before Phase 8. |
+| D6 | Where raw run evidence is stored (raised by the brief). | (a) `reports/runs/` on `main`, as in Phase 8. (b) Small summaries on `main`, large raw evidence in a durable store outside `main`. | **Decided by the owner on 2026-11-24: (b).** Public summaries (sanitized evidence manifests and reports) go to `main` and GitHub Pages. Raw evidence (raw traces, raw scanner output, screenshots) stays on the local machine that ran the scan, outside Git, so Git does not back it up. |
 
 ## Immediate repairs (before or with Phase 1)
 
