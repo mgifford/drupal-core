@@ -293,8 +293,9 @@ The multi-page axe crawl was verified on 2026-11-24:
 - **Third run:** 24 passed, 0 new, exit 0. `evidence.mjs compare` with the
   second run: comparable, all 378 findings recurring.
 - **Site state:** with `enable_dark_mode` set to `light` beforehand, a
-  `CRAWL_THEME=admin-dark` run with failing tests restored it to `light`, and
-  so did a run stopped with Ctrl-C. An earlier Ctrl-C, with the output piped
+  `CRAWL_THEME=admin-dark` run of three pages, two of which failed because
+  that profile has no baseline, restored it to `light`, and so did a run
+  stopped with Ctrl-C. An earlier Ctrl-C, with the output piped
   to `grep`, ended before the teardown and left the state file; the next
   crawl restored it before scanning. The site was then set back to its
   original `auto`.
