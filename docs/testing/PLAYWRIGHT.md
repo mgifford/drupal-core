@@ -56,7 +56,7 @@ the HTTP status. `DRUPAL_BASE_URL` must start with `http://` or `https://`.
 | `DRUPAL_TEST_USER`, `DRUPAL_TEST_PASS` | logged-in smoke tests | none. Without them those tests are reported as skipped. |
 | `DRUPAL_ADMIN_USER`, `DRUPAL_ADMIN_PASS` | the existing global login and the older specs | `admin` / `admin` |
 | `SKIP_ADMIN_LOGIN=1` | skips that global admin login. `test:smoke` and `test:a11y` set it, so they never depend on the admin password. | off |
-| `DRUPAL_SOURCE_DIR` | run record | repository root |
+| `DRUPAL_SOURCE_DIR` | run record, evidence manifest | repository root |
 | `VOICEOVER=1` | enables the real VoiceOver project | off |
 
 Use a dedicated test account for `DRUPAL_TEST_USER`, not user 1. It needs

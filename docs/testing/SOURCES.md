@@ -139,10 +139,12 @@ An example record:
   `git --git-dir=workspaces/sources/drupal-core worktree remove workspaces/checkouts/drupal-core/<commit>`,
   then delete its `.json` record.
 - **Other refs:** tags, stable releases and other branches.
-- **Building sites:** checkouts are not yet turned into Drupal sites; that
-  is Phase 3.
-- **Run history:** "previous tested commit" currently means the newest
-  checkout. Phase 8 replaces it with real run history.
+- **Building sites:** `drupal-test.mjs run` builds a disposable site from
+  a pinned checkout and tests it ([RUN.md](RUN.md)). It is a minimal
+  Phase 3: no profiles or snapshots yet.
+- **Run history:** for `sources updates`, "previous tested commit" means
+  the newest checkout. `run` uses its own run records under
+  `workspaces/runs/` instead. Phase 8 replaces both with real run history.
 - **Weekly sync:** `.github/workflows/weekly-sync.yml` still exists. Owner
   decision D4 is whether to retire it now that the engine fetches upstream
   itself.
