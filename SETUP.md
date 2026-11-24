@@ -10,7 +10,7 @@ twice.
 ## 1. Prerequisites
 
 - Docker Desktop + [DDEV](https://ddev.readthedocs.io/)
-- Node.js ≥ 22, npm
+- Node.js ≥ 22.12, npm (`@axe-core/playwright` 4.14 requires it)
 - `gh` CLI authenticated to the GitHub account that owns this fork
 - ~4 GB free disk (site + browsers + reports)
 
