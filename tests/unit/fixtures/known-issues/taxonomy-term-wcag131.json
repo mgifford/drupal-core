@@ -1,0 +1,17 @@
+{
+  "self": "https://www.drupal.org/api-d7/taxonomy_term?name=wcag131",
+  "first": "https://www.drupal.org/api-d7/taxonomy_term?name=wcag131&page=0",
+  "last": "https://www.drupal.org/api-d7/taxonomy_term?name=wcag131&page=0",
+  "list": [
+    {
+      "tid": "195698",
+      "name": "wcag131",
+      "url": "https://www.drupal.org/project/issues/search?issue_tags=wcag131",
+      "vocabulary": {
+        "uri": "https://www.drupal.org/api-d7/taxonomy_vocabulary/9",
+        "id": "9",
+        "resource": "taxonomy_vocabulary"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "self": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=8&limit=50&page=0&sort=nid&direction=ASC",
+  "first": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=8&limit=50&page=0&sort=nid&direction=ASC",
+  "last": "https://www.drupal.org/api-d7/node?type=project_issue&field_project=3060&taxonomy_vocabulary_9=1101&field_issue_status=8&limit=50&page=0&sort=nid&direction=ASC",
+  "list": []
+}
