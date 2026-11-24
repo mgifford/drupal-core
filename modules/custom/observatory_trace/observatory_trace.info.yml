@@ -1,0 +1,5 @@
+name: 'Observatory trace'
+type: module
+description: 'Test-only OpenTelemetry request tracing for the Drupal Quality Observatory. Does nothing until an OTLP endpoint is configured. Never enable it on a production site.'
+package: Testing
+core_version_requirement: ^11 || ^12

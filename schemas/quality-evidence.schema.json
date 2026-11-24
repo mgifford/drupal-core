@@ -1,0 +1,371 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:drupal-quality-observatory:schema:quality-evidence:0.1.0",
+  "title": "Drupal Quality Observatory evidence manifest",
+  "description": "One test run: what was tested, how, what the browser and Drupal recorded, and where the evidence is. Version 0.x may change without a migration. See docs/observability/evidence-schema.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_type", "run", "target", "environment", "instrumentation", "tools", "scenarios", "findings", "measurements", "artifacts"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "artifact_type": { "const": "quality-evidence-run" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "synthetic", "mode", "trigger", "started_at", "completed_at", "status"],
+      "properties": {
+        "run_id": { "$ref": "#/$defs/run_id" },
+        "synthetic": { "type": "boolean", "description": "True for hand-made fixtures. A synthetic record is never evidence about Drupal." },
+        "mode": { "enum": ["diagnostic", "benchmark"], "description": "diagnostic: instrumented, for investigation. benchmark: controlled measurement; must not be compared with diagnostic runs." },
+        "trigger": { "enum": ["manual", "scheduled", "ci"] },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "completed_at": { "$ref": "#/$defs/timestamp_or_null" },
+        "status": { "$ref": "#/$defs/execution_status" },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "source"],
+      "properties": {
+        "product": { "type": "string", "examples": ["drupal-core", "drupal-cms"] },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "requested_ref", "commit", "dirty"],
+          "properties": {
+            "repository": { "type": ["string", "null"] },
+            "requested_ref": { "type": ["string", "null"] },
+            "commit": { "oneOf": [{ "$ref": "#/$defs/git_sha" }, { "type": "null" }] },
+            "dirty": { "type": ["boolean", "null"], "description": "True when the tested checkout had changes the commit does not contain." },
+            "provenance_record": { "$ref": "#/$defs/relative_path", "description": "Optional Phase 2 source provenance record (docs/testing/SOURCES.md)." }
+          }
+        },
+        "drupal_version": { "type": ["string", "null"] },
+        "php_version": { "type": ["string", "null"] },
+        "install_profile": { "type": ["string", "null"] },
+        "recipes": { "type": "array", "items": { "type": "string" } },
+        "composer_lock_sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_url", "browser"],
+      "properties": {
+        "base_url": { "type": ["string", "null"], "description": "Origin of the site under test. Never contains credentials." },
+        "browser": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": ["string", "null"] }
+          }
+        },
+        "viewport": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": { "width": { "type": "integer" }, "height": { "type": "integer" } }
+        },
+        "color_scheme": { "enum": ["light", "dark", "no-preference", null] },
+        "reduced_motion": { "enum": ["reduce", "no-preference", null] },
+        "runner": { "type": ["string", "null"], "examples": ["local-ddev", "github-actions"] }
+      }
+    },
+    "instrumentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["server_tracing"],
+      "properties": {
+        "server_tracing": { "enum": ["enabled", "disabled", "unknown"] },
+        "implementation": { "type": ["string", "null"], "examples": ["observatory_trace (modules/custom)"] },
+        "trace_store": { "type": ["string", "null"], "description": "Where server traces were written, relative to the evidence directory. Not a network endpoint." },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/scenario" }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "measurements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/measurement" }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "related_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["system", "id", "relation"],
+        "properties": {
+          "system": { "enum": ["drupal.org", "github", "drupal-core-lab"] },
+          "id": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "relation": { "enum": ["reported-as", "possibly-related", "fix-under-test"] },
+          "finding_ids": { "type": "array", "items": { "$ref": "#/$defs/finding_id" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "run_id": { "type": "string", "pattern": "^run-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$" },
+    "scenario_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$" },
+    "attempt_id": { "type": "string", "pattern": "^att-[0-9a-f]{12}$" },
+    "action_id": { "type": "string", "pattern": "^act-[0-9a-f]{12}$" },
+    "request_id": { "type": "string", "pattern": "^req-[0-9a-f]{12}$" },
+    "finding_id": { "type": "string", "pattern": "^fnd-[0-9a-f]{12}$" },
+    "measurement_id": { "type": "string", "pattern": "^msr-[0-9a-f]{12}$" },
+    "artifact_id": { "type": "string", "pattern": "^art-[0-9a-f]{12}$" },
+    "trace_id": { "type": "string", "pattern": "^(?!0{32})[0-9a-f]{32}$", "description": "W3C Trace Context trace-id as returned by the server. Never generated by the test runner." },
+    "span_id": { "type": "string", "pattern": "^(?!0{16})[0-9a-f]{16}$" },
+    "git_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "timestamp_or_null": { "oneOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] },
+    "relative_path": { "type": "string", "pattern": "^(?![/\\\\])(?!.*\\.\\.)(?![a-zA-Z][a-zA-Z0-9+.-]*:).+$", "description": "A path relative to the evidence directory: no leading slash, no '..', no URL scheme." },
+    "execution_status": { "enum": ["PASS", "FAIL", "SKIPPED", "INCONCLUSIVE", "NOT_RUN", "INFRASTRUCTURE_ERROR"] },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": ["string", "null"] }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario_id", "title", "attempts"],
+      "properties": {
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "title": { "type": "string" },
+        "spec": { "type": ["string", "null"], "description": "Test file and title that ran the scenario." },
+        "reproduce": { "type": ["string", "null"], "description": "Command that reruns this scenario." },
+        "attempts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/attempt" } }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_id", "status", "started_at", "actions", "requests", "correlation"],
+      "properties": {
+        "attempt_id": { "$ref": "#/$defs/attempt_id" },
+        "retry": { "type": "integer", "minimum": 0 },
+        "status": { "$ref": "#/$defs/execution_status" },
+        "failure_reason": { "type": ["string", "null"] },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "completed_at": { "$ref": "#/$defs/timestamp_or_null" },
+        "actions": { "type": "array", "items": { "$ref": "#/$defs/action" } },
+        "requests": { "type": "array", "items": { "$ref": "#/$defs/request" } },
+        "other_origin_requests": { "type": "integer", "minimum": 0, "description": "Requests to other origins. Counted only; never detailed or traced." },
+        "correlation": { "$ref": "#/$defs/correlation" },
+        "artifact_ids": { "type": "array", "items": { "$ref": "#/$defs/artifact_id" } }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "label", "started_at"],
+      "properties": {
+        "action_id": { "$ref": "#/$defs/action_id" },
+        "label": { "type": "string" },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "completed_at": { "$ref": "#/$defs/timestamp_or_null" },
+        "status": { "enum": ["completed", "failed"] }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "action_id", "method", "url", "resource_type", "status", "trace"],
+      "properties": {
+        "request_id": { "$ref": "#/$defs/request_id" },
+        "action_id": { "oneOf": [{ "$ref": "#/$defs/action_id" }, { "type": "null" }] },
+        "method": { "type": "string" },
+        "url": { "type": "string", "description": "Sanitized path and query: query values and token-like path segments are redacted." },
+        "resource_type": { "type": "string" },
+        "redirected_from": { "oneOf": [{ "$ref": "#/$defs/request_id" }, { "type": "null" }] },
+        "status": { "type": ["integer", "null"], "description": "HTTP status, or null when no response arrived." },
+        "failure": { "type": ["string", "null"] },
+        "started_at": { "$ref": "#/$defs/timestamp_or_null" },
+        "duration_ms": { "type": ["number", "null"] },
+        "transfer_bytes": { "type": ["integer", "null"], "description": "Response headers plus body as seen by the browser. A resource proxy, not energy." },
+        "drupal_cache": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "page": { "type": ["string", "null"] },
+            "dynamic_page": { "type": ["string", "null"] }
+          }
+        },
+        "trace": { "$ref": "#/$defs/request_trace" }
+      }
+    },
+    "request_trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["correlated", "not-expected", "missing", "malformed", "instrumentation-disabled"] },
+        "trace_id": { "$ref": "#/$defs/trace_id" },
+        "span_id": { "$ref": "#/$defs/span_id" },
+        "reason": { "type": ["string", "null"] },
+        "exported": { "enum": ["found", "not-found", "not-checked"], "description": "Whether spans for this trace_id were found in the trace store." },
+        "summary": { "$ref": "#/$defs/trace_summary" }
+      },
+      "allOf": [
+        { "if": { "properties": { "status": { "const": "correlated" } } }, "then": { "required": ["trace_id", "span_id"] } },
+        { "if": { "properties": { "status": { "not": { "const": "correlated" } } } }, "then": { "not": { "required": ["trace_id"] } } }
+      ]
+    },
+    "trace_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Public-safe summary of the server spans for one trace. Only what was captured; no query text, exception messages or code locations.",
+      "properties": {
+        "root_span_name": { "type": ["string", "null"] },
+        "duration_ms": { "type": ["number", "null"] },
+        "http_route": { "type": ["string", "null"] },
+        "drupal_route_name": { "type": ["string", "null"] },
+        "http_status": { "type": ["integer", "null"] },
+        "page_cache": { "type": ["string", "null"] },
+        "dynamic_page_cache": { "type": ["string", "null"] },
+        "span_count": { "type": "integer", "minimum": 0 },
+        "db_statement_count": { "type": "integer", "minimum": 0 },
+        "db_total_ms": { "type": ["number", "null"] },
+        "db_operations": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "db_failures": { "type": "integer", "minimum": 0 },
+        "exception_types": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "trace_ids", "expected", "matched"],
+      "properties": {
+        "status": { "enum": ["correlated", "partially-correlated", "unavailable", "instrumentation-disabled", "correlation-failed"] },
+        "trace_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/trace_id" } },
+        "expected": { "type": "integer", "minimum": 0, "description": "Same-origin requests for which a server trace was expected." },
+        "matched": { "type": "integer", "minimum": 0, "description": "Expected requests that returned a valid trace id." },
+        "exported": { "type": ["integer", "null"], "minimum": 0, "description": "Matched trace ids that were found in the trace store, or null if not checked." },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding_id", "tool", "rule_id", "result", "scenario_id", "attempt_id", "url", "verification", "source_mapping"],
+      "properties": {
+        "finding_id": { "$ref": "#/$defs/finding_id" },
+        "tool": { "$ref": "#/$defs/tool" },
+        "rule_id": { "type": "string", "description": "The engine's own rule identifier, unchanged." },
+        "rule_url": { "oneOf": [{ "type": "string", "pattern": "^https?://" }, { "type": "null" }] },
+        "result": { "enum": ["violation", "needs-review"], "description": "axe 'violations' map to violation; 'incomplete' maps to needs-review." },
+        "impact": { "type": ["string", "null"] },
+        "engine_tags": { "type": "array", "items": { "type": "string" }, "description": "Tags as the engine supplied them." },
+        "wcag_candidates": { "type": "array", "items": { "type": "string", "pattern": "^[1-4]\\.[0-9]+\\.[0-9]+$" }, "description": "Success criteria derived from engine tags. A candidate mapping, not a conformance judgement." },
+        "act_rule_ids": { "type": "array", "items": { "type": "string" }, "description": "ACT rule ids, only when the engine supplied them." },
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "attempt_id": { "$ref": "#/$defs/attempt_id" },
+        "action_id": { "oneOf": [{ "$ref": "#/$defs/action_id" }, { "type": "null" }], "description": "The browser action during which the scan ran." },
+        "page_action_id": { "oneOf": [{ "$ref": "#/$defs/action_id" }, { "type": "null" }], "description": "The action that loaded the scanned page." },
+        "url": { "type": "string" },
+        "target": { "type": "array", "items": { "type": "string" } },
+        "html": { "type": ["string", "null"], "description": "Sanitized, truncated snippet." },
+        "message": { "type": ["string", "null"] },
+        "related_trace_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/trace_id" } },
+        "fingerprint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pattern", "occurrence", "status"],
+          "properties": {
+            "pattern": { "type": "string" },
+            "occurrence": { "type": "string" },
+            "status": { "enum": ["stable", "provisional"] },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "verification": { "enum": ["automated-unreviewed", "human-confirmed", "human-rejected", "disputed"] },
+        "source_mapping": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification"],
+          "properties": {
+            "classification": { "enum": ["verified", "probable", "candidate", "unknown"] },
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind", "value", "evidence"],
+                "properties": {
+                  "kind": { "enum": ["route", "form", "theme-hook", "template", "library", "behavior", "module"] },
+                  "value": { "type": "string" },
+                  "evidence": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "artifact_ids": { "type": "array", "items": { "$ref": "#/$defs/artifact_id" } }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["measurement_id", "name", "value", "unit", "kind", "tool", "measured_at", "instrumented", "method"],
+      "properties": {
+        "measurement_id": { "$ref": "#/$defs/measurement_id" },
+        "name": { "type": "string", "examples": ["server.duration", "db.statement_count", "browser.transfer_bytes"] },
+        "value": { "type": ["number", "null"] },
+        "unit": { "type": "string", "examples": ["ms", "count", "bytes"] },
+        "kind": { "enum": ["server-execution", "browser-timing", "resource-proxy", "energy-measured", "energy-estimated", "emissions-modelled"] },
+        "tool": { "$ref": "#/$defs/tool" },
+        "measured_at": { "$ref": "#/$defs/timestamp" },
+        "instrumented": { "type": "boolean", "description": "True if server tracing was on. Instrumented values are not comparable with uninstrumented ones." },
+        "method": { "type": "string" },
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "attempt_id": { "$ref": "#/$defs/attempt_id" },
+        "request_id": { "$ref": "#/$defs/request_id" },
+        "trace_id": { "$ref": "#/$defs/trace_id" },
+        "artifact_id": { "$ref": "#/$defs/artifact_id" }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "kind", "availability", "visibility"],
+      "properties": {
+        "artifact_id": { "$ref": "#/$defs/artifact_id" },
+        "kind": { "enum": ["axe-results", "playwright-trace", "screenshot", "otlp-traces", "lighthouse", "report", "other"] },
+        "path": { "$ref": "#/$defs/relative_path" },
+        "media_type": { "type": "string" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "visibility": { "enum": ["public", "private"], "description": "private artifacts may hold URLs, query text or stack traces and must not be published." },
+        "availability": { "enum": ["available", "expired", "not-collected", "withheld"] },
+        "retention_days": { "type": ["integer", "null"], "minimum": 1 },
+        "note": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "availability": { "const": "available" } } }, "then": { "required": ["path", "sha256", "bytes"] } }
+      ]
+    }
+  }
+}

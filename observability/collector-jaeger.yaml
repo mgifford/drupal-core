@@ -1,0 +1,29 @@
+# Same as collector.yaml, and also sends spans to the optional Jaeger viewer.
+# Used when the compose "viewer" profile is on (COLLECTOR_CONFIG=collector-jaeger.yaml).
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 1s
+
+exporters:
+  file:
+    path: /evidence/otel-traces.jsonl
+  otlp/jaeger:
+    endpoint: observatory-jaeger:4317
+    tls:
+      insecure: true
+
+service:
+  telemetry:
+    logs:
+      level: warn
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [file, otlp/jaeger]

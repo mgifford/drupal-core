@@ -187,6 +187,7 @@ More detailed information is available in the project documentation:
 - [Migration and development plan](docs/architecture/MIGRATION-PLAN.md)
 - [Playwright testing](docs/testing/PLAYWRIGHT.md)
 - [Upstream sources: fetch, pin and compare](docs/testing/SOURCES.md)
+- [Optional server tracing for test runs (pilot)](docs/observability/README.md)
 - [Accessibility testing process](A11Y-PROCESS.md)
 - [Web Sustainability Guidelines alignment](WSG-ALIGNMENT.md)
 - [Testing infrastructure roadmap](TOOLING-ROADMAP.md)

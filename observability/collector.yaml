@@ -1,0 +1,27 @@
+# OpenTelemetry Collector for local Observatory runs.
+# Receives OTLP/HTTP from the observatory_trace module and appends spans,
+# as OTLP/JSON lines, to tests/playwright/reports/evidence/otel/ (gitignored).
+# The evidence tools read that file. See docs/observability/README.md.
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 1s
+
+exporters:
+  file:
+    path: /evidence/otel-traces.jsonl
+
+service:
+  telemetry:
+    logs:
+      level: warn
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [file]

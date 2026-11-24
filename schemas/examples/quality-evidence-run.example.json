@@ -1,0 +1,3397 @@
+{
+  "schema_version": "0.1.0",
+  "artifact_type": "quality-evidence-run",
+  "run": {
+    "run_id": "run-20261124T134220Z-1ca3d340",
+    "synthetic": false,
+    "mode": "diagnostic",
+    "trigger": "manual",
+    "started_at": "2026-11-24T13:42:22.084Z",
+    "completed_at": "2026-11-24T13:42:23.828Z",
+    "status": "PASS",
+    "notes": [
+      "Instrumented run: timings include tracing overhead and are not comparable with benchmark runs."
+    ]
+  },
+  "target": {
+    "product": "drupal-core",
+    "source": {
+      "repository": "git@github.com:mgifford/drupal-core.git",
+      "requested_ref": "feat/observability-pilot",
+      "commit": "e181ce0d8613d3b79b5bdbe786878e35f956839b",
+      "dirty": false
+    },
+    "drupal_version": "12.0-dev",
+    "php_version": "8.5.12",
+    "install_profile": "standard",
+    "recipes": [
+      "core/recipes/replicate_core_testing"
+    ],
+    "composer_lock_sha256": "d74212403dacb6b73d57e6e70cecd66fc2258e653e976dafdec046710dff056c"
+  },
+  "environment": {
+    "base_url": "https://drupal-core.ddev.site",
+    "browser": {
+      "name": "chromium",
+      "version": "149.0.7827.55"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "color_scheme": null,
+    "reduced_motion": null,
+    "runner": "local-ddev"
+  },
+  "instrumentation": {
+    "server_tracing": "enabled",
+    "implementation": "observatory_trace (modules/custom/observatory_trace)",
+    "trace_store": "private/otlp-traces.jsonl",
+    "notes": []
+  },
+  "tools": [
+    {
+      "name": "playwright",
+      "version": "1.61.1"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.12.1"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "admin-content-overview",
+      "title": "Content overview as an editor",
+      "spec": "tests/observability/admin-content-trace.spec.ts > content overview: browser actions, server traces and axe findings",
+      "reproduce": "node tests/playwright/scripts/evidence.mjs run",
+      "attempts": [
+        {
+          "attempt_id": "att-dfb727ef7a36",
+          "retry": 0,
+          "status": "PASS",
+          "failure_reason": null,
+          "started_at": "2026-11-24T13:42:22.084Z",
+          "completed_at": "2026-11-24T13:42:23.514Z",
+          "actions": [
+            {
+              "action_id": "act-8630dafdd4de",
+              "label": "Open the login form",
+              "started_at": "2026-11-24T13:42:22.087Z",
+              "completed_at": "2026-11-24T13:42:22.247Z",
+              "status": "completed"
+            },
+            {
+              "action_id": "act-ff0e4c42a38b",
+              "label": "Log in as the test user",
+              "started_at": "2026-11-24T13:42:22.247Z",
+              "completed_at": "2026-11-24T13:42:22.822Z",
+              "status": "completed"
+            },
+            {
+              "action_id": "act-dbaee7729ca8",
+              "label": "Open the content overview",
+              "started_at": "2026-11-24T13:42:22.822Z",
+              "completed_at": "2026-11-24T13:42:22.947Z",
+              "status": "completed"
+            },
+            {
+              "action_id": "act-96278e6b2a70",
+              "label": "Scan the content overview with axe",
+              "started_at": "2026-11-24T13:42:22.947Z",
+              "completed_at": "2026-11-24T13:42:23.445Z",
+              "status": "completed"
+            },
+            {
+              "action_id": "act-cea5dd90fb1a",
+              "label": "Open a page that does not exist",
+              "started_at": "2026-11-24T13:42:23.445Z",
+              "completed_at": "2026-11-24T13:42:23.513Z",
+              "status": "completed"
+            }
+          ],
+          "requests": [
+            {
+              "request_id": "req-9907d0374ebd",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/user/login",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.100Z",
+              "duration_ms": 62.4,
+              "transfer_bytes": 3987,
+              "drupal_cache": {
+                "page": "HIT",
+                "dynamic_page": "MISS"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "33c6d3183600c0c1a0dfbe46230c27fb",
+                "span_id": "def82a5aab4ea53e",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET",
+                  "duration_ms": 8.05,
+                  "http_route": null,
+                  "drupal_route_name": null,
+                  "http_status": 200,
+                  "page_cache": "HIT",
+                  "dynamic_page_cache": "MISS",
+                  "span_count": 3,
+                  "db_statement_count": 2,
+                  "db_total_ms": 0.82,
+                  "db_operations": {
+                    "SELECT": 2
+                  },
+                  "db_failures": 0,
+                  "exception_types": []
+                }
+              }
+            },
+            {
+              "request_id": "req-5aa6c69f6e25",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 13.8,
+              "transfer_bytes": 106202,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-0cad076a6443",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 13.1,
+              "transfer_bytes": 860,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-e688c0cafab6",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 5.9,
+              "transfer_bytes": 520,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-2c747ce012d5",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_kGs0u-HsaMg29SMJbniOcQfd_K6TpSsCGvJ5QoxF1zM.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 13,
+              "transfer_bytes": 18414,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-41cd3776301a",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 11.5,
+              "transfer_bytes": 1318,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-6109475f4066",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_rSQQ8EWXumcf4hTY4ifxBNKDnmvcvtTuqzbsW7RhhWQ.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 12,
+              "transfer_bytes": 19783,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-474ea147da47",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_H-evdrdTGMCPeVfT8eAreIahInJqSp6bS0CpWT_DH2o.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 9.8,
+              "transfer_bytes": 444,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-a39310974449",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.171Z",
+              "duration_ms": 9.6,
+              "transfer_bytes": 297,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f30003ad14fd",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 14.6,
+              "transfer_bytes": 277,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-76d0b8342feb",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 5.4,
+              "transfer_bytes": 1162,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-fc650d9aa0e0",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 11.1,
+              "transfer_bytes": 1765,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-d9af5225ffdb",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_xnbcrunXyBYqFSIlxljB2ckTkG5IsnL9VmC2JSCvbXw.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 9.6,
+              "transfer_bytes": 682,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-16b877882e19",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 13.8,
+              "transfer_bytes": 773,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-ba3ac30cbfed",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_hCOYGciPnn0-cpfPlhXkptQ2seOgesiwM-UpWSMe9IE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 12.5,
+              "transfer_bytes": 2228,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-710a6799c4d2",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 13.8,
+              "transfer_bytes": 27973,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-3550ca0e36f2",
+              "action_id": "act-8630dafdd4de",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_BTacAKUBVsxd6tzeWrRMcTnn6Id8SXU2gRUQ5Z4BvoE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.172Z",
+              "duration_ms": 9.7,
+              "transfer_bytes": 1746,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-4f297559efbd",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "POST",
+              "url": "/user/login",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 303,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.355Z",
+              "duration_ms": 332.2,
+              "transfer_bytes": 462,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "ad919449aa49164948c596db6dcfd785",
+                "span_id": "bc7bf7afd4aa0dab",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "POST /user/login",
+                  "duration_ms": 326.46,
+                  "http_route": "/user/login",
+                  "drupal_route_name": "user.login",
+                  "http_status": 303,
+                  "page_cache": null,
+                  "dynamic_page_cache": null,
+                  "span_count": 25,
+                  "db_statement_count": 24,
+                  "db_total_ms": 4.76,
+                  "db_operations": {
+                    "SELECT": 19,
+                    "INSERT": 3,
+                    "UPDATE": 1,
+                    "DELETE": 1
+                  },
+                  "db_failures": 0,
+                  "exception_types": [
+                    "Drupal\\Core\\Form\\EnforcedResponseException"
+                  ]
+                }
+              }
+            },
+            {
+              "request_id": "req-2cf7afcc4c69",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/user/2?check_logged_in=REDACTED",
+              "resource_type": "document",
+              "redirected_from": "req-4f297559efbd",
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.688Z",
+              "duration_ms": 48.9,
+              "transfer_bytes": 22424,
+              "drupal_cache": {
+                "page": "UNCACHEABLE (request policy)",
+                "dynamic_page": "MISS"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "1ed6e06a9ca5f69dd90a6265c952ef2e",
+                "span_id": "f0ea02a50fb8f119",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET /user/{user}",
+                  "duration_ms": 44.56,
+                  "http_route": "/user/{user}",
+                  "drupal_route_name": "entity.user.canonical",
+                  "http_status": 200,
+                  "page_cache": "UNCACHEABLE (request policy)",
+                  "dynamic_page_cache": "MISS",
+                  "span_count": 55,
+                  "db_statement_count": 54,
+                  "db_total_ms": 10.52,
+                  "db_operations": {
+                    "SELECT": 49,
+                    "INSERT": 5
+                  },
+                  "db_failures": 0,
+                  "exception_types": []
+                }
+              }
+            },
+            {
+              "request_id": "req-e36d7d91d478",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 0,
+              "transfer_bytes": 0,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-3e8b0cc10dcc",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 9.1,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-639a0a36bfb0",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 23.3,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-45533f80e871",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_6cRs3pYvr-V1HgXlr1hlG9QINair_8pc4IP1T0JqmS0.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 20.6,
+              "transfer_bytes": 2897,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-e1c38e5abb99",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_nuzE1LBSOg1-hd6-je-Em0CO3ekTr93S2SAFMklAVfk.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 23.3,
+              "transfer_bytes": 291,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-02a06634db92",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_8gHMFblBr4oV6Mtfo3nWZufq0nhhzVmKYb5cSTHIDkI.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 26.1,
+              "transfer_bytes": 4634,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-073bf32eea07",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css__3xlAdyGmYT2hsYiwlDnNuHRgfDU59D6zBcC5cXNNi8.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 25.8,
+              "transfer_bytes": 17023,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-a5083ced6d55",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 9,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-96d1dd4405dc",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jNmp3hYq5KVpKCXwxNF2uWlKcNplDDgIhkjKGAVJvr0.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 23.3,
+              "transfer_bytes": 21766,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-dae8fea143a6",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jmCTrsY4NPU5XFmS6TbeEAZrQdOzV2hbh5vnaJiDUqQ.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 20.1,
+              "transfer_bytes": 2551,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-9a47933aae09",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 8.5,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-b48da8c735cc",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 22.9,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-7021108be163",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 7.3,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f916bc4e4095",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 6.9,
+              "transfer_bytes": 30,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-85c919b10789",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 8.9,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-ba4c0a03934c",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.748Z",
+              "duration_ms": 7,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-76efb9c78cb5",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_bGmanDf91YGHrTyhcsI2IfAlSL64Y5qFLbPMOnQ2STQ.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.749Z",
+              "duration_ms": 19.3,
+              "transfer_bytes": 6192,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-449dbcf00274",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/core/assets/vendor/tabbable/index.umd.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.749Z",
+              "duration_ms": 25.9,
+              "transfer_bytes": 2445,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-1682a5854a56",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_3_b04aak8rVgbgY5wX_yIWV-DUgKkX99NQLWhYV7ubY.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.749Z",
+              "duration_ms": 19.8,
+              "transfer_bytes": 8556,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-3a9cd95d319f",
+              "action_id": "act-ff0e4c42a38b",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_EvYkrBVKRQ2XeIuWPS6j2-2pFAzxyfaAa9w6NNfXz4c.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.749Z",
+              "duration_ms": 26,
+              "transfer_bytes": 4013,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-26ad4bd59cd1",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/admin/content",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.826Z",
+              "duration_ms": 41.8,
+              "transfer_bytes": 23646,
+              "drupal_cache": {
+                "page": "UNCACHEABLE (request policy)",
+                "dynamic_page": "UNCACHEABLE (poor cacheability)"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "754f2d7afd9df049af987e9dee30a0c8",
+                "span_id": "786bea907c513819",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET /admin/content",
+                  "duration_ms": 37.25,
+                  "http_route": "/admin/content",
+                  "drupal_route_name": "system.admin_content",
+                  "http_status": 200,
+                  "page_cache": "UNCACHEABLE (request policy)",
+                  "dynamic_page_cache": "UNCACHEABLE (poor cacheability)",
+                  "span_count": 40,
+                  "db_statement_count": 39,
+                  "db_total_ms": 6.18,
+                  "db_operations": {
+                    "SELECT": 38,
+                    "INSERT": 1
+                  },
+                  "db_failures": 0,
+                  "exception_types": []
+                }
+              }
+            },
+            {
+              "request_id": "req-b4d1667d6dfa",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.872Z",
+              "duration_ms": 0,
+              "transfer_bytes": 0,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-add7d0661f11",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 3.9,
+              "transfer_bytes": 92,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-07a30ac63360",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 7.1,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-68fa4608cd64",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_6cRs3pYvr-V1HgXlr1hlG9QINair_8pc4IP1T0JqmS0.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 4.1,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-7bc85ed477dc",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_Rn2CSOqFEoaW_2wxpYz4_6aYUjwMdzyh-kZC4HwvbjU.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 9.3,
+              "transfer_bytes": 392,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-07dbd877460b",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_8gHMFblBr4oV6Mtfo3nWZufq0nhhzVmKYb5cSTHIDkI.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 11,
+              "transfer_bytes": 4619,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-5df0efa14cc1",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css__3xlAdyGmYT2hsYiwlDnNuHRgfDU59D6zBcC5cXNNi8.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 7.2,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-16a443129b2a",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 11.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-6ffc8812f722",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_YzKyv3-9YqhO5ROp2eu4IAS0aur1RAguInv4ct25Mic.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 13,
+              "transfer_bytes": 22249,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-b51c7f8ba263",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jmCTrsY4NPU5XFmS6TbeEAZrQdOzV2hbh5vnaJiDUqQ.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 4.6,
+              "transfer_bytes": 2543,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-1d1322c32e51",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 14.5,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-6463538f662b",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 11.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-7146e1a24566",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 39,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-d71b4ba3f2c7",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 6.9,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-5ede020bf8ea",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 6.6,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-8092e24e4242",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-d92effd78019",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_lYDA0sIP4iq3Zcq_aaet8tpNHWS82CxnckEkbV3ZSKc.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 14.1,
+              "transfer_bytes": 6022,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-70a30507d2b2",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/core/assets/vendor/tabbable/index.umd.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 6.3,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-577e999767de",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_oreziwYOnKYQWYfBsfEvQb74_UbHrv7a8_35Gr3lIVw.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 9.6,
+              "transfer_bytes": 5073,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f6fa50e9e7e6",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_3_b04aak8rVgbgY5wX_yIWV-DUgKkX99NQLWhYV7ubY.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.873Z",
+              "duration_ms": 6.5,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-c27e121f4252",
+              "action_id": "act-dbaee7729ca8",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_EvYkrBVKRQ2XeIuWPS6j2-2pFAzxyfaAa9w6NNfXz4c.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:22.874Z",
+              "duration_ms": 7.7,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-a3edf8efc8f8",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/admin/observatory-pilot-missing",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 404,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.447Z",
+              "duration_ms": 21.1,
+              "transfer_bytes": 21444,
+              "drupal_cache": {
+                "page": "UNCACHEABLE (request policy)",
+                "dynamic_page": "UNCACHEABLE (404, sub-request: HIT)"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "5d4fe404f78a5f3f4d0ee161befdbdc7",
+                "span_id": "2afcea3d66b3f501",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET",
+                  "duration_ms": 16.89,
+                  "http_route": null,
+                  "drupal_route_name": null,
+                  "http_status": 404,
+                  "page_cache": "UNCACHEABLE (request policy)",
+                  "dynamic_page_cache": "UNCACHEABLE (404, sub-request: HIT)",
+                  "span_count": 28,
+                  "db_statement_count": 27,
+                  "db_total_ms": 4.09,
+                  "db_operations": {
+                    "SELECT": 26,
+                    "INSERT": 1
+                  },
+                  "db_failures": 0,
+                  "exception_types": [
+                    "Drupal\\Core\\Http\\Exception\\CacheableNotFoundHttpException"
+                  ]
+                }
+              }
+            },
+            {
+              "request_id": "req-3982c55413e1",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.471Z",
+              "duration_ms": 0,
+              "transfer_bytes": 0,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-ed0fe02bbe60",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 5.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-29497230a1cd",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 62,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-452c9fd99844",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_6cRs3pYvr-V1HgXlr1hlG9QINair_8pc4IP1T0JqmS0.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 8,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-fc592a3bbcdb",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_nuzE1LBSOg1-hd6-je-Em0CO3ekTr93S2SAFMklAVfk.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 5.8,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-42f1b2f3fab0",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_8gHMFblBr4oV6Mtfo3nWZufq0nhhzVmKYb5cSTHIDkI.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 6.5,
+              "transfer_bytes": 4619,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-b4ad8d29e469",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css__3xlAdyGmYT2hsYiwlDnNuHRgfDU59D6zBcC5cXNNi8.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.472Z",
+              "duration_ms": 5.3,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-c189841bb1d9",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 6.2,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-e89c31c795d4",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css__PPrQx1CAEvNRi0vWic_BUEe-SniOPCyDoARwbsios0.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 9.8,
+              "transfer_bytes": 21640,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-e357ef90b516",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jmCTrsY4NPU5XFmS6TbeEAZrQdOzV2hbh5vnaJiDUqQ.css?delta=REDACTED&language=REDACTED&theme=REDACTED&include=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 7.9,
+              "transfer_bytes": 2536,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-9cd06201e375",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-5c28750ddab9",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 5,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-b56b27a74a64",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 7.5,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-269561735b12",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 5.1,
+              "transfer_bytes": 39,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-5c4633cff2b4",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.473Z",
+              "duration_ms": 5.2,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f058f71b275d",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.474Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 39,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-ae3c6940bf92",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_bGmanDf91YGHrTyhcsI2IfAlSL64Y5qFLbPMOnQ2STQ.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.474Z",
+              "duration_ms": 5.6,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-54b99c8477c3",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/core/assets/vendor/tabbable/index.umd.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.474Z",
+              "duration_ms": 5.3,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-bbb685360813",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_3_b04aak8rVgbgY5wX_yIWV-DUgKkX99NQLWhYV7ubY.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.474Z",
+              "duration_ms": 8.2,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-10cad143c423",
+              "action_id": "act-cea5dd90fb1a",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_EvYkrBVKRQ2XeIuWPS6j2-2pFAzxyfaAa9w6NNfXz4c.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.474Z",
+              "duration_ms": 4.7,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            }
+          ],
+          "other_origin_requests": 0,
+          "correlation": {
+            "status": "correlated",
+            "trace_ids": [
+              "33c6d3183600c0c1a0dfbe46230c27fb",
+              "ad919449aa49164948c596db6dcfd785",
+              "1ed6e06a9ca5f69dd90a6265c952ef2e",
+              "754f2d7afd9df049af987e9dee30a0c8",
+              "5d4fe404f78a5f3f4d0ee161befdbdc7"
+            ],
+            "expected": 5,
+            "matched": 5,
+            "exported": 5,
+            "notes": []
+          },
+          "artifact_ids": [
+            "art-1ecc2736e9d4",
+            "art-21dde4499de0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "anonymous-login-page-cache",
+      "title": "Login form, loaded twice anonymously",
+      "spec": "tests/observability/admin-content-trace.spec.ts > login form loaded twice anonymously",
+      "reproduce": "node tests/playwright/scripts/evidence.mjs run",
+      "attempts": [
+        {
+          "attempt_id": "att-1cf9544d9637",
+          "retry": 0,
+          "status": "PASS",
+          "failure_reason": null,
+          "started_at": "2026-11-24T13:42:23.605Z",
+          "completed_at": "2026-11-24T13:42:23.828Z",
+          "actions": [
+            {
+              "action_id": "act-c2efe2c45449",
+              "label": "Open the login form",
+              "started_at": "2026-11-24T13:42:23.606Z",
+              "completed_at": "2026-11-24T13:42:23.782Z",
+              "status": "completed"
+            },
+            {
+              "action_id": "act-3aebb7a39657",
+              "label": "Open the login form again",
+              "started_at": "2026-11-24T13:42:23.782Z",
+              "completed_at": "2026-11-24T13:42:23.827Z",
+              "status": "completed"
+            }
+          ],
+          "requests": [
+            {
+              "request_id": "req-5ed4ce344e4e",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/user/login",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.610Z",
+              "duration_ms": 18.8,
+              "transfer_bytes": 3988,
+              "drupal_cache": {
+                "page": "HIT",
+                "dynamic_page": "MISS"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "13dfec63c64d6c7a8db3f1e120e7d395",
+                "span_id": "258a4fd2706c9af3",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET",
+                  "duration_ms": 6.47,
+                  "http_route": null,
+                  "drupal_route_name": null,
+                  "http_status": 200,
+                  "page_cache": "HIT",
+                  "dynamic_page_cache": "MISS",
+                  "span_count": 3,
+                  "db_statement_count": 2,
+                  "db_total_ms": 1,
+                  "db_operations": {
+                    "SELECT": 2
+                  },
+                  "db_failures": 0,
+                  "exception_types": []
+                }
+              }
+            },
+            {
+              "request_id": "req-55e464408b28",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.632Z",
+              "duration_ms": 6.7,
+              "transfer_bytes": 106225,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-d05818328ee4",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 6.9,
+              "transfer_bytes": 920,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-6c108378211c",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7,
+              "transfer_bytes": 490,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-344ebb90ad51",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_kGs0u-HsaMg29SMJbniOcQfd_K6TpSsCGvJ5QoxF1zM.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 10.9,
+              "transfer_bytes": 18414,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-71659fa6ef2d",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 10.8,
+              "transfer_bytes": 1318,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-13ed0f8fc99d",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_rSQQ8EWXumcf4hTY4ifxBNKDnmvcvtTuqzbsW7RhhWQ.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 10.9,
+              "transfer_bytes": 19783,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-17c0fc5a52a8",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_H-evdrdTGMCPeVfT8eAreIahInJqSp6bS0CpWT_DH2o.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.6,
+              "transfer_bytes": 444,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-4e598a48f2fd",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.2,
+              "transfer_bytes": 297,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-96fad52852d8",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.1,
+              "transfer_bytes": 277,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f27ed181ad89",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.9,
+              "transfer_bytes": 1097,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-63613566466c",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.3,
+              "transfer_bytes": 1765,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-75fe9d8cc506",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_xnbcrunXyBYqFSIlxljB2ckTkG5IsnL9VmC2JSCvbXw.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.3,
+              "transfer_bytes": 682,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f58bc5e5fecb",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 6.9,
+              "transfer_bytes": 785,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-631cacc54123",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_hCOYGciPnn0-cpfPlhXkptQ2seOgesiwM-UpWSMe9IE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.6,
+              "transfer_bytes": 2228,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-2917b7f716f0",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 13.8,
+              "transfer_bytes": 27973,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-8448fa3cce0d",
+              "action_id": "act-c2efe2c45449",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_BTacAKUBVsxd6tzeWrRMcTnn6Id8SXU2gRUQ5Z4BvoE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.633Z",
+              "duration_ms": 7.4,
+              "transfer_bytes": 1746,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-e2177cb6a2ab",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/user/login",
+              "resource_type": "document",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.785Z",
+              "duration_ms": 8.1,
+              "transfer_bytes": 3742,
+              "drupal_cache": {
+                "page": "HIT",
+                "dynamic_page": "MISS"
+              },
+              "trace": {
+                "status": "correlated",
+                "trace_id": "a1c26de9011385381754150617b9e427",
+                "span_id": "2055245960add1bd",
+                "reason": null,
+                "exported": "found",
+                "summary": {
+                  "root_span_name": "GET",
+                  "duration_ms": 5.63,
+                  "http_route": null,
+                  "drupal_route_name": null,
+                  "http_status": 200,
+                  "page_cache": "HIT",
+                  "dynamic_page_cache": "MISS",
+                  "span_count": 3,
+                  "db_statement_count": 2,
+                  "db_total_ms": 0.76,
+                  "db_operations": {
+                    "SELECT": 2
+                  },
+                  "db_failures": 0,
+                  "exception_types": []
+                }
+              }
+            },
+            {
+              "request_id": "req-8adb0012d29f",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/core/misc/fonts/inter-latin.woff2",
+              "resource_type": "font",
+              "redirected_from": null,
+              "status": 200,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.798Z",
+              "duration_ms": 0,
+              "transfer_bytes": 0,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "font requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-32d6acb303a9",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_jyCakPtpazLvt724TQaTKhLGCxQ8dIgs9i99ULmoHQs.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 4,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f6cf6e5abc12",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_eEy1fcZhDlyTfzU26PBm4p-pOVoMxA-xO1P4jxonlWo.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 4.3,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-765d19a6884a",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_kGs0u-HsaMg29SMJbniOcQfd_K6TpSsCGvJ5QoxF1zM.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.7,
+              "transfer_bytes": 30,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-c86dfd8c4f1c",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_sX4GZfYmsOZDr4SZnj5GlvVTLa_dVWBEREx9zToHePE.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.9,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-58cacff138e6",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_rSQQ8EWXumcf4hTY4ifxBNKDnmvcvtTuqzbsW7RhhWQ.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 6.2,
+              "transfer_bytes": 30,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-8752a355f1ae",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/css/css_H-evdrdTGMCPeVfT8eAreIahInJqSp6bS0CpWT_DH2o.css?language=REDACTED&theme=REDACTED&libraries=REDACTED&category=REDACTED",
+              "resource_type": "stylesheet",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 4,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "stylesheet requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-42ceff8d5088",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_faZD1JYA3h7lz_typ4w9EQQIqzm14TV-5cT9pT9jSwE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.1,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-b4a881cb4598",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_v7sd-fjcw140THuNWjgLjWbTQ4nOahePDmwyB5dTb9U.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.3,
+              "transfer_bytes": 16,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-6be400ff348f",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/core/themes/default_admin/migration/js/init.js?toys5v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.9,
+              "transfer_bytes": 28,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-106050d307a7",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_2dovr_d9iYDeDiTpscvKigTYXsFTeLvZnYwLsVX8zRk.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.5,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-a81380a7c1ad",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_xnbcrunXyBYqFSIlxljB2ckTkG5IsnL9VmC2JSCvbXw.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.6,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-59a006e4ce08",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/core/assets/vendor/once/once.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 6.1,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-5d931d7bb32e",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_hCOYGciPnn0-cpfPlhXkptQ2seOgesiwM-UpWSMe9IE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 6.2,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-54856b7c44d5",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/core/assets/vendor/jquery/jquery.min.js?v=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 6,
+              "transfer_bytes": 30,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            },
+            {
+              "request_id": "req-f2d2acfd85a2",
+              "action_id": "act-3aebb7a39657",
+              "method": "GET",
+              "url": "/sites/default/files/js/js_BTacAKUBVsxd6tzeWrRMcTnn6Id8SXU2gRUQ5Z4BvoE.js?language=REDACTED&theme=REDACTED&libraries=REDACTED",
+              "resource_type": "script",
+              "redirected_from": null,
+              "status": 304,
+              "failure": null,
+              "started_at": "2026-11-24T13:42:23.799Z",
+              "duration_ms": 5.8,
+              "transfer_bytes": 29,
+              "drupal_cache": {
+                "page": null,
+                "dynamic_page": null
+              },
+              "trace": {
+                "status": "not-expected",
+                "reason": "script requests are usually served without Drupal"
+              }
+            }
+          ],
+          "other_origin_requests": 0,
+          "correlation": {
+            "status": "correlated",
+            "trace_ids": [
+              "13dfec63c64d6c7a8db3f1e120e7d395",
+              "a1c26de9011385381754150617b9e427"
+            ],
+            "expected": 2,
+            "matched": 2,
+            "exported": 2,
+            "notes": []
+          },
+          "artifact_ids": []
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "fnd-6cf44d08a4e6",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.12.1"
+      },
+      "rule_id": "color-contrast",
+      "rule_url": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "result": "needs-review",
+      "impact": "serious",
+      "engine_tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "wcag_candidates": [
+        "1.4.3"
+      ],
+      "act_rule_ids": [],
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "action_id": "act-96278e6b2a70",
+      "page_action_id": "act-dbaee7729ca8",
+      "url": "/admin/content",
+      "target": [
+        ".button--action"
+      ],
+      "html": "<a href=\"/node/add\" class=\"button button--action button--primary\" data-drupal-link-system-path=\"node/add\">Add content</a>",
+      "message": "Elements must meet minimum color contrast ratio thresholds",
+      "related_trace_ids": [
+        "754f2d7afd9df049af987e9dee30a0c8"
+      ],
+      "fingerprint": {
+        "pattern": "A11Y-PAT-DC08C1EBAE11",
+        "occurrence": "A11Y-OCC-C794FB927624",
+        "status": "provisional",
+        "note": "Selector as reported by axe; the a11y/css-locator/v1 normalization is not applied yet."
+      },
+      "verification": "automated-unreviewed",
+      "source_mapping": {
+        "classification": "candidate",
+        "candidates": [
+          {
+            "kind": "route",
+            "value": "system.admin_content",
+            "evidence": "Server trace 754f2d7afd9df049af987e9dee30a0c8 of the request that loaded the scanned page."
+          }
+        ]
+      },
+      "artifact_ids": [
+        "art-21dde4499de0"
+      ]
+    },
+    {
+      "finding_id": "fnd-3eccd2d8719c",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.12.1"
+      },
+      "rule_id": "th-has-data-cells",
+      "rule_url": "https://dequeuniversity.com/rules/axe/4.12/th-has-data-cells?application=playwright",
+      "result": "needs-review",
+      "impact": "serious",
+      "engine_tags": [
+        "cat.tables",
+        "wcag2a",
+        "wcag131",
+        "section508",
+        "section508.22.g",
+        "TTv5",
+        "TT14.b",
+        "EN-301-549",
+        "EN-9.1.3.1",
+        "RGAAv4",
+        "RGAA-5.7.1"
+      ],
+      "wcag_candidates": [
+        "1.3.1"
+      ],
+      "act_rule_ids": [],
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "action_id": "act-96278e6b2a70",
+      "page_action_id": "act-dbaee7729ca8",
+      "url": "/admin/content",
+      "target": [
+        ".sticky-table-header"
+      ],
+      "html": "<table class=\"sticky-table-header syncscroll\" name=\"sticky-header\" style=\"margin-bottom: -46px; display: block; visibility: visible;\" data-once=\"table-select\">",
+      "message": "Table headers in a data table must refer to data cells",
+      "related_trace_ids": [
+        "754f2d7afd9df049af987e9dee30a0c8"
+      ],
+      "fingerprint": {
+        "pattern": "A11Y-PAT-D4A8A509CAEF",
+        "occurrence": "A11Y-OCC-E0BDEDF276D5",
+        "status": "provisional",
+        "note": "Selector as reported by axe; the a11y/css-locator/v1 normalization is not applied yet."
+      },
+      "verification": "automated-unreviewed",
+      "source_mapping": {
+        "classification": "candidate",
+        "candidates": [
+          {
+            "kind": "route",
+            "value": "system.admin_content",
+            "evidence": "Server trace 754f2d7afd9df049af987e9dee30a0c8 of the request that loaded the scanned page."
+          }
+        ]
+      },
+      "artifact_ids": [
+        "art-21dde4499de0"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "measurement_id": "msr-eb43e67de25f",
+      "name": "server.duration",
+      "value": 8.05,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-9907d0374ebd",
+      "trace_id": "33c6d3183600c0c1a0dfbe46230c27fb",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-66e12b60943a",
+      "name": "db.statement_count",
+      "value": 2,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-9907d0374ebd",
+      "trace_id": "33c6d3183600c0c1a0dfbe46230c27fb",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-9df6c7a84d9f",
+      "name": "db.total_duration",
+      "value": 0.82,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-9907d0374ebd",
+      "trace_id": "33c6d3183600c0c1a0dfbe46230c27fb",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-7b0d05c899b7",
+      "name": "server.duration",
+      "value": 326.46,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-4f297559efbd",
+      "trace_id": "ad919449aa49164948c596db6dcfd785",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-95f146a914fd",
+      "name": "db.statement_count",
+      "value": 24,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-4f297559efbd",
+      "trace_id": "ad919449aa49164948c596db6dcfd785",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-47e14873f67d",
+      "name": "db.total_duration",
+      "value": 4.76,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-4f297559efbd",
+      "trace_id": "ad919449aa49164948c596db6dcfd785",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-f4792bff4cbe",
+      "name": "server.duration",
+      "value": 44.56,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-2cf7afcc4c69",
+      "trace_id": "1ed6e06a9ca5f69dd90a6265c952ef2e",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-34affda1a70c",
+      "name": "db.statement_count",
+      "value": 54,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-2cf7afcc4c69",
+      "trace_id": "1ed6e06a9ca5f69dd90a6265c952ef2e",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-b7b2e19ca974",
+      "name": "db.total_duration",
+      "value": 10.52,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-2cf7afcc4c69",
+      "trace_id": "1ed6e06a9ca5f69dd90a6265c952ef2e",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-87bcfa9462bf",
+      "name": "server.duration",
+      "value": 37.25,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-26ad4bd59cd1",
+      "trace_id": "754f2d7afd9df049af987e9dee30a0c8",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-08d6932c80a7",
+      "name": "db.statement_count",
+      "value": 39,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-26ad4bd59cd1",
+      "trace_id": "754f2d7afd9df049af987e9dee30a0c8",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-c1b89a1d89ea",
+      "name": "db.total_duration",
+      "value": 6.18,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-26ad4bd59cd1",
+      "trace_id": "754f2d7afd9df049af987e9dee30a0c8",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-deee0fd5969c",
+      "name": "server.duration",
+      "value": 16.89,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-a3edf8efc8f8",
+      "trace_id": "5d4fe404f78a5f3f4d0ee161befdbdc7",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-fe53152bca8e",
+      "name": "db.statement_count",
+      "value": 27,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-a3edf8efc8f8",
+      "trace_id": "5d4fe404f78a5f3f4d0ee161befdbdc7",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-494c4d91ba2c",
+      "name": "db.total_duration",
+      "value": 4.09,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36",
+      "request_id": "req-a3edf8efc8f8",
+      "trace_id": "5d4fe404f78a5f3f4d0ee161befdbdc7",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-1f6cf3645a5c",
+      "name": "browser.request_count",
+      "value": 82,
+      "unit": "count",
+      "kind": "resource-proxy",
+      "tool": {
+        "name": "playwright",
+        "version": "1.61.1"
+      },
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "method": "Requests to the site origin seen by the browser during the attempt.",
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36"
+    },
+    {
+      "measurement_id": "msr-f6ef22da8524",
+      "name": "browser.transfer_bytes",
+      "value": 397475,
+      "unit": "bytes",
+      "kind": "resource-proxy",
+      "tool": {
+        "name": "playwright",
+        "version": "1.61.1"
+      },
+      "measured_at": "2026-11-24T13:42:23.514Z",
+      "instrumented": true,
+      "method": "Sum of response header and body sizes from Playwright request.sizes(). A resource proxy, not an energy measurement.",
+      "scenario_id": "admin-content-overview",
+      "attempt_id": "att-dfb727ef7a36"
+    },
+    {
+      "measurement_id": "msr-f1ff9205a13e",
+      "name": "server.duration",
+      "value": 6.47,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-5ed4ce344e4e",
+      "trace_id": "13dfec63c64d6c7a8db3f1e120e7d395",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-2e8dc46f6abb",
+      "name": "db.statement_count",
+      "value": 2,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-5ed4ce344e4e",
+      "trace_id": "13dfec63c64d6c7a8db3f1e120e7d395",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-e53ce2dcb931",
+      "name": "db.total_duration",
+      "value": 1,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-5ed4ce344e4e",
+      "trace_id": "13dfec63c64d6c7a8db3f1e120e7d395",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-5c172d383205",
+      "name": "server.duration",
+      "value": 5.63,
+      "unit": "ms",
+      "method": "Duration of the root server span, from the request middleware to the end of the response. Excludes work after the response is sent.",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-e2177cb6a2ab",
+      "trace_id": "a1c26de9011385381754150617b9e427",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-75f258c20b97",
+      "name": "db.statement_count",
+      "value": 2,
+      "unit": "count",
+      "method": "Database statement spans in the trace (statements before the middleware ran are not counted).",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-e2177cb6a2ab",
+      "trace_id": "a1c26de9011385381754150617b9e427",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-18ef1397ccec",
+      "name": "db.total_duration",
+      "value": 0.76,
+      "unit": "ms",
+      "method": "Sum of database statement span durations.",
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637",
+      "request_id": "req-e2177cb6a2ab",
+      "trace_id": "a1c26de9011385381754150617b9e427",
+      "tool": {
+        "name": "observatory_trace",
+        "version": null
+      },
+      "kind": "server-execution",
+      "artifact_id": "art-e3bb26e768c0"
+    },
+    {
+      "measurement_id": "msr-6bcf1c62db8f",
+      "name": "browser.request_count",
+      "value": 34,
+      "unit": "count",
+      "kind": "resource-proxy",
+      "tool": {
+        "name": "playwright",
+        "version": "1.61.1"
+      },
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "method": "Requests to the site origin seen by the browser during the attempt.",
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637"
+    },
+    {
+      "measurement_id": "msr-9d1f6b242aa9",
+      "name": "browser.transfer_bytes",
+      "value": 192596,
+      "unit": "bytes",
+      "kind": "resource-proxy",
+      "tool": {
+        "name": "playwright",
+        "version": "1.61.1"
+      },
+      "measured_at": "2026-11-24T13:42:23.828Z",
+      "instrumented": true,
+      "method": "Sum of response header and body sizes from Playwright request.sizes(). A resource proxy, not an energy measurement.",
+      "scenario_id": "anonymous-login-page-cache",
+      "attempt_id": "att-1cf9544d9637"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "art-e3bb26e768c0",
+      "kind": "otlp-traces",
+      "path": "private/otlp-traces.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "86bd601c17b8b03a33508e564a12da3491452cf84caf618d41f6b3eeb0277981",
+      "bytes": 136078,
+      "visibility": "private",
+      "availability": "available",
+      "retention_days": null,
+      "note": "Raw server spans for this run: may include query text, stack traces and code locations."
+    },
+    {
+      "artifact_id": "art-1ecc2736e9d4",
+      "kind": "screenshot",
+      "path": "artifacts/content-overview-att-dfb727ef7a36.png",
+      "media_type": "image/png",
+      "sha256": "bc42dea9763c995b7c5b4095f405ff53b2436a28ad41d35b830cbf1ff0eb892c",
+      "bytes": 65213,
+      "visibility": "private",
+      "availability": "available",
+      "retention_days": null,
+      "note": "Shows the test site as the test user saw it."
+    },
+    {
+      "artifact_id": "art-21dde4499de0",
+      "kind": "axe-results",
+      "path": "artifacts/axe-att-dfb727ef7a36.json",
+      "media_type": "application/json",
+      "sha256": "a7612ae25a8e048108929b9a6e6837e619974845f433f9c2b141c31f2ddd68f5",
+      "bytes": 320782,
+      "visibility": "private",
+      "availability": "available",
+      "retention_days": null,
+      "note": "Unmodified axe-core output. Private: snippets may contain form tokens."
+    }
+  ]
+}
