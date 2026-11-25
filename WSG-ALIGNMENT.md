@@ -75,6 +75,16 @@ them on by default.
 
 ## How alignment is measured (methodology)
 
+> **Not running, as of 2026-11-25.** The pipeline described in this
+> section ran once, on 2026-07-05. The script behind it was removed from
+> this repository in July 2026, so the crawl, the CO2.js estimates and the
+> trend history are not being updated; the history holds that one run.
+> Two of the three themes it crawled, Claro and Olivero, have since been
+> removed from Drupal core. The
+> [2026-07-05 report](reports/SUSTAINABILITY-latest.md) is kept as
+> historical evidence. The replacement is designed in
+> [SUSTAINABILITY-REPORTING.md](docs/architecture/SUSTAINABILITY-REPORTING.md).
+
 Claims above are backed by an automated, repeatable baseline rather than
 narrative:
 

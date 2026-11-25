@@ -242,8 +242,9 @@ What to reuse, from `d8a45b3fe0`:
 
 Keep estimates and measurements clearly labelled.
 
-Proposed design for the environmental part (2026-11-25, not yet approved):
-[SUSTAINABILITY-REPORTING.md](SUSTAINABILITY-REPORTING.md).
+Design for the environmental part, with the owner's decisions of
+2026-11-25: [SUSTAINABILITY-REPORTING.md](SUSTAINABILITY-REPORTING.md).
+Nothing in it is implemented yet.
 
 ## Phase 10: local scheduling
 
