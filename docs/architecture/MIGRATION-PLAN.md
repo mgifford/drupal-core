@@ -242,6 +242,9 @@ What to reuse, from `d8a45b3fe0`:
 
 Keep estimates and measurements clearly labelled.
 
+Proposed design for the environmental part (2026-11-25, not yet approved):
+[SUSTAINABILITY-REPORTING.md](SUSTAINABILITY-REPORTING.md).
+
 ## Phase 10: local scheduling
 
 Use NIGHTLY-PIPELINE.md as the design input. Its scripts never existed.
