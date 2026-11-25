@@ -1,19 +1,23 @@
 # Environmental impact reporting: design plan
 
-Status: proposed on 2026-11-25 for the owner's review. Nothing in this
-plan is implemented, and it makes no owner decision. It expands Phase 9 of
-the [migration plan](MIGRATION-PLAN.md) for the environmental part only;
-the questions it leaves open are listed at the end.
+Status: proposed on 2026-11-25. The owner answered its open questions the
+same day; the answers are listed under "Owner decisions" at the end and are
+applied in the sections below. Nothing in this plan is implemented yet. It
+expands Phase 9 of the [migration plan](MIGRATION-PLAN.md) for the
+environmental part only.
 
-The plan covers three sources of evidence. They stay separate everywhere:
-in manifests, in comparisons and on published pages. They are never added,
-averaged, weighted or turned into one score.
+The plan covers four sources of evidence, plus carbon worked out from the
+two energy sources. They stay separate everywhere: in manifests, in
+comparisons and on published pages. They are never added, averaged,
+weighted or turned into one score.
 
 | Source | Measurement `kind` | Unit | Runs where | What it is not |
 | --- | --- | --- | --- | --- |
 | CO2.js on transferred bytes | `emissions-modelled` | g CO2e | Wherever the evidence runner runs | Not a measurement of anything; a model applied to bytes |
 | Lighthouse | `browser-timing`, `resource-proxy`; report as artifact kind `lighthouse` | ms, bytes | Local Chromium | Not energy, not emissions |
-| Firefox Energy Scanner | `energy-measured` | J | A physical machine (decision D5) | Not server or data-centre energy |
+| Firefox Energy Scanner | `energy-measured` | J | The reference Apple Silicon Mac (decision D5) | Not server or data-centre energy |
+| Host energy while serving Drupal | `energy-measured` (`energy-estimated` for an estimate) | J | The reference Apple Silicon Mac | Not Drupal's energy alone; the whole machine |
+| Carbon from measured energy | `emissions-modelled` | g CO2e | Worked out from the two energy rows | Not a measurement; energy times a declared grid intensity |
 
 ## Where things stand on 2026-11-25
 
@@ -41,7 +45,7 @@ averaged, weighted or turned into one score.
 - Issue #77, "Do carbon testing locally", names CodeCarbon and the Firefox
   Energy Scanner.
 
-## Rules that apply to all three sources
+## Rules that apply to every source
 
 1. **Separate sections, no totals across sources.** Every report shows each
    source under its own heading, with its own method. This follows
@@ -59,7 +63,8 @@ averaged, weighted or turned into one score.
 5. **No conformance claims.** The Web Sustainability Guidelines organize the
    evidence; nothing here claims conformance to them.
 6. **Optional by default.** A basic local Observatory run must still work
-   without Lighthouse or the Energy Scanner installed.
+   without Lighthouse, the Energy Scanner or any host energy tool
+   installed.
 
 ## 1. Modelled emissions with CO2.js
 
@@ -81,7 +86,8 @@ measurement for the same scenario attempt.
 - Grid intensity: CO2.js's `perByteTrace()` takes a separate intensity for
   the device, network and data-centre segments, and returns the values it
   used. Record all three, in g CO2e per kWh, with their source and year.
-  The default proposal is CO2.js's global average; see open question 1.
+  Owner decision 1: CO2.js's global average, using the data year bundled
+  with the pinned CO2.js version.
 - Green hosting: not assumed (`green` false). A local DDEV site has no
   hosting provider to check.
 
@@ -92,8 +98,8 @@ only a free-text `method`. Two options:
   schema change, but comparisons cannot read them.
 - (b) Schema 0.2.0 adds two optional fields to `measurement`: `parameters`
   (an object) and `inputs` (the ids of the measurements a value was derived
-  from). **Recommended**, because comparisons need to refuse mixing grid
-  intensities or model versions. While the schema is 0.x this needs no
+  from). **Chosen by the owner (decision 2)**, because comparisons need to
+  refuse mixing grid intensities or model versions. While the schema is 0.x this needs no
   migration (see [evidence-schema.md](../observability/evidence-schema.md)).
 
 Example under option (b), abridged (ids, timestamps and the scenario
@@ -120,8 +126,8 @@ results:
 ```
 
 **Dependency.** Declare `@tgwf/co2` with an exact version in
-`tests/playwright/package.json`, where the evidence tools run. Whether to
-remove the root entry is open question 3.
+`tests/playwright/package.json`, where the evidence tools run. The root
+entry stays (owner decision 3).
 
 **Limits that every report must state:**
 
@@ -149,18 +155,25 @@ remove the root entry is open question 3.
 **Where the dependency lives.** In `tests/playwright/package.json` as an
 exact-pinned dev dependency: the only Playwright package (see
 [PLAYWRIGHT.md](../testing/PLAYWRIGHT.md)). Not in the root manifest, and
-never again in `core/package.json`, which belongs to upstream. Whether to
-call the `lighthouse` package directly with Playwright's Chromium, or to use
-the `playwright-lighthouse` wrapper, is open question 4. The old spec's
-wrapper connected through Chrome's remote debugging port.
+never again in `core/package.json`, which belongs to upstream. It calls
+the `lighthouse` package directly with Playwright's Chromium, not the
+`playwright-lighthouse` wrapper the July spec used (owner decision 4), so
+no fixed remote debugging port is needed.
 
-**How it runs.**
+**How it runs** (owner decisions 4 and 6):
 
 - In Chromium, one page at a time, with one worker, and with server tracing
   off.
 - Never at the same time as other tests or an energy measurement.
-- With an unmodified Lighthouse preset (desktop or mobile), recorded with the
-  result.
+- With Lighthouse's unmodified desktop preset first. A mobile run can be
+  added later as its own series.
+- Three runs per page. The median run is reported, with the lowest and
+  highest values.
+- On a small, representative set of crawl pages to start. The set grows
+  once a real run has been timed.
+- The performance category only. The accessibility category is left out:
+  Lighthouse's accessibility audits run axe-core, which the crawl already
+  runs.
 
 **What it records.**
 
@@ -172,7 +185,7 @@ wrapper connected through Chrome's remote debugging port.
   Paint, Total Blocking Time, Speed Index and main-thread time as
   `browser-timing`; Cumulative Layout Shift as `browser-timing` with a
   unitless unit; total byte weight as `resource-proxy`.
-- In `method` (or `parameters` under option (b)): Lighthouse and Chromium
+- In `parameters` (decision 2): Lighthouse and Chromium
   versions, the preset, the throttling method (simulated unless set
   otherwise), and Lighthouse's host CPU benchmark (`benchmarkIndex`), so
   that runs on different hardware are not compared as equal.
@@ -181,8 +194,9 @@ wrapper connected through Chrome's remote debugging port.
 performance score is a weighted lab rating of page-load speed under
 simulated throttling on one machine. It is not energy and not emissions,
 and it goes in the performance section of a report, not the environmental
-one. Category scores are not stored as measurements; how to keep them is
-open question 5. Main-thread time is the Lighthouse figure closest to the
+one. Category scores are not stored as measurements: they appear on the
+summary page only, labelled as lab scores (owner decision 5). Main-thread
+time is the Lighthouse figure closest to the
 work a page costs a device, and it is still CPU time, not energy.
 Lighthouse's byte weight is measured by Chromium and should roughly match
 `browser.transfer_bytes`. Differences are reported, not reconciled.
@@ -216,28 +230,33 @@ import its code and does not need it installed (the rule in
 
 The project publishes JSON Schemas for its experiment evidence records
 (`energy-finding/1`) and its energy timeline. On 2026-11-25 its `schema/`
-folder had no schema for `measure` results.
+folder had no schema for `measure` results. The owner decided that the
+Scanner project will publish one (decision 7). That work belongs in the
+Scanner's repository, not here.
 
 **Proposed exchange:**
 
-1. The owner runs the Scanner locally against the same disposable
-   installation as the Observatory run, after the Playwright tests and
-   Lighthouse have finished. The Scanner's `--public-only` guard refuses
+1. The owner runs the Scanner by hand for now (decision 7), on the
+   reference machine: an Apple Silicon Mac, where the Scanner measures
+   Firefox's own processes. The run uses the same disposable installation
+   as the Observatory run, after the Playwright tests and Lighthouse have
+   finished. The Scanner's `--public-only` guard refuses
    local development hosts, so it is off for these runs.
 2. A new command, for example
    `evidence.mjs import-energy <manifest> <scanner result>`, reads the
-   result. It refuses `schemaVersion` values it does not know. It matches
+   result. It refuses `schemaVersion` values it does not know, and checks
+   the file against the Scanner's `measure` schema once that exists. It matches
    pages to the manifest by base URL, pinned commit and sanitized path.
 3. For each page with energy it adds one `energy-measured` measurement:
    - `name` `client.energy_incremental`, unit `J`, `instrumented` false;
    - `tool` `firefox-energy-scanner` with its version;
-   - `method` or `parameters`: the adapter, the scope (Firefox processes or
+   - `parameters` (decision 2): the adapter, the scope (Firefox processes or
      whole CPU package), the idle-baseline subtraction, runs, warm-ups and
      spread.
    The raw energy and the expected idle energy stay in the artifact.
 4. It adds the result file as a private artifact, because it lists URLs and
-   the machine model. The schema has no matching artifact kind, so this is
-   `other` until a schema change adds one.
+   the machine model. Schema 0.1.0 has no matching artifact kind, so
+   schema 0.2.0 adds one (step 2 of the order below).
 5. When the machine could not measure energy (a virtual machine, or the
    `noop` adapter), it adds no energy value. It adds a note,
    "Not measured", with the Scanner's reason.
@@ -248,25 +267,94 @@ folder had no schema for `measure` results.
 Energy values from different scopes or machines are never compared as
 equal. A change of machine starts a new series.
 
-**Not in this plan.** Carbon derived from measured energy (energy times a
-declared grid intensity) is the fourth category in section 10.4 of the
-brief; see open question 8. Server-side energy, such as the CodeCarbon idea
-in issue #77, measures a different thing: the machine running Drupal, not
-the browser. On macOS the DDEV containers run inside a Linux virtual
-machine, so per-container energy is not visible there. See open
-question 9.
+## Carbon from measured energy
+
+Owner decision 8: every `energy-measured` value, from the browser
+(section 3) or the host (section 4), gets its own `emissions-modelled`
+value. This is the fourth category in section 10.4 of the brief.
+
+- `name`: the energy measurement's name with `.co2e` added, for example
+  `client.energy_incremental.co2e`; `unit`: `g`.
+- `inputs`: the id of the energy measurement it came from.
+- `parameters`: the grid intensity in g CO2e per kWh, its source and its
+  year. Under decision 1 that is CO2.js's global average.
+- `method`: the energy in kWh times the grid intensity.
+
+It is shown in the same section as the energy it came from, labelled as
+modelled. It is never added to, or compared with, the CO2.js estimate from
+bytes. The Sustainable Web Design model already includes a share for the
+visitor's device (the Scanner's own output splits its estimate into
+device, network and data-centre parts), so adding the two would count
+device energy twice.
+
+## 4. Host energy while serving Drupal
+
+Owner decision 9 puts this in scope. Issue #77 asks for carbon testing
+locally and names CodeCarbon. This section covers the energy of the
+machine that serves Drupal, which is a different thing from the browser
+energy in section 3.
+
+**What can be measured on the reference Mac.** DDEV's containers run inside
+a Linux virtual machine on macOS, so no hardware counter sees Drupal's
+containers alone. Two routes exist:
+
+- **Machine-wide measurement (recommended).** macOS `powermetrics` reads
+  processor power for the whole machine, not per process, and needs
+  `sudo`. Check at implementation time which parts its combined figure
+  covers (CPU, GPU and so on).
+  - The owner runs a fixed, server-only load: a list of requests sent by a
+    small HTTP client, with no browser and with server tracing off. Most of
+    the extra work is then Drupal's.
+  - An idle baseline taken just before the load is subtracted, as the
+    Scanner does for the browser.
+  - The value is `energy-measured`, name `host.energy_incremental`, unit
+    `J`. Its `parameters` give the scope (`machine`), the load (requests,
+    concurrency, repetitions) and the baseline.
+  - It covers everything on the machine: the virtual machine, Docker, the
+    load generator and any other running process. It is not Drupal's
+    energy alone, and reports say so.
+- **CodeCarbon,** a Python library. Its
+  [methodology page](https://docs.codecarbon.io/latest/explanation/methodology/),
+  read on 2026-11-25, says three things that matter here:
+  - On Apple Silicon its default path estimates CPU power from CPU load and
+    a rated wattage. Its `powermetrics` path is effectively not used.
+  - It estimates RAM power from a fixed watts-per-module rule.
+  - On virtual machines it falls back to the CPU-load estimate.
+
+  Its output does not record which method it used. Its values would
+  therefore be `energy-estimated`, never `energy-measured`, with the method
+  taken from its startup log. It is possible as a labelled estimate, but
+  not as the main source.
+
+**Rules for host energy:**
+
+- Host energy and browser energy are never added: on one machine their
+  scopes overlap. Host measurements run with no browser open; browser
+  measurements run with no load generator.
+- Host energy gets its own section on the summary page.
+- `powermetrics` needs `sudo`, so the owner runs it by hand. Nothing in the
+  Observatory adds a sudoers rule or stores a password.
+- A machine running Drupal without a virtual machine, such as bare-metal
+  Linux reading RAPL counters, would measure a different scope and start a
+  new series.
+
+The tool choice, the load and the measurement script are questions 13 to 15
+at the end.
 
 ## Publication (decision D6)
 
 - **Raw, local only, never committed:** Lighthouse reports, Scanner result
-  files and profiles, Playwright traces. The manifest marks them private.
+  files and profiles, `powermetrics` output, Playwright traces. The
+  manifest marks them private.
 - **Public:** sanitized manifests, with each measurement's method and
   parameters, and a generated summary page per run on GitHub Pages.
-- **The summary page** has three sections in a fixed order, each with its
+- **The summary page** has four sections in a fixed order, each with its
   own heading:
   1. resource use and modelled emissions;
-  2. lab performance (Lighthouse);
-  3. measured client energy.
+  2. lab performance (Lighthouse), with category scores labelled as lab
+     scores;
+  3. measured browser energy, with the carbon worked out from it;
+  4. host energy while serving Drupal, with the carbon worked out from it.
   Each section gives the method, tool versions, which scenarios were
   covered, the status, whether the previous run is comparable, and
   "Not measured" where a value is missing. There is no combined figure and
@@ -274,8 +362,8 @@ question 9.
   cells, gives every number its unit, and does not use colour alone for
   meaning. It is checked with axe-core before publication.
 - **Where it goes:** with the per-run reports planned in Phase 8
-  (`reports/runs/<run-id>/`). Until that path is decided, nothing is
-  published automatically (open question 10).
+  (`reports/runs/<run-id>/`). Summaries wait for that path (owner
+  decision 10), so nothing is published before then.
 - **The July 2026 report:** add a "Sustainability (historical)" card to the
   report families in `reports/index.html`, linking
   `sustainability-report-latest.html`, `SUSTAINABILITY-latest.md` and
@@ -289,40 +377,49 @@ question 9.
 | Step | Change | Check |
 | --- | --- | --- |
 | 1 | Link the July report from `reports/index.html` as historical | Link resolves on Pages; axe on the index |
-| 2 | Schema 0.2.0: `parameters` and `inputs` on measurements, an artifact kind for Scanner results (if approved) | `npm run test:unit`; fixtures validate |
+| 2 | Schema 0.2.0: `parameters` and `inputs` on measurements, and an artifact kind for Scanner results | `npm run test:unit`; fixtures validate |
 | 3 | CO2.js step in the evidence tools | Unit tests on a fixture manifest; one real local run through `evidence.mjs run` |
 | 4 | Lighthouse runner in `tests/playwright/` | One real local run; manifest validates; tracing off |
-| 5 | Energy import | One real Scanner result from a physical machine; one from a machine that cannot measure, giving "Not measured" |
-| 6 | Summary page generator | Rendered from real manifests; axe-core on the page |
-| 7 | `WSG-ALIGNMENT.md` methodology matches what runs | Owner review of the text |
+| 5 | Energy import, with carbon from measured energy | One real Scanner result from the reference Mac; one from a machine that cannot measure, giving "Not measured" |
+| 6 | Host energy measurement, with carbon from it | One real run on the reference Mac with an idle baseline; a second run to show the spread |
+| 7 | Summary page generator, once the Phase 8 path exists | Rendered from real manifests; axe-core on the page |
+| 8 | Rewrite the `WSG-ALIGNMENT.md` methodology to match what runs | Owner review of the text |
 
-## Open questions for the owner
+The Scanner's schema for `measure` results (decision 7) is work in the
+Scanner's repository. Step 5 can start without it, but checks against it
+once it exists.
 
-1. **Grid intensity:** CO2.js's global average, or a named region (for
-   example Canada, or where the readers are)? Which data year?
-2. **Schema:** option (b), `parameters` and `inputs` on measurements in
-   schema 0.2.0, or method text only?
-3. **Root dependency:** once `tests/playwright/` declares `@tgwf/co2`,
-   remove it from the root `package.json`? This is the same kind of
-   question as the root `axe-core` entries.
-4. **Lighthouse package and setup:** `lighthouse` directly or
-   `playwright-lighthouse`? Desktop, mobile or both? How many runs per
-   page? All crawl pages or a subset?
-5. **Lighthouse scores:** show them only on the summary page, or give them
-   a place in the schema?
-6. **Lighthouse accessibility category:** include it? It overlaps axe-core.
-   If included, it belongs with the accessibility evidence.
-7. **Energy Scanner:** ask that project to publish a schema for `measure`
-   results? Which machine is the reference (for example an Apple Silicon
-   Mac, for the per-process scope), and who runs it?
-8. **Carbon from measured energy:** report it as its own
-   `emissions-modelled` value with its own method, or leave it out?
-9. **Server-side energy (issue #77, CodeCarbon):** in scope later, or not?
-10. **Publishing before Phase 8:** wait for `reports/runs/`, or publish
-    summaries somewhere sooner?
-11. **Tracking:** use issue #77 for this plan, or open a new issue?
-12. **`WSG-ALIGNMENT.md`:** mark its methodology section as not running
-    now, or wait until step 7?
+## Owner decisions
+
+Answered by the owner on 2026-11-25.
+
+| # | Question | Decision |
+| --- | --- | --- |
+| 1 | Grid intensity for CO2.js | CO2.js's global average, using the data year bundled with the pinned version |
+| 2 | Where to record the model and grid intensity | Schema 0.2.0 adds optional `parameters` and `inputs` to measurements |
+| 3 | The root `@tgwf/co2` entry | Keep it |
+| 4 | Lighthouse setup | The `lighthouse` package directly; desktop first; three runs per page, median reported; a small representative page set to start |
+| 5 | Lighthouse category scores | On the summary page only, labelled as lab scores |
+| 6 | Lighthouse accessibility category | Left out |
+| 7 | Energy Scanner | The Scanner project publishes a schema for `measure` results; the reference machine is an Apple Silicon Mac; the owner runs it by hand for now |
+| 8 | Carbon from measured energy | Reported as its own `emissions-modelled` value |
+| 9 | Server-side energy (issue #77) | In scope now (section 4) |
+| 10 | Publishing before Phase 8 | Wait for `reports/runs/` |
+| 11 | Tracking | Issue #77 |
+| 12 | `WSG-ALIGNMENT.md` | Mark its methodology section as not running now |
+
+## Questions still open
+
+Raised by decision 9:
+
+13. **Host energy tool:** machine-wide `powermetrics` (recommended), the
+    CodeCarbon estimate, or both, each labelled with its own kind?
+14. **Host load:** which requests, and how many? A starting proposal: the
+    anonymous crawl pages, one request at a time, repeated enough times to
+    rise clearly above the idle baseline.
+15. **Host measurement script:** an Observatory script that runs the load
+    while the owner runs `sudo powermetrics` beside it, or `powermetrics`
+    output saved by the owner and imported afterwards?
 
 ## Sources
 
@@ -343,3 +440,6 @@ question 9.
   `docs/evidence-records.md`, `schema/energy-finding.schema.json`,
   `schema/energy-timeline.schema.json`, and one `measure` result from
   `site/results/`.
+- CodeCarbon documentation, read on 2026-11-25:
+  <https://docs.codecarbon.io/latest/explanation/methodology/> and
+  <https://docs.codecarbon.io/latest/explanation/power-estimation/>.
