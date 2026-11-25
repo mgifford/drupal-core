@@ -12,6 +12,8 @@ Updated on 2026-11-23: the smoke suite, the axe scan and Playwright MCP were run
 Updated on 2026-11-24: the DDEV project definition row, now that `.ddev/config.yaml` is committed.
 Also on 2026-11-24: the drupal.org known-issue matcher row (section 4).
 
+Updated on 2026-11-24: the manual Observatory run on upstream core (Phase 3, [RUN.md](../testing/RUN.md)).
+
 ## Status values
 
 | Status | Meaning in this inventory |
@@ -43,6 +45,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 | Capability and purpose | Entry points | Depends on | Status | Tests or evidence | Next action |
 | --- | --- | --- | --- | --- | --- |
+| Manual Observatory run on upstream core: pin, disposable DDEV installation, smoke suite, evidence, upstream changes | `node scripts/drupal-test.mjs run --latest`, `scripts/lib/run.mjs`, `scripts/observatory/test-account.php`, `fixtures/recipes/observatory_smoke` | Git, DDEV 1.25, Docker, Composer in DDEV, Playwright | VERIFIED | On 2026-11-24 it pinned upstream `main` at `1dec2b8cc196` and installed it as DDEV project `obs-drupal-core-1dec2b8cc196`. Smoke suite 5 of 5 passed. Evidence PASS: no axe violations on `/admin/content` and 2 results needing review. On that page axe 4.12.1 skipped `color-contrast`, because it cannot parse the CSS `none` keyword. Exit 0 in 81 seconds. Two more runs reused the installation: one redid an install marked as interrupted, and one reused the site (37 seconds). 21 unit tests cover statuses, the run lock and its takeover race, SIGTERM, password redaction, served-code checks and the two checks that keep `ddev` off the root site. | Phase 10 adds an opt-in local schedule (D5). The rest of Phase 3: profiles and snapshots. |
 | DDEV project definition | `.ddev/config.yaml` (committed), SETUP.md (`ddev start`) | DDEV, Docker | IMPLEMENTED_UNVERIFIED | Project drupal-core, type drupal12, PHP 8.5, MariaDB 11.8, Node.js 24. Its settings match the local DDEV site used for the 2026-11-23 run, but `ddev start` from a fresh clone has not been run. | Phase 3: generate config per profile under `workspaces/installations/`. |
 | Reset core and reinstall with recipes | `ddev reset-core [patch]` (`.ddev/commands/host/reset-core`) | DDEV, Drush, Composer | IMPLEMENTED_UNVERIFIED | Exited at step 1 until PR #78. Fixed and tested with a stub `ddev`, but not yet run against real DDEV. Calls Drush, which is not installed. | Run once on a DDEV machine. Replace with `env reset` in Phase 3. |
 | Reset site from snapshot or recipe | `ddev reset-site`, `scripts/reset-site.sh` | DDEV snapshots, Drush, `core/recipes/replicate_core_testing` | IMPLEMENTED_UNVERIFIED | `bash -n` passes. Uses Drush. The comment names a stale recipe path. | Reuse its snapshot logic in Phase 3. |
@@ -111,7 +114,7 @@ No owner is recorded beyond the repository owner (mgifford) unless noted.
 
 These are needed by the specification and have no code at this commit:
 
-- CLI commands beyond `doctor` and `sources`
+- CLI commands beyond `doctor`, `sources` and `run`
 - a source registry with pinned-commit checkouts and provenance records
 - environment profiles
 - fixtures beyond the recipes listed above

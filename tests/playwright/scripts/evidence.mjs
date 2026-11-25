@@ -17,6 +17,11 @@
  *   --baseline <manifest>  Compare with this earlier run in the report
  *   --install-profile <name>, --recipes <a,b>  What the runner installed (run only;
  *                          recorded as declared, not checked)
+ *   --provenance-record <file>  Source provenance record (docs/testing/SOURCES.md);
+ *                          copied into the run folder and named in the manifest
+ *
+ * The tested Drupal checkout is DRUPAL_SOURCE_DIR, as for run-info.ts, or this
+ * repository. Its core/lib/Drupal.php and composer.lock are recorded.
  *
  * Exit codes: 0 success, 1 tests failed, no scenario passed, or invalid
  * file, 2 usage error.
@@ -34,7 +39,7 @@ import { renderReport } from '../lib/evidence/report.mjs';
 import { buildInvestigationRequest } from '../lib/evidence/investigation.mjs';
 
 const PLAYWRIGHT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE_DIR = path.resolve(PLAYWRIGHT_DIR, '../..');
+const SOURCE_DIR = path.resolve(process.env.DRUPAL_SOURCE_DIR ?? path.resolve(PLAYWRIGHT_DIR, '../..'));
 const EVIDENCE_ROOT = path.join(PLAYWRIGHT_DIR, 'reports/evidence');
 const DEFAULT_STORE = path.join(EVIDENCE_ROOT, 'otel/otel-traces.jsonl');
 
@@ -93,6 +98,11 @@ async function waitForTraces(runDir, store, timeoutMs = 10000) {
 function build(runDir, options) {
   const runId = path.basename(runDir);
   const traceStore = traceStoreOption(options);
+  let provenanceRecord = null;
+  if (options['provenance-record']) {
+    provenanceRecord = 'source-provenance.json';
+    fs.copyFileSync(path.resolve(options['provenance-record']), path.join(runDir, provenanceRecord));
+  }
   const manifest = buildManifest({
     runDir,
     runId,
@@ -101,6 +111,7 @@ function build(runDir, options) {
     trigger: options.trigger ?? 'manual',
     mode: options.mode ?? 'diagnostic',
     retentionDays: options['retention-days'] ? Number(options['retention-days']) : null,
+    provenanceRecord,
   });
   const manifestFile = path.join(runDir, 'manifest.json');
   writeJson(manifestFile, manifest);

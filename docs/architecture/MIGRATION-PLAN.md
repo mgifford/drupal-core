@@ -152,6 +152,23 @@ Resolve the Drush question: either use the recipe API and `core/scripts/dr`,
 as AGENTS.md says, or add Drush only to disposable installations, never to
 this repository.
 
+Status, 2026-11-24: a minimal manual run is implemented
+(`node scripts/drupal-test.mjs run --latest`, see
+[RUN.md](../testing/RUN.md)). It pins the upstream tip, builds a disposable
+installation with its own DDEV project under `workspaces/installations/`,
+installs Standard with `.agents/scripts/site-install.php`, and applies the
+`fixtures/recipes/observatory_smoke` recipe with upstream's
+`core/scripts/dr`, which answers the Drush question for upstream sites. It
+then runs the smoke suite and the evidence runner. It was verified on
+upstream `main` at `1dec2b8cc196`: PASS, 5 of 5 smoke tests, evidence PASS,
+81 seconds. Nothing is scheduled.
+
+Not done:
+
+- profiles under `config/profiles/`
+- snapshots keyed by commit, lock digest and recipe set
+- moving the fork recipes and custom modules to `fixtures/`
+
 ## Phase 4: MCP exploration to Playwright tests
 
 What to reuse:
