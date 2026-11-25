@@ -16,6 +16,7 @@ import {
   sourceStatus,
   sourceUpdates,
 } from './lib/sources.mjs';
+import { formatRunSummary, runObservatory } from './lib/run.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -26,6 +27,8 @@ Commands:
                            tests need. Read-only.
   sources <subcommand>     Fetch, pin and inspect upstream code
                            (list, fetch, checkout, status, updates).
+  run [--latest]           Pin upstream, build a disposable DDEV site of
+                           that commit and run the smoke suite against it.
 
 Options:
   -h, --help               Show help for the tool or a command.
@@ -73,6 +76,32 @@ Subcommands:
       checkout) and the last fetched tip.
 
 <source> defaults to defaults.source in config/sources.yml.
+`;
+
+const RUN_USAGE = `Usage: node scripts/drupal-test.mjs run [<source>] [--latest | --ref <commit>]
+                                     [--since <commit>] [--offline] [--json]
+
+Pins a commit of a git source, builds a disposable installation of it under
+workspaces/installations/ with its own DDEV project, installs the Standard
+profile with .agents/scripts/site-install.php, creates a test account with a
+new random password, runs \`npm run test:smoke\` and the evidence runner
+against that site, stops it, and lists the upstream changes since the
+previous scanned run. Manual only: nothing is scheduled. The DDEV project at
+the repository root is never used. See docs/testing/RUN.md.
+
+  --latest           Fetch and pin the branch tip (the default).
+  --ref <commit>     Pin this commit instead.
+  --since <commit>   List upstream changes since this commit instead of the
+                     commit of the previous scanned run.
+  --offline          Pin from the local store without fetching.
+  --json             Print the run record as JSON.
+
+The run status is PASS, FAIL, INCONCLUSIVE, SKIPPED, NOT_RUN or
+INFRASTRUCTURE_ERROR. A failed fetch, DDEV start, Composer install, site
+install or site check is INFRASTRUCTURE_ERROR, never a pass.
+
+Exit codes: 0 PASS; 1 any other test result; 2 invalid usage or
+configuration; 3 missing dependency; 4 infrastructure error.
 `;
 
 /** Parses flags and --name value pairs. Throws on anything unknown. */
@@ -247,6 +276,38 @@ function sources(args) {
   return EXIT.OK;
 }
 
+async function run(args) {
+  if (args.includes('-h') || args.includes('--help')) {
+    process.stdout.write(RUN_USAGE);
+    return EXIT.OK;
+  }
+  const { options, source } = parseArgs(args, { flags: ['--json', '--offline', '--latest'], values: ['--ref', '--since'] });
+  if (options.latest && options.ref) {
+    throw new SourceError('use either --latest or --ref, not both', EXIT.CONFIG);
+  }
+  for (const name of ['ref', 'since']) {
+    if (options[name] && !/^[0-9a-f]{7,40}$/.test(options[name])) {
+      throw new SourceError(`--${name} must be a commit SHA`, EXIT.CONFIG);
+    }
+  }
+  const config = loadConfig(ROOT);
+  const id = source ?? config.defaults?.source;
+  if (config.sources[id]?.type !== 'git') {
+    throw new SourceError(Object.hasOwn(config.sources, id ?? '') ? `"${id}" is a ${config.sources[id].type} source; run supports git sources only` : `unknown source "${id}"; see \`sources list\``, EXIT.CONFIG);
+  }
+  const record = await runObservatory({ root: ROOT, config, sourceId: id, ref: options.ref ?? null, offline: Boolean(options.offline), since: options.since ?? null });
+  if (options.json) {
+    process.stdout.write(JSON.stringify(record, null, 2) + '\n');
+  }
+  else {
+    process.stdout.write(`\n${formatRunSummary(record)}\n`);
+    if (record.updates) {
+      process.stdout.write(`\nUpstream changes since ${short(record.since.commit)} (${record.since.from}):\n${TEXT.updates(record.updates)}\n`);
+    }
+  }
+  return record.exit_code;
+}
+
 const [command, ...args] = process.argv.slice(2);
 try {
   if (command === '-h' || command === '--help' || command === 'help') {
@@ -258,6 +319,9 @@ try {
   }
   else if (command === 'sources') {
     process.exitCode = sources(args);
+  }
+  else if (command === 'run') {
+    process.exitCode = await run(args);
   }
   else {
     process.stderr.write(`${command ? `Unknown command: ${command}\n\n` : ''}${USAGE}`);

@@ -94,9 +94,10 @@ function drupalVersion(sourceDir) {
  * @param {'diagnostic'|'benchmark'} [options.mode]
  * @param {boolean} [options.synthetic]
  * @param {number|null} [options.retentionDays]  For large private artifacts.
+ * @param {string|null} [options.provenanceRecord]  Source provenance record, relative to runDir.
  */
 export function buildManifest(options) {
-  const { runDir, runId, traceStore, sourceDir, trigger = 'manual', mode = 'diagnostic', synthetic = false, retentionDays = null } = options;
+  const { runDir, runId, traceStore, sourceDir, trigger = 'manual', mode = 'diagnostic', synthetic = false, retentionDays = null, provenanceRecord = null } = options;
   const scenarioDir = path.join(runDir, 'scenarios');
   const records = fs.existsSync(scenarioDir)
     ? fs.readdirSync(scenarioDir).filter((f) => f.endsWith('.json')).sort().map((f) => JSON.parse(fs.readFileSync(path.join(scenarioDir, f), 'utf8')))
@@ -268,6 +269,7 @@ export function buildManifest(options) {
         requested_ref: runInfo?.source?.requested_ref ?? null,
         commit: runInfo?.source?.resolved_commit ?? null,
         dirty: runInfo?.source?.dirty ?? null,
+        ...(provenanceRecord ? { provenance_record: provenanceRecord } : {}),
       },
       drupal_version: drupalVersion(sourceDir),
       php_version: phpVersions.size === 1 ? [...phpVersions][0] : null,

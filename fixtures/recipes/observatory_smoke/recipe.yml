@@ -1,0 +1,15 @@
+# Test fixture for the Observatory smoke suite (docs/testing/RUN.md).
+# Upstream's Standard profile no longer creates content types
+# (drupal.org #3587118), and the smoke suite creates, edits and deletes a
+# Basic page. `drupal-test.mjs run` applies this after installing Standard.
+name: 'Observatory smoke fixtures'
+description: 'Adds the Basic page content type that the Observatory smoke suite uses.'
+type: 'Testing'
+install:
+  - node
+config:
+  actions:
+    node.type.page:
+      createIfNotExists:
+        name: 'Basic page'
+        description: 'Test content type for the Observatory smoke suite.'

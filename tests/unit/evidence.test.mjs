@@ -272,6 +272,16 @@ test('buildManifest removes credentials from the recorded repository', () => {
   assert.ok(!JSON.stringify(manifest).includes('hunter2'));
 });
 
+test('buildManifest names the source provenance record only when given one', () => {
+  const { runDir, runId, store, dir } = syntheticRun();
+  const without = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true });
+  assert.equal('provenance_record' in without.target.source, false);
+  const withRecord = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true, provenanceRecord: 'source-provenance.json' });
+  assert.equal(withRecord.target.source.provenance_record, 'source-provenance.json');
+  assert.equal(validate('quality-evidence', withRecord).valid, true);
+  assert.throws(() => buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true, provenanceRecord: '../outside.json' }), /schema/);
+});
+
 test('buildManifest records returned trace ids with no exported spans', () => {
   const { runDir, runId, store, dir } = syntheticRun({ traceIds: [TRACE], storeHas: [] });
   const manifest = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true });

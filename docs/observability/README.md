@@ -234,6 +234,15 @@ manual|ci|scheduled`, `--mode diagnostic|benchmark`, `--retention-days <n>`,
 `test_profile`; the crawl uses it for its themes, so a finding seen under
 other themes gets a different occurrence fingerprint.
 
+`--provenance-record <file>` copies a source provenance record
+([SOURCES.md](../testing/SOURCES.md)) into the run folder as
+`source-provenance.json` and names it in `target.source.provenance_record`.
+`drupal-test.mjs run` ([RUN.md](../testing/RUN.md)) passes it.
+
+The tested checkout is `DRUPAL_SOURCE_DIR`, as for the Playwright run record,
+or this repository when it is not set. The manifest's `drupal_version` and
+`composer_lock_sha256` come from that checkout.
+
 Exit codes: 0 on success (for `run`, only when the run passed); 1 when a
 test failed, no scenario passed (for example, every test was skipped for
 missing credentials) or a file is invalid; 2 for a usage error.
