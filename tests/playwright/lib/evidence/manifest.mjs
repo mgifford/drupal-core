@@ -207,7 +207,10 @@ export function buildManifest(options) {
           for (const node of rule.nodes ?? []) {
             const selector = (node.target ?? []).map(String).join(' ');
             const pattern = fingerprints.computeA11yPatternFingerprint(selector, 'axe-core', rule.id, null);
-            const occurrence = fingerprints.computeA11yOccurrenceFingerprint(pattern.fingerprint, routePath, null);
+            // A scan may name its test profile (the axe crawl names its themes),
+            // so the same rule and element under another configuration is a
+            // different occurrence. Scans without one keep the null profile.
+            const occurrence = fingerprints.computeA11yOccurrenceFingerprint(pattern.fingerprint, routePath, scan.test_profile ?? null);
             findings.push({
               finding_id: newId('fnd'),
               tool: scan.tool,

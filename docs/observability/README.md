@@ -218,7 +218,7 @@ usage. Commands:
 
 | Command | What it does |
 | --- | --- |
-| `run [options] [-- <Playwright args>]` | Runs `tests/observability` in Chromium, waits up to 10 seconds for this run's spans to reach the trace store, then builds the manifest and report. |
+| `run [options] [-- <Playwright args>]` | Runs `tests/observability` (or the specs named by `--tests`) in Chromium, waits up to 10 seconds for this run's spans to reach the trace store, then builds the manifest and report. |
 | `build <run dir>` | Builds the manifest and report again from a run folder. |
 | `validate <file>...` | Checks manifests and investigation requests against their schemas. |
 | `report <manifest> [--compare <baseline>]` | Writes `report/index.html` next to the manifest. |
@@ -228,7 +228,11 @@ usage. Commands:
 Options for `run` and `build`: `--trace-store <file>`, `--trigger
 manual|ci|scheduled`, `--mode diagnostic|benchmark`, `--retention-days <n>`,
 `--baseline <manifest>`. `run` also takes `--install-profile` and
-`--recipes`, recorded as declared and not checked.
+`--recipes`, recorded as declared and not checked, and `--tests <path>`:
+`--tests tests/crawl` runs the multi-page axe crawl
+([PLAYWRIGHT.md](../testing/PLAYWRIGHT.md)). A scan record may name a
+`test_profile`; the crawl uses it for its themes, so a finding seen under
+other themes gets a different occurrence fingerprint.
 
 `--provenance-record <file>` copies a source provenance record
 ([SOURCES.md](../testing/SOURCES.md)) into the run folder as
