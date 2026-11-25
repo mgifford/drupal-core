@@ -22,6 +22,9 @@
  *   --provenance-record <file>  Source provenance record (docs/testing/SOURCES.md);
  *                          copied into the run folder and named in the manifest
  *
+ * run and build also add modelled emissions from transferred bytes with
+ * CO2.js (lib/evidence/emissions.mjs).
+ *
  * The tested Drupal checkout is DRUPAL_SOURCE_DIR, as for run-info.ts, or this
  * repository. Its core/lib/Drupal.php and composer.lock are recorded.
  *
@@ -97,7 +100,9 @@ async function waitForTraces(runDir, store, timeoutMs = 10000) {
   }
 }
 
-function build(runDir, options) {
+async function build(runDir, options) {
+  // Loaded here, so the commands that do not build keep working without CO2.js.
+  const { addModelledEmissions, NAME: EMISSIONS } = await import('../lib/evidence/emissions.mjs');
   const runId = path.basename(runDir);
   const traceStore = traceStoreOption(options);
   let provenanceRecord = null;
@@ -105,7 +110,7 @@ function build(runDir, options) {
     provenanceRecord = 'source-provenance.json';
     fs.copyFileSync(path.resolve(options['provenance-record']), path.join(runDir, provenanceRecord));
   }
-  const manifest = buildManifest({
+  const manifest = addModelledEmissions(buildManifest({
     runDir,
     runId,
     traceStore,
@@ -114,7 +119,7 @@ function build(runDir, options) {
     mode: options.mode ?? 'diagnostic',
     retentionDays: options['retention-days'] ? Number(options['retention-days']) : null,
     provenanceRecord,
-  });
+  }));
   const manifestFile = path.join(runDir, 'manifest.json');
   writeJson(manifestFile, manifest);
   const comparison = options.baseline ? compareRuns(readJson(options.baseline), manifest) : null;
@@ -128,6 +133,12 @@ function build(runDir, options) {
       const c = attempt.correlation;
       console.log(`  ${scenario.scenario_id}: ${attempt.status}, correlation ${c.status} (${c.matched}/${c.expected} returned, ${c.exported ?? 'not checked'} exported), ${manifest.findings.filter((f) => f.attempt_id === attempt.attempt_id).length} finding(s)`);
     }
+  }
+  const modelled = manifest.measurements.filter((m) => m.name === EMISSIONS);
+  if (modelled.length) {
+    const p = modelled[0].parameters;
+    console.log(`Modelled emissions, not measured (CO2.js ${modelled[0].tool.version}, SWD v${p.model_version}, grid intensity ${p.grid_intensity_g_per_kwh.device} g/kWh for ${p.grid_intensity_year ?? 'an unchecked year'}, embodied ${p.embodied_grid_intensity_g_per_kwh ?? 'unchecked'} g/kWh):`);
+    for (const m of modelled) console.log(`  ${m.scenario_id ?? 'run'}: ${m.value ?? 'not modelled'} g CO2e`);
   }
   console.log(`Manifest: ${path.relative(process.cwd(), manifestFile)}\nReport:   ${path.relative(process.cwd(), reportFile)}`);
   return manifest;
@@ -160,7 +171,7 @@ async function run(options) {
     fs.copyFileSync(runInfo, path.join(runDir, 'run-info.json'));
   }
   await waitForTraces(runDir, traceStoreOption(options));
-  const manifest = build(runDir, options);
+  const manifest = await build(runDir, options);
   // Playwright exits 0 when every test was skipped; a run with nothing
   // passed (NOT_RUN, SKIPPED) is not a success.
   process.exit(result.status === 0 && manifest.run.status === 'PASS' ? 0 : 1);
@@ -187,7 +198,7 @@ switch (command) {
     break;
   case 'build':
     if (!options.positional[0]) usage('build needs a run folder');
-    build(path.resolve(options.positional[0]), options);
+    await build(path.resolve(options.positional[0]), options);
     break;
   case 'validate':
     if (!options.positional.length) usage('validate needs at least one file');
