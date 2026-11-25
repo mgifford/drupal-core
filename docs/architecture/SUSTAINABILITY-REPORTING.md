@@ -2,8 +2,9 @@
 
 Status: proposed on 2026-11-25. The owner answered its open questions the
 same day; the answers are listed under "Owner decisions" at the end and are
-applied in the sections below. Step 2 of the suggested order (evidence
-schema 0.2.0) is implemented; the other steps are not. It
+applied in the sections below. Steps 2 (evidence schema 0.2.0) and 3
+(the CO2.js step) of the suggested order are implemented; the other steps
+are not. It
 expands Phase 9 of the [migration plan](MIGRATION-PLAN.md) for the
 environmental part only.
 
@@ -129,6 +130,28 @@ results:
 **Dependency.** Declare `@tgwf/co2` with an exact version in
 `tests/playwright/package.json`, where the evidence tools run. The root
 entry stays (owner decision 3).
+
+**As implemented (step 3).** `tests/playwright/lib/evidence/emissions.mjs`
+runs after every `evidence.mjs run` and `build`. Reading the CO2.js 0.19.0
+source changed two details of the record above:
+
+- Decision 1 is applied as CO2.js's bundled annual average for WORLD,
+  472.94 g CO2e per kWh. The installed package does not state its data
+  year; `data/output/average-intensities.json` at the co2.js tag `v0.19.0`
+  gives 2024. The value is passed explicitly, so results differ from CO2.js's
+  own SWD v4 default, which is the model's fixed 494 g CO2e per kWh (Ember
+  2022 data, as the model's documentation cites it).
+- CO2.js applies a grid intensity passed to SWD v4 to operational energy
+  only. Embodied energy always uses the model's 494 g CO2e per kWh. So
+  `parameters` records both: `grid_intensity_g_per_kwh` (operational, per
+  segment, as `perByteTrace()` returned it) and
+  `embodied_grid_intensity_g_per_kwh`, with `grid_intensity_year`.
+- The data year and the embodied intensity are kept in a table of checked
+  CO2.js versions in that file. A version not in the table records `null`
+  for both, and a unit test fails until the new version is checked.
+- `method` gives the number of same-origin requests, how many had no size,
+  and how many requests to other origins were left out, as the limits
+  below require.
 
 **Limits that every report must state:**
 

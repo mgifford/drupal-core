@@ -234,6 +234,15 @@ manual|ci|scheduled`, `--mode diagnostic|benchmark`, `--retention-days <n>`,
 `test_profile`; the crawl uses it for its themes, so a finding seen under
 other themes gets a different occurrence fingerprint.
 
+`run` and `build` also add one `browser.co2e_modelled` measurement (kind
+`emissions-modelled`, in grams) for each `browser.transfer_bytes`
+measurement, worked out with CO2.js (`lib/evidence/emissions.mjs`). Its
+`parameters` give the model, the grid intensities and their year, and its
+`inputs` name the byte measurement it came from. It is a model applied to
+bytes, not a measurement, and it is never added to energy values (see
+[SUSTAINABILITY-REPORTING.md](../architecture/SUSTAINABILITY-REPORTING.md),
+section 1).
+
 `--provenance-record <file>` copies a source provenance record
 ([SOURCES.md](../testing/SOURCES.md)) into the run folder as
 `source-provenance.json` and names it in `target.source.provenance_record`.
@@ -255,6 +264,13 @@ missing credentials) or a file is invalid; 2 for a usage error.
 | 2026-11-23 | `run-20261123T180548Z-bdd13047` | on | PASS; 7 of 7 and 2 of 2 correlated and exported |
 | 2026-11-24 | `run-20261124T130035Z-76493305` | off | PASS; all 116 requests `instrumentation-disabled`; smoke suite 5 of 5 passed afterwards |
 | 2026-11-24 | `run-20261124T134220Z-1ca3d340` | on | PASS; 5 of 5 and 2 of 2 correlated and exported; committed as the example manifest |
+| 2026-11-25 | `run-20261125T164155Z-aa45d5c6` | on | PASS; anonymous scenario only; 14 of 14 correlated and exported; first `browser.co2e_modelled`, 0.0347 g from 241,110 bytes |
+
+The 2026-11-25 run checked the CO2.js step against the root DDEV site,
+where the owner keeps tracing on, so its values are marked instrumented.
+It used Drupal 12.0-dev at commit `a43e445e6a`, Playwright 1.61.1 and
+CO2.js 0.19.0, and ran with `-- --grep anonymously`: the content overview
+scenario needs a test account and was left out.
 
 The tracing-off run used Drupal 12.0-dev at commit `43361ae9f9`, PHP 8.5.12,
 Chromium 149, Playwright 1.61.1 and axe-core 4.12.1, with the module
