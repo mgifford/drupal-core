@@ -181,6 +181,13 @@ const issuesFromFixtures = () => [
 test('loadManifest and listManifests accept evidence manifests only', () => {
   assert.equal(loadManifest(EXAMPLE).run.run_id, 'run-20261124T134220Z-1ca3d340');
   assert.throws(() => loadManifest(path.join(FIXTURES, 'node-3088500.json')), InputError);
+  const versionDir = fs.mkdtempSync(path.join(os.tmpdir(), 'known-issues-'));
+  for (const [version, accepted] of [['0.2.0', true], ['0.3.0', false]]) {
+    const file = path.join(versionDir, `${version}.json`);
+    fs.writeFileSync(file, JSON.stringify({ ...example(), schema_version: version }));
+    if (accepted) assert.equal(loadManifest(file).schema_version, version);
+    else assert.throws(() => loadManifest(file), /schema 0\.1\.0 or 0\.2\.0/);
+  }
   const hostile = example();
   hostile.run.run_id = '../../escape';
   const hostileFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'known-issues-')), 'manifest.json');

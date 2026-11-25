@@ -140,7 +140,10 @@ same files. MCP access would stay optional.
 
 ## Versioning
 
-Both schemas are at 0.1.0. Their `$id` includes the version. While the
-major version is 0, a new version may change fields without a migration;
+The evidence manifest schema is at 0.2.0 and the investigation request
+schema at 0.1.0 (see
+[evidence-schema.md, "Versioning"](evidence-schema.md#versioning)). Their
+`$id` includes the version. While the major version is 0, a new version
+may change fields without a migration;
 consumers should check `schema_version` and refuse versions they do not
 know.

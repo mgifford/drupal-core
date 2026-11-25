@@ -9,7 +9,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-export const SCHEMA_VERSION = '0.1.0';
+// 0.2.0 added measurement fields and an artifact kind; findings are unchanged.
+export const SCHEMA_VERSIONS = ['0.1.0', '0.2.0'];
 export const MAX_CANDIDATES = 5;
 const MIN_SCORE = 4;
 const FULL_SCORE = 12;
@@ -26,8 +27,8 @@ export function loadManifest(file) {
   catch (error) {
     throw new InputError(`${file}: cannot read JSON (${error.message})`);
   }
-  if (manifest?.artifact_type !== 'quality-evidence-run' || manifest?.schema_version !== SCHEMA_VERSION) {
-    throw new InputError(`${file}: not a quality-evidence-run manifest, schema ${SCHEMA_VERSION}`);
+  if (manifest?.artifact_type !== 'quality-evidence-run' || !SCHEMA_VERSIONS.includes(manifest?.schema_version)) {
+    throw new InputError(`${file}: not a quality-evidence-run manifest, schema ${SCHEMA_VERSIONS.join(' or ')}`);
   }
   // The run id names output files, so it must have the schema's shape.
   if (!RUN_ID.test(String(manifest.run?.run_id))) {

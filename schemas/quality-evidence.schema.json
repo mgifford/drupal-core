@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:drupal-quality-observatory:schema:quality-evidence:0.1.0",
+  "$id": "urn:drupal-quality-observatory:schema:quality-evidence:0.2.0",
   "title": "Drupal Quality Observatory evidence manifest",
-  "description": "One test run: what was tested, how, what the browser and Drupal recorded, and where the evidence is. Version 0.x may change without a migration. See docs/observability/evidence-schema.md.",
+  "description": "One test run: what was tested, how, what the browser and Drupal recorded, and where the evidence is. Version 0.x may change without a migration. 0.2.0 adds optional measurement parameters and inputs and the energy-scanner-results artifact kind; manifests that declare 0.1.0 still validate, but may not use those additions. See docs/observability/evidence-schema.md.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "artifact_type", "run", "target", "environment", "instrumentation", "tools", "scenarios", "findings", "measurements", "artifacts"],
   "properties": {
-    "schema_version": { "const": "0.1.0" },
+    "schema_version": { "enum": ["0.1.0", "0.2.0"], "description": "0.2.0 for new manifests. 0.1.0 manifests stay valid: 0.2.0 only adds optional fields and one artifact kind." },
     "artifact_type": { "const": "quality-evidence-run" },
     "run": {
       "type": "object",
@@ -122,6 +122,18 @@
       }
     }
   },
+  "allOf": [
+    {
+      "description": "A manifest that declares 0.1.0 may not use what 0.2.0 added.",
+      "if": { "properties": { "schema_version": { "const": "0.1.0" } } },
+      "then": {
+        "properties": {
+          "measurements": { "type": "array", "items": { "type": "object", "properties": { "parameters": false, "inputs": false } } },
+          "artifacts": { "type": "array", "items": { "type": "object", "properties": { "kind": { "not": { "const": "energy-scanner-results" } } } } }
+        }
+      }
+    }
+  ],
   "$defs": {
     "run_id": { "type": "string", "pattern": "^run-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$" },
     "scenario_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$" },
@@ -344,7 +356,9 @@
         "attempt_id": { "$ref": "#/$defs/attempt_id" },
         "request_id": { "$ref": "#/$defs/request_id" },
         "trace_id": { "$ref": "#/$defs/trace_id" },
-        "artifact_id": { "$ref": "#/$defs/artifact_id" }
+        "artifact_id": { "$ref": "#/$defs/artifact_id" },
+        "parameters": { "type": "object", "minProperties": 1, "description": "Since 0.2.0. Settings the value depends on, such as model, model version and grid intensity, so that comparisons can refuse to mix values made with different settings. Published with the manifest: no URLs, credentials or local paths." },
+        "inputs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/measurement_id" }, "description": "Since 0.2.0. The measurements in this manifest that this value was derived from." }
       }
     },
     "artifact": {
@@ -353,7 +367,7 @@
       "required": ["artifact_id", "kind", "availability", "visibility"],
       "properties": {
         "artifact_id": { "$ref": "#/$defs/artifact_id" },
-        "kind": { "enum": ["axe-results", "playwright-trace", "screenshot", "otlp-traces", "lighthouse", "report", "other"] },
+        "kind": { "enum": ["axe-results", "playwright-trace", "screenshot", "otlp-traces", "lighthouse", "energy-scanner-results", "report", "other"], "description": "energy-scanner-results (since 0.2.0): a result file from the Firefox Energy Scanner." },
         "path": { "$ref": "#/$defs/relative_path" },
         "media_type": { "type": "string" },
         "sha256": { "$ref": "#/$defs/sha256" },

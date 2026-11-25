@@ -2,7 +2,8 @@
 
 Status: proposed on 2026-11-25. The owner answered its open questions the
 same day; the answers are listed under "Owner decisions" at the end and are
-applied in the sections below. Nothing in this plan is implemented yet. It
+applied in the sections below. Step 2 of the suggested order (evidence
+schema 0.2.0) is implemented; the other steps are not. It
 expands Phase 9 of the [migration plan](MIGRATION-PLAN.md) for the
 environmental part only.
 
@@ -256,7 +257,7 @@ Scanner's repository, not here.
    The raw energy and the expected idle energy stay in the artifact.
 4. It adds the result file as a private artifact, because it lists URLs and
    the machine model. Schema 0.1.0 has no matching artifact kind, so
-   schema 0.2.0 adds one (step 2 of the order below).
+   schema 0.2.0 adds `energy-scanner-results` (step 2 of the order below).
 5. When the machine could not measure energy (a virtual machine, or the
    `noop` adapter), it adds no energy value. It adds a note,
    "Not measured", with the Scanner's reason.
