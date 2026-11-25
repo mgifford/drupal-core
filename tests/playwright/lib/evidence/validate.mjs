@@ -27,10 +27,29 @@ export function validator(name) {
   return cache.get(name);
 }
 
+/**
+ * References in an evidence manifest that JSON Schema cannot check: each
+ * measurement's inputs must name another measurement in the same manifest.
+ */
+function manifestReferences(manifest) {
+  const errors = [];
+  const ids = new Set(manifest.measurements.map((m) => m.measurement_id));
+  manifest.measurements.forEach((measurement, i) => {
+    for (const input of measurement.inputs ?? []) {
+      if (input === measurement.measurement_id) errors.push(`/measurements/${i}/inputs names the measurement itself`);
+      else if (!ids.has(input)) errors.push(`/measurements/${i}/inputs names ${input}, which is not in this manifest`);
+    }
+  });
+  return errors;
+}
+
 /** Validates data; returns { valid, errors } with readable error strings. */
 export function validate(name, data) {
   const check = validator(name);
   const valid = check(data);
   const errors = (check.errors ?? []).map((error) => `${error.instancePath || '/'} ${error.message}`);
-  return { valid, errors };
+  if (valid && name === 'quality-evidence') {
+    errors.push(...manifestReferences(data));
+  }
+  return { valid: errors.length === 0, errors };
 }

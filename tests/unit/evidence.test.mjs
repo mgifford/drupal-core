@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { newId, newRunId } from '../playwright/lib/evidence/ids.mjs';
 import { parseTraceHeader } from '../playwright/lib/evidence/trace-context.mjs';
 import { sanitizeUrl, sanitizeHtmlSnippet, sanitizeRepository } from '../playwright/lib/evidence/sanitize.mjs';
@@ -335,6 +336,59 @@ test('schema rejects invented trace ids, unsafe paths and unverified artifacts',
   const unhashed = clone();
   delete unhashed.artifacts[0].sha256;
   assert.equal(validate('quality-evidence', unhashed).valid, false);
+});
+
+const EXAMPLE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../schemas/examples/quality-evidence-run.example.json');
+
+test('schema 0.2.0: new manifests carry the version and accept parameters and inputs', () => {
+  const { runDir, runId, store, dir } = syntheticRun();
+  const manifest = buildManifest({ runDir, runId, traceStore: store, sourceDir: dir, synthetic: true });
+  assert.equal(manifest.schema_version, '0.2.0');
+  const bytes = manifest.measurements.find((m) => m.name === 'browser.transfer_bytes');
+  const derived = { ...bytes, measurement_id: newId('msr'), name: 'derived.example', parameters: { model: 'example', model_version: 1, nested: { a: 1 } }, inputs: [bytes.measurement_id] };
+  manifest.measurements.push(derived);
+  assert.deepEqual(validate('quality-evidence', manifest), { valid: true, errors: [] });
+  for (const [field, value] of [['inputs', []], ['inputs', ['att-000000000001']], ['inputs', [bytes.measurement_id, bytes.measurement_id]], ['parameters', {}], ['parameters', 'model=swd']]) {
+    const broken = JSON.parse(JSON.stringify(manifest));
+    broken.measurements.at(-1)[field] = value;
+    assert.equal(validate('quality-evidence', broken).valid, false, `${field} ${JSON.stringify(value)} is rejected`);
+  }
+  const dangling = JSON.parse(JSON.stringify(manifest));
+  dangling.measurements.at(-1).inputs = ['msr-000000000000'];
+  assert.match(validate('quality-evidence', dangling).errors[0], /names msr-000000000000, which is not in this manifest/);
+  const itself = JSON.parse(JSON.stringify(manifest));
+  itself.measurements.at(-1).inputs = [derived.measurement_id];
+  assert.match(validate('quality-evidence', itself).errors[0], /names the measurement itself/);
+});
+
+test('schema 0.2.0 has an artifact kind for Energy Scanner results', () => {
+  const { runDir, runId, dir } = syntheticRun({ instrumentation: 'disabled' });
+  const manifest = buildManifest({ runDir, runId, traceStore: null, sourceDir: dir, synthetic: true });
+  manifest.artifacts.push({ artifact_id: newId('art'), kind: 'energy-scanner-results', visibility: 'private', availability: 'not-collected', note: 'No Scanner result was imported.' });
+  assert.equal(validate('quality-evidence', manifest).valid, true);
+});
+
+test('schema 0.2.0 still accepts 0.1.0 manifests, without the 0.2.0 additions', () => {
+  const example = JSON.parse(fs.readFileSync(EXAMPLE, 'utf8'));
+  assert.equal(example.schema_version, '0.1.0');
+  assert.deepEqual(validate('quality-evidence', example), { valid: true, errors: [] });
+  const withParameters = JSON.parse(JSON.stringify(example));
+  withParameters.measurements[0].parameters = { model: 'x' };
+  assert.equal(validate('quality-evidence', withParameters).valid, false);
+  const withInputs = JSON.parse(JSON.stringify(example));
+  withInputs.measurements[0].inputs = [example.measurements[1].measurement_id];
+  assert.equal(validate('quality-evidence', withInputs).valid, false);
+  const withScanner = JSON.parse(JSON.stringify(example));
+  withScanner.artifacts.push({ artifact_id: newId('art'), kind: 'energy-scanner-results', visibility: 'private', availability: 'not-collected' });
+  assert.equal(validate('quality-evidence', withScanner).valid, false);
+  for (const version of ['0.2.0', '0.1.0']) {
+    const relabelled = JSON.parse(JSON.stringify(example));
+    relabelled.schema_version = version;
+    assert.equal(validate('quality-evidence', relabelled).valid, true, `${version} label on a 0.1.0 manifest`);
+  }
+  const unknown = JSON.parse(JSON.stringify(example));
+  unknown.schema_version = '0.3.0';
+  assert.equal(validate('quality-evidence', unknown).valid, false);
 });
 
 test('wcagCandidates reads only success-criterion tags', () => {

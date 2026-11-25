@@ -250,7 +250,7 @@ export function buildManifest(options) {
 
   const lockFile = path.join(sourceDir, 'composer.lock');
   const manifest = {
-    schema_version: '0.1.0',
+    schema_version: '0.2.0',
     artifact_type: 'quality-evidence-run',
     run: {
       run_id: runId,
