@@ -43,7 +43,7 @@ export function wcagCandidates(tags) {
 // Same rule as the schema's relative_path: no leading slash, no '..', no scheme.
 const RELATIVE_PATH = /^(?![/\\])(?!.*\.\.)(?![a-zA-Z][a-zA-Z0-9+.-]*:).+$/;
 
-function artifactRecord(runDir, { kind, path: rel, visibility, note = null }, retentionDays) {
+export function artifactRecord(runDir, { kind, path: rel, visibility, note = null }, retentionDays) {
   if (!RELATIVE_PATH.test(rel)) {
     throw new Error(`artifact path must stay inside the run folder: ${rel}`);
   }

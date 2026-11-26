@@ -243,6 +243,17 @@ bytes, not a measurement, and it is never added to energy values (see
 [SUSTAINABILITY-REPORTING.md](../architecture/SUSTAINABILITY-REPORTING.md),
 section 1).
 
+`run --lighthouse desktop` also runs Lighthouse after the tests: its
+desktop preset, the performance category only, three runs on each of a
+small set of anonymous pages, and only when the site has server tracing
+off. `run` and `build` then add the median run's lab metrics as
+`lighthouse.*` measurements (kinds `browser-timing` and `resource-proxy`)
+and every run's full result as a private `lighthouse` artifact
+(`lib/evidence/lighthouse.mjs`). They are lab values, not energy or
+emissions, and are never combined with them (section 2 of
+SUSTAINABILITY-REPORTING.md). Without `--lighthouse`, nothing needs the
+`lighthouse` package.
+
 `--provenance-record <file>` copies a source provenance record
 ([SOURCES.md](../testing/SOURCES.md)) into the run folder as
 `source-provenance.json` and names it in `target.source.provenance_record`.
@@ -254,7 +265,8 @@ or this repository when it is not set. The manifest's `drupal_version` and
 
 Exit codes: 0 on success (for `run`, only when the run passed); 1 when a
 test failed, no scenario passed (for example, every test was skipped for
-missing credentials) or a file is invalid; 2 for a usage error.
+missing credentials), a requested Lighthouse step did not give values for
+every run of every page, or a file is invalid; 2 for a usage error.
 
 ### Verified runs
 
@@ -265,12 +277,26 @@ missing credentials) or a file is invalid; 2 for a usage error.
 | 2026-11-24 | `run-20261124T130035Z-76493305` | off | PASS; all 116 requests `instrumentation-disabled`; smoke suite 5 of 5 passed afterwards |
 | 2026-11-24 | `run-20261124T134220Z-1ca3d340` | on | PASS; 5 of 5 and 2 of 2 correlated and exported; committed as the example manifest |
 | 2026-11-25 | `run-20261125T164155Z-aa45d5c6` | on | PASS; anonymous scenario only; 14 of 14 correlated and exported; first `browser.co2e_modelled`, 0.0347 g from 241,110 bytes |
+| 2026-11-26 | `run-20261126T183822Z-cbe9818e` | off | PASS; anonymous scenario only; first Lighthouse step, `--lighthouse desktop`: 2 of 2 pages measured, 3 runs each |
+| 2026-11-26 | `run-20261126T184825Z-8450ab27` | on | PASS; anonymous scenario only; Lighthouse `SKIPPED` because tracing was on, no Lighthouse values; the same check repeated as `run-20261126T185348Z-d091a61b` exited 1 |
 
 The 2026-11-25 run checked the CO2.js step against the root DDEV site,
 where the owner keeps tracing on, so its values are marked instrumented.
 It used Drupal 12.0-dev at commit `a43e445e6a`, Playwright 1.61.1 and
 CO2.js 0.19.0, and ran with `-- --grep anonymously`: the content overview
 scenario needs a test account and was left out.
+
+The first Lighthouse run used the disposable site
+`obs-drupal-core-1dec2b8cc196` (Drupal 12.0-dev at upstream commit
+`1dec2b8cc196`, built by `drupal-test.mjs run`), which has no endpoint set,
+so tracing was off; the root site, where the owner keeps tracing on, was
+not changed. It used Lighthouse 13.6.0 and Chromium 149.0.7827.55, with a
+`benchmarkIndex` near 2,900. An earlier attempt on the same site,
+`run-20261126T174915Z-b3e80f50`, also had `/` in the page set: Standard's
+front page is `/admin/welcome`, so Lighthouse got HTTP 403 three times and
+recorded the page as not measured (`INCONCLUSIVE`). The page set was
+changed to `/user/login` and `/user/password`. The tracing-on runs used the
+root site and checked that Lighthouse refuses to run there.
 
 The tracing-off run used Drupal 12.0-dev at commit `43361ae9f9`, PHP 8.5.12,
 Chromium 149, Playwright 1.61.1 and axe-core 4.12.1, with the module
