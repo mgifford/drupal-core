@@ -32,6 +32,7 @@
     "@tgwf/co2": "0.19.0",
     "accessibility-checker": "^4.0.29",
     "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1"
+    "ajv-formats": "^3.0.1",
+    "lighthouse": "13.6.0"
   }
 }

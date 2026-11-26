@@ -2,9 +2,10 @@
 
 Status: proposed on 2026-11-25. The owner answered its open questions the
 same day; the answers are listed under "Owner decisions" at the end and are
-applied in the sections below. Steps 2 (evidence schema 0.2.0) and 3
-(the CO2.js step) of the suggested order are implemented; the other steps
-are not. It
+applied in the sections below. Steps 1 to 4 of the suggested order are
+implemented: the July report linked from the Pages index (#109 and #112),
+evidence schema 0.2.0 (#110), the CO2.js step (#111) and the Lighthouse
+runner. Steps 5 to 8 are not. It
 expands Phase 9 of the [migration plan](MIGRATION-PLAN.md) for the
 environmental part only.
 
@@ -27,11 +28,16 @@ weighted or turned into one score.
   `browser.transfer_bytes` and `browser.request_count`
   (`tests/playwright/lib/evidence/manifest.mjs`). The schema already has the
   kinds `energy-measured`, `energy-estimated` and `emissions-modelled`
-  (`schemas/quality-evidence.schema.json`). Nothing writes them.
-- `@tgwf/co2` 0.19.0 is a root dependency in `package.json`. No current
-  code imports it.
-- Nothing runs Lighthouse. `a11y-lighthouse.spec.ts` and the
-  `playwright-lighthouse` entry in `core/package.json` were deleted with
+  (`schemas/quality-evidence.schema.json`). Nothing wrote them on that
+  date. Since #111 the CO2.js step writes `emissions-modelled` (section 1);
+  nothing writes the two energy kinds yet.
+- `@tgwf/co2` 0.19.0 is a root dependency in `package.json`, which no code
+  imported on that date. Since #111
+  `tests/playwright/lib/evidence/emissions.mjs` imports it, from an exact
+  pin in `tests/playwright/package.json`; the root entry stays (decision 3).
+- Nothing ran Lighthouse on that date; step 4 added a runner (section 2).
+  `a11y-lighthouse.spec.ts` and the `playwright-lighthouse` entry in
+  `core/package.json` were deleted with
   the rest of the old core-path suite by `47c539d692` (2026-07-21). The
   last commit that has them is `d8a45b3fe0`. PR #96 later took
   `core/package.json` from upstream, which does not list it either. The old spec ran
@@ -41,7 +47,8 @@ weighted or turned into one score.
   `analyze-sustainability.js`, was deleted by the same commit. The Pages
   workflow copies `reports/*` to the site root, so the report is still
   published: <https://mgifford.github.io/drupal-core/sustainability-report-latest.html>
-  answered HTTP 200 on 2026-11-25. `reports/index.html` does not link to it.
+  answered HTTP 200 on 2026-11-25. `reports/index.html` did not link to it
+  then; #109 and #112 added a "Sustainability (historical)" card that does.
 - The "How alignment is measured" section of `WSG-ALIGNMENT.md` describes
   that July pipeline in the present tense.
 - Issue #77, "Do carbon testing locally", names CodeCarbon and the Firefox
@@ -224,6 +231,52 @@ time is the Lighthouse figure closest to the
 work a page costs a device, and it is still CPU time, not energy.
 Lighthouse's byte weight is measured by Chromium and should roughly match
 `browser.transfer_bytes`. Differences are reported, not reconciled.
+
+**As implemented (step 4).** `evidence.mjs run --lighthouse desktop` runs
+Lighthouse after the Playwright tests have finished
+(`tests/playwright/lib/evidence/lighthouse-run.mjs`). `run` and `build` turn
+the results into manifest entries (`lib/evidence/lighthouse.mjs`), which is
+loaded only for a run folder that has Lighthouse results, so a run without
+`--lighthouse` does not need the package.
+
+- Lighthouse 13.6.0, exact-pinned. Its own CLI runs once per run, each time
+  with a fresh Chromium: Playwright's build, passed as `CHROME_PATH`, on a
+  free port that Lighthouse picks. The Chromium version is read from the
+  binary, because Lighthouse's user agent string gives only the major
+  version. Chrome flags: `--headless=new`, and
+  `--ignore-certificate-errors` because `playwright.config.ts` also ignores
+  HTTPS errors for the DDEV certificate.
+- Before the first run it asks the site for a `traceresponse` header, as
+  the specs do. With tracing on it measures nothing and records `SKIPPED`
+  with the reason.
+- Pages: `user-login` (`/user/login`) and `user-password`
+  (`/user/password`), with the ids of `lib/pages.ts`. On a fresh install of
+  upstream's Standard profile these are the anonymous pages that render:
+  its front page is `/admin/welcome`, so `/` answers 403 to visitors, it
+  creates no content, and `/user/register` is closed to visitors. The first
+  real run found this on `/`. Pages behind a login need Lighthouse to carry
+  a session and are left for later.
+- Median: Lighthouse's own `computeMedianRun`, the run nearest to the
+  median First Contentful Paint and Time to Interactive of the valid runs.
+  Every metric of a page is read from that one run, not averaged.
+- Measurements, per page: `lighthouse.first_contentful_paint`,
+  `largest_contentful_paint`, `total_blocking_time`, `speed_index` and
+  `main_thread_time` (`browser-timing`, ms), `cumulative_layout_shift`
+  (`browser-timing`, unitless) and `total_byte_weight` (`resource-proxy`,
+  bytes). `parameters` give the page, the audit, the Lighthouse and
+  Chromium versions, the Chrome flags, preset, form factor, categories,
+  throttling method and settings, `benchmark_index`, runs per page, valid
+  runs, the median rule and run, and each run's value with the lowest and
+  highest.
+- Every run's full result is a private artifact of kind `lighthouse`; the
+  measurements link the median run's. Category scores are not copied into
+  the manifest: they stay in those results for the summary page (step 7).
+- A page with no valid run gets no values and a run note that gives each
+  run's error code. A page with fewer valid runs than asked for keeps its
+  values, gets a run note, and makes the step `INCONCLUSIVE`. A step that
+  measured nothing records `SKIPPED` or `INFRASTRUCTURE_ERROR` in a run
+  note and a `not-collected` artifact. `run` exits 1 unless every run of
+  every page gave values.
 
 ## 3. Measured energy with the Firefox Energy Scanner
 

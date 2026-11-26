@@ -21,15 +21,21 @@
  *                          tests/crawl for the axe crawl)
  *   --provenance-record <file>  Source provenance record (docs/testing/SOURCES.md);
  *                          copied into the run folder and named in the manifest
+ *   --lighthouse desktop   After the tests, run Lighthouse on a small page set
+ *                          (run only; lib/evidence/lighthouse-run.mjs): desktop
+ *                          preset, performance only, 3 runs per page. Needs
+ *                          server tracing off on the site.
  *
  * run and build also add modelled emissions from transferred bytes with
- * CO2.js (lib/evidence/emissions.mjs).
+ * CO2.js (lib/evidence/emissions.mjs), and, when the run folder has
+ * Lighthouse results, their lab metrics (lib/evidence/lighthouse.mjs).
  *
  * The tested Drupal checkout is DRUPAL_SOURCE_DIR, as for run-info.ts, or this
  * repository. Its core/lib/Drupal.php and composer.lock are recorded.
  *
- * Exit codes: 0 success, 1 tests failed, no scenario passed, or invalid
- * file, 2 usage error.
+ * Exit codes: 0 success, 1 tests failed, no scenario passed, a requested
+ * Lighthouse step did not give values for every run of every page, or
+ * invalid file, 2 usage error.
  */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -47,6 +53,8 @@ const PLAYWRIGHT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const SOURCE_DIR = path.resolve(process.env.DRUPAL_SOURCE_DIR ?? path.resolve(PLAYWRIGHT_DIR, '../..'));
 const EVIDENCE_ROOT = path.join(PLAYWRIGHT_DIR, 'reports/evidence');
 const DEFAULT_STORE = path.join(EVIDENCE_ROOT, 'otel/otel-traces.jsonl');
+// As in playwright.config.ts.
+const BASE_URL = process.env.DRUPAL_BASE_URL ?? 'https://drupal-core.ddev.site';
 
 function usage(message) {
   console.error(`evidence: ${message}\nRun with no arguments for usage.`);
@@ -110,6 +118,7 @@ async function build(runDir, options) {
     provenanceRecord = 'source-provenance.json';
     fs.copyFileSync(path.resolve(options['provenance-record']), path.join(runDir, provenanceRecord));
   }
+  const retentionDays = options['retention-days'] ? Number(options['retention-days']) : null;
   const manifest = addModelledEmissions(buildManifest({
     runDir,
     runId,
@@ -117,9 +126,19 @@ async function build(runDir, options) {
     sourceDir: SOURCE_DIR,
     trigger: options.trigger ?? 'manual',
     mode: options.mode ?? 'diagnostic',
-    retentionDays: options['retention-days'] ? Number(options['retention-days']) : null,
+    retentionDays,
     provenanceRecord,
   }));
+  // Loaded only for a run with Lighthouse results: it needs the lighthouse package.
+  let lighthouse = null;
+  if (fs.existsSync(path.join(runDir, 'lighthouse/results.json'))) {
+    const { addLighthouse } = await import('../lib/evidence/lighthouse.mjs');
+    lighthouse = addLighthouse(manifest, runDir, { retentionDays });
+  }
+  else if (options.lighthouseFailed) {
+    lighthouse = 'INFRASTRUCTURE_ERROR';
+    manifest.run.notes.push('Lighthouse lab performance: INFRASTRUCTURE_ERROR. Not measured: the Lighthouse step could not start.');
+  }
   const manifestFile = path.join(runDir, 'manifest.json');
   writeJson(manifestFile, manifest);
   const comparison = options.baseline ? compareRuns(readJson(options.baseline), manifest) : null;
@@ -140,11 +159,19 @@ async function build(runDir, options) {
     console.log(`Modelled emissions, not measured (CO2.js ${modelled[0].tool.version}, SWD v${p.model_version}, grid intensity ${p.grid_intensity_g_per_kwh.device} g/kWh for ${p.grid_intensity_year ?? 'an unchecked year'}, embodied ${p.embodied_grid_intensity_g_per_kwh ?? 'unchecked'} g/kWh):`);
     for (const m of modelled) console.log(`  ${m.scenario_id ?? 'run'}: ${m.value ?? 'not modelled'} g CO2e`);
   }
+  if (lighthouse) {
+    console.log(`Lighthouse lab values, not energy or emissions: ${lighthouse}`);
+    for (const m of manifest.measurements.filter((x) => x.name.startsWith('lighthouse.'))) {
+      const p = m.parameters;
+      console.log(`  ${p.page_id} ${m.name.slice('lighthouse.'.length)}: ${m.value ?? 'not measured'} ${m.unit} (run ${p.median_run} of ${p.runs_per_page}; lowest ${p.lowest}, highest ${p.highest})`);
+    }
+  }
   console.log(`Manifest: ${path.relative(process.cwd(), manifestFile)}\nReport:   ${path.relative(process.cwd(), reportFile)}`);
-  return manifest;
+  return { manifest, lighthouse };
 }
 
 async function run(options) {
+  if (options.lighthouse !== undefined && options.lighthouse !== 'desktop') usage('--lighthouse takes desktop, the only form factor so far');
   const startedAt = Date.now();
   const runId = newRunId();
   const runDir = path.join(EVIDENCE_ROOT, runId);
@@ -170,11 +197,25 @@ async function run(options) {
   if (fs.existsSync(runInfo) && fs.statSync(runInfo).mtimeMs >= startedAt) {
     fs.copyFileSync(runInfo, path.join(runDir, 'run-info.json'));
   }
+  if (options.lighthouse) {
+    // After the tests, never beside them. Loaded here, so runs without
+    // --lighthouse do not need the lighthouse package.
+    try {
+      const { runLighthouse } = await import('../lib/evidence/lighthouse-run.mjs');
+      await runLighthouse({ runDir, baseURL: BASE_URL });
+    }
+    catch (error) {
+      console.error(`evidence: the Lighthouse step could not start: ${error.message.split('\n')[0]}`);
+      // Only when it wrote no results; otherwise build reports what it has.
+      options.lighthouseFailed = true;
+    }
+  }
   await waitForTraces(runDir, traceStoreOption(options));
-  const manifest = await build(runDir, options);
+  const { manifest, lighthouse } = await build(runDir, options);
   // Playwright exits 0 when every test was skipped; a run with nothing
-  // passed (NOT_RUN, SKIPPED) is not a success.
-  process.exit(result.status === 0 && manifest.run.status === 'PASS' ? 0 : 1);
+  // passed (NOT_RUN, SKIPPED) is not a success. Nor is a requested
+  // Lighthouse step that is not PASS.
+  process.exit(result.status === 0 && manifest.run.status === 'PASS' && (lighthouse ?? 'PASS') === 'PASS' ? 0 : 1);
 }
 
 function validateFiles(files) {
