@@ -300,6 +300,23 @@ The multi-page axe crawl was verified on 2026-11-24:
   crawl restored it before scanning. The site was then set back to its
   original `auto`.
 
+The crawl baseline was re-recorded on 2026-11-27 for axe-core 4.14.1:
+
+- **Why:** axe-core 4.12.1 tagged `label-content-name-mismatch` as
+  `experimental`, so it did not run. Version 4.14.1 (PR #105) runs it, and
+  the crawl reported 13 new findings: the "Configure" links on
+  `/admin/structure/block` (9) and `/admin/config/content/formats` (4).
+  Their visible text is "Configure" but their `aria-label` starts with
+  "Edit". The core markup did not change. The WCAG 2.5.3 failure is
+  tracked as LABEL-IN-NAME-004 and drupal.org #2973124.
+- **Source run:** `run-20261126T191357Z-f2da42bd`, 24 of 24 pages scanned,
+  on site commit `eff737307a`. Core is unchanged from there to `5f20b4a92f`.
+- **Diff:** 13 keys added, the 4 existing keys kept, and the recording
+  fields updated. No key was dropped.
+- **Check:** a new run on `5f20b4a92f` passed 24 of 24 with 0 new and 0
+  resolved. `evidence.mjs compare` with the source run: comparable, all
+  501 findings recurring.
+
 Not yet verified:
 
 - the other specs under `tests/playwright/tests/`: the login spec, the
