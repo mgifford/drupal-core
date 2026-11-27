@@ -1,0 +1,341 @@
+{
+  "schema": "observatory-sustainability-summary/0.1",
+  "status": "interim-baseline",
+  "comparability": "First run of a new series. Not comparable with the July 2026 report.",
+  "run": {
+    "run_id": "run-20261126T191357Z-f2da42bd",
+    "date": "2026-11-26",
+    "trigger": "manual",
+    "mode": "diagnostic",
+    "status": "FAIL",
+    "scenarios_not_passed": [
+      {
+        "path": "/admin/config/content/formats",
+        "status": "FAIL",
+        "reason": "axe violations not in crawl-installed.json",
+        "scanned": true
+      },
+      {
+        "path": "/admin/structure/block",
+        "status": "FAIL",
+        "reason": "axe violations not in crawl-installed.json",
+        "scanned": true
+      }
+    ]
+  },
+  "target": {
+    "product": "drupal-core",
+    "drupal_version": "12.0-dev",
+    "php_version": "8.5.12",
+    "commit": "eff737307a59292a483e9c8803ba176598b995fe",
+    "dirty": false
+  },
+  "environment": {
+    "browser": {
+      "name": "chromium",
+      "version": "149.0.7827.55"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "color_scheme": "light",
+    "runner": "local-ddev"
+  },
+  "server_tracing": "enabled",
+  "tools": [
+    {
+      "name": "playwright",
+      "version": "1.61.1"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.14.1"
+    },
+    {
+      "name": "@tgwf/co2",
+      "version": "0.19.0"
+    }
+  ],
+  "emissions_model": {
+    "parameters": {
+      "model": "swd",
+      "model_version": 4,
+      "grid_intensity_g_per_kwh": {
+        "device": 472.94,
+        "network": 472.94,
+        "data_center": 472.94
+      },
+      "grid_intensity_source": "CO2.js bundled annual average for WORLD (averageIntensity.data.WORLD), applied to operational energy in all three segments",
+      "grid_intensity_year": 2024,
+      "embodied_grid_intensity_g_per_kwh": 494,
+      "green_hosting_factor": 0
+    },
+    "method": "CO2.js perByteTrace() on browser.transfer_bytes: Sustainable Web Design model v4, not green hosted. A model applied to bytes, not a measurement; never added to energy values. Bytes from 27 same-origin request(s); 0 had no size and counted as 0 bytes; 0 request(s) to other origins are not included."
+  },
+  "summary": {
+    "pages": 24,
+    "median_transfer_bytes": 273336,
+    "median_request_count": 27,
+    "median_co2e_g": 0.03939164270496
+  },
+  "pages": [
+    {
+      "path": "/",
+      "scenario_id": "crawl-installed-front",
+      "requires_auth": false,
+      "http_status": 403,
+      "status_expected": true,
+      "transfer_bytes": 187648,
+      "request_count": 17,
+      "co2e_g": 0.02704277142528
+    },
+    {
+      "path": "/admin",
+      "scenario_id": "crawl-installed-admin",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 255290,
+      "request_count": 27,
+      "co2e_g": 0.0367909549644
+    },
+    {
+      "path": "/admin/appearance",
+      "scenario_id": "crawl-installed-appearance",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 584329,
+      "request_count": 30,
+      "co2e_g": 0.08421019986443999
+    },
+    {
+      "path": "/admin/config",
+      "scenario_id": "crawl-installed-config",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 254986,
+      "request_count": 26,
+      "co2e_g": 0.036747144198960004
+    },
+    {
+      "path": "/admin/config/content/formats",
+      "scenario_id": "crawl-installed-text-formats",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 306121,
+      "request_count": 27,
+      "co2e_g": 0.044116431997560004
+    },
+    {
+      "path": "/admin/config/content/formats/manage/restricted_html",
+      "scenario_id": "crawl-installed-text-format-restricted-html",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 349096,
+      "request_count": 29,
+      "co2e_g": 0.05030974661856
+    },
+    {
+      "path": "/admin/config/system/site-information",
+      "scenario_id": "crawl-installed-site-information",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 255938,
+      "request_count": 26,
+      "co2e_g": 0.03688434106968
+    },
+    {
+      "path": "/admin/content",
+      "scenario_id": "crawl-installed-admin-content",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 261587,
+      "request_count": 28,
+      "co2e_g": 0.037698443089319994
+    },
+    {
+      "path": "/admin/modules",
+      "scenario_id": "crawl-installed-modules",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 261129,
+      "request_count": 22,
+      "co2e_g": 0.03763243871244001
+    },
+    {
+      "path": "/admin/people",
+      "scenario_id": "crawl-installed-people",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 305384,
+      "request_count": 28,
+      "co2e_g": 0.044010219714240004
+    },
+    {
+      "path": "/admin/reports",
+      "scenario_id": "crawl-installed-reports",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 253223,
+      "request_count": 26,
+      "co2e_g": 0.036493070582280004
+    },
+    {
+      "path": "/admin/structure",
+      "scenario_id": "crawl-installed-structure",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 253455,
+      "request_count": 26,
+      "co2e_g": 0.0365265051138
+    },
+    {
+      "path": "/admin/structure/block",
+      "scenario_id": "crawl-installed-block-layout",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 314171,
+      "request_count": 27,
+      "co2e_g": 0.04527655259556
+    },
+    {
+      "path": "/admin/structure/taxonomy",
+      "scenario_id": "crawl-installed-taxonomy",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 296323,
+      "request_count": 27,
+      "co2e_g": 0.04270439949828
+    },
+    {
+      "path": "/admin/structure/taxonomy/add",
+      "scenario_id": "crawl-installed-vocabulary-add",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 315387,
+      "request_count": 28,
+      "co2e_g": 0.04545179565732
+    },
+    {
+      "path": "/admin/structure/types",
+      "scenario_id": "crawl-installed-content-types",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 296475,
+      "request_count": 27,
+      "co2e_g": 0.042726304881
+    },
+    {
+      "path": "/admin/structure/types/add",
+      "scenario_id": "crawl-installed-content-type-add",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 322420,
+      "request_count": 29,
+      "co2e_g": 0.0464653519512
+    },
+    {
+      "path": "/node/add/article",
+      "scenario_id": "crawl-installed-node-add-article",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 902950,
+      "request_count": 31,
+      "co2e_g": 0.130128061362
+    },
+    {
+      "path": "/node/add/page",
+      "scenario_id": "crawl-installed-node-add-page",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 892444,
+      "request_count": 31,
+      "co2e_g": 0.12861399589584
+    },
+    {
+      "path": "/this-page-does-not-exist",
+      "scenario_id": "crawl-installed-not-found",
+      "requires_auth": false,
+      "http_status": 404,
+      "status_expected": true,
+      "transfer_bytes": 187540,
+      "request_count": 17,
+      "co2e_g": 0.0270272070744
+    },
+    {
+      "path": "/user/1/edit",
+      "scenario_id": "crawl-installed-user-1-edit",
+      "requires_auth": true,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 285085,
+      "request_count": 26,
+      "co2e_g": 0.0410848423206
+    },
+    {
+      "path": "/user/login",
+      "scenario_id": "crawl-installed-user-login",
+      "requires_auth": false,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 188445,
+      "request_count": 17,
+      "co2e_g": 0.0271576305702
+    },
+    {
+      "path": "/user/password",
+      "scenario_id": "crawl-installed-user-password",
+      "requires_auth": false,
+      "http_status": 200,
+      "status_expected": true,
+      "transfer_bytes": 188413,
+      "request_count": 17,
+      "co2e_g": 0.02715301891068
+    },
+    {
+      "path": "/user/register",
+      "scenario_id": "crawl-installed-user-register",
+      "requires_auth": false,
+      "http_status": 403,
+      "status_expected": true,
+      "transfer_bytes": 186856,
+      "request_count": 17,
+      "co2e_g": 0.026928632852160003
+    }
+  ],
+  "not_measured": [
+    {
+      "id": "lab-performance",
+      "heading": "2. Lab performance (Lighthouse)",
+      "reason": "No Lighthouse measurements in this run."
+    },
+    {
+      "id": "browser-energy",
+      "heading": "3. Measured browser energy",
+      "reason": "No measured browser energy in this run."
+    },
+    {
+      "id": "host-energy",
+      "heading": "4. Host energy while serving Drupal",
+      "reason": "No measured host energy in this run."
+    }
+  ]
+}

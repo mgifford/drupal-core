@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sustainability baseline, November 2026 (interim)</title>
+<style>
+:root { color-scheme: light dark; --bg: #ffffff; --fg: #1a1a1a; --muted: #4a4a4a; --line: #c8c8c8; --note-bg: #fff6d6; --note-line: #8a6d00; --link: #0b57d0; }
+@media (prefers-color-scheme: dark) { :root { --bg: #121212; --fg: #f0f0f0; --muted: #c4c4c4; --line: #555555; --note-bg: #2b2410; --note-line: #e0b84a; --link: #8ab4f8; } }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 60rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+a { color: var(--link); }
+a:focus-visible, .table-wrap:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+.notice { border-left: 4px solid var(--note-line); background: var(--note-bg); padding: 0.75rem 1rem; }
+dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.25rem 1rem; }
+dt { font-weight: 600; }
+dd { margin: 0; overflow-wrap: anywhere; }
+li code { overflow-wrap: anywhere; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+caption { text-align: left; font-weight: 600; padding: 0.5rem 0; }
+th, td { border-bottom: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+small, .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<p><a href="index.html">All reports</a></p>
+<h1>Sustainability baseline, November 2026 (interim)</h1>
+<div class="notice">
+<p><strong>Interim baseline.</strong> One run on 2026-11-26. First run of a new series. Not comparable with the July 2026 report. The <a href="sustainability-report-latest.html">July 2026 report</a> used another script, other pages and other themes, and cannot be reproduced.</p>
+<p>It measures this repository's fork of Drupal core (12.0-dev at commit <code>eff737307a</code>), not upstream Drupal, with server tracing enabled. The CO2e figures are modelled from transferred bytes. They are not measured energy.</p>
+</div>
+
+<section aria-labelledby="resource-use">
+<h2 id="resource-use">1. Resource use and modelled emissions</h2>
+<p><strong>Status: Measured</strong> for 24 pages. Median per page: 273.3 kB transferred, 27 requests, 0.039 g CO2e (modelled).</p>
+<p><strong>Run status: FAIL.</strong> These pages did not pass the crawl's checks. Their resource figures are still listed below; this page covers resource use only.</p>
+<ul>
+<li><code>/admin/config/content/formats</code>: FAIL, axe violations not in crawl-installed.json. The page loaded and was scanned.</li>
+<li><code>/admin/structure/block</code>: FAIL, axe violations not in crawl-installed.json. The page loaded and was scanned.</li>
+</ul>
+<h3>Method</h3>
+<ul>
+<li>Each page was opened in a new browser context, so nothing was cached, then scanned with axe-core. Bytes are the response headers and bodies of requests to the site that finished while the page was open and being scanned. Requests to other origins are not included.</li>
+<li>Emissions: CO2.js, Sustainable Web Design model version 4, applied to the transferred bytes. Grid intensity 472.94 g/kWh (2024 global average bundled with CO2.js) for operational energy, 494 g/kWh for embodied energy, no green hosting. This is a model applied to bytes, not a measurement.</li>
+<li>Tools: playwright 1.61.1, axe-core 4.14.1, @tgwf/co2 0.19.0. Browser: chromium 149.0.7827.55, 1280 by 720 pixels, light colour scheme.</li>
+</ul>
+<div class="table-wrap" role="region" aria-labelledby="pages-caption" tabindex="0">
+<table>
+<caption id="pages-caption">Per-page resource use and modelled emissions, one view of each page</caption>
+<thead><tr>
+<th scope="col">Page</th>
+<th scope="col">Visitor</th>
+<th scope="col">HTTP status</th>
+<th scope="col" class="num">Transferred (kB, 1 kB = 1,000 bytes)</th>
+<th scope="col" class="num">Requests</th>
+<th scope="col" class="num">CO2e, modelled (g)</th>
+</tr></thead>
+<tbody>
+<tr>
+<th scope="row"><code>/</code></th>
+<td>Anonymous</td>
+<td>403 (expected by the crawl)</td>
+<td class="num">187.6</td>
+<td class="num">17</td>
+<td class="num">0.027</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">255.3</td>
+<td class="num">27</td>
+<td class="num">0.037</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/appearance</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">584.3</td>
+<td class="num">30</td>
+<td class="num">0.084</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/config</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">255.0</td>
+<td class="num">26</td>
+<td class="num">0.037</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/config/content/formats</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">306.1</td>
+<td class="num">27</td>
+<td class="num">0.044</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/config/content/formats/manage/restricted_html</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">349.1</td>
+<td class="num">29</td>
+<td class="num">0.050</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/config/system/site-information</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">255.9</td>
+<td class="num">26</td>
+<td class="num">0.037</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/content</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">261.6</td>
+<td class="num">28</td>
+<td class="num">0.038</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/modules</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">261.1</td>
+<td class="num">22</td>
+<td class="num">0.038</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/people</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">305.4</td>
+<td class="num">28</td>
+<td class="num">0.044</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/reports</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">253.2</td>
+<td class="num">26</td>
+<td class="num">0.036</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">253.5</td>
+<td class="num">26</td>
+<td class="num">0.037</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure/block</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">314.2</td>
+<td class="num">27</td>
+<td class="num">0.045</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure/taxonomy</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">296.3</td>
+<td class="num">27</td>
+<td class="num">0.043</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure/taxonomy/add</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">315.4</td>
+<td class="num">28</td>
+<td class="num">0.045</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure/types</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">296.5</td>
+<td class="num">27</td>
+<td class="num">0.043</td>
+</tr>
+<tr>
+<th scope="row"><code>/admin/structure/types/add</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">322.4</td>
+<td class="num">29</td>
+<td class="num">0.046</td>
+</tr>
+<tr>
+<th scope="row"><code>/node/add/article</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">903.0</td>
+<td class="num">31</td>
+<td class="num">0.130</td>
+</tr>
+<tr>
+<th scope="row"><code>/node/add/page</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">892.4</td>
+<td class="num">31</td>
+<td class="num">0.129</td>
+</tr>
+<tr>
+<th scope="row"><code>/this-page-does-not-exist</code></th>
+<td>Anonymous</td>
+<td>404 (expected by the crawl)</td>
+<td class="num">187.5</td>
+<td class="num">17</td>
+<td class="num">0.027</td>
+</tr>
+<tr>
+<th scope="row"><code>/user/1/edit</code></th>
+<td>Logged in</td>
+<td>200</td>
+<td class="num">285.1</td>
+<td class="num">26</td>
+<td class="num">0.041</td>
+</tr>
+<tr>
+<th scope="row"><code>/user/login</code></th>
+<td>Anonymous</td>
+<td>200</td>
+<td class="num">188.4</td>
+<td class="num">17</td>
+<td class="num">0.027</td>
+</tr>
+<tr>
+<th scope="row"><code>/user/password</code></th>
+<td>Anonymous</td>
+<td>200</td>
+<td class="num">188.4</td>
+<td class="num">17</td>
+<td class="num">0.027</td>
+</tr>
+<tr>
+<th scope="row"><code>/user/register</code></th>
+<td>Anonymous</td>
+<td>403 (expected by the crawl)</td>
+<td class="num">186.9</td>
+<td class="num">17</td>
+<td class="num">0.027</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section aria-labelledby="lab-performance">
+<h2 id="lab-performance">2. Lab performance (Lighthouse)</h2>
+<p><strong>Status: Not measured.</strong> No Lighthouse measurements in this run.</p>
+</section>
+<section aria-labelledby="browser-energy">
+<h2 id="browser-energy">3. Measured browser energy</h2>
+<p><strong>Status: Not measured.</strong> No measured browser energy in this run.</p>
+</section>
+<section aria-labelledby="host-energy">
+<h2 id="host-energy">4. Host energy while serving Drupal</h2>
+<p><strong>Status: Not measured.</strong> No measured host energy in this run.</p>
+</section>
+
+<section aria-labelledby="run-details">
+<h2 id="run-details">Run details</h2>
+<dl>
+<dt>Run</dt><dd><code>run-20261126T191357Z-f2da42bd</code> (manual, diagnostic)</dd>
+<dt>Target</dt><dd>drupal-core 12.0-dev, fork commit <code>eff737307a59292a483e9c8803ba176598b995fe</code></dd>
+<dt>Runner</dt><dd>local-ddev</dd>
+<dt>Server tracing</dt><dd>enabled</dd>
+<dt>Figures as JSON</dt><dd>published next to this page with the same name and a <code>.json</code> extension</dd>
+</dl>
+</section>
+</main>
+</body>
+</html>
