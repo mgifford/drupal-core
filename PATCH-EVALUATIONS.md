@@ -48,7 +48,7 @@ Each patch was evaluated by:
 | [a11y-DRUPAL-A11Y-004](#a11y-drupal-a11y-004-tabindex-buttons) | Tabindex on buttons | ❌ FAILS TO APPLY | [Evaluation](#details-004) |
 | [a11y-DRUPAL-A11Y-008](#a11y-drupal-a11y-008-empty-table-headers) | Empty table headers | ❌ FAILS TO APPLY | [Evaluation](#details-008) |
 | [a11y-DRUPAL-A11Y-009](#a11y-drupal-a11y-009-module-summary-names) | Module summary names | ❌ FAILS TO APPLY | [Evaluation](#details-009) |
-| [a11y-LABEL-IN-NAME-004](#a11y-label-in-name-004-filter-format) | Label-in-name filter format | ❌ FAILS TO APPLY | [Evaluation](#details-label) |
+| [a11y-LABEL-IN-NAME-004](#a11y-label-in-name-004-filter-format) | Label-in-name operation links | Applies (2026-11-27) | [Evaluation](#details-label) |
 
 ---
 
@@ -181,9 +181,9 @@ Each patch was evaluated by:
 
 ### a11y-LABEL-IN-NAME-004: Filter Format ARIA Label
 
-**Issue:** Filter format selector uses aria-label instead of visible label
+**Issue:** Operation links such as "Configure" have an aria-label that does not start with the visible text (WCAG 2.5.3)
 
-**Status:** ❌ Patch fails to apply to current codebase
+**Status:** Applies to `main` on 2026-11-27, after being extended to four list builders (see `patches/PROPOSED-PATCHES.md`). The evaluation files below are from July and cover only the text formats version.
 
 **Evaluation Files:**
 - [Markdown Report](patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation.md)
