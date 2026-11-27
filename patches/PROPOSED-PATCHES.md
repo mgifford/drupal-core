@@ -13,7 +13,8 @@ All patches have been created and are ready for testing. They address accessibil
 - **Status:** ✅ **Patch ready**
 - **File:** `a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch`
 - **Impact:** Speech-input users can now say visible text to activate control
-- **Scope:** 1 selector, all filter format pages
+- **Scope:** Extended on 2026-11-27 from the text formats page to every list builder that renames an operation after `EntityListBuilder` set its aria-label: "Configure" (text formats, blocks), "Remove" (blocks), "Edit menu" and "Delete menu", "Edit vocabulary" and "Delete vocabulary". Each aria-label now starts with the visible title. The file name is unchanged so existing links keep working.
+- **Tests:** The patch adds assertions to `FilterAdminTest`, `BlockTest`, `MenuUiTest` and `VocabularyUiTest`. On 2026-11-27 they passed with the patch and failed without it.
 - **Root cause:** Parent EntityListBuilder sets aria-label before subclass overrides title
 
 #### DRUPAL-A11Y-002 — Submit button color contrast

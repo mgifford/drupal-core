@@ -1,37 +1,176 @@
-diff --git b/core/modules/filter/src/FilterFormatListBuilder.php a/core/modules/filter/src/FilterFormatListBuilder.php
-index e6a90f7a9e..2500a5a9b7 100644
---- b/core/modules/filter/src/FilterFormatListBuilder.php
-+++ a/core/modules/filter/src/FilterFormatListBuilder.php
-@@ -133,6 +133,15 @@ protected function getDefaultOperations(EntityInterface $entity, CacheableMetada
+diff --git a/core/modules/block/src/BlockListBuilder.php b/core/modules/block/src/BlockListBuilder.php
+index 6e58c228a9..96765ecd36 100644
+--- a/core/modules/block/src/BlockListBuilder.php
++++ b/core/modules/block/src/BlockListBuilder.php
+@@ -347,13 +347,21 @@ protected function getEntityIds() {
+    */
+   protected function getDefaultOperations(EntityInterface $entity, CacheableMetadata $cacheability) {
+     $operations = parent::getDefaultOperations($entity, $cacheability);
++    $variables = ['@entity_label' => $entity->label() ?? ''];
+ 
++    // Start each accessible name with the visible title (WCAG 2.5.3).
+     if (isset($operations['edit'])) {
+       $operations['edit']['title'] = $this->t('Configure');
++      $operations['edit']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Configure @entity_label', $variables)],
++      ]);
+     }
+ 
+     if (isset($operations['delete'])) {
+       $operations['delete']['title'] = $this->t('Remove');
++      $operations['delete']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Remove @entity_label', $variables)],
++      ]);
+     }
+     return $operations;
+   }
+diff --git a/core/modules/block/tests/src/Functional/BlockTest.php b/core/modules/block/tests/src/Functional/BlockTest.php
+index f536cdb4f0..ca46174ef2 100644
+--- a/core/modules/block/tests/src/Functional/BlockTest.php
++++ b/core/modules/block/tests/src/Functional/BlockTest.php
+@@ -52,6 +52,12 @@ public function testBlockVisibility(): void {
+     $this->submitForm($edit, 'Save block');
+     $this->assertSession()->statusMessageContains('The block configuration has been saved.', 'status');
+ 
++    // The operation links' accessible names start with their visible text.
++    $configure_link = $this->assertSession()->elementExists('xpath', '//a[normalize-space()="Configure" and contains(@href, "/manage/' . $edit['id'] . '?")]');
++    $this->assertSame('Configure ' . $title, $configure_link->getAttribute('aria-label'));
++    $remove_link = $this->assertSession()->elementExists('xpath', '//a[normalize-space()="Remove" and contains(@href, "/manage/' . $edit['id'] . '/delete?")]');
++    $this->assertSame('Remove ' . $title, $remove_link->getAttribute('aria-label'));
++
+     $this->clickLink('Configure');
+     $this->assertSession()->checkboxChecked('edit-visibility-request-path-negate-1');
+     $this->assertSession()->checkboxChecked('edit-visibility-response-status-status-codes-200');
+diff --git a/core/modules/filter/src/FilterFormatListBuilder.php b/core/modules/filter/src/FilterFormatListBuilder.php
+index fa3d9512fc..06a458d94a 100644
+--- a/core/modules/filter/src/FilterFormatListBuilder.php
++++ b/core/modules/filter/src/FilterFormatListBuilder.php
+@@ -123,6 +123,12 @@ protected function getDefaultOperations(EntityInterface $entity, CacheableMetada
  
      if (isset($operations['edit'])) {
        $operations['edit']['title'] = $this->t('Configure');
-+      // Keep the accessible name aligned with the overridden title.
-+      if (isset($operations['edit']['url'])) {
-+        $url = $operations['edit']['url'];
-+        $attributes = $url->getOption('attributes') ?: [];
-+        $attributes['aria-label'] = $this->t('Configure @entity_label', [
-+          '@entity_label' => $entity->label(),
-+        ]);
-+        $url->setOption('attributes', $attributes);
-+      }
++      // Start the accessible name with the visible title (WCAG 2.5.3).
++      $operations['edit']['url']->mergeOptions([
++        'attributes' => [
++          'aria-label' => $this->t('Configure @entity_label', ['@entity_label' => $entity->label() ?? '']),
++        ],
++      ]);
      }
  
      // The fallback format may not be disabled.
-diff --git b/core/modules/filter/tests/src/Functional/FilterAdminTest.php a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
-index b9776c852a..245bd05931 100644
---- b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
-+++ a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
-@@ -498,7 +498,11 @@ public function testFilterEnableAndDisable(): void {
+diff --git a/core/modules/filter/tests/src/Functional/FilterAdminTest.php b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+index 51fde1062e..b4c9d48fb7 100644
+--- a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
++++ b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+@@ -501,8 +501,10 @@ public function testFilterEnableAndDisable(): void {
+     $this->assertSession()->linkByHrefExists('/admin/config/content/formats/manage/filter_test/disable');
      $this->assertSession()->linkByHrefNotExists('/admin/config/content/formats/manage/filter_test/enable');
  
-     // Test the configure link appears for Filter test.
+-    // Test the configure link appears for Filter test.
 -    $this->assertSession()->elementExists('xpath', '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]');
-+    $configure_link = $this->assertSession()->elementExists(
-+      'xpath',
-+      '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]',
-+    );
++    // Test the configure link appears for Filter test, and that its
++    // accessible name starts with its visible text.
++    $configure_link = $this->assertSession()->elementExists('xpath', '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]');
 +    $this->assertSame('Configure Filter test', $configure_link->getAttribute('aria-label'));
  
      // Disable 'Filter test'.
      $this->getSession()->getPage()->find('css', '[href*="/admin/config/content/formats/manage/filter_test/disable"]')->click();
+diff --git a/core/modules/menu_ui/src/MenuListBuilder.php b/core/modules/menu_ui/src/MenuListBuilder.php
+index e98e364f28..2985645e19 100644
+--- a/core/modules/menu_ui/src/MenuListBuilder.php
++++ b/core/modules/menu_ui/src/MenuListBuilder.php
+@@ -49,9 +49,14 @@ public function buildRow(EntityInterface $entity) {
+    */
+   protected function getDefaultOperations(EntityInterface $entity, CacheableMetadata $cacheability) {
+     $operations = parent::getDefaultOperations($entity, $cacheability);
++    $variables = ['@entity_label' => $entity->label() ?? ''];
+ 
++    // Start each accessible name with the visible title (WCAG 2.5.3).
+     if (isset($operations['edit'])) {
+       $operations['edit']['title'] = $this->t('Edit menu');
++      $operations['edit']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Edit menu @entity_label', $variables)],
++      ]);
+       $operations['add'] = [
+         'title' => $this->t('Add link'),
+         'weight' => 20,
+@@ -63,6 +68,9 @@ protected function getDefaultOperations(EntityInterface $entity, CacheableMetada
+     }
+     if (isset($operations['delete'])) {
+       $operations['delete']['title'] = $this->t('Delete menu');
++      $operations['delete']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Delete menu @entity_label', $variables)],
++      ]);
+     }
+     return $operations;
+   }
+diff --git a/core/modules/menu_ui/tests/src/Functional/MenuUiTest.php b/core/modules/menu_ui/tests/src/Functional/MenuUiTest.php
+index b6a7ad9c56..abdf5be158 100644
+--- a/core/modules/menu_ui/tests/src/Functional/MenuUiTest.php
++++ b/core/modules/menu_ui/tests/src/Functional/MenuUiTest.php
+@@ -389,6 +389,16 @@ public function doMenuTests(): void {
+     // destination that breaks the user interface.
+     $this->drupalGet('admin/structure/menu');
+ 
++    // The operation links' accessible names start with their visible text.
++    $delete_links = $this->getNodeElementsByXpath(
++      '//*/td[contains(text(),:menu_label)]/following::a[normalize-space()=:link_label]',
++      [
++        ':menu_label' => (string) $this->menu->label(),
++        ':link_label' => 'Delete menu',
++      ],
++    );
++    $this->assertSame('Delete menu ' . $this->menu->label(), $delete_links[0]->getAttribute('aria-label'));
++
+     // Select the edit menu link for our menu.
+     $links = $this->getNodeElementsByXpath(
+       '//*/td[contains(text(),:menu_label)]/following::a[normalize-space()=:link_label]',
+@@ -397,6 +407,7 @@ public function doMenuTests(): void {
+         ':link_label' => 'Edit menu',
+       ],
+     );
++    $this->assertSame('Edit menu ' . $this->menu->label(), $links[0]->getAttribute('aria-label'));
+     $links[0]->click();
+ 
+     // Test the 'Add link' local action.
+diff --git a/core/modules/taxonomy/src/VocabularyListBuilder.php b/core/modules/taxonomy/src/VocabularyListBuilder.php
+index 1111995c7f..5dde45fb31 100644
+--- a/core/modules/taxonomy/src/VocabularyListBuilder.php
++++ b/core/modules/taxonomy/src/VocabularyListBuilder.php
+@@ -91,12 +91,20 @@ public function getFormId() {
+    */
+   protected function getDefaultOperations(EntityInterface $entity, CacheableMetadata $cacheability) {
+     $operations = parent::getDefaultOperations($entity, $cacheability);
++    $variables = ['@entity_label' => $entity->label() ?? ''];
+ 
++    // Start each accessible name with the visible title (WCAG 2.5.3).
+     if (isset($operations['edit'])) {
+       $operations['edit']['title'] = $this->t('Edit vocabulary');
++      $operations['edit']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Edit vocabulary @entity_label', $variables)],
++      ]);
+     }
+     if (isset($operations['delete'])) {
+       $operations['delete']['title'] = $this->t('Delete vocabulary');
++      $operations['delete']['url']->mergeOptions([
++        'attributes' => ['aria-label' => $this->t('Delete vocabulary @entity_label', $variables)],
++      ]);
+     }
+ 
+     $overview_access = $entity->access('access taxonomy overview', return_as_object: TRUE);
+diff --git a/core/modules/taxonomy/tests/src/Functional/VocabularyUiTest.php b/core/modules/taxonomy/tests/src/Functional/VocabularyUiTest.php
+index 0ff747c377..ee3cd410d5 100644
+--- a/core/modules/taxonomy/tests/src/Functional/VocabularyUiTest.php
++++ b/core/modules/taxonomy/tests/src/Functional/VocabularyUiTest.php
+@@ -62,6 +62,11 @@ public function testVocabularyInterface(): void {
+     $this->assertSession()->pageTextContains($edit['name']);
+     $this->assertSession()->pageTextContains($edit['description']);
+     $this->assertSession()->linkByHrefExists(Url::fromRoute('entity.taxonomy_term.add_form', ['taxonomy_vocabulary' => $edit['vid']])->toString());
++    // The operation links' accessible names start with their visible text.
++    $edit_link = $this->assertSession()->elementExists('xpath', '//a[normalize-space()="Edit vocabulary" and contains(@href, "/manage/' . $edit['vid'] . '?")]');
++    $this->assertSame('Edit vocabulary ' . $edit['name'], $edit_link->getAttribute('aria-label'));
++    $delete_link = $this->assertSession()->elementExists('xpath', '//a[normalize-space()="Delete vocabulary" and contains(@href, "/manage/' . $edit['vid'] . '/delete?")]');
++    $this->assertSame('Delete vocabulary ' . $edit['name'], $delete_link->getAttribute('aria-label'));
+     $this->clickLink('Edit vocabulary');
+     $edit = [];
+     $edit['name'] = $this->randomMachineName();
