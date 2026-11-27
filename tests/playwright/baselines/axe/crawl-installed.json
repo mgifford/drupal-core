@@ -16,10 +16,10 @@
   ],
   "policy": "Recorded from one complete crawl run with scripts/crawl-baseline.mjs. Every key was found in that run. No key has been reviewed by a person, and a listed key is not an accepted barrier: the baseline only lets the crawl fail on findings that are new since the recording. Remove keys the crawl reports as resolved. Re-record only from a complete run, and review the diff before committing it.",
   "recorded_from": {
-    "run_id": "run-20261124T192523Z-74616be3",
-    "drupal_commit": "a12cb08647be810da140f727a41dd51f118c9610",
-    "axe_core": "4.12.1",
-    "recorded_at": "2026-11-24T19:30:02.554Z"
+    "run_id": "run-20261126T191357Z-f2da42bd",
+    "drupal_commit": "eff737307a59292a483e9c8803ba176598b995fe",
+    "axe_core": "4.14.1",
+    "recorded_at": "2026-11-27T15:53:09.653Z"
   },
   "pages": {
     "front": {
@@ -83,7 +83,17 @@
     },
     "block-layout": {
       "path": "/admin/structure/block",
-      "accepted": []
+      "accepted": [
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Breadcrumbs\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Help\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Main page content\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Page title\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Primary admin actions\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Primary tabs\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Secondary tabs\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Status messages\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit User login\\\"]\"]"
+      ]
     },
     "appearance": {
       "path": "/admin/appearance",
@@ -111,7 +121,12 @@
     },
     "text-formats": {
       "path": "/admin/config/content/formats",
-      "accepted": []
+      "accepted": [
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Basic HTML\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Full HTML\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Plain text\\\"]\"]",
+        "label-content-name-mismatch [\"a[aria-label=\\\"Edit Restricted HTML\\\"]\"]"
+      ]
     },
     "text-format-restricted-html": {
       "path": "/admin/config/content/formats/manage/restricted_html",
